@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root type="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="903.0" styleClass="backroundpane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="903.0" styleClass="backroundpane" stylesheets="@style.css" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="woodpane">
          <children>
@@ -173,23 +172,12 @@
                         <Insets bottom="75.0" />
                      </BorderPane.margin>
                      <children>
-                        <HBox maxWidth="475.0">
-                           <children>
-                              <ImageView fitHeight="78.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/tokens/wood.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="78.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/tokens/stone.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
+                        <HBox fx:id="hbox_board1_ressources" maxHeight="35.0" maxWidth="475.0" />
                         <GridPane maxWidth="475.0" prefHeight="198.0" prefWidth="475.0" styleClass="testbackround">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.80003662109374" minWidth="10.0" prefWidth="111.00001678466796" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.80003662109374" minWidth="10.0" prefWidth="135.79998321533205" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.8000183105469" minWidth="10.0" prefWidth="252.5999755859375" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
@@ -198,51 +186,22 @@
                               <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                 <children>
-                                    <ImageView fitHeight="68.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/arsenal.png" />
-                                       </image>
-                                       <viewport>
-                                          <Rectangle2D height="68.0" width="300.0" />
-                                       </viewport>
-                                       <HBox.margin>
-                                          <Insets right="-67.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fitHeight="68.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/arsenal.png" />
-                                       </image>
-                                       <viewport>
-                                          <Rectangle2D height="68.0" width="300.0" />
-                                       </viewport>
-                                    </ImageView>
-                                 </children>
+                              <HBox fx:id="hbox_board1_military" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                              <HBox fx:id="hbox_board1_civil" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <HBox fx:id="hbox_board1_trade" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                              <HBox fx:id="hbox_board1_uni" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets left="5.0" top="5.0" />
+                                 </padding>
                               </HBox>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                 <children>
-                                    <ImageView fitHeight="68.0" fitWidth="164.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/aqueduct.png" />
-                                       </image>
-                                       <viewport>
-                                          <Rectangle2D height="68.0" width="300.0" />
-                                       </viewport>
-                                       <HBox.margin>
-                                          <Insets right="-67.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                 </children>
-                              </HBox>
+                              <HBox fx:id="hbox_board1_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
-                        <HBox alignment="TOP_CENTER" maxWidth="475.0" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="TOP_CENTER" maxWidth="475.0" prefWidth="200.0">
                            <children>
                               <ImageView fx:id="img_boardcard1_1" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/cards/age1.png" />
+                                    <Image url="@../images/cards/empty.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets right="18.0" />
@@ -250,7 +209,7 @@
                               </ImageView>
                               <ImageView fx:id="img_boardcard1_2" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/cards/age2.png" />
+                                    <Image url="@../images/cards/empty.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets right="18.0" />
@@ -258,7 +217,7 @@
                               </ImageView>
                               <ImageView fx:id="img_boardcard1_3" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/cards/age3.png" />
+                                    <Image url="@../images/cards/empty.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -266,61 +225,46 @@
                      </children>
                   </VBox>
                </top>
-               <left>
-                  <VBox spacing="75.0" BorderPane.alignment="CENTER">
+               <bottom>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="75.0" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets top="75.0" />
+                     </padding>
                      <children>
-                        <VBox fx:id="vbox_board2">
+                        <VBox fx:id="vbox_board6" alignment="CENTER">
                            <children>
-                              <ImageView fx:id="img_board2" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/alexandria.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox fx:id="hbox_board6_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <ImageView fx:id="img_boardcard2_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age1.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard2_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age1.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard2_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age3.png" />
-                                       </image>
-                                    </ImageView>
+                                    <HBox fx:id="hbox_board6_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board6_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board6_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board6_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board6_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                  </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="vbox_board4">
-                           <children>
-                              <ImageView fx:id="img_board4" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/rhodos.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
                                  <children>
-                                    <ImageView fx:id="img_boardcard4_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age2.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard4_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_boardcard6_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/cards/empty.png" />
                                        </image>
@@ -328,7 +272,198 @@
                                           <Insets right="15.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ImageView fx:id="img_boardcard4_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_boardcard6_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard6_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbox_board1112" alignment="CENTER">
+                           <children>
+                              <HBox fx:id="hbox_board7_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox fx:id="hbox_board7_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board7_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board7_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board7_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board7_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="img_boardcard7_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard7_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard7_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </bottom>
+               <padding>
+                  <Insets bottom="40.0" left="40.0" right="40.0" top="10.0" />
+               </padding>
+               <left>
+                  <VBox prefHeight="368.0" spacing="75.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox fx:id="vbox_board2" alignment="CENTER">
+                           <children>
+                              <HBox fx:id="hbox_board2_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox fx:id="hbox_board2_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board2_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board2_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board2_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board2_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="img_boardcard2_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard2_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard2_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbox_board4" alignment="CENTER">
+                           <children>
+                              <HBox fx:id="hbox_board4_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <HBox fx:id="hbox_board4_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board4_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board4_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board4_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board4_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="img_boardcard4_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard4_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard4_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/cards/empty.png" />
                                        </image>
@@ -340,104 +475,43 @@
                      </children>
                   </VBox>
                </left>
-               <bottom>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <VBox fx:id="vbox_board6">
-                           <children>
-                              <ImageView fx:id="img_board6" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/babylonA.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="img_boardcard6_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age2.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard6_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age3.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard6_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/empty.png" />
-                                       </image>
-                                    </ImageView>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <VBox fx:id="vbox_board7">
-                           <children>
-                              <ImageView fx:id="img_board7" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/olympia.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <ImageView fx:id="img_boardcard7_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/empty.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard7_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/empty.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard7_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/empty.png" />
-                                       </image>
-                                    </ImageView>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets top="75.0" />
-                     </padding>
-                  </HBox>
-               </bottom>
                <right>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="75.0" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="368.0" spacing="75.0" BorderPane.alignment="CENTER">
                      <children>
-                        <VBox fx:id="vbox_board3">
+                        <VBox fx:id="vbox_board3" alignment="CENTER">
                            <children>
-                              <ImageView fx:id="img_board3" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/alexandria.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox fx:id="hbox_board3_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <ImageView fx:id="img_boardcard3_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/cards/age2.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets right="15.0" />
-                                       </HBox.margin>
-                                    </ImageView>
-                                    <ImageView fx:id="img_boardcard3_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <HBox fx:id="hbox_board3_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board3_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board3_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board3_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board3_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="img_boardcard3_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/cards/empty.png" />
                                        </image>
@@ -445,7 +519,15 @@
                                           <Insets right="15.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ImageView fx:id="img_boardcard3_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_boardcard3_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/cards/empty.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets right="15.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <ImageView fx:id="img_boardcard3_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/cards/empty.png" />
                                        </image>
@@ -454,32 +536,56 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbox_board5">
+                        <VBox fx:id="vbox_board1121" alignment="CENTER">
                            <children>
-                              <ImageView fx:id="img_board5" fitHeight="150.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/boards/ephesos.jpg" />
-                                 </image>
-                              </ImageView>
-                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox fx:id="hbox_board5_ressources" maxHeight="35.0" maxWidth="350.0" />
+                              <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="80.60000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.1999740600586" minWidth="10.0" prefWidth="52.00000610351562" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.1999816894531" minWidth="10.0" prefWidth="223.99999389648434" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="68.60000610351562" minHeight="10.0" prefHeight="49.5999755859375" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="60.800024414062506" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="122.60000228881836" minHeight="10.0" prefHeight="54.40001220703124" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="95.79998779296875" minHeight="10.0" prefHeight="60.79998779296875" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <ImageView fx:id="img_boardcard5_1" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <HBox fx:id="hbox_board5_military" alignment="CENTER_LEFT" prefHeight="16.0" prefWidth="350.0" GridPane.rowIndex="1">
+                                       <padding>
+                                          <Insets left="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board5_civil" alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="350.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <padding>
+                                          <Insets right="3.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox fx:id="hbox_board5_trade" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                                    <HBox fx:id="hbox_board5_uni" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                    <HBox fx:id="hbox_board5_guild" alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <HBox alignment="TOP_CENTER" maxWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="img_boardcard5_1" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/cards/age1.png" />
+                                          <Image url="@../images/cards/empty.png" />
                                        </image>
                                        <HBox.margin>
                                           <Insets right="15.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ImageView fx:id="img_boardcard5_2" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_boardcard5_2" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/cards/age3.png" />
+                                          <Image url="@../images/cards/empty.png" />
                                        </image>
                                        <HBox.margin>
                                           <Insets right="15.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <ImageView fx:id="img_boardcard5_3" fitHeight="63.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_boardcard5_3" fitHeight="45.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/cards/empty.png" />
                                        </image>
@@ -491,9 +597,6 @@
                      </children>
                   </VBox>
                </right>
-               <padding>
-                  <Insets bottom="40.0" left="40.0" right="40.0" top="10.0" />
-               </padding>
             </BorderPane>
          </content>
       </ScrollPane>

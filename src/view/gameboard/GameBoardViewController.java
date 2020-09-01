@@ -12,6 +12,9 @@ import javafx.scene.layout.BorderPane;
 
 public class GameBoardViewController extends VBox {
 	@FXML
+    private ImageView btn_undo1;
+
+    @FXML
     private ImageView btn_undo;
 
     @FXML
@@ -30,7 +33,22 @@ public class GameBoardViewController extends VBox {
     private VBox vbox_board1;
 
     @FXML
-    private ImageView img_board1;
+    private HBox hbox_board1_ressources;
+
+    @FXML
+    private HBox hbox_board1_military;
+
+    @FXML
+    private HBox hbox_board1_civil;
+
+    @FXML
+    private HBox hbox_board1_trade;
+
+    @FXML
+    private HBox hbox_board1_uni;
+
+    @FXML
+    private HBox hbox_board1_guild;
 
     @FXML
     private ImageView img_boardcard1_1;
@@ -42,10 +60,85 @@ public class GameBoardViewController extends VBox {
     private ImageView img_boardcard1_3;
 
     @FXML
+    private VBox vbox_board6;
+
+    @FXML
+    private HBox hbox_board6_ressources;
+
+    @FXML
+    private HBox hbox_board6_military;
+
+    @FXML
+    private HBox hbox_board6_civil;
+
+    @FXML
+    private HBox hbox_board6_trade;
+
+    @FXML
+    private HBox hbox_board6_uni;
+
+    @FXML
+    private HBox hbox_board6_guild;
+
+    @FXML
+    private ImageView img_boardcard6_1;
+
+    @FXML
+    private ImageView img_boardcard6_2;
+
+    @FXML
+    private ImageView img_boardcard6_3;
+
+    @FXML
+    private VBox vbox_board1112;
+
+    @FXML
+    private HBox hbox_board7_ressources;
+
+    @FXML
+    private HBox hbox_board7_military;
+
+    @FXML
+    private HBox hbox_board7_civil;
+
+    @FXML
+    private HBox hbox_board7_trade;
+
+    @FXML
+    private HBox hbox_board7_uni;
+
+    @FXML
+    private HBox hbox_board7_guild;
+
+    @FXML
+    private ImageView img_boardcard7_1;
+
+    @FXML
+    private ImageView img_boardcard7_2;
+
+    @FXML
+    private ImageView img_boardcard7_3;
+
+    @FXML
     private VBox vbox_board2;
 
     @FXML
-    private ImageView img_board2;
+    private HBox hbox_board2_ressources;
+
+    @FXML
+    private HBox hbox_board2_military;
+
+    @FXML
+    private HBox hbox_board2_civil;
+
+    @FXML
+    private HBox hbox_board2_trade;
+
+    @FXML
+    private HBox hbox_board2_uni;
+
+    @FXML
+    private HBox hbox_board2_guild;
 
     @FXML
     private ImageView img_boardcard2_1;
@@ -60,7 +153,22 @@ public class GameBoardViewController extends VBox {
     private VBox vbox_board4;
 
     @FXML
-    private ImageView img_board4;
+    private HBox hbox_board4_ressources;
+
+    @FXML
+    private HBox hbox_board4_military;
+
+    @FXML
+    private HBox hbox_board4_civil;
+
+    @FXML
+    private HBox hbox_board4_trade;
+
+    @FXML
+    private HBox hbox_board4_uni;
+
+    @FXML
+    private HBox hbox_board4_guild;
 
     @FXML
     private ImageView img_boardcard4_1;
@@ -72,40 +180,25 @@ public class GameBoardViewController extends VBox {
     private ImageView img_boardcard4_3;
 
     @FXML
-    private VBox vbox_board6;
-
-    @FXML
-    private ImageView img_board6;
-
-    @FXML
-    private ImageView img_boardcard6_1;
-
-    @FXML
-    private ImageView img_boardcard6_2;
-
-    @FXML
-    private ImageView img_boardcard6_3;
-
-    @FXML
-    private VBox vbox_board7;
-
-    @FXML
-    private ImageView img_board7;
-
-    @FXML
-    private ImageView img_boardcard7_1;
-
-    @FXML
-    private ImageView img_boardcard7_2;
-
-    @FXML
-    private ImageView img_boardcard7_3;
-
-    @FXML
     private VBox vbox_board3;
 
     @FXML
-    private ImageView img_board3;
+    private HBox hbox_board3_ressources;
+
+    @FXML
+    private HBox hbox_board3_military;
+
+    @FXML
+    private HBox hbox_board3_civil;
+
+    @FXML
+    private HBox hbox_board3_trade;
+
+    @FXML
+    private HBox hbox_board3_uni;
+
+    @FXML
+    private HBox hbox_board3_guild;
 
     @FXML
     private ImageView img_boardcard3_1;
@@ -117,10 +210,25 @@ public class GameBoardViewController extends VBox {
     private ImageView img_boardcard3_3;
 
     @FXML
-    private VBox vbox_board5;
+    private VBox vbox_board1121;
 
     @FXML
-    private ImageView img_board5;
+    private HBox hbox_board5_ressources;
+
+    @FXML
+    private HBox hbox_board5_military;
+
+    @FXML
+    private HBox hbox_board5_civil;
+
+    @FXML
+    private HBox hbox_board5_trade;
+
+    @FXML
+    private HBox hbox_board5_uni;
+
+    @FXML
+    private HBox hbox_board5_guild;
 
     @FXML
     private ImageView img_boardcard5_1;
@@ -130,6 +238,7 @@ public class GameBoardViewController extends VBox {
 
     @FXML
     private ImageView img_boardcard5_3;
+
     
 	public GameBoardViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameboard/GameBoard.fxml"));
@@ -141,5 +250,8 @@ public class GameBoardViewController extends VBox {
 			
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 }

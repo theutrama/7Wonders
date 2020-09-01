@@ -7,9 +7,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class MainMenuViewController extends VBox {
+public class MainMenuViewController extends BorderPane {
 
     @FXML
     private ImageView img_music;
@@ -34,5 +35,10 @@ public class MainMenuViewController extends VBox {
 			
 			e.printStackTrace();
 		}
+		
+		btn_newgame.setOnAction(event -> {
+			
+			
+		});
 	}
 }

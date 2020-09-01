@@ -1,10 +1,12 @@
+package controller;
+
+import model.Game;
+import model.GameState;
+import model.player.Player;
+
 public class GameController {
 
 	private SevenWondersController sevenWondersController;
-
-	private SevenWondersController sevenWondersController;
-
-	private MainMenuAUI mainMenuAUI;
 
 	private MainMenuAUI mainMenuAUI;
 
@@ -12,7 +14,7 @@ public class GameController {
 
 	private GameResultAUI gameResultAUI;
 
-	public Game createGame(String name, int int player_amount, Player[] players) {
+	public Game createGame(String name, int player_amount, Player[] players) {
 		return null;
 	}
 

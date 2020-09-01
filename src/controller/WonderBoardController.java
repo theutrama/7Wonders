@@ -1,10 +1,12 @@
+package controller;
+
+import model.board.WonderBoard;
+
 public class WonderBoardController {
 
 	private SevenWondersController sevenWondersController;
 
-	private GameBoardAUI gameBoardAUI;
-
-	public WonderBoard createWonderBoard(Class<? extends Wonderboard> clazz) {
+	public WonderBoard createWonderBoard(Class<? extends WonderBoard> clazz) {
 		return null;
 	}
 

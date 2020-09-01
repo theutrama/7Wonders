@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<fx:root styleClass="backroundpane" stylesheets="@styles.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="576.0" prefWidth="852.0" spacing="35.0" styleClass="dropshadow">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="35.0">
+               <children>
+                  <ImageView fitHeight="230.0" fitWidth="667.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/7wonders.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ImageView>
+                  <Button fx:id="btn_newgame" mnemonicParsing="false" prefHeight="56.0" prefWidth="534.0" textFill="#f5f5f5">
+                     <font>
+                        <Font name="Bookman Old Style Bold" size="24.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="menubutton" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <graphic>
+                        <Label styleClass="dropshadow" text="Neues Spiel" textFill="#f8f8f8">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="56.0" prefWidth="534.0" textFill="#f5f5f5">
+                     <font>
+                        <Font name="Bookman Old Style Bold" size="24.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="menubutton" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <graphic>
+                        <Label fx:id="btn_loadgame" styleClass="dropshadow" text="Spiel laden" textFill="#f8f8f8">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="btn_ranking" mnemonicParsing="false" prefHeight="56.0" prefWidth="534.0" textFill="#f5f5f5">
+                     <font>
+                        <Font name="Bookman Old Style Bold" size="24.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="menubutton" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <graphic>
+                        <Label styleClass="dropshadow" text="Ranking" textFill="#f8f8f8">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <HBox prefHeight="41.0" prefWidth="852.0" styleClass="menubutton" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false">
+               <graphic>
+                  <ImageView fx:id="img_music" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/music.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+</fx:root>

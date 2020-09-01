@@ -1,10 +1,9 @@
+package controller;
+
+import model.Game;
+import model.ranking.Ranking;
+
 public class SevenWondersController {
-
-	private SevenWonders sevenWonders;
-
-	private GameController gameController;
-
-	private SevenWonders sevenWonders;
 
 	private GameController gameController;
 
@@ -12,11 +11,9 @@ public class SevenWondersController {
 
 	private CardController cardController;
 
-	private IOController iOController;
+	private IOController IOController;
 
 	private WonderBoardController wonderBoardController;
-
-	private GUI gUI;
 
 	private Game game;
 
@@ -42,6 +39,22 @@ public class SevenWondersController {
 
 	public PlayerController getPlayerController() {
 		return null;
+	}
+	
+	public SoundController getSoundController() {
+		return soundController;
+	}
+	
+	public Game getGame() {
+		return game;
+	}
+	
+	public Ranking getRanking() {
+		return ranking;
+	}
+	
+	public void setRanking(Ranking ranking) {
+		this.ranking = ranking;
 	}
 
 }

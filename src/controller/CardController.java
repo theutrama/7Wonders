@@ -1,3 +1,7 @@
+package controller;
+
+import model.card.Card;
+
 public class CardController {
 
 	private SevenWondersController sevenWondersController;
@@ -10,7 +14,7 @@ public class CardController {
 		return null;
 	}
 
-	public Card[] loadCardStack(int String filepath) {
+	public Card[] loadCardStack(String filepath) {
 		return null;
 	}
 

@@ -13,8 +13,12 @@ public class Game {
 
 	private String name;
 
-	private GameState[] states;
+	private ArrayList<GameState> states;
 
 	private ArrayList<Card> cardStack;
+	
+	public String getName() {
+		return name;
+	}
 
 }

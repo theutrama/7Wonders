@@ -40,5 +40,13 @@ public class SevenWondersController {
 	public PlayerController getPlayerController() {
 		return null;
 	}
+	
+	public Ranking getRanking() {
+		return ranking;
+	}
+	
+	public void setRanking(Ranking ranking) {
+		this.ranking = ranking;
+	}
 
 }

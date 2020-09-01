@@ -16,12 +16,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="903.0" styleClass="backroundpane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root type="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="903.0" styleClass="backroundpane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="woodpane">
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
+                  <Button mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fx:id="btn_undo1" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/music.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button mnemonicParsing="false">
                      <graphic>
                         <ImageView fx:id="btn_undo" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
@@ -489,4 +498,4 @@
          </content>
       </ScrollPane>
    </children>
-</VBox>
+</fx:root>

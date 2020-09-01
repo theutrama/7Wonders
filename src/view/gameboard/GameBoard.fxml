@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="903.0" styleClass="backroundpane" stylesheets="@style.css" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="backroundpane" stylesheets="@style.css" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="woodpane">
          <children>
@@ -173,7 +173,7 @@
                      </BorderPane.margin>
                      <children>
                         <HBox fx:id="hbox_board1_ressources" maxHeight="35.0" maxWidth="475.0" />
-                        <GridPane maxWidth="475.0" prefHeight="198.0" prefWidth="475.0" styleClass="testbackround">
+                        <GridPane maxWidth="600.0" prefHeight="250.0" prefWidth="475.0" styleClass="testbackround">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.80003662109374" minWidth="10.0" prefWidth="111.00001678466796" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.80003662109374" minWidth="10.0" prefWidth="135.79998321533205" />
@@ -199,28 +199,34 @@
                         </GridPane>
                         <HBox alignment="TOP_CENTER" maxWidth="475.0" prefWidth="200.0">
                            <children>
-                              <ImageView fx:id="img_boardcard1_1" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_12" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>
                                  <HBox.margin>
-                                    <Insets right="18.0" />
+                                    <Insets right="22.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <ImageView fx:id="img_boardcard1_2" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_121" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>
                                  <HBox.margin>
-                                    <Insets right="18.0" />
+                                    <Insets right="20.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <ImageView fx:id="img_boardcard1_3" fitHeight="63.0" fitWidth="144.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_122" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
                               </ImageView>
                            </children>
+                           <VBox.margin>
+                              <Insets right="6.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>

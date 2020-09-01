@@ -1,6 +1,8 @@
 package view.gameboard;
 
 import java.io.IOException;
+
+import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -238,9 +240,12 @@ public class GameBoardViewController extends VBox {
 
     @FXML
     private ImageView img_boardcard5_3;
+    
+    private final int PLAYER = 5; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
 
     
 	public GameBoardViewController() {
+	
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameboard/GameBoard.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -250,8 +255,5 @@ public class GameBoardViewController extends VBox {
 			
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 }

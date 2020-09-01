@@ -2,13 +2,17 @@ package view.menu;
 
 import java.io.IOException;
 
+import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import view.gameboard.GameBoardViewController;
 
 public class MainMenuViewController extends BorderPane {
 
@@ -37,8 +41,7 @@ public class MainMenuViewController extends BorderPane {
 		}
 		
 		btn_newgame.setOnAction(event -> {
-			
-			
+			Main.primaryStage.getScene().setRoot(new GameBoardViewController());
 		});
 	}
 }

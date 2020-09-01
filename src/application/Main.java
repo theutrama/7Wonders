@@ -8,8 +8,12 @@ import view.menu.MainMenuViewController;
 
 
 public class Main extends Application {
+	
+	public static Stage primaryStage;
+	
 	@Override
 	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
 			Scene scene = new Scene(mainMenuViewController,1000,800);

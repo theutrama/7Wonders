@@ -1,6 +1,6 @@
 package controller;
 
-import model.player.WonderBoard;
+import model.board.WonderBoard;
 
 public class WonderBoardController {
 

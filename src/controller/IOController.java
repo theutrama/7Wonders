@@ -87,7 +87,8 @@ public class IOController {
 	}
 
 	/**
-	 * reads the ranking object from the resources and sets the ranking attribute of the {@link #swController main controller} to this one 
+	 * Reads the ranking object from the resources and sets the ranking attribute of the {@link #swController main controller} to this one.<br>
+	 * If no file exists a new Ranking object is assigned. 
 	 */
 	public void loadRanking() {
 		try (ObjectInputStream oIn = new ObjectInputStream(new FileInputStream(new File(getExecutionPath() + "/" + RANKING)))) {
@@ -95,6 +96,7 @@ public class IOController {
 			oIn.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
+			swController.setRanking(new Ranking());
 		}
 	}
 	

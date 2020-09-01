@@ -11,7 +11,7 @@ public class SevenWondersController {
 
 	private CardController cardController;
 
-	private IOController iOController;
+	private IOController IOController;
 
 	private WonderBoardController wonderBoardController;
 
@@ -39,6 +39,14 @@ public class SevenWondersController {
 
 	public PlayerController getPlayerController() {
 		return null;
+	}
+	
+	public SoundController getSoundController() {
+		return soundController;
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 	
 	public Ranking getRanking() {

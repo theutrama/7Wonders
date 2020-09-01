@@ -17,8 +17,32 @@ public class Game {
 
 	private ArrayList<Card> cardStack;
 	
+	public Game() {
+		
+	}
+	
 	public String getName() {
 		return name;
+	}
+	
+	public int getCurrentState() {
+		return currentState;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public ArrayList<GameState> getStates() {
+		return states;
+	}
+	
+	public ArrayList<Card> getCardStack() {
+		return cardStack;
+	}
+	
+	public void setCurrentState(int currentState) {
+		this.currentState = currentState;
 	}
 
 }

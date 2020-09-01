@@ -6,6 +6,17 @@ public class Resource {
 
 	private ResourceType type;
 
-	private Resource resource;
+	public Resource(int quantity, ResourceType type) {
+		this.quantity = quantity;
+		this.type = type;
+	}
+	
+	public int getQuantity() {
+		return quantity;
+	}
+	
+	public ResourceType getType() {
+		return type;
+	}
 
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import model.card.Card;
+import model.player.Player;
 
 public class CardController {
 

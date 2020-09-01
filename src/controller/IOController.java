@@ -92,7 +92,7 @@ public class IOController {
 	 */
 	public void loadRanking() {
 		try (ObjectInputStream oIn = new ObjectInputStream(new FileInputStream(new File(getExecutionPath() + "/" + RANKING)))) {
-			swController.setRanking((Ranking) oIn.readObject());
+			swController.setRanking(((Ranking) oIn.readObject()));
 			oIn.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -108,4 +108,3 @@ public class IOController {
 	}
 
 }
->>>>>>> branch 'master' of https://sopra-gitlab.cs.tu-dortmund.de/sopra20C/gruppe05/projekt2.git

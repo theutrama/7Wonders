@@ -21,24 +21,32 @@ public class SevenWondersController {
 
 	private SoundController soundController;
 
+	public SevenWondersController() {
+		this.gameController = new GameController();
+		this.playerController = new PlayerController();
+		this.cardController = new CardController();
+		this.IOController = new IOController();
+		this.wonderBoardController = new WonderBoardController(this);
+	}
+	
 	public GameController getGameController() {
-		return null;
+		return gameController;
 	}
 
 	public WonderBoardController getWonderBoardController() {
-		return null;
+		return wonderBoardController;
 	}
 
 	public CardController getCardController() {
-		return null;
+		return cardController;
 	}
 
 	public IOController getIOController() {
-		return null;
+		return IOController;
 	}
 
 	public PlayerController getPlayerController() {
-		return null;
+		return playerController;
 	}
 	
 	public SoundController getSoundController() {
@@ -56,5 +64,4 @@ public class SevenWondersController {
 	public void setRanking(Ranking ranking) {
 		this.ranking = ranking;
 	}
-
 }

@@ -11,11 +11,12 @@ import model.board.WonderBoard;
 public class WonderBoardController {
 
 	private Random rand = new Random();
-	private SevenWondersController sevenWondersController;
+	private SevenWondersController sw;
 
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 	
-	public WonderBoardController() {
+	public WonderBoardController(SevenWondersController sw) {
+		this.sw=sw;
 		loadBoardClasses();
 	}
 	

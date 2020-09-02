@@ -49,6 +49,7 @@ public class SoundController {
 			Main.getSWController().getSoundController().mute();
 			updateMuteIcon(imgv);
 		});
+		updateMuteIcon(imgv);
 	}
 	
 	public static void updateMuteIcon(ImageView imgv) {

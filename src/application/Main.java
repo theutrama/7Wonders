@@ -3,6 +3,7 @@ package application;
 import controller.SevenWondersController;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import view.SampleViewController;
 import view.menu.MainMenuViewController;
@@ -16,6 +17,8 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
+		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/images/7wonders_small.png")));
+		
 		Main.primaryStage = primaryStage;
 		swController = new SevenWondersController();
 		

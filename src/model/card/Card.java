@@ -16,6 +16,38 @@ public class Card {
 
 	private ArrayList<Card> dependencies;
 
-	private ArrayList<Effect> effect;
+	private ArrayList<Effect> effects;
+	
+	public Card() {
+		
+	}
+	
+	public int getAge() {
+		return age;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public CardType getType() {
+		return type;
+	}
+	
+	public ArrayList<Resource> getProducing() {
+		return producing;
+	}
+	
+	public ArrayList<Resource> getRequired() {
+		return required;
+	}
+	
+	public ArrayList<Card> getDependencies() {
+		return dependencies;
+	}
+	
+	public ArrayList<Effect> getEffects() {
+		return effects;
+	}
 
 }

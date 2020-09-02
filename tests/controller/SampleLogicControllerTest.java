@@ -15,7 +15,7 @@ public class SampleLogicControllerTest {
 	
 	@Test
 	public void testConstructor() {
-		SampleLogicController sampleLogicController = new SampleLogicController();
+		
 	}
 
 }

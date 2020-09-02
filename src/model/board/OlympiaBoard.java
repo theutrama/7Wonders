@@ -3,9 +3,9 @@ package model.board;
 import model.card.Resource;
 import model.card.ResourceType;
 
-public class MausoleumBoard extends WonderBoard {
+public class OlympiaBoard extends WonderBoard {
 
-	public MausoleumBoard() {
+	public OlympiaBoard() {
 		super();
 		slotRequirements = new Resource[] {new Resource(2, ResourceType.BRICK), new Resource(3, ResourceType.ORE), new Resource(2, ResourceType.CLOTH)};
 	}

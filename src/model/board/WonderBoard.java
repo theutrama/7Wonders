@@ -19,8 +19,6 @@ public abstract class WonderBoard {
 	
 	protected Player player;
 	
-	protected File image;
-	
 	public WonderBoard() {
 		resources = new ArrayList<>();
 		military = new ArrayList<>();
@@ -29,6 +27,11 @@ public abstract class WonderBoard {
 		civil = new ArrayList<>();
 		research = new ArrayList<>();
 		filled = new boolean[3];
+	}
+	
+	public File getImage() {
+		String name = getClass().getSimpleName().replaceAll("Board", "");
+		return new File(File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg");
 	}
 
 	public void slot1() {

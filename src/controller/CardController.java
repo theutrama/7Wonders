@@ -5,8 +5,12 @@ import model.player.Player;
 
 public class CardController {
 
-	private SevenWondersController sevenWondersController;
+	private SevenWondersController swController;
 
+	public CardController(SevenWondersController swController) {
+		this.swController=swController;
+	}
+	
 	public void loadCards() {
 
 	}

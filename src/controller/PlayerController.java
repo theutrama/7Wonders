@@ -5,8 +5,12 @@ import model.player.Player;
 
 public class PlayerController {
 
-	private SevenWondersController sevenWondersController;
+	private SevenWondersController swController;
 
+	public PlayerController(SevenWondersController swController) {
+		this.swController=swController;
+	}
+	
 	public Player createPlayer(String playername) {
 		return null;
 	}

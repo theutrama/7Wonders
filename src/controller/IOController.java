@@ -16,6 +16,11 @@ public class IOController {
 
 	private SevenWondersController swController;
 
+	
+	public IOController(SevenWondersController swController) {
+		this.swController=swController;
+	}
+	
 	/**
 	 * loads the game with the specified name
 	 * @param filename the name of the game

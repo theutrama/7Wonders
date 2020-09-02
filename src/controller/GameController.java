@@ -6,8 +6,12 @@ import model.player.Player;
 
 public class GameController {
 
-	private SevenWondersController sevenWondersController;
+	private SevenWondersController swController;
 
+	public GameController(SevenWondersController swController) {
+		this.swController=swController;
+	}
+	
 	public Game createGame(String name, int player_amount, Player[] players) {
 		return null;
 	}

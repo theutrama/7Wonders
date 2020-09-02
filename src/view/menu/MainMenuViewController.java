@@ -5,15 +5,11 @@ import java.io.IOException;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import view.gameList.GameListViewController;
-import view.gameboard.GameBoardViewController;
+import view.newgame.NewGameViewController;
 import view.ranking.RankingViewController;
 
 public class MainMenuViewController extends BorderPane {

@@ -18,12 +18,14 @@ public class GameState {
 
 	private int stackIndex;
 
-	private ArrayList<Player> players;
+	private ArrayList<Player> players = new ArrayList<Player>();
 
-	private ArrayList<Card> trash;
+	private ArrayList<Card> trash = new ArrayList<Card>();
 	
-	public GameState() {
-		
+	public GameState(int age, int round,ArrayList<Player> players) {
+		this.players = players;
+		this.age = age;
+		this.round = round;
 	}
 	
 	public int getAge() {
@@ -32,6 +34,10 @@ public class GameState {
 	
 	public int getRound() {
 		return round;
+	}
+	
+	public void setStackIndex(int index) {
+		this.stackIndex = index;
 	}
 	
 	public int getStackIndex() {

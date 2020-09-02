@@ -129,5 +129,5 @@ jacocoLogTestCoverage {
 }
 
 
-mainClassName = 'application.Runner'
+mainClassName = 'application.Main'
 

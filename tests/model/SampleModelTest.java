@@ -23,7 +23,7 @@ public class SampleModelTest {
 	 */
 	@Test
 	public void testConstructor() {
-		SampleModel sampleModel = new SampleModel();
+//		SampleModel sampleModel = new SampleModel();
 	}
 
 	/**
@@ -31,8 +31,8 @@ public class SampleModelTest {
 	 */
 	@Test
 	public void testA() {
-		SampleModel sampleModel = new SampleModel();
-		assertEquals(sampleModel.a(10),10);
+//		SampleModel sampleModel = new SampleModel();
+//		assertEquals(sampleModel.a(10),10);
 	}
 
 }

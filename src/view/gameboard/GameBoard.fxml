@@ -295,7 +295,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbox_board1112" alignment="CENTER">
+                        <VBox fx:id="vbox_board7" alignment="CENTER">
                            <children>
                               <HBox fx:id="hbox_board7_ressources" maxHeight="35.0" maxWidth="350.0" />
                               <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">
@@ -542,7 +542,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="vbox_board1121" alignment="CENTER">
+                        <VBox fx:id="vbox_board5" alignment="CENTER">
                            <children>
                               <HBox fx:id="hbox_board5_ressources" maxHeight="35.0" maxWidth="350.0" />
                               <GridPane maxHeight="124.0" maxWidth="300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="145.0" prefWidth="350.0" styleClass="testbackround">

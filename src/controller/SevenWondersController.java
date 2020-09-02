@@ -41,4 +41,8 @@ public class SevenWondersController {
 		return null;
 	}
 
+	public Game getGame() {
+		return game;
+	}
+
 }

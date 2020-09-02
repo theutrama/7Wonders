@@ -8,12 +8,6 @@ public class GameController {
 
 	private SevenWondersController sevenWondersController;
 
-	private MainMenuAUI mainMenuAUI;
-
-	private NewGameAUI newGameAUI;
-
-	private GameResultAUI gameResultAUI;
-
 	public Game createGame(String name, int player_amount, Player[] players) {
 		return null;
 	}

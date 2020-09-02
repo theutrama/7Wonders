@@ -3,6 +3,7 @@ package view.menu;
 import java.io.IOException;
 
 import application.Main;
+import controller.SoundController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -25,6 +26,9 @@ public class MainMenuViewController extends BorderPane {
 
     @FXML
     private Button btn_ranking;
+    
+    @FXML
+    private Button btn_mute;
 
 	public MainMenuViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu/MainMenu.fxml"));
@@ -36,13 +40,15 @@ public class MainMenuViewController extends BorderPane {
 			
 			e.printStackTrace();
 		}
+		
+		SoundController.addMuteFunction(btn_mute, img_music);
 
 		btn_newgame.setOnAction(event -> {
 			Main.primaryStage.getScene().setRoot(new NewGameViewController());
 		});
 		
-		btn_ranking.setOnAction(e -> Main.primaryStage.getScene().setRoot(new RankingViewController(this)));
+		btn_ranking.setOnAction(e -> Main.primaryStage.getScene().setRoot(new RankingViewController()));
 		
-		btn_loadgame.setOnAction(e -> Main.primaryStage.getScene().setRoot(new GameListViewController(this)));
+		btn_loadgame.setOnAction(e -> Main.primaryStage.getScene().setRoot(new GameListViewController()));
 	}
 }

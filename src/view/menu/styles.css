@@ -16,3 +16,7 @@
 .dropshadow {
 	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
 }
+.fontstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:28;
+}

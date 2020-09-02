@@ -9,6 +9,11 @@
     -fx-border-color:transparent;
 }
 
+.fontstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+}
+
 .menubutton {
 	-fx-background-image: url("../images/wood.png");
 	-fx-background-size: contain;

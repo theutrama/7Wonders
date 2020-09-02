@@ -27,6 +27,9 @@ public class SevenWondersController {
 		this.cardController = new CardController(this);
 		this.IOController = new IOController(this);
 		this.wonderBoardController = new WonderBoardController(this);
+		this.soundController = new SoundController();
+		
+		this.IOController.loadRanking();
 	}
 	
 	public GameController getGameController() {

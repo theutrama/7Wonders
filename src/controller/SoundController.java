@@ -15,6 +15,12 @@ public class SoundController {
 	private boolean mute = false;
 
 	private ArrayList<MediaPlayer> players;
+	
+	public SoundController() {
+		players = new ArrayList<MediaPlayer>();
+		
+	}
+
 
 	public void play(String sound) {
 		try {
@@ -54,9 +60,9 @@ public class SoundController {
 	
 	public static void updateMuteIcon(ImageView imgv) {
 		if (Main.getSWController().getSoundController().isMuted())
-			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../images/musicoff.png")));
+			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/musicoff.png")));
 		else
-			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../images/music.png")));
+			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/music.png")));
 	}
 
 }

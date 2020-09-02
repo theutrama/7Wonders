@@ -8,10 +8,14 @@
     -fx-background-radius:0;
     -fx-border-color:transparent;
 }
+.buttonback {
+	-fx-background-image: url("../images/wood.png");
+	-fx-background-size: cover;
+}
 
 .menubutton {
 	-fx-background-image: url("../images/wood.png");
-	-fx-background-size: cover;
+	-fx-background-size: contain;
 }
 .dropshadow {
 	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )

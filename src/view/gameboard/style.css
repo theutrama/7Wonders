@@ -21,6 +21,14 @@
 	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
 }
 
+.fontstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+}
+.bold {
+	-fx-font-weight: bold;
+}
+
 .woodpane{
     -fx-background-image: url("../images/wood.png");  
     -fx-background-position: center center;

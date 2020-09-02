@@ -17,7 +17,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
-
+		swController = new SevenWondersController();
+		
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
 			Scene scene = new Scene(mainMenuViewController,1000,800);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import application.Main;
+import controller.SoundController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -45,6 +46,9 @@ public class NewGameViewController extends BorderPane {
 
 	@FXML
 	private Button btn_done;
+	
+	@FXML
+	private Button btn_mute;
 
 	private ArrayList<HBox> players;
 	private ArrayList<String> wonders;
@@ -75,6 +79,7 @@ public class NewGameViewController extends BorderPane {
 			if (e.getCode().equals(KeyCode.ENTER))
 				addPlayer();
 		});
+		SoundController.addMuteFunction(btn_mute, img_music);
 	}
 
 	private void addPlayer() {

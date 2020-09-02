@@ -34,10 +34,14 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                      <graphic>
-                        <Label styleClass="dropshadow" text="Neues Spiel" textFill="#f8f8f8">
+                        <Label text="Neues Spiel" textFill="#f8f8f8">
                            <font>
                               <Font size="26.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="dropshadow" />
+                              <String fx:value="fontstyle" />
+                           </styleClass>
                         </Label>
                      </graphic>
                   </Button>
@@ -50,10 +54,14 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                      <graphic>
-                        <Label styleClass="dropshadow" text="Spiel laden" textFill="#f8f8f8">
+                        <Label text="Spiel laden" textFill="#f8f8f8">
                            <font>
                               <Font size="26.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="dropshadow" />
+                              <String fx:value="fontstyle" />
+                           </styleClass>
                         </Label>
                      </graphic>
                   </Button>
@@ -66,10 +74,14 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                      <graphic>
-                        <Label styleClass="dropshadow" text="Ranking" textFill="#f8f8f8">
+                        <Label text="Ranking" textFill="#f8f8f8">
                            <font>
                               <Font size="26.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="dropshadow" />
+                              <String fx:value="fontstyle" />
+                           </styleClass>
                         </Label>
                      </graphic>
                   </Button>
@@ -81,7 +93,7 @@
    <top>
       <HBox prefHeight="41.0" prefWidth="852.0" styleClass="menubutton" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false">
+            <Button fx:id="btn_mute" mnemonicParsing="false">
                <graphic>
                   <ImageView fx:id="img_music" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>

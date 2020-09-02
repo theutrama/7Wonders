@@ -92,7 +92,7 @@
    <top>
       <HBox prefHeight="41.0" prefWidth="852.0" styleClass="menubutton" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false">
+            <Button fx:id="btn_mute" mnemonicParsing="false">
                <graphic>
                   <ImageView fx:id="img_music" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -110,7 +110,7 @@
             <Insets bottom="30.0" right="30.0" />
          </BorderPane.margin>
          <graphic>
-            <Label text="Zurück" textFill="#e8e8e8">
+            <Label text="Zurück" textFill="#eeeeee">
                <styleClass>
                   <String fx:value="dropshadow" />
                   <String fx:value="playerstyle" />

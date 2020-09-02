@@ -11,15 +11,12 @@ public class Player {
 
 	private String name;
 
-	private int coins;
+	private int coins = 0;
+	private int victoryPoints = 0;
+	private int losePoints = 0;
+	private int conflictPoints = 0;
 
-	private int victoryPoints;
-
-	private int losePoints;
-
-	private int conflictPoints;
-
-	private boolean mausoleum;
+	private boolean mausoleum = false;
 
 	private ArrayList<Card> hand;
 
@@ -28,11 +25,14 @@ public class Player {
 	public Player(String name, WonderBoard board) {
 		this.name = name;
 		this.board = board;
-		mausoleum = false;
 	}
 
+	public ArrayList<Card> getHand(){
+		return this.hand;
+	}
+	
 	public void giveCards(Card[] cards) {
-		hand = new ArrayList<>(Arrays.asList(cards));
+		this.hand = new ArrayList<>(Arrays.asList(cards));
 	}
 	
 	public void addCoins(int coins) {
@@ -40,42 +40,42 @@ public class Player {
 	}
 	
 	public void addVictoryPoints(int points) {
-		victoryPoints += points;
+		this.victoryPoints += points;
 	}
 	
 	public void addLosePoint() {
-		losePoints++;
+		this.losePoints++;
 	}
 	
 	public void addConflictPoints(int points) {
-		conflictPoints += points;
+		this.conflictPoints += points;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public int getCoins() {
-		return coins;
+		return this.coins;
 	}
 
 	public int getVictoryPoints() {
-		return victoryPoints;
+		return this.victoryPoints;
 	}
 
 	public int getLosePoints() {
-		return losePoints;
+		return this.losePoints;
 	}
 
 	public int getConflictPoints() {
-		return conflictPoints;
+		return this.conflictPoints;
 	}
 
 	public boolean isMausoleum() {
-		return mausoleum;
+		return this.mausoleum;
 	}
 
 	public WonderBoard getBoard() {
-		return board;
+		return this.board;
 	}
 }

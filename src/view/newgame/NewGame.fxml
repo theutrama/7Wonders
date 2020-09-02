@@ -43,11 +43,11 @@
                      <HBox.margin>
                         <Insets bottom="20.0" />
                      </HBox.margin></TextField>
-                  <Button fx:id="btn_add" mnemonicParsing="false">
+                  <Button fx:id="btn_add" alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="56.0" prefWidth="70.0">
                      <graphic>
                         <ImageView fitHeight="28.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
                            <image>
-                              <Image url="@../images/add.png" />
+                              <Image url="@../images/plus.png" />
                            </image>
                         </ImageView>
                      </graphic>

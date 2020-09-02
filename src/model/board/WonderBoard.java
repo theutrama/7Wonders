@@ -1,11 +1,13 @@
 package model.board;
 
 import java.io.File;
+
 import java.util.ArrayList;
 
 import model.card.Card;
 import model.card.Resource;
 import model.player.Player;
+import model.card.CardType;
 
 public abstract class WonderBoard {
 
@@ -99,6 +101,36 @@ public abstract class WonderBoard {
 	
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+	
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	public void addCard(Card card) {
+		CardType temp= card.getType();
+		switch(temp) {
+		case BROWN:
+		case GRAY:
+			resources.add(card);
+			break;
+		case YELLOW:
+			trade.add(card);
+			break;
+		case BLUE:
+			civil.add(card);
+			break;
+		case GREEN:
+			research.add(card);
+			break;
+		case RED:
+			military.add(card);
+			break;
+		case PURPLE:
+			guilds.add(card);
+			break;
+		}
+		
 	}
 
 }

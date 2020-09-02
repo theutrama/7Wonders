@@ -2,11 +2,14 @@ package view.newgame;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import application.Main;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -44,6 +47,7 @@ public class NewGameViewController extends BorderPane {
 	private Button btn_done;
 
 	private ArrayList<HBox> players;
+	private ArrayList<String> wonders;
 
 	public NewGameViewController() {
 
@@ -58,6 +62,10 @@ public class NewGameViewController extends BorderPane {
 		}
 
 		players = new ArrayList<HBox>();
+		wonders = new ArrayList<String>();
+		
+		wonders.addAll(Arrays.asList("Zufällig","Alexandrien","Babylon","Ephesus","Gizeh","Halikarnassos","Olympia","Rhodos"));
+		
 		txt_maxplayers.setVisible(false);
 
 		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
@@ -92,6 +100,7 @@ public class NewGameViewController extends BorderPane {
 
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
+		hbox.setSpacing(5.0);
 
 		Label label_player = new Label();
 		label_player.getStyleClass().add("playerstyle");
@@ -103,9 +112,21 @@ public class NewGameViewController extends BorderPane {
 		view.setFitWidth(20.0);
 
 		btn_minus.setGraphic(view);
+		
+		ComboBox<String> cb = new ComboBox<String>();
+		cb.getStyleClass().add("buttonback");
+		cb.setItems(FXCollections.observableList(wonders));
+		cb.setPrefWidth(160);
+		
+		cb.getSelectionModel().selectedItemProperty().addListener((option, oldval, newval) -> {
+			
+		});
 
+		
 		hbox.getChildren().add(label_player);
+		hbox.getChildren().add(cb);
 		hbox.getChildren().add(btn_minus);
+		
 
 		vbox_players.getChildren().add(hbox);
 

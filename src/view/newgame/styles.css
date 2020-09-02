@@ -87,3 +87,16 @@
     -fx-padding: 3 0 2 7;
     -fx-cell-size: 1.66667em; 
 }
+
+.wonder-label {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size: 22;
+	-fx-text-fill: white;
+}
+.wonder-label-selected {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size: 22;
+	-fx-text-fill: #4000ff;
+	-fx-border-color: #4000ff;
+	-fx-border-radius: 5.0;
+}

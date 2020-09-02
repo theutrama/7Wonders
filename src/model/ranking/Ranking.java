@@ -7,11 +7,14 @@ public class Ranking {
 	private ArrayList<PlayerStats> playerStats;
 	
 	public Ranking() {
-		playerStats = new ArrayList<>();
+		this.playerStats = new ArrayList<>();
+	}
+	
+	public ArrayList<PlayerStats> getStats(){
+		return this.playerStats;
 	}
 	
 	public void addStats(PlayerStats stats) {
-		playerStats.add(stats);
+		this.playerStats.add(stats);
 	}
-
 }

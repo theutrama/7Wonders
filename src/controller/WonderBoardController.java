@@ -21,6 +21,8 @@ public class WonderBoardController {
 	}
 	
 	public WonderBoard createWonderBoard(Class<? extends WonderBoard> clazz) throws InstantiationException, IllegalAccessException {
+		if(this.boards.isEmpty())loadBoardClasses();
+		
 		if(this.boards.contains(clazz)) {
 			this.boards.remove(clazz);
 			return clazz.newInstance();
@@ -38,6 +40,10 @@ public class WonderBoardController {
 	    return randomNum;
 	}
 
+	public void reset() {
+		this.boards.clear();
+	}
+	
 	private void loadBoardClasses() {
 		Reflections reflections = new Reflections( "model.board" );
 		List<Class<? extends WonderBoard>> moduleClasses = new ArrayList<>( reflections.getSubTypesOf( WonderBoard.class ) );

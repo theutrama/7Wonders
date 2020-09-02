@@ -3,6 +3,10 @@ package controller;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import application.Main;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -37,6 +41,17 @@ public class SoundController {
 
 	public boolean isMuted() {
 		return mute;
+	}
+	
+	
+	public static void addMuteFunction(Button btn, ImageView imgv) {
+		btn.setOnAction(e -> {
+			boolean mute = Main.getSWController().getSoundController().mute();
+			if (mute)
+				imgv.setImage(new Image(SoundController.class.getResourceAsStream("images/musicoff.png")));
+			else
+				imgv.setImage(new Image(SoundController.class.getResourceAsStream("images/music.png")));
+		});
 	}
 
 }

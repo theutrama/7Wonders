@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
+import controller.SoundController;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -45,6 +46,9 @@ public class RankingViewController extends VBox {
 
 	@FXML
 	private Button btn_back;
+	
+	@FXML
+	private Button btn_mute;
 
 	@FXML
 	private ImageView img_music;
@@ -80,6 +84,8 @@ public class RankingViewController extends VBox {
 		table_ranking.setEditable(false);
 		
 		col_rank.setSortType(SortType.ASCENDING);
+		
+		SoundController.addMuteFunction(btn_mute, img_music);
 
 		ArrayList<Stats> list = new ArrayList<>();
 		int rank = 1;

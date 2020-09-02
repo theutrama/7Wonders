@@ -3,6 +3,7 @@ package view.gameList;
 import java.io.IOException;
 
 import application.Main;
+import controller.SoundController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -18,6 +19,9 @@ public class GameListViewController extends VBox {
 
 	@FXML
 	private Button btn_back;
+	
+	@FXML
+	private Button btn_mute;
 
 	@FXML
 	private VBox vbox_gameList;
@@ -41,6 +45,8 @@ public class GameListViewController extends VBox {
 			
 			vbox_gameList.getChildren().add(button);
 		}
+		
+		SoundController.addMuteFunction(btn_mute, img_music);
 	}
 
 }

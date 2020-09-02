@@ -8,4 +8,7 @@ public class ScienceCard extends Card {
 		this.scienceType = scienceType;
 	}
 
+	public ScienceType getScienceType() {
+		return scienceType;
+	}
 }

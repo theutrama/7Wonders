@@ -1,5 +1,6 @@
 package model.board;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import model.card.Card;
@@ -17,6 +18,8 @@ public abstract class WonderBoard {
 	protected Resource[] slotRequirements;
 	
 	protected Player player;
+	
+	protected File image;
 	
 	public WonderBoard() {
 		resources = new ArrayList<>();

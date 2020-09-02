@@ -12,7 +12,7 @@ public class GameController {
 		this.swController=swController;
 	}
 	
-	public Game createGame(String name, int player_amount, Player[] players) {
+	public Game createGame(String name, Player[] players) {
 		return null;
 	}
 

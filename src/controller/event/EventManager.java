@@ -1,4 +1,4 @@
-package model.event;
+package controller.event;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

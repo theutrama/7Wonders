@@ -1,4 +1,4 @@
-package model.event;
+package controller.event;
 
 public enum EventPriority {
 LOWEST(0), //Wird als erstes ausgef�hrt

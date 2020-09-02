@@ -1,4 +1,4 @@
-package model.event;
+package controller.event;
 
 public interface EventListener {
 

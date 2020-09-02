@@ -1,0 +1,76 @@
+.backroundpane{
+    -fx-background-image: url("../images/mainbackground.jpg");  
+    -fx-background-position: center center;
+	-fx-background-size: cover;
+}
+.button {
+    -fx-background-color:transparent ;
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+}
+
+.menubutton {
+	-fx-background-image: url("../images/wood.png");
+	-fx-background-size: contain;
+}
+.dropshadow {
+	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
+}
+.textfield {
+	-fx-border-color:#00000099;
+	-fx-border-radius: 20px;
+	-fx-background-radius: 20px;
+	-fx-background-color:#FFFFFF22;
+	-fx-prompt-text-fill: #efefef;
+	-fx-padding: 0.333333em 1em 0.333333em 1em;
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+}
+.playerstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+}
+
+.buttonback {
+	-fx-background-color:#00000033;
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:20;
+}
+
+
+
+.my-scroll-pane {
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+	-fx-background-color: transparent;
+}
+.scroll-pane > .viewport { 
+   -fx-background-color: transparent;
+}
+ .scroll-pane {
+	-fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button {
+	visibility: hidden;
+}
+
+.scroll-bar .decrement-button {
+	visibility: hidden;
+}
+
+.scroll-bar:vertical {
+	-fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track-background {
+	visibility: hidden;
+}
+
+.scroll-bar:vertical .track {
+	visibility: hidden;
+}
+
+.hide-thumb .scroll-bar:vertical .thumb {
+	-fx-background-color: transparent;
+}

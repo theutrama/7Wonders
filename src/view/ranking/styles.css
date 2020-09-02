@@ -1,0 +1,24 @@
+.backroundpane{
+    -fx-background-image: url("../images/mainbackground.jpg");  
+    -fx-background-position: center center;
+	-fx-background-size: cover;
+}
+.button {
+    -fx-background-color:transparent ;
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+}
+
+.menubutton {
+	-fx-background-image: url("../images/wood.png");
+	-fx-background-size: contain;
+}
+.dropshadow {
+	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
+}
+.table-view {
+	-fx-background-color:transparent ;
+}
+.table-view .column-header {
+	-fx-background-color: transparent;
+}

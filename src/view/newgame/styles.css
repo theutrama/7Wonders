@@ -96,7 +96,7 @@
 .wonder-label-selected {
 	-fx-font-family: 'Bookman Old Style';
 	-fx-font-size: 22;
-	-fx-text-fill: #4000ff;
-	-fx-border-color: #4000ff;
-	-fx-border-radius: 5.0;
+	-fx-text-fill: black;
+	-fx-background-color: white;
+	-fx-background-radius: 8.0;
 }

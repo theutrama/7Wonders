@@ -12,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import view.gameList.GameListViewController;
 import view.gameboard.GameBoardViewController;
+import view.ranking.RankingViewController;
 
 public class MainMenuViewController extends BorderPane {
 
@@ -23,7 +25,7 @@ public class MainMenuViewController extends BorderPane {
     private Button btn_newgame;
 
     @FXML
-    private Label btn_loadgame;
+    private Button btn_loadgame;
 
     @FXML
     private Button btn_ranking;
@@ -43,5 +45,9 @@ public class MainMenuViewController extends BorderPane {
 		btn_newgame.setOnAction(event -> {
 			Main.primaryStage.getScene().setRoot(new GameBoardViewController());
 		});
+		
+		btn_ranking.setOnAction(e -> Main.primaryStage.getScene().setRoot(new RankingViewController(this)));
+		
+		btn_loadgame.setOnAction(e -> Main.primaryStage.getScene().setRoot(new GameListViewController(this)));
 	}
 }

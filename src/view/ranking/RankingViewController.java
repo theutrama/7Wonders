@@ -14,11 +14,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import model.ranking.PlayerStats;
 import view.menu.MainMenuViewController;
 
-public class RankingViewController extends VBox {
+public class RankingViewController extends BorderPane {
 
 	@FXML
 	private TableView<Stats> table_ranking;

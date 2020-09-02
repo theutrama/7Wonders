@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.sun.jdi.PathSearchingVirtualMachine;
+
 import model.Game;
 import model.ranking.Ranking;
 
@@ -19,7 +21,7 @@ public class IOController {
 	public IOController(SevenWondersController swController) {
 		this.swController = swController;
 	}
-
+	
 	/**
 	 * loads the game with the specified name
 	 * 
@@ -27,14 +29,18 @@ public class IOController {
 	 * @return the game object
 	 */
 	public Game load(String filename) {
-		File file = new File(getExecutionPath() + "/" + GAME_FOLDER + "/" + filename);
+		return (Game) loadObject(File.separator + GAME_FOLDER + File.separator + filename);
+	}
+	
+	private Object loadObject(String path) {
+		File file = new File(getExecutionPath() + path);
 		if (!file.exists())
 			return null;
 
 		try (ObjectInputStream oIn = new ObjectInputStream(new FileInputStream(file))) {
-			Game game = (Game) oIn.readObject();
+			Object obj = oIn.readObject();
 			oIn.close();
-			return game;
+			return obj;
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
@@ -48,15 +54,19 @@ public class IOController {
 	 * @param game
 	 */
 	public void save(Game game) {
+		save(game,File.separator + GAME_FOLDER + File.separator + game.getName());
+	}
+
+	private void save(Object obj,String path) {
 		try {
 			File file1 = new File(getExecutionPath());
 			if (!file1.exists())
 				file1.createNewFile();
-			File file2 = new File(getExecutionPath() + "/" + GAME_FOLDER + "/" + game.getName());
+			File file2 = new File(getExecutionPath() + path);
 			if (!file2.exists())
 				file2.createNewFile();
 			ObjectOutputStream oOut = new ObjectOutputStream(new FileOutputStream(file2));
-			oOut.writeObject(game);
+			oOut.writeObject(obj);
 			oOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,7 +79,7 @@ public class IOController {
 	 * @return list of all game names
 	 */
 	public String[] listGameFiles() {
-		File[] games = new File(getExecutionPath() + "/" + GAME_FOLDER).listFiles();
+		File[] games = new File(getExecutionPath() + File.separator + GAME_FOLDER).listFiles();
 		if (games == null) // directory does not exist
 			return new String[] {};
 		String[] result = new String[games.length];
@@ -86,7 +96,7 @@ public class IOController {
 	 * @return true if and only if the game file was deleted
 	 */
 	public boolean deleteFile(String filename) {
-		File file = new File(getExecutionPath() + "/" + GAME_FOLDER + "/" + filename);
+		File file = new File(getExecutionPath() + File.separator + GAME_FOLDER + File.separator + filename);
 		if (!file.exists())
 			return false;
 		return file.delete();
@@ -96,19 +106,7 @@ public class IOController {
 	 * saves the ranking object of the {@link SevenWondersController main controller} into a ranking file
 	 */
 	public void saveRanking() {
-		try {
-			File file1 = new File(getExecutionPath());
-			if (!file1.exists())
-				file1.createNewFile();
-			File file2 = new File(getExecutionPath() + "/" + RANKING);
-			if (!file2.exists())
-				file2.createNewFile();
-			ObjectOutputStream oOut = new ObjectOutputStream(new FileOutputStream(file2));
-			oOut.writeObject(swController.getRanking());
-			oOut.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		save(swController.getRanking(),File.separator + RANKING);
 	}
 
 	/**
@@ -117,12 +115,11 @@ public class IOController {
 	 * If no file exists a new Ranking object is assigned.
 	 */
 	public void loadRanking() {
-		try (ObjectInputStream oIn = new ObjectInputStream(
-				new FileInputStream(new File(getExecutionPath() + "/" + RANKING)))) {
-			swController.setRanking(((Ranking) oIn.readObject()));
-			oIn.close();
-		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+		Ranking rank = (Ranking) loadObject(File.separator + RANKING);
+		
+		if(rank!=null) {
+			swController.setRanking(rank);
+		}else {
 			swController.setRanking(new Ranking());
 		}
 	}

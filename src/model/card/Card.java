@@ -9,23 +9,34 @@ public class Card {
 	private String name;
 
 	private CardType type;
+	private ResourceType scienceType;
 
 	private ArrayList<Resource> producing;
-
 	private ArrayList<Resource> required;
-
 	private ArrayList<Card> dependencies;
-
 	private ArrayList<Effect> effects;
 	
 	public Card(int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
+		this(ResourceType.NONE, age,name,type,producing, required, dependencies,effects);
+	}
+	
+	public Card(ResourceType scienceType, int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
 		this.age = age;
+		this.scienceType = scienceType;
 		this.name = name;
 		this.type = type;
 		this.producing = producing;
 		this.required = required;
 		this.dependencies = dependencies;
 		this.effects = effects;
+	}
+	
+	public ResourceType getScienceType() {
+		return this.scienceType;
+	}
+	
+	public boolean isScienceCard() {
+		return getScienceType() != ResourceType.NONE;
 	}
 	
 	public int getAge() {

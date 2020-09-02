@@ -11,11 +11,13 @@ import view.menu.MainMenuViewController;
 public class Main extends Application {
 	
 	public static Stage primaryStage;
+
 	private static SevenWondersController swController;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
+
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
 			Scene scene = new Scene(mainMenuViewController,1000,800);

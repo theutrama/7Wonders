@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import application.Main;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -13,7 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 
 public class GameBoardViewController extends VBox {
-	@FXML
+    @FXML
     private ImageView btn_undo1;
 
     @FXML
@@ -53,13 +54,13 @@ public class GameBoardViewController extends VBox {
     private HBox hbox_board1_guild;
 
     @FXML
-    private ImageView img_boardcard1_1;
+    private ImageView img_boardcard1_12;
 
     @FXML
-    private ImageView img_boardcard1_2;
+    private ImageView img_boardcard1_121;
 
     @FXML
-    private ImageView img_boardcard1_3;
+    private ImageView img_boardcard1_122;
 
     @FXML
     private VBox vbox_board6;
@@ -92,7 +93,7 @@ public class GameBoardViewController extends VBox {
     private ImageView img_boardcard6_3;
 
     @FXML
-    private VBox vbox_board1112;
+    private VBox vbox_board7;
 
     @FXML
     private HBox hbox_board7_ressources;
@@ -212,7 +213,7 @@ public class GameBoardViewController extends VBox {
     private ImageView img_boardcard3_3;
 
     @FXML
-    private VBox vbox_board1121;
+    private VBox vbox_board5;
 
     @FXML
     private HBox hbox_board5_ressources;
@@ -241,7 +242,7 @@ public class GameBoardViewController extends VBox {
     @FXML
     private ImageView img_boardcard5_3;
     
-    private final int PLAYER = 5; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
+    private final int PLAYER = 4; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
 
     
 	public GameBoardViewController() {
@@ -254,6 +255,41 @@ public class GameBoardViewController extends VBox {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
+		}
+		
+		loadBoards(PLAYER);
+	}
+
+
+	private void loadBoards(int count) {
+		switch(count) {
+		case 2:
+			vbox_board3.getChildren().clear();
+			vbox_board4.getChildren().clear();
+			vbox_board5.getChildren().clear();
+			vbox_board6.getChildren().clear();
+			vbox_board7.getChildren().clear();
+			break;
+		case 3:
+			vbox_board4.getChildren().clear();
+			vbox_board5.getChildren().clear();
+			vbox_board6.getChildren().clear();
+			vbox_board7.getChildren().clear();
+			break;
+		case 4:
+			vbox_board4.getChildren().clear();
+			vbox_board5.getChildren().clear();
+			vbox_board7.getChildren().clear();
+			HBox p = (HBox) vbox_board7.getParent();
+			p.getChildren().remove(vbox_board7);
+			break;
+		case 5:
+			vbox_board4.getChildren().clear();
+			vbox_board5.getChildren().clear();
+			break;
+		case 6:
+			vbox_board6.getChildren().clear();
+			break;
 		}
 	}
 }

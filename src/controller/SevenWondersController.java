@@ -48,6 +48,7 @@ public class SevenWondersController {
 	public PlayerController getPlayerController() {
 		return playerController;
 	}
+
 	
 	public SoundController getSoundController() {
 		return soundController;

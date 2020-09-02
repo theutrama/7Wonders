@@ -19,7 +19,7 @@ public class SoundController {
 	public void play(String sound) {
 		try {
 			MediaPlayer player = new MediaPlayer(
-					new Media(getClass().getResource("sounds/" + sound).toURI().toString()));
+					new Media(getClass().getResource("../sounds/" + sound).toURI().toString()));
 			player.setOnEndOfMedia(() -> players.remove(player));
 			if (!mute)
 				player.play();
@@ -46,12 +46,16 @@ public class SoundController {
 	
 	public static void addMuteFunction(Button btn, ImageView imgv) {
 		btn.setOnAction(e -> {
-			boolean mute = Main.getSWController().getSoundController().mute();
-			if (mute)
-				imgv.setImage(new Image(SoundController.class.getResourceAsStream("images/musicoff.png")));
-			else
-				imgv.setImage(new Image(SoundController.class.getResourceAsStream("images/music.png")));
+			Main.getSWController().getSoundController().mute();
+			updateMuteIcon(imgv);
 		});
+	}
+	
+	public static void updateMuteIcon(ImageView imgv) {
+		if (Main.getSWController().getSoundController().isMuted())
+			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../images/musicoff.png")));
+		else
+			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../images/music.png")));
 	}
 
 }

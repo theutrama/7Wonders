@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <fx:root styleClass="backroundpane" stylesheets="@styles.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="576.0" prefWidth="852.0" spacing="35.0" styleClass="dropshadow">
@@ -42,7 +41,7 @@
                         </Label>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="56.0" prefWidth="534.0" textFill="#f5f5f5">
+                  <Button fx:id="btn_loadgame" mnemonicParsing="false" prefHeight="56.0" prefWidth="534.0" textFill="#f5f5f5">
                      <font>
                         <Font name="Bookman Old Style Bold" size="24.0" />
                      </font>
@@ -51,7 +50,7 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                      <graphic>
-                        <Label fx:id="btn_loadgame" styleClass="dropshadow" text="Spiel laden" textFill="#f8f8f8">
+                        <Label styleClass="dropshadow" text="Spiel laden" textFill="#f8f8f8">
                            <font>
                               <Font size="26.0" />
                            </font>

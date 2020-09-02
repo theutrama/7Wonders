@@ -11,7 +11,7 @@
 
 .menubutton {
 	-fx-background-image: url("../images/wood.png");
-	-fx-background-size: contain;
+	-fx-background-size: cover;
 }
 .dropshadow {
 	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
@@ -21,4 +21,8 @@
 }
 .table-view .column-header {
 	-fx-background-color: transparent;
+}
+.fontstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
 }

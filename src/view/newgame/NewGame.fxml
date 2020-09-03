@@ -35,6 +35,15 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </Label>
+                  <TextField fx:id="textfield_gamename" maxHeight="47.2" maxWidth="326.8" promptText="Gamename">
+                     <styleClass>
+                        <String fx:value="textfield" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" right="68.0" />
+                     </VBox.margin>
+                  </TextField>
                   <HBox alignment="CENTER">
                      <children>
                         <TextField fx:id="textfield_playername" promptText="Spielername">
@@ -74,6 +83,9 @@
                            </children>
                         </HBox>
                      </graphic>
+                     <VBox.margin>
+                        <Insets right="55.0" />
+                     </VBox.margin>
                   </Button>
                </children>
                <padding>
@@ -101,7 +113,7 @@
          <right>
             <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets />
+                  <Insets top="100.0" />
                </BorderPane.margin>
                <children>
                   <Label text="Drag &amp; Drop" textFill="#efefef">

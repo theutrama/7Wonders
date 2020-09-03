@@ -115,10 +115,6 @@ public class CardController {
 
 	}
 	
-	public boolean hasCard(Player player, String cardname) {
-		return false;
-	}
-
 	public Card[] generateCardStack() {
 		Card[] cards = new Card[78];
 		

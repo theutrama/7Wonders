@@ -32,6 +32,10 @@ public class Player {
 		this.choosenCard = card;
 	}
 	
+	public Player[] getNeighbours() {
+		return null;
+	}
+	
 	public Card getChoosenCard() {
 		return this.choosenCard;
 	}

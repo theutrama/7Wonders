@@ -96,21 +96,6 @@
                </children>
             </HBox>
          </top>
-         <bottom>
-            <Button fx:id="btn_back" mnemonicParsing="false" prefHeight="36.0" prefWidth="210.0" styleClass="menubutton" textFill="#efefef" BorderPane.alignment="CENTER_RIGHT">
-               <BorderPane.margin>
-                  <Insets bottom="30.0" right="30.0" />
-               </BorderPane.margin>
-               <graphic>
-                  <Label text="Zurück" textFill="#eeeeee">
-                     <styleClass>
-                        <String fx:value="dropshadow" />
-                        <String fx:value="playerstyle" />
-                     </styleClass>
-                  </Label>
-               </graphic>
-            </Button>
-         </bottom>
       </BorderPane>
       <BorderPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
          <right>
@@ -141,6 +126,21 @@
                </children>
             </VBox>
          </right>
+         <bottom>
+            <Button fx:id="btn_back" mnemonicParsing="false" prefHeight="36.0" prefWidth="210.0" styleClass="menubutton" textFill="#efefef" BorderPane.alignment="BOTTOM_RIGHT">
+               <BorderPane.margin>
+                  <Insets bottom="30.0" right="30.0" />
+               </BorderPane.margin>
+               <graphic>
+                  <Label text="Zurück" textFill="#eeeeee">
+                     <styleClass>
+                        <String fx:value="dropshadow" />
+                        <String fx:value="playerstyle" />
+                     </styleClass>
+                  </Label>
+               </graphic>
+            </Button>
+         </bottom>
       </BorderPane>
    </children>
 </fx:root>

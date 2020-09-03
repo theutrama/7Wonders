@@ -23,12 +23,15 @@ public class GameState {
 	private ArrayList<Card> trash = new ArrayList<Card>();
 
 	private ArrayList<Card> cardStack;
+	
+	private boolean beginOfRound;
 
 	public GameState(int age, int round, ArrayList<Player> players, ArrayList<Card> cards) {
 		this.players = players;
 		this.age = age;
 		this.round = round;
 		cardStack = cards;
+		beginOfRound = true;
 	}
 
 	public int getAge() {
@@ -84,6 +87,18 @@ public class GameState {
 	
 	public void setRound(int round) {
 		this.round = round;
+	}
+	
+	public void setBeginOfRound(boolean begin) {
+		beginOfRound = begin;
+	}
+	
+	public void beginRound() {
+		beginOfRound = false;
+	}
+	
+	public boolean isAtBeginOfRound() {
+		return beginOfRound;
 	}
 
 }

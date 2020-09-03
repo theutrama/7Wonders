@@ -3,12 +3,15 @@ package controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import application.Main;
 import model.Game;
 import model.GameState;
-import model.board.RhodosBoard;
 import model.card.Card;
+import model.card.Effect;
 import model.player.Player;
+import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
+import view.result.ResultViewController;
 
 public class GameController {
 
@@ -22,7 +25,8 @@ public class GameController {
 
 	/**
 	 * creates a new game with the specified list of players
-	 * @param name the game's name
+	 * 
+	 * @param name    the game's name
 	 * @param players the list of players
 	 * @return a new game instance
 	 */
@@ -34,6 +38,7 @@ public class GameController {
 
 	/**
 	 * creates a new {@link GameState} instance that represents the initial state of a new game
+	 * 
 	 * @param players player list
 	 * @return the {@link GameState} object
 	 */
@@ -78,22 +83,33 @@ public class GameController {
 	/**
 	 * Goes to the last state of the specified game.<br>
 	 * Redo is enabled if the current state is at the beginning of a round.
+	 * 
 	 * @param game the {@link Game}
 	 */
 	public void undo(Game game) {
+		if (game.getCurrentState() == 0)
+			return;
 
+		game.setCurrentState(game.getCurrentState() - 1);
+
+		if (!game.getStates().get(game.getCurrentState() + 1).isAtBeginOfRound())
+			game.deleteRedoStates();
 	}
 
 	/**
 	 * goes to undone state of the specified game
+	 * 
 	 * @param game the {@link Game}
 	 */
 	public void redo(Game game) {
-
+		if (game.getCurrentState() < game.getStates().size() - 1) {
+			game.setCurrentState(game.getCurrentState() + 1);
+		}
 	}
 
 	/**
 	 * setter fot {@link #gbvController}
+	 * 
 	 * @param gbvController the view controller
 	 */
 	public void setGbvController(GameBoardViewController gbvController) {
@@ -102,11 +118,13 @@ public class GameController {
 
 	/**
 	 * clones the specified game state and creates a new state of the next age
-	 * @param game the game
+	 * 
+	 * @param game     the game
 	 * @param previous last game state of the last age
 	 */
 	private void nextAge(Game game, GameState previous) {
 		GameState state = previous.deepClone();
+		state.setBeginOfRound(true);
 		state.setAge(previous.getAge() + 1);
 		state.setRound(1);
 		ArrayList<Card> ageCards = new ArrayList<>();
@@ -129,19 +147,21 @@ public class GameController {
 		}
 
 		state.setCurrentPlayer(0);
-		
+
 		game.deleteRedoStates();
 		game.getStates().add(state);
 		game.setCurrentState(game.getStates().size() - 1);
 	}
 
 	/**
+	 * sets the current game state to a new game state instance
 	 * 
-	 * @param game
-	 * @param previous
+	 * @param game     the current game
+	 * @param previous the old game state
 	 */
 	private void nextRound(Game game, GameState previous) {
 		GameState state = previous.deepClone();
+		state.setBeginOfRound(true);
 		state.setRound(state.getRound() + 1);
 		if (state.getAge() == 2) {
 			ArrayList<Card> firstPlayerHand = state.getPlayers().get(0).getHand();
@@ -155,20 +175,61 @@ public class GameController {
 			state.getPlayers().get(0).setHand(lastPlayerHand);
 		}
 		state.setCurrentPlayer(0);
-		
+
 		game.deleteRedoStates();
 		game.getStates().add(state);
 		game.setCurrentState(game.getStates().size() - 1);
 	}
 
+	/**
+	 * evaluates the victory points of all players and displays a new result view that shows the result
+	 * 
+	 * @param game  current game
+	 * @param state current game state
+	 */
 	private void endGame(Game game, GameState state) {
-		for (Player player: state.getPlayers()) {
-			
+
+		for (Player player : state.getPlayers()) {
+			// conflicts
+			player.addVictoryPoints(player.getConflictPoints());
+			player.addVictoryPoints(-player.getLosePoints());
+			// coins
+			player.addVictoryPoints(player.getCoins() / 3);
+			// science
+			player.addVictoryPoints(swController.getPlayerController().getSciencePoints(player));
+			// trading
+			runCardEffects(player.getBoard().getTrade(), player);
+			// guilds
+			runCardEffects(player.getBoard().getGuilds(), player);
+		}
+
+		// update highscore list
+		for (Player player : state.getPlayers()) {
+			Main.getSWController().getRanking()
+					.addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
+		}
+
+		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
+	}
+
+	/**
+	 * calls {@link Effect#run(Player)} for all effects for each given card
+	 * 
+	 * @param cards  list of cards from the player's game board
+	 * @param state  the current game state
+	 * @param player player
+	 */
+	private void runCardEffects(ArrayList<Card> cards, Player player) {
+		for (Card card : cards) {
+			for (Effect effect : card.getEffects()) {
+				effect.run(player);
+			}
 		}
 	}
 
 	/**
 	 * evaluates the conflict results of the current game state
+	 * 
 	 * @param state the current game state
 	 */
 	private void doConflicts(GameState state) {
@@ -177,18 +238,15 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * adds conflict or lose points depending on the militaty points of the two players
+	 * 
+	 * @param p1  first player
+	 * @param p2  second player
+	 * @param age the current age, affects the conflict points gained per victory
+	 */
 	private void doConflict(Player p1, Player p2, int age) {
-		int p1Points = 0, p2Points = 0;
-		for (Card card : p1.getBoard().getMilitary()) {
-			p1Points += card.getProducing().get(0).getQuantity();
-		}
-		if (p1.getBoard() instanceof RhodosBoard && p1.getBoard().isFilled(1))
-			p1Points += 2;
-		for (Card card : p2.getBoard().getMilitary()) {
-			p2Points += card.getProducing().get(0).getQuantity();
-		}
-		if (p2.getBoard() instanceof RhodosBoard && p2.getBoard().isFilled(1))
-			p2Points += 2;
+		int p1Points = swController.getPlayerController().getMilitaryPoints(p1), p2Points = swController.getPlayerController().getMilitaryPoints(p2);
 
 		if (p1Points > p2Points) {
 			p1.addConflictPoints(getMilitaryForAge(age));
@@ -199,6 +257,10 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * @param age the age
+	 * @return amount of victory points gained at the specified age
+	 */
 	private static int getMilitaryForAge(int age) {
 		return 2 * age - 1;
 	}

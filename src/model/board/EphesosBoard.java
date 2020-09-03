@@ -1,6 +1,8 @@
 package model.board;
 
 import model.card.Resource;
+import model.player.Player;
+import model.Game;
 import model.card.ResourceType;
 
 public class EphesosBoard extends WonderBoard {
@@ -12,7 +14,7 @@ public class EphesosBoard extends WonderBoard {
 	
 	@Override
 	public void slot2() {
-		
+		player.addCoins(9);
 	}
 
 }

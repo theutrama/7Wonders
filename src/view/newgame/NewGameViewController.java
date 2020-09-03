@@ -23,6 +23,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import view.menu.MainMenuViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -56,6 +57,9 @@ public class NewGameViewController extends StackPane {
 
 	@FXML
 	private Button btn_mute;
+	
+	@FXML
+	private Label label_drag;
 
 	private ArrayList<HBox> players;
 	
@@ -74,6 +78,11 @@ public class NewGameViewController extends StackPane {
 
 			e.printStackTrace();
 		}
+		
+		label_drag.setWrapText(true);
+		label_drag.setText("Bitte ziehen Sie das Wunder auf den entsprechenden Spieler");
+		label_drag.getStyleClass().add("dropshadow");
+		label_drag.setTextAlignment(TextAlignment.LEFT);
 
 		players = new ArrayList<HBox>();
 		for (String wonder : sw.getWonderBoardController().getWonderBoardNames()) {

@@ -1,6 +1,7 @@
 package controller;
 
 import model.board.WonderBoard;
+import java.util.ArrayList;
 import model.card.Card;
 import model.player.AI;
 import model.player.Difficulty;
@@ -23,6 +24,14 @@ public class PlayerController {
 	}
 
 	public Player getPlayer(String playername) {
+		int state = swController.getGame().getCurrentState();
+		ArrayList<Player> list =  swController.getGame().getStates().get(state).getPlayers();
+		
+		for(Player player: list) {
+			if(player.getName().equals(playername)) {
+				return player;
+			}
+		}
 		return null;
 	}
 

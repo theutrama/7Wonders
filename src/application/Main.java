@@ -25,7 +25,7 @@ public class Main extends Application {
 		swController = new SevenWondersController();
 		
 		try {
-			MainMenuViewController mainMenuViewController = new MainMenuViewController(swController);
+			MainMenuViewController mainMenuViewController = new MainMenuViewController();
 			Scene scene = new Scene(mainMenuViewController,1000,800);
 			primaryStage.setScene(scene);
 			primaryStage.setFullScreenExitHint("");

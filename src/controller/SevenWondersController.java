@@ -61,6 +61,10 @@ public class SevenWondersController {
 		return game;
 	}
 	
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	
 	public Ranking getRanking() {
 		return ranking;
 	}

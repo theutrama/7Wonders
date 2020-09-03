@@ -31,7 +31,7 @@ public class MainMenuViewController extends BorderPane {
     @FXML
     private Button btn_mute;
 
-	public MainMenuViewController(SevenWondersController sw) {
+	public MainMenuViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu/MainMenu.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -45,11 +45,11 @@ public class MainMenuViewController extends BorderPane {
 		SoundController.addMuteFunction(btn_mute, img_music);
 
 		btn_newgame.setOnAction(event -> {
-			Main.primaryStage.getScene().setRoot(new NewGameViewController(sw));
+			Main.primaryStage.getScene().setRoot(new NewGameViewController());
 		});
 		
-		btn_ranking.setOnAction(e -> Main.primaryStage.getScene().setRoot(new RankingViewController(sw)));
+		btn_ranking.setOnAction(e -> Main.primaryStage.getScene().setRoot(new RankingViewController()));
 		
-		btn_loadgame.setOnAction(e -> Main.primaryStage.getScene().setRoot(new GameListViewController(sw)));
+		btn_loadgame.setOnAction(e -> Main.primaryStage.getScene().setRoot(new GameListViewController()));
 	}
 }

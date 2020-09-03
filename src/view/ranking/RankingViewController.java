@@ -54,7 +54,7 @@ public class RankingViewController extends BorderPane {
 	@FXML
 	private ImageView img_music;
 
-	public RankingViewController(SevenWondersController sw) {
+	public RankingViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ranking/Ranking.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -65,7 +65,7 @@ public class RankingViewController extends BorderPane {
 		}
 
 		btn_back.setOnAction(e -> {
-			Main.primaryStage.getScene().setRoot(new MainMenuViewController(sw));
+			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 		});
 		
 		col_rank.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getRank()));

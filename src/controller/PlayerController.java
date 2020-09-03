@@ -23,7 +23,7 @@ public class PlayerController {
 	}
 
 	public Player createPlayer(String playername, String wonderboard) {
-		WonderBoard board = wb.createWonderBoard(wonderboard);
+		WonderBoard board = this.wb.createWonderBoard(wonderboard);
 		Player player = new Player(playername, board);
 		board.setPlayer(player);
 

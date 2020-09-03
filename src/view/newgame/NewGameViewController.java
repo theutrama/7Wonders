@@ -7,24 +7,27 @@ import java.util.Arrays;
 import application.Main;
 import controller.SoundController;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import model.player.Player;
-import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.BorderPane;
 
-public class NewGameViewController extends BorderPane {
+public class NewGameViewController extends StackPane {
 
 	@FXML
 	private TextField textfield_playername;
@@ -34,6 +37,9 @@ public class NewGameViewController extends BorderPane {
 
 	@FXML
 	private VBox vbox_players;
+
+	@FXML
+	private VBox vbox_wonders;
 
 	@FXML
 	private ImageView img_music;
@@ -46,12 +52,15 @@ public class NewGameViewController extends BorderPane {
 
 	@FXML
 	private Button btn_done;
-	
+
 	@FXML
 	private Button btn_mute;
 
 	private ArrayList<HBox> players;
-	private ArrayList<String> wonders;
+	
+	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
+	
+	private static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
 
 	public NewGameViewController() {
 
@@ -66,16 +75,49 @@ public class NewGameViewController extends BorderPane {
 		}
 
 		players = new ArrayList<HBox>();
-		wonders = new ArrayList<String>();
-		
-		wonders.addAll(Arrays.asList("Zufällig","Alexandrien","Babylon","Ephesus","Gizeh","Halikarnassos","Olympia","Rhodos"));
-		
+		for (String wonder : new String[] { "Alexandrien", "Babylon", "Ephesus", "Gizeh", "Halikarnassos", "Olympia", "Rhodos" }) {
+			Label label = new Label(wonder);
+			label.setPadding(new Insets(2, 5, 2, 5));
+			label.getStyleClass().add("wonder-label");
+			label.setOnDragDetected(e -> {
+				Dragboard db = label.startDragAndDrop(TransferMode.MOVE);
+				ClipboardContent content = new ClipboardContent();
+				content.putString(wonder);
+				db.setContent(content);
+
+				e.consume();
+			});
+			vbox_wonders.getChildren().add(label);
+		}
+
+		vbox_wonders.setOnDragOver(e -> {
+			if (((Label) e.getGestureSource()).getParent() != vbox_wonders && e.getDragboard().hasString()) {
+				e.acceptTransferModes(TransferMode.MOVE);
+			}
+			e.consume();
+		});
+
+		vbox_wonders.setOnDragDropped(e -> {
+			if (e.getDragboard().hasString() && e.getGestureSource() instanceof Label) {
+				Label label = (Label) e.getGestureSource();
+				((HBox) label.getParent()).getChildren().remove(label);
+				addWonderToSidebox(label);
+
+				e.setDropCompleted(true);
+			} else
+				e.setDropCompleted(false);
+
+			e.consume();
+		});
+
 		txt_maxplayers.setVisible(false);
 
 		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
 		btn_add.setOnAction(event -> addPlayer());
+		
+		btn_done.setVisible(false);
 
-		txt_maxplayers.setOnKeyPressed(e -> {
+		textfield_playername.setOnKeyPressed(e -> {
 			if (e.getCode().equals(KeyCode.ENTER))
 				addPlayer();
 		});
@@ -105,11 +147,14 @@ public class NewGameViewController extends BorderPane {
 
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
-		hbox.setSpacing(5.0);
+		hbox.setSpacing(10);
 
 		Label label_player = new Label();
 		label_player.getStyleClass().add("playerstyle");
 		label_player.setText(textfield_playername.getText());
+		
+		ComboBox<String> type = new ComboBox<>(types);
+		type.getSelectionModel().select(0);
 
 		Button btn_minus = new Button();
 		ImageView view = new ImageView(getClass().getResource("../images/minus.png").toExternalForm());
@@ -117,26 +162,66 @@ public class NewGameViewController extends BorderPane {
 		view.setFitWidth(20.0);
 
 		btn_minus.setGraphic(view);
-		
-		ComboBox<String> cb = new ComboBox<String>();
-		cb.getStyleClass().add("buttonback");
-		cb.setItems(FXCollections.observableList(wonders));
-		cb.setPrefWidth(160);
-		
-		cb.getSelectionModel().selectedItemProperty().addListener((option, oldval, newval) -> {
-			
+
+		hbox.getChildren().add(label_player);
+		hbox.getChildren().add(type);
+		hbox.getChildren().add(btn_minus);
+
+		hbox.setOnDragOver(e -> {
+			if (((Label) e.getGestureSource()).getParent() != hbox && hbox.getChildren().size() == NO_WONDER_ASSIGNED) {
+				e.acceptTransferModes(TransferMode.MOVE);
+			}
+			e.consume();
 		});
 
-		
-		hbox.getChildren().add(label_player);
-		hbox.getChildren().add(cb);
-		hbox.getChildren().add(btn_minus);
-		
+		hbox.setOnDragDropped(e -> {
+			if (e.getDragboard().hasString()) {
+				if (((Node) e.getGestureSource()).getParent() instanceof VBox) {
+					Label label = (Label) e.getGestureSource();
+					vbox_wonders.getChildren().remove(label);
+					addWonderToPlayer(hbox, label);
+				} else if (((Node) e.getGestureSource()).getParent() instanceof HBox) {
+					Label label = (Label) e.getGestureSource();
+					((HBox) label.getParent()).getChildren().remove(label);
+					addWonderToPlayer(hbox, label);
+				}
+
+				e.setDropCompleted(true);
+			} else
+				e.setDropCompleted(false);
+
+			e.consume();
+		});
 
 		vbox_players.getChildren().add(hbox);
 
 		players.add(hbox);
 
-		btn_minus.setOnAction(event -> { players.remove(hbox); vbox_players.getChildren().remove(hbox); });
+		textfield_playername.clear();
+
+		btn_minus.setOnAction(event -> {
+			players.remove(hbox);
+			vbox_players.getChildren().remove(hbox);
+			if (hbox.getChildren().size() == WONDER_ASSIGNED)
+				addWonderToSidebox((Label) hbox.getChildren().get(WONDER_INDEX));
+			btn_done.setVisible(vbox_players.getChildren().size() > 1);
+		});
+		
+		btn_done.setVisible(vbox_players.getChildren().size() > 1);
+	}
+
+	private void addWonderToPlayer(HBox playerBox, Label wonder) {
+		playerBox.getChildren().add(WONDER_INDEX, wonder);
+		wonder.getStyleClass().clear();
+		wonder.getStyleClass().add("wonder-label-selected");
+	}
+
+	private void addWonderToSidebox(Label label) {
+		int i = 0;
+		while (i < vbox_wonders.getChildren().size() && ((Label) vbox_wonders.getChildren().get(i)).getText().compareToIgnoreCase(label.getText()) < 0)
+			i++;
+		vbox_wonders.getChildren().add(i, label);
+		label.getStyleClass().clear();
+		label.getStyleClass().add("wonder-label");
 	}
 }

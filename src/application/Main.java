@@ -28,7 +28,6 @@ public class Main extends Application {
 			Scene scene = new Scene(mainMenuViewController,1000,800);
 			primaryStage.setScene(scene);
 			primaryStage.setFullScreenExitHint("");
-			primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
 		} catch(Exception e) {

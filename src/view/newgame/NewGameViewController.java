@@ -1,5 +1,6 @@
 package view.newgame;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +8,7 @@ import java.util.Arrays;
 import application.Main;
 import application.Utils;
 import controller.GameController;
+import controller.IOController;
 import controller.PlayerController;
 import controller.SoundController;
 import javafx.collections.FXCollections;
@@ -155,11 +157,20 @@ public class NewGameViewController extends StackPane {
 			return;
 		}
 		
+		IOController ioCon = Main.getSWController().getIOController();
+		String[] files = ioCon.listGameFiles();
+		
+		for(String filename : files) {
+			if(filename.equalsIgnoreCase(textfield_gamename.getText())) {
+				error("Diese Spielname ist schon vergeben!");
+				return;
+			}
+		}
+		
 		if(players.size() <= 1) {
 			error("Es müssen mindestens 2 Spieler mit spielen!");
 			return;
 		}
-		
 		
 		//Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
 		ObservableList<Node> last_wonders = vbox_wonders.getChildren();

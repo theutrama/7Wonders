@@ -17,6 +17,6 @@ public class Effect {
 	}
 
 	public void run(Player player) {
-		this.call.run(player);
+		 this.call.run(player);
 	}
 }

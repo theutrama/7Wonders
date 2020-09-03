@@ -12,6 +12,8 @@ public class PlayerController {
 	}
 	
 	public Player createPlayer(String playername) {
+//		Player player = new Player(name, board);
+
 		return null;
 	}
 

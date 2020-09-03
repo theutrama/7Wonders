@@ -14,13 +14,17 @@ import view.gameboard.GameBoardViewController;
 import view.result.ResultViewController;
 
 public class GameController {
-	
+	/** constants for PMD */
 	private static final int NUM_ROUNDS = 6, NUM_AGES = 3, FIRST_AGE = 1, SECOND_AGE = 2;
-
+	/** main controller */
 	private SevenWondersController swController;
-
+	/** view controller */
 	private GameBoardViewController gbvController;
 
+	/**
+	 * create new game controller
+	 * @param swController main controller
+	 */
 	public GameController(SevenWondersController swController) {
 		this.swController = swController;
 	}

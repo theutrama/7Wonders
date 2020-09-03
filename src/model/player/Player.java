@@ -32,6 +32,10 @@ public class Player {
 		this.choosenCard = card;
 	}
 	
+	public Player[] getNeighbours() {
+		return null;
+	}
+	
 	public Card getChoosenCard() {
 		return this.choosenCard;
 	}
@@ -86,5 +90,13 @@ public class Player {
 
 	public WonderBoard getBoard() {
 		return this.board;
+	}
+	
+	public void setMausoleum(boolean mausoleum) {
+		this.mausoleum = mausoleum;
+	}
+	
+	public void setHand(ArrayList<Card> hand) {
+		this.hand = hand;
 	}
 }

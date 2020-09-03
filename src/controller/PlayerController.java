@@ -28,7 +28,7 @@ public class PlayerController {
 		ArrayList<Player> list =  swController.getGame().getStates().get(state).getPlayers();
 		
 		for(Player player: list) {
-			if(player.getName().equals(playername)) {
+			if(player.getName().equalsIgnoreCase(playername)) {
 				return player;
 			}
 		}

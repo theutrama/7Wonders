@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import org.reflections.Reflections;
 
+import application.Utils;
 import model.board.BabylonBoard;
 import model.board.WonderBoard;
 import model.card.Card;
@@ -16,7 +17,6 @@ import model.player.Player;
 
 public class WonderBoardController {
 
-	private Random rand = new Random();
 	private SevenWondersController swController;
 
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
@@ -68,13 +68,8 @@ public class WonderBoardController {
 	}
 	
 	public WonderBoard createWonderBoard() {
-		Class<? extends WonderBoard> clazz = this.boards.get( randInt(0,this.boards.size()) );
+		Class<? extends WonderBoard> clazz = this.boards.get( Utils.randInt(0,this.boards.size()) );
 		return createWonderBoard(clazz);
-	}
-	
-	public int randInt(int min, int max) {
-	    int randomNum = rand.nextInt((max - min) + 1) + min;
-	    return randomNum;
 	}
 
 	public void reset() {

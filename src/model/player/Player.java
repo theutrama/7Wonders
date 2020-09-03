@@ -1,5 +1,6 @@
 package model.player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -7,7 +8,12 @@ import application.Main;
 import model.board.WonderBoard;
 import model.card.Card;
 
-public class Player {
+public class Player implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8987094360643416900L;
 
 	private String name;
 

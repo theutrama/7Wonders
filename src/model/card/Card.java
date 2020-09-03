@@ -1,8 +1,9 @@
 package model.card;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Card implements Cloneable {
+public class Card implements Serializable, Cloneable{
 
 	private int age;
 

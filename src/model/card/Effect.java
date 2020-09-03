@@ -1,8 +1,10 @@
 package model.card;
 
+import java.io.Serializable;
+
 import model.player.Player;
 
-public class Effect {
+public class Effect implements Serializable{
 
 	private EffectType effectType;
 	private EffectCall call;

@@ -1,14 +1,26 @@
 package view.gameboard;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
+import application.Main;
+import application.Utils;
 import controller.SevenWondersController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Game;
 import model.player.Player;
 
 public class GameBoardViewController extends VBox {
@@ -52,13 +64,13 @@ public class GameBoardViewController extends VBox {
     private HBox hbox_board1_guild;
 
     @FXML
-    private ImageView img_boardcard1_12;
+    private ImageView img_boardcard1_1;
 
     @FXML
-    private ImageView img_boardcard1_121;
+    private ImageView img_boardcard1_2;
 
     @FXML
-    private ImageView img_boardcard1_122;
+    private ImageView img_boardcard1_3;
 
     @FXML
     private VBox vbox_board6;
@@ -239,12 +251,34 @@ public class GameBoardViewController extends VBox {
 
     @FXML
     private ImageView img_boardcard5_3;
-    
-    private final int PLAYER = 6; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
+    private ArrayList<Board> boards = new ArrayList<Board>();
 
+    public Board createBoard(Player player, int i) {
+    	VBox vbox_board = Utils.getValue(this, "vbox_board"+i);
+    	HBox hbox_board_ressources = Utils.getValue(this, "hbox_board"+i+"_ressources");
+    	HBox hbox_board_military = Utils.getValue(this, "hbox_board"+i+"_military");
+    	HBox hbox_board_civil = Utils.getValue(this, "hbox_board"+i+"_civil");
+    	HBox hbox_board_trade = Utils.getValue(this, "hbox_board"+i+"_trade");
+    	HBox hbox_board_uni = Utils.getValue(this, "hbox_board"+i+"_uni");
+    	HBox hbox_board_guild = Utils.getValue(this, "hbox_board"+i+"_guild");
+    	ImageView img_boardcard1 = Utils.getValue(this, "img_boardcard"+i+"_1");
+    	ImageView img_boardcard2 = Utils.getValue(this, "img_boardcard"+i+"_2");
+    	ImageView img_boardcard3 = Utils.getValue(this, "img_boardcard"+i+"_3");
+    	
+    	return Board.create(player, 
+				vbox_board, 
+				hbox_board_ressources, 
+				hbox_board_military,
+				hbox_board_civil, 
+				hbox_board_trade, 
+				hbox_board_uni, 
+				hbox_board_guild, 
+				img_boardcard1, 
+				img_boardcard2, 
+				img_boardcard3);
+    }
     
 	public GameBoardViewController() {
-	
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameboard/GameBoard.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -255,14 +289,90 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 		
-		loadBoards(PLAYER);
+		setup();
+	}
+	
+	public void setup() {
+		Game game = Main.getSWController().getGame();
+		int count = 1;
+		for(Player player : game.getCurrentGameState().getPlayers()) {
+			this.boards.add(createBoard(player, count));
+			count++;
+		}
+		loadBoards(game.getCurrentGameState().getPlayers().size());
+		
+		for(Board board : this.boards) {
+			board.refresh();
+		}
 	}
 	
 	
 	public void selectCardFromTrash(Player player) {
 		
 	}
-
+	
+	private static class Board {
+		public static Board create(Player player,
+				VBox vbox_board, 
+				HBox vbox_res, 
+				HBox vbox_mili, 
+				HBox vbox_civil, 
+				HBox vbox_trade, 
+				HBox vbox_science, 
+				HBox vbox_guild,
+				ImageView img_card1,
+				ImageView img_card2,
+				ImageView img_card3) {
+			return new Board(player, vbox_board, new HBox[] {vbox_res,vbox_mili,vbox_civil,vbox_trade,vbox_science,vbox_guild}, new ImageView[] {img_card1,img_card2,img_card3});
+		}
+		
+		private static final int RESOURCE = 0;
+		private static final int MILITARY = 1;
+		private static final int CIVIL = 2;
+		private static final int TRADE = 3;
+		private static final int SCIENCE = 4;
+		private static final int GUILD = 5;
+		
+		public Player player;
+	    private VBox box;
+	    private HBox[] board_boxes;
+	    private ImageView[] slots;
+		
+		private Board(Player player,VBox box, HBox[] boxes, ImageView[] imgs) {
+			this.player = player;
+			this.box = box;
+			this.board_boxes = boxes;
+			this.slots = imgs;
+			
+			setBackground(this.player.getBoard().getImage());
+		}
+		
+		public void refresh() {
+			
+		}
+		
+		private void setBackground(String img) {
+			GridPane pane = (GridPane) this.box.getChildren().get(1);
+			pane.setBackground(new Background(new BackgroundImage(new Image(img), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		}
+		
+		public VBox getBox() {
+			return box;
+		}
+		
+		public Player getPlayer() {
+			return player;
+		}
+		
+		public ImageView getSlot(int index) {
+			return this.slots[index];
+		}
+		
+		public HBox getBoard(int index) {
+			return this.board_boxes[index];
+		}
+		
+	}
 
 	private void loadBoards(int count) {
 		switch(count) {

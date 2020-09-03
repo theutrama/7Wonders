@@ -216,7 +216,7 @@
                         </GridPane>
                         <HBox alignment="TOP_CENTER" maxWidth="475.0" prefWidth="200.0">
                            <children>
-                              <ImageView fx:id="img_boardcard1_12" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_1" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>
@@ -224,7 +224,7 @@
                                     <Insets right="22.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <ImageView fx:id="img_boardcard1_121" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_2" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>
@@ -232,7 +232,7 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </ImageView>
-                              <ImageView fx:id="img_boardcard1_122" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="img_boardcard1_3" fitHeight="81.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/cards/empty.png" />
                                  </image>

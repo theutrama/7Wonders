@@ -20,7 +20,12 @@ public class Game {
 	 */
 	public Game(String name) {
 		this.name = name;
+		this.currentState = 0;
 		states = new ArrayList<>();
+	}
+	
+	public GameState getCurrentGameState() {
+		return this.states.get(this.currentState);
 	}
 	
 	/** deletes all game states that were added after the current one */

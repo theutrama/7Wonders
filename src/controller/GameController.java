@@ -39,6 +39,7 @@ public class GameController {
 	public Game createGame(String name, ArrayList<Player> players) {
 		Game game = new Game(name);
 		game.setCurrentPlayer(players.get(0));
+		createGameFirstRound(players, game);
 		return game;
 	}
 
@@ -130,6 +131,9 @@ public class GameController {
 	 */
 	private void nextAge(Game game, GameState previous) {
 		GameState state = previous.deepClone();
+		
+		System.out.println("GAMESTATE : "+(state==null));
+		
 		state.setBeginOfRound(true);
 		state.setAge(previous.getAge() + 1);
 		state.setRound(1);

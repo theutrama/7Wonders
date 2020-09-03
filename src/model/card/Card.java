@@ -2,7 +2,7 @@ package model.card;
 
 import java.util.ArrayList;
 
-public class Card {
+public class Card implements Cloneable {
 
 	private int age;
 
@@ -15,12 +15,14 @@ public class Card {
 	private ArrayList<Resource> required;
 	private ArrayList<Card> dependencies;
 	private ArrayList<Effect> effects;
-	
-	public Card(int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
-		this(ResourceType.NONE, age,name,type,producing, required, dependencies,effects);
+
+	public Card(int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required,
+			ArrayList<Card> dependencies, ArrayList<Effect> effects) {
+		this(ResourceType.NONE, age, name, type, producing, required, dependencies, effects);
 	}
-	
-	public Card(ResourceType scienceType, int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
+
+	public Card(ResourceType scienceType, int age, String name, CardType type, ArrayList<Resource> producing,
+			ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
 		this.age = age;
 		this.scienceType = scienceType;
 		this.name = name;
@@ -30,39 +32,44 @@ public class Card {
 		this.dependencies = dependencies;
 		this.effects = effects;
 	}
-	
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 	public ResourceType getScienceType() {
 		return this.scienceType;
 	}
-	
+
 	public boolean isScienceCard() {
 		return getScienceType() != ResourceType.NONE;
 	}
-	
+
 	public int getAge() {
 		return age;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public CardType getType() {
 		return type;
 	}
-	
+
 	public ArrayList<Resource> getProducing() {
 		return producing;
 	}
-	
+
 	public ArrayList<Resource> getRequired() {
 		return required;
 	}
-	
+
 	public ArrayList<Card> getDependencies() {
 		return dependencies;
 	}
-	
+
 	public ArrayList<Effect> getEffects() {
 		return effects;
 	}

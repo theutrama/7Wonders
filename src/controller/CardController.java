@@ -116,10 +116,7 @@ public class CardController {
 		countCards.put("westtradingpost", new int[]{3,7,0});
 		countCards.put("workersguild", new int[]{0,0,0});
 		countCards.put("workshop", new int[]{3,7,0});
-=======
-		countCards.put("lumber_yard", new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
-		countCards.put("lumber_yard", new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
->>>>>>> branch 'master' of https://sopra-gitlab.cs.tu-dortmund.de/sopra20C/gruppe05/projekt2.git
+
 	}
 
 	public Card[] generateCardStack() {

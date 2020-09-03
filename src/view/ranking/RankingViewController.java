@@ -1,6 +1,7 @@
 package view.ranking;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import application.Main;
@@ -70,7 +71,7 @@ public class RankingViewController extends BorderPane {
 		
 		col_rank.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getRank()));
 		col_name.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getName()));
-		col_time.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getDate().toString()));
+		col_time.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))));
 		col_victoryPoints.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getVictoryPoints()));
 		col_conflictPoints.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getConflictPoints()));
 		col_losePoints.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayerStats().getLosePoints()));

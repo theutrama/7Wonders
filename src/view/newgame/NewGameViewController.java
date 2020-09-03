@@ -137,6 +137,12 @@ public class NewGameViewController extends StackPane {
 			if (e.getCode().equals(KeyCode.ENTER))
 				addPlayer();
 		});
+		textfield_playername.textProperty().addListener((ov, oldVal, newVal) -> {
+			if (textfield_playername.getText().length() > 15) {
+				textfield_playername.setText(textfield_playername.getText().substring(0, 15));
+			}
+		});
+		
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
 	
@@ -178,7 +184,7 @@ public class NewGameViewController extends StackPane {
 	}
 
 	private void addPlayer() {
-		if (textfield_playername.getText().isEmpty())
+		if (textfield_playername.getText().isEmpty() || textfield_playername.getText().isBlank())
 			return;
 
 		if (players.size() == 7) {

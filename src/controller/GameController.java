@@ -23,6 +23,7 @@ public class GameController {
 
 	/**
 	 * create new game controller
+	 * 
 	 * @param swController main controller
 	 */
 	public GameController(SevenWondersController swController) {
@@ -131,9 +132,9 @@ public class GameController {
 	 */
 	private void nextAge(Game game, GameState previous) {
 		GameState state = previous.deepClone();
-		
-		System.out.println("GAMESTATE : "+(state==null));
-		
+
+		System.out.println("GAMESTATE : " + (state == null));
+
 		state.setBeginOfRound(true);
 		state.setAge(previous.getAge() + 1);
 		state.setRound(1);

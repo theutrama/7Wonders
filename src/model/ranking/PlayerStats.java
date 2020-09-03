@@ -18,11 +18,12 @@ public class PlayerStats {
 
 	/**
 	 * create new stats object, the {@link #date} is set to {@link LocalDateTime#now()}
-	 * @param name player name
-	 * @param victory victory points
-	 * @param lose lose points
+	 * 
+	 * @param name            player name
+	 * @param victory         victory points
+	 * @param lose            lose points
 	 * @param conflict_points conflict winning points
-	 * @param coins coins
+	 * @param coins           coins
 	 */
 	public PlayerStats(String name, int victory, int lose, int conflict_points, int coins) {
 		this.name = name;
@@ -32,49 +33,55 @@ public class PlayerStats {
 		this.conflictPoints = conflict_points;
 		this.coins = coins;
 	}
-	
+
 	/**
 	 * getter for {@link #name}
+	 * 
 	 * @return name
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * getter for {@link #date}
+	 * 
 	 * @return date and time
 	 */
 	public LocalDateTime getDate() {
 		return date;
 	}
-	
+
 	/**
 	 * getter for {@link #victoryPoints}
+	 * 
 	 * @return victory points
 	 */
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
-	
+
 	/**
 	 * getter for lose points
+	 * 
 	 * @return lose points
 	 */
 	public int getLosePoints() {
 		return losePoints;
 	}
-	
+
 	/**
 	 * getter for {@link #conflictPoints}
+	 * 
 	 * @return conflict points
 	 */
 	public int getConflictPoints() {
 		return conflictPoints;
 	}
-	
+
 	/**
 	 * getter for {@link #coins}
+	 * 
 	 * @return coins
 	 */
 	public int getCoins() {

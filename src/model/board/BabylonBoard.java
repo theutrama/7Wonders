@@ -26,6 +26,6 @@ public class BabylonBoard extends WonderBoard {
 	}
 	
 	private void getBestSciencePoints(Player player) {
-//		ArrayList<Card>
+//		ArrayList<Card> list = 
 	}
 }

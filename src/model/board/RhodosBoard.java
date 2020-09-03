@@ -6,7 +6,7 @@ import model.card.ResourceType;
 
 public class RhodosBoard extends WonderBoard {
 
-	private int militaryPoints = 0;
+	private int militaryPoints = 2;
 
 	public RhodosBoard() {
 		super();
@@ -14,9 +14,7 @@ public class RhodosBoard extends WonderBoard {
 	}
 	
 	@Override
-	public void slot2() {
-		militaryPoints += 2;
-	}
+	public void slot2() {}
 
 	public int getMilitaryPoints() {
 		return this.militaryPoints;

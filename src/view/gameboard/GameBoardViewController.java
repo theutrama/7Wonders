@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+import model.player.Player;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 
@@ -242,7 +242,7 @@ public class GameBoardViewController extends VBox {
     @FXML
     private ImageView img_boardcard5_3;
     
-    private final int PLAYER = 4; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
+    private final int PLAYER = 6; //@TODO: DELETE AFTER IMPLEMENTING CONTROLLER
 
     
 	public GameBoardViewController() {
@@ -258,6 +258,11 @@ public class GameBoardViewController extends VBox {
 		}
 		
 		loadBoards(PLAYER);
+	}
+	
+	
+	public void selectCardFromTrash(Player player) {
+		
 	}
 
 
@@ -280,15 +285,17 @@ public class GameBoardViewController extends VBox {
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			vbox_board7.getChildren().clear();
-			HBox p = (HBox) vbox_board7.getParent();
-			p.getChildren().remove(vbox_board7);
+			HBox parent1 = (HBox) vbox_board7.getParent();
+			parent1.getChildren().remove(vbox_board7);
 			break;
 		case 5:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			break;
 		case 6:
-			vbox_board6.getChildren().clear();
+			vbox_board7.getChildren().clear();
+			HBox parent2 = (HBox) vbox_board7.getParent();
+			parent2.getChildren().remove(vbox_board7);
 			break;
 		}
 	}

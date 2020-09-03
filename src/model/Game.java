@@ -19,6 +19,14 @@ public class Game {
 		states = new ArrayList<>();
 		states.add(initialState);
 	}
+	
+	/**
+	 * deletes all game states that were added after the current one
+	 */
+	public void deleteRedoStates() {
+		while (states.size() > currentState + 1)
+			states.remove(currentState + 1);
+	}
 
 	public String getName() {
 		return name;

@@ -16,7 +16,7 @@ public class Effect {
 		return this.effectType;
 	}
 
-	public void run(Player player) {
-		 this.call.run(player);
+	public void run(Player player, Player left, Player right) {
+		 this.call.run(player, left, right);
 	}
 }

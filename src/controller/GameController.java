@@ -14,6 +14,8 @@ import view.gameboard.GameBoardViewController;
 import view.result.ResultViewController;
 
 public class GameController {
+	
+	private static final int NUM_ROUNDS = 6, NUM_AGES = 3, FIRST_AGE = 1, SECOND_AGE = 2;
 
 	private SevenWondersController swController;
 
@@ -31,7 +33,7 @@ public class GameController {
 	 * @return a new game instance
 	 */
 	public Game createGame(String name, ArrayList<Player> players) {
-		Game game = new Game(createGameFirstRound(players), name);
+		Game game = new Game(name);
 		game.setCurrentPlayer(players.get(0));
 		return game;
 	}
@@ -40,10 +42,10 @@ public class GameController {
 	 * creates a new {@link GameState} instance that represents the initial state of a new game
 	 * 
 	 * @param players player list
-	 * @return the {@link GameState} object
 	 */
-	public GameState createGameFirstRound(ArrayList<Player> players) {
-		return new GameState(1, 1, players, new ArrayList<Card>(Arrays.asList(swController.getCardController().generateCardStack())));
+	public void createGameFirstRound(ArrayList<Player> players, Game game) {
+		GameState state = new GameState(0, 1, players, new ArrayList<Card>(Arrays.asList(swController.getCardController().generateCardStack())));
+		nextAge(game, state);
 	}
 
 	/**
@@ -67,10 +69,10 @@ public class GameController {
 			}
 		}
 
-		if (previous.getRound() == 6) {
-			if (previous.getAge() == 3) {
+		if (previous.getRound() == NUM_ROUNDS) {
+			if (previous.getAge() == NUM_AGES) {
 				doConflicts(previous);
-				endGame(game, previous);
+				endGame(previous);
 			} else {
 				doConflicts(previous);
 				nextAge(game, previous);
@@ -134,15 +136,16 @@ public class GameController {
 
 		for (Player player : state.getPlayers()) {
 
-			if (state.getAge() > 1) {
+			if (state.getAge() > FIRST_AGE) {
 				state.getTrash().add(player.getHand().get(0));
 				player.getHand().clear();
 			}
 
 			for (int i = 0; i < 7; i++) {
 				int index = randInt(0, ageCards.size());
-				player.getHand().add(ageCards.get(index));
-				ageCards.remove(index);
+				player.getHand().add(ageCards.get(index)); // assign card to player hand
+				state.getCardStack().remove(ageCards.get(index)); // delete card from card stack
+				ageCards.remove(index); // remove from help list
 			}
 		}
 
@@ -163,7 +166,7 @@ public class GameController {
 		GameState state = previous.deepClone();
 		state.setBeginOfRound(true);
 		state.setRound(state.getRound() + 1);
-		if (state.getAge() == 2) {
+		if (state.getAge() == SECOND_AGE) {
 			ArrayList<Card> firstPlayerHand = state.getPlayers().get(0).getHand();
 			for (int i = 0; i < state.getPlayers().size() - 1; i++)
 				state.getPlayers().get(i).setHand(state.getPlayers().get(i + 1).getHand());
@@ -187,7 +190,7 @@ public class GameController {
 	 * @param game  current game
 	 * @param state current game state
 	 */
-	private void endGame(Game game, GameState state) {
+	private void endGame(GameState state) {
 
 		for (Player player : state.getPlayers()) {
 			// conflicts

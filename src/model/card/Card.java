@@ -3,7 +3,7 @@ package model.card;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Card implements Serializable, Cloneable{
+public class Card implements Serializable {
 
 	private int age;
 
@@ -36,9 +36,16 @@ public class Card implements Serializable, Cloneable{
 		this.effects = effects;
 	}
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return super.clone();
+	public Card(Card toCopy) {
+		this.age = toCopy.age;
+		this.scienceType = toCopy.scienceType;
+		this.name = toCopy.name;
+		this.internalName = toCopy.internalName;
+		this.type = toCopy.type;
+		this.producing = toCopy.producing;
+		this.required = toCopy.required;
+		this.dependencies = toCopy.dependencies;
+		this.effects = toCopy.effects;
 	}
 	
 	public int isProducing(ResourceType type) {
@@ -81,6 +88,10 @@ public class Card implements Serializable, Cloneable{
 
 	public ArrayList<Effect> getEffects() {
 		return effects;
+	}
+
+	public String getInternalName() {
+		return internalName;
 	}
 
 }

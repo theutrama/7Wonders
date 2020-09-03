@@ -48,14 +48,6 @@ public class Player implements Serializable {
 		this.chosenCard = card;
 	}
 
-	/**
-	 * getter for the two neighbour cities
-	 * 
-	 * @return neighbour cities
-	 */
-	public Player[] getNeighbours() {
-		return null;
-	}
 
 	/**
 	 * getter for {@link #chosenCard}

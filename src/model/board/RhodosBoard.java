@@ -17,6 +17,8 @@ public class RhodosBoard extends WonderBoard {
 	public void slot2() {}
 
 	public int getMilitaryPoints() {
-		return this.militaryPoints;
+		if(this.isFilled(2))
+			return this.militaryPoints;
+		else return 0;
 	}
 }

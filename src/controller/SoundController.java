@@ -51,7 +51,7 @@ public class SoundController {
 	
 	
 	public static void addMuteFunction(Button btn, ImageView imgv) {
-		btn.setOnAction(e -> {
+		btn.setOnAction(event -> {
 			Main.getSWController().getSoundController().mute();
 			updateMuteIcon(imgv);
 		});

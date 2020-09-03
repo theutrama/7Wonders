@@ -3,15 +3,27 @@ package model.ranking;
 import java.time.LocalDateTime;
 
 public class PlayerStats {
-
+	/** player name */
 	private String name;
+	/** date and time when the game was finshed */
 	private LocalDateTime date;
-
+	/** player's victory points */
 	private int victoryPoints;
+	/** player's lose points */
 	private int losePoints;
+	/** player's conflict winning points */
 	private int conflictPoints;
+	/** player's coins */
 	private int coins;
 
+	/**
+	 * create new stats object, the {@link #date} is set to {@link LocalDateTime#now()}
+	 * @param name player name
+	 * @param victory victory points
+	 * @param lose lose points
+	 * @param conflict_points conflict winning points
+	 * @param coins coins
+	 */
 	public PlayerStats(String name, int victory, int lose, int conflict_points, int coins) {
 		this.name = name;
 		this.date = LocalDateTime.now();
@@ -21,26 +33,50 @@ public class PlayerStats {
 		this.coins = coins;
 	}
 	
+	/**
+	 * getter for {@link #name}
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * getter for {@link #date}
+	 * @return date and time
+	 */
 	public LocalDateTime getDate() {
 		return date;
 	}
 	
+	/**
+	 * getter for {@link #victoryPoints}
+	 * @return victory points
+	 */
 	public int getVictoryPoints() {
 		return victoryPoints;
 	}
 	
+	/**
+	 * getter for lose points
+	 * @return lose points
+	 */
 	public int getLosePoints() {
 		return losePoints;
 	}
 	
+	/**
+	 * getter for {@link #conflictPoints}
+	 * @return conflict points
+	 */
 	public int getConflictPoints() {
 		return conflictPoints;
 	}
 	
+	/**
+	 * getter for {@link #coins}
+	 * @return coins
+	 */
 	public int getCoins() {
 		return coins;
 	}

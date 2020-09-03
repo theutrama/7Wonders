@@ -32,6 +32,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import model.Game;
+import model.player.Difficulty;
 import model.player.Player;
 import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
@@ -188,8 +189,14 @@ public class NewGameViewController extends StackPane {
 		for(HBox player : players) {
 			Label nameLabel = (Label) player.getChildren().get(0);
 			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
+			String type = ((ComboBox<String>) player.getChildren().get(1)).getSelectionModel().getSelectedItem();
 			
-			game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
+			if(type.contains("KI")) {
+				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
+				game_players.add(pcon.createAI(nameLabel.getText(), wonderLabel.getText(), diff));
+			}else {
+				game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
+			}
 		}
 		Game game = gcon.createGame(textfield_gamename.getText(), game_players);
 		Main.getSWController().setGame(game);

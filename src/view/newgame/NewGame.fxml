@@ -114,13 +114,31 @@
       </BorderPane>
       <BorderPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
          <right>
-            <VBox fx:id="vbox_wonders" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #00000050;" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
-               <padding>
-                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-               </padding>
+               <children>
+                  <Label text="Drag &amp; Drop" textFill="#efefef">
+                     <styleClass>
+                        <String fx:value="playerstyle" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets right="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="label_drag" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="37.0" prefWidth="196.0" styleClass="draganddrop" textFill="#efefef">
+                     <VBox.margin>
+                        <Insets bottom="5.0" right="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox fx:id="vbox_wonders" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #00000050;">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
             </VBox>
          </right>
       </BorderPane>

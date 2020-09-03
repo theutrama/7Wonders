@@ -156,8 +156,10 @@ public class NewGameViewController extends StackPane {
 		//Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
 		ObservableList<Node> last_wonders = vbox_wonders.getChildren();
 		for(HBox player : players) {
-			if(!hasWonder(player)) {
-				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size()));
+			System.out.println(((Label)player.getChildren().get(0)).getText()+": "+hasWonder(player));
+			if(!hasWonder(player) && !last_wonders.isEmpty()) {
+				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size()-1));
+				System.out.println(((Label)player.getChildren().get(0)).getText()+" -> "+wonder.getText());
 				last_wonders.remove(wonder);
 				addWonderToPlayer(player, wonder);
 			}
@@ -169,6 +171,8 @@ public class NewGameViewController extends StackPane {
 		for(HBox player : players) {
 			Label nameLabel = (Label) player.getChildren().get(0);
 			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
+			
+			System.out.println("nameLabel: "+nameLabel.getText()+" wonderLabel:"+wonderLabel.getText());
 			
 			game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
 		}
@@ -268,7 +272,7 @@ public class NewGameViewController extends StackPane {
 	}
 	
 	private boolean hasWonder(HBox playerBox) {
-		return playerBox.getChildren().contains(WONDER_INDEX);
+		return playerBox.getChildren().size() == WONDER_ASSIGNED;
 	}
 
 	private void addWonderToPlayer(HBox playerBox, Label wonder) {

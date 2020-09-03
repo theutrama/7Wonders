@@ -12,7 +12,7 @@ public class GizahBoard extends WonderBoard {
 	
 	@Override
 	public void slot2() {
-		
+		player.addVictoryPoints(5);
 	}
 
 }

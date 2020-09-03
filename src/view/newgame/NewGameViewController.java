@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import application.Main;
+import controller.SevenWondersController;
 import controller.SoundController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,7 +67,7 @@ public class NewGameViewController extends StackPane {
 	
 	private static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
 
-	public NewGameViewController() {
+	public NewGameViewController(SevenWondersController sw) {
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/newgame/NewGame.fxml"));
 		loader.setRoot(this);
@@ -84,7 +85,7 @@ public class NewGameViewController extends StackPane {
 		label_drag.setTextAlignment(TextAlignment.LEFT);
 
 		players = new ArrayList<HBox>();
-		for (String wonder : new String[] { "Alexandrien", "Babylon", "Ephesus", "Gizeh", "Halikarnassos", "Olympia", "Rhodos" }) {
+		for (String wonder : sw.getWonderBoardController().getWonderBoardNames()) {
 			Label label = new Label(wonder);
 			label.setPadding(new Insets(2, 5, 2, 5));
 			label.getStyleClass().add("wonder-label");
@@ -121,7 +122,7 @@ public class NewGameViewController extends StackPane {
 
 		txt_maxplayers.setVisible(false);
 
-		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
+		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController(sw)));
 		btn_add.setOnAction(event -> addPlayer());
 		
 		btn_done.setVisible(false);

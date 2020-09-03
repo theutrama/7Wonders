@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
+import controller.SevenWondersController;
 import controller.SoundController;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -54,7 +55,7 @@ public class RankingViewController extends BorderPane {
 	@FXML
 	private ImageView img_music;
 
-	public RankingViewController() {
+	public RankingViewController(SevenWondersController sw) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ranking/Ranking.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -65,7 +66,7 @@ public class RankingViewController extends BorderPane {
 		}
 
 		btn_back.setOnAction(e -> {
-			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
+			Main.primaryStage.getScene().setRoot(new MainMenuViewController(sw));
 		});
 		
 		col_rank.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getRank()));

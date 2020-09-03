@@ -107,6 +107,10 @@ public abstract class WonderBoard {
 		return this.player;
 	}
 	
+	public String getBoardName() {
+		return getClass().getSimpleName().replaceAll("Board", "");
+	}
+	
 	public void addCard(Card card) {
 		CardType temp= card.getType();
 		switch(temp) {

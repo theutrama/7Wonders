@@ -181,19 +181,29 @@ public class CardController {
 				})
 		));
 		cards[13] = new Card(3,"Zirkus", "circus", CardType.RED, addRArray(new Resource(3,ResourceType.MILITARY)), addRArray(new Resource(3,ResourceType.STONE),new Resource(1,ResourceType.ORE)), new String[]{"trainingground"}, null);
+		cards[18] = new Card(ResourceType.COMPASS,2,"Arzneiausgabe", "dispensary", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.ORE),new Resource(1,ResourceType.GLASS)),new String[]{"apothecary"},null);
 		cards[22] = new Card(3,"Verteidigungsanlage", "fortifications", CardType.RED, addRArray(new Resource(3,ResourceType.MILITARY)), addRArray(new Resource(3,ResourceType.ORE),new Resource(1,ResourceType.STONE)), new String[]{"walls"}, null);
 		cards[26] = new Card(1,"Glashütte", "glassworks1", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null);
 		cards[27] = new Card(2,"Glashütte", "glassworks2", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null);
 		cards[28] = new Card(1,"Wachturm", "guardtower", CardType.RED, addRArray(new Resource(1,ResourceType.MILITARY)), addRArray(new Resource(1,ResourceType.BRICK)), null, null);
+		cards[30] = new Card(ResourceType.GEAR,2,"Laboratorium", "laboratory", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.BRICK),new Resource(1,ResourceType.PAPYRUS)),new String[]{"workshop"},null);
+		cards[31] = new Card(ResourceType.TABLET,2,"Bibliothek", "library", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.STONE),new Resource(1,ResourceType.CLOTH)),new String[]{"scriptorium"},null);
+		cards[33] = new Card(ResourceType.COMPASS,3,"Loge", "lodge", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.BRICK),new Resource(1,ResourceType.PAPYRUS),new Resource(1,ResourceType.CLOTH)),new String[]{"dispensary"},null);
 		cards[34] = new Card(1,"Webstuhl", "loom1", CardType.GRAY, addRArray(new Resource(1, ResourceType.CLOTH)), null, null, null);
 		cards[35] = new Card(2,"Webstuhl", "loom2", CardType.GRAY, addRArray(new Resource(1, ResourceType.CLOTH)), null, null, null);
+		cards[40] = new Card(ResourceType.GEAR,3,"Observatorium", "observatory", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.ORE),new Resource(1,ResourceType.PAPYRUS),new Resource(1,ResourceType.GLASS)),new String[]{"laboratory"},null);
 		cards[46] = new Card(1,"Presse", "press1", CardType.GRAY, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null, null);
 		cards[47] = new Card(2,"Presse", "press2", CardType.GRAY, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null, null);	
+		cards[50] = new Card(ResourceType.TABLET,2,"Schule", "school", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.WOOD),new Resource(1,ResourceType.PAPYRUS)),null,null);
+		cards[52] = new Card(ResourceType.TABLET,1,"Skriptorium", "scriptorium", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.PAPYRUS)),null,null);
 		cards[55] = new Card(3,"Belagerungsmaschinen", "siegeworkshop", CardType.RED, addRArray(new Resource(3,ResourceType.MILITARY)), addRArray(new Resource(3,ResourceType.BRICK),new Resource(1,ResourceType.WOOD)), new String[]{"laboratory"}, null);
 		cards[57] = new Card(2,"Ställe", "stables", CardType.RED, addRArray(new Resource(2,ResourceType.MILITARY)), addRArray(new Resource(1,ResourceType.ORE),new Resource(1,ResourceType.BRICK),new Resource(1,ResourceType.WOOD)), new String[]{"apothecary"}, null);
 		cards[59] = new Card(3,"Befestigungsanlage", "stockade", CardType.RED, addRArray(new Resource(1,ResourceType.MILITARY)), addRArray(new Resource(1,ResourceType.WOOD)), null, null);
+		cards[62] = new Card(ResourceType.GEAR,3,"Studierzimmer", "study", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.WOOD),new Resource(1,ResourceType.PAPYRUS),new Resource(1,ResourceType.CLOTH)), new String[]{"school"}, null);
 		cards[69] = new Card(2,"Trainingsgelände", "trainingground", CardType.RED, addRArray(new Resource(2,ResourceType.MILITARY)), addRArray(new Resource(2,ResourceType.ORE),new Resource(1,ResourceType.WOOD)), null, null);
+		cards[71] = new Card(ResourceType.TABLET,3,"Universität", "university", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.WOOD),new Resource(1,ResourceType.PAPYRUS),new Resource(1,ResourceType.GLASS)),new String[]{"library"},null);
 		cards[73] = new Card(2,"Mauern", "walls", CardType.RED, addRArray(new Resource(2,ResourceType.MILITARY)), addRArray(new Resource(3,ResourceType.STONE)), null, null);
+		cards[76] = new Card(ResourceType.GEAR,1,"Werkstatt", "workshop", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.GLASS)),null,null);
 		return cards;
 	}
 	

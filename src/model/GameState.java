@@ -5,12 +5,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.card.Card;
 import model.player.Player;
 
-public class GameState {
+public class GameState implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6134733784450914362L;
 	/** current age */
 	private int age;
 	/** current round */
@@ -109,6 +114,7 @@ public class GameState {
 			objOut.flush();
 			objOut.close();
 			byteOut.close();
+			
 			ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
 			ObjectInputStream objIn = new ObjectInputStream(byteIn);
 			GameState copy = (GameState) objIn.readObject();
@@ -116,6 +122,7 @@ public class GameState {
 			objIn.close();
 			return copy;
 		} catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

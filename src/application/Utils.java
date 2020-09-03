@@ -1,5 +1,6 @@
 package application;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class Utils {
@@ -23,5 +24,22 @@ public class Utils {
 	public static int randInt(int min, int max) {
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 	    return randomNum;
+	}
+	
+	public static <T> T getValue(Object obj, String name) {
+		try {
+			Field field = obj.getClass().getField(name);
+			field.setAccessible(true);
+			return (T) field.get(obj);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

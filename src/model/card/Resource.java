@@ -1,6 +1,9 @@
 package model.card;
 
-public class Resource {
+import java.io.Serializable;
+
+public class Resource implements Serializable{
+	private static final long serialVersionUID = 2837901052020132762L;
 
 	private int quantity;
 

@@ -1,7 +1,7 @@
 package model.board;
 
 import java.io.File;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.card.Card;
@@ -9,7 +9,7 @@ import model.card.Resource;
 import model.player.Player;
 import model.card.CardType;
 
-public abstract class WonderBoard {
+public abstract class WonderBoard implements Serializable{
 
 	private boolean[] filled;
 
@@ -31,9 +31,9 @@ public abstract class WonderBoard {
 		filled = new boolean[3];
 	}
 	
-	public File getImage() {
+	public String getImage() {
 		String name = getClass().getSimpleName().replaceAll("Board", "");
-		return new File(File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg");
+		return File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
 	}
 
 	public void slot1() {

@@ -164,7 +164,6 @@ public class NewGameViewController extends StackPane {
 		//Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
 		ObservableList<Node> last_wonders = vbox_wonders.getChildren();
 		for(HBox player : players) {
-			System.out.println(((Label)player.getChildren().get(0)).getText()+": "+hasWonder(player));
 			if(!hasWonder(player) && !last_wonders.isEmpty()) {
 				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size()-1));
 				last_wonders.remove(wonder);

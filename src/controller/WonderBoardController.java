@@ -42,9 +42,13 @@ public class WonderBoardController {
 		return null;
 	}
 	
+	private String toName(Class<? extends WonderBoard> clazz) {
+		return clazz.getSimpleName().replaceAll("Board", "");
+	}
+	
 	public Class<? extends WonderBoard> getClassByName(String name){
 		for(Class<? extends WonderBoard> clazz : this.boards) {
-			if(clazz.getName().equalsIgnoreCase(name))return clazz;
+			if(toName(clazz).equalsIgnoreCase(name))return clazz;
 		}
 		
 		return null;
@@ -54,7 +58,7 @@ public class WonderBoardController {
 		String[] names = new String[this.boards.size()];
 		
 		for(int i = 0; i < this.boards.size(); i++) {
-			names[i] = this.boards.get(i).getName();
+			names[i] = toName(this.boards.get(i));
 		}
 		return names;
 	}

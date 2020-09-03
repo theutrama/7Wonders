@@ -107,7 +107,7 @@ public abstract class WonderBoard {
 		return this.player;
 	}
 	
-	public String getName() {
+	public String getBoardName() {
 		return getClass().getSimpleName().replaceAll("Board", "");
 	}
 	

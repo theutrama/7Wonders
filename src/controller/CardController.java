@@ -15,29 +15,18 @@ public class CardController {
 	Map<String, int[]> countCards = new HashMap<>();
 	
 	private SevenWondersController swController;
-<<<<<<< HEAD
 
 	public CardController(SevenWondersController swController) {
 		this.swController=swController;
 		
 		
 	}
+	
 	/**
 	 * Loading all ingame cards with their parameters and frequency
 	 * Matrix-scheme: amount of players when another card needs to be created
-=======
-
-	public CardController(SevenWondersController swController) {
-		this.swController=swController;
-		
-		
-	}
-	/**
-	 * Loading all ingame cards with their parameters and frequency
->>>>>>> branch 'master' of https://sopra-gitlab.cs.tu-dortmund.de/sopra20C/gruppe05/projekt2.git
 	 */
 	public void loadCards() {
-<<<<<<< HEAD
 		countCards.put("academy", new int[]{3,7,0});
 		countCards.put("altar", new int[]{3,5,0});
 		countCards.put("apothecary", new int[]{3,5,0});

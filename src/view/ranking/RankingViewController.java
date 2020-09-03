@@ -16,8 +16,6 @@ import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import model.card.ResourceType;
 import model.ranking.PlayerStats;
 import view.menu.MainMenuViewController;
 
@@ -55,7 +53,6 @@ public class RankingViewController extends BorderPane {
 
 	@FXML
 	private ImageView img_music;
-	private StatsType sortType = StatsType.VICTORY;
 
 	public RankingViewController(SevenWondersController sw) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ranking/Ranking.fxml"));
@@ -100,10 +97,17 @@ public class RankingViewController extends BorderPane {
 			rank++;
 		}
 		
+		list.add(new Stats(new PlayerStats("Test1", 1, 2, 3, 4), this, rank));
+		rank++;
+		list.add(new Stats(new PlayerStats("Test2", 4,3,2,1), this, rank));
+		rank++;
+		list.add(new Stats(new PlayerStats("Test3", 2,2,2,2), this, rank));
+		rank++;
+		
 		table_ranking.setItems(FXCollections.observableArrayList(list));
 	}
 
-	private static class Stats implements Comparable<Stats>{
+	private static class Stats{
 		private PlayerStats stats;
 		private int rank;
 		private RankingViewController view;
@@ -121,26 +125,6 @@ public class RankingViewController extends BorderPane {
 		public PlayerStats getPlayerStats() {
 			return stats;
 		}
-
-		@Override
-		public int compareTo(Stats other) {
-			switch(this.view.sortType) {
-			case COINS:
-				
-				break;
-			case CONFLICT:
-				
-				break;
-			case LOSE:
-			
-			break;
-			}
-			return 0;
-		}
-	}
-	
-	private static enum StatsType{
-		VICTORY, LOSE, COINS, CONFLICT;
 	}
 
 }

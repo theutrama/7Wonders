@@ -59,7 +59,7 @@ public class ResultViewController extends BorderPane {
 			e.printStackTrace();
 		}
 
-		btn_ok.setOnAction(e -> { Main.primaryStage.getScene().setRoot(new MainMenuViewController(Main.getSWController())); });
+		btn_ok.setOnAction(e -> { Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 
 		col_rank.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getRank()));
 		col_name.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getPlayer().getName()));

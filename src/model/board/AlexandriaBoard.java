@@ -1,6 +1,7 @@
 package model.board;
 
 import model.card.Resource;
+
 import model.card.ResourceType;
 
 public class AlexandriaBoard extends WonderBoard {
@@ -13,6 +14,15 @@ public class AlexandriaBoard extends WonderBoard {
 	@Override
 	public void slot2() {
 		
+	}
+	/**
+	 * Gibt alle 4 Ressourcen zurueck, es kann nur eine verwendet werden
+	 * @return
+	 */
+	public ResourceType [] resources() {
+		
+		ResourceType temp[] = {ResourceType.WOOD, ResourceType.ORE, ResourceType.BRICK, ResourceType.STONE};
+		return temp;
 	}
 
 }

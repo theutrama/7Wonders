@@ -56,6 +56,9 @@ public class NewGameViewController extends StackPane {
 
 	@FXML
 	private Label txt_maxplayers;
+	
+	@FXML
+	private TextField textfield_gamename;
 
 	@FXML
 	private Button btn_done;
@@ -147,6 +150,11 @@ public class NewGameViewController extends StackPane {
 	}
 	
 	private void done() {
+		if(textfield_gamename.getText().isBlank()) {
+			error("Bitte gib ein Spielnamen an!");
+			return;
+		}
+		
 		if(players.size() <= 1) {
 			error("Es müssen mindestens 2 Spieler mit spielen!");
 			return;
@@ -159,7 +167,6 @@ public class NewGameViewController extends StackPane {
 			System.out.println(((Label)player.getChildren().get(0)).getText()+": "+hasWonder(player));
 			if(!hasWonder(player) && !last_wonders.isEmpty()) {
 				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size()-1));
-				System.out.println(((Label)player.getChildren().get(0)).getText()+" -> "+wonder.getText());
 				last_wonders.remove(wonder);
 				addWonderToPlayer(player, wonder);
 			}
@@ -172,11 +179,9 @@ public class NewGameViewController extends StackPane {
 			Label nameLabel = (Label) player.getChildren().get(0);
 			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
 			
-			System.out.println("nameLabel: "+nameLabel.getText()+" wonderLabel:"+wonderLabel.getText());
-			
 			game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
 		}
-		Game game = gcon.createGame("Game1", game_players);
+		Game game = gcon.createGame(textfield_gamename.getText(), game_players);
 		Main.getSWController().setGame(game);
 		
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());

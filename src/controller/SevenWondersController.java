@@ -22,11 +22,11 @@ public class SevenWondersController {
 	private SoundController soundController;
 
 	public SevenWondersController() {
+		this.wonderBoardController = new WonderBoardController(this);
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this);
 		this.cardController = new CardController(this);
 		this.IOController = new IOController(this);
-		this.wonderBoardController = new WonderBoardController(this);
 		this.soundController = new SoundController();
 		
 		this.IOController.loadRanking();

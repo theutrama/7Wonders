@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.card.Card;
 import model.player.Player;
 
@@ -12,12 +14,18 @@ public class PlayerController {
 	}
 	
 	public Player createPlayer(String playername) {
-//		Player player = new Player(name, board);
-
 		return null;
 	}
 
 	public Player getPlayer(String playername) {
+		int state = swController.getGame().getCurrentState();
+		ArrayList<Player> list =  swController.getGame().getStates().get(state).getPlayers();
+		
+		for(Player player: list) {
+			if(player.getName().equals(playername)) {
+				return player;
+			}
+		}
 		return null;
 	}
 

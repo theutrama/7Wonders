@@ -16,7 +16,6 @@ import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import model.ranking.PlayerStats;
 import view.menu.MainMenuViewController;
 
@@ -94,20 +93,29 @@ public class RankingViewController extends BorderPane {
 		ArrayList<Stats> list = new ArrayList<>();
 		int rank = 1;
 		for (PlayerStats stats : Main.getSWController().getRanking().getStats()) {
-			list.add(new Stats(stats, rank));
+			list.add(new Stats(stats, this, rank));
 			rank++;
 		}
+		
+		list.add(new Stats(new PlayerStats("Test1", 1, 2, 3, 4), this, rank));
+		rank++;
+		list.add(new Stats(new PlayerStats("Test2", 4,3,2,1), this, rank));
+		rank++;
+		list.add(new Stats(new PlayerStats("Test3", 2,2,2,2), this, rank));
+		rank++;
 		
 		table_ranking.setItems(FXCollections.observableArrayList(list));
 	}
 
-	private static class Stats {
+	private static class Stats{
 		private PlayerStats stats;
 		private int rank;
+		private RankingViewController view;
 
-		private Stats(PlayerStats stats, int rank) {
+		private Stats(PlayerStats stats,RankingViewController view, int rank) {
 			this.stats = stats;
 			this.rank = rank;
+			this.view = view;
 		}
 
 		public int getRank() {

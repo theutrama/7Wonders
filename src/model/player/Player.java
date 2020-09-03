@@ -19,12 +19,21 @@ public class Player {
 	private boolean mausoleum = false;
 
 	private ArrayList<Card> hand;
+	private Card choosenCard;
 
 	private WonderBoard board;
 
 	public Player(String name, WonderBoard board) {
 		this.name = name;
 		this.board = board;
+	}
+	
+	public void setChooseCard(Card card) {
+		this.choosenCard = card;
+	}
+	
+	public Card getChoosenCard() {
+		return this.choosenCard;
 	}
 
 	public ArrayList<Card> getHand(){

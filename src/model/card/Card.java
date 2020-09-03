@@ -31,6 +31,12 @@ public class Card {
 		this.effects = effects;
 	}
 	
+	public int isProducing(ResourceType type) {
+		for(Resource rs : getProducing())
+			if(rs.getType() == type)return rs.getQuantity();
+		return 0;
+	}
+	
 	public ResourceType getScienceType() {
 		return this.scienceType;
 	}

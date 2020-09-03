@@ -248,15 +248,15 @@ public class GameController {
 	 * @param p2  second player
 	 * @param age the current age, affects the conflict points gained per victory
 	 */
-	private void doConflict(Player p1, Player p2, int age) {
-		int p1Points = swController.getPlayerController().getMilitaryPoints(p1), p2Points = swController.getPlayerController().getMilitaryPoints(p2);
+	private void doConflict(Player player1, Player player2, int age) {
+		int p1Points = swController.getPlayerController().getMilitaryPoints(player1), p2Points = swController.getPlayerController().getMilitaryPoints(player2);
 
 		if (p1Points > p2Points) {
-			p1.addConflictPoints(getMilitaryForAge(age));
-			p2.addLosePoint();
+			player1.addConflictPoints(getMilitaryForAge(age));
+			player2.addLosePoint();
 		} else if (p1Points < p2Points) {
-			p2.addConflictPoints(getMilitaryForAge(age));
-			p1.addLosePoint();
+			player2.addConflictPoints(getMilitaryForAge(age));
+			player1.addLosePoint();
 		}
 	}
 

@@ -153,8 +153,33 @@ public class CardController {
 					p.addVictoryPoints(count);
 				})
 		));
-		
-		
+		cards[9] = new Card(2,"Ziegelbrennerei", "brickyard", CardType.BROWN, addRArray(new Resource(2, ResourceType.BRICK)), addRArray(new Resource(1,ResourceType.COINS)),null,null);
+		cards[10] = new Card(3,"Gilde der Baumeister", "buildersguild", CardType.PURPLE, null, addRArray(new Resource(2, ResourceType.BRICK),new Resource(2, ResourceType.STONE),new Resource(1, ResourceType.GLASS)), null,
+				addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
+					int purple1 = swController.getPlayerController().getLeftNeighbour(p).getBoard().nextSlot();
+					int purple2 = swController.getPlayerController().getRightNeighbour(p).getBoard().nextSlot();
+					int purple3 = p.getBoard().nextSlot();
+					purple1 = purple1 == -1 ? 3 : purple1;
+					purple2 = purple2 == -1 ? 3 : purple2;
+					purple3 = purple3 == -1 ? 3 : purple3;
+					p.addVictoryPoints(purple1+purple2+purple3);
+				})
+		));
+		cards[11] = new Card(2,"Karawanserei", "caravansery", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.WOOD)), null,
+				addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
+					ArrayList<Card> brown1 = swController.getPlayerController().getLeftNeighbour(p).getBoard().getResources();
+					ArrayList<Card> brown2 = swController.getPlayerController().getRightNeighbour(p).getBoard().getResources();
+					ArrayList<Card> brown3 = p.getBoard().getResources();
+					int count = 0;
+					for(Card el : brown1) 
+						if(el.getType() == CardType.BROWN) count++;
+					for(Card el : brown2) 
+						if(el.getType() == CardType.BROWN) count++;
+					for(Card el : brown3) 
+						if(el.getType() == CardType.BROWN) count++;
+					p.addVictoryPoints(count);
+				})
+		));
 		return cards;
 	}
 	

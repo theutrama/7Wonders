@@ -44,7 +44,7 @@ public class PlayerController {
 	}
 
 	public void chooseCard(Card card, Player player) {
-
+		player.setChooseCard(card);
 	}
 
 }

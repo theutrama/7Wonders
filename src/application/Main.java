@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import model.card.Effect;
+import model.card.EffectCall;
+import model.card.EffectType;
+import model.player.Player;
 import view.SampleViewController;
 import view.menu.MainMenuViewController;
 

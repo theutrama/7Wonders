@@ -2,6 +2,6 @@ package model.card;
 
 import model.player.Player;
 
-public interface EffectCall<T> {
-	public T run(Player player);
+public interface EffectCall {
+	public void run(Player player);
 }

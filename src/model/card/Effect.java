@@ -2,12 +2,12 @@ package model.card;
 
 import model.player.Player;
 
-public class Effect<T> {
+public class Effect {
 
 	private EffectType effectType;
-	private EffectCall<T> call;
+	private EffectCall call;
 	
-	public Effect(EffectType effectType,EffectCall<T> call) {
+	public Effect(EffectType effectType,EffectCall call) {
 		this.effectType = effectType;
 		this.call=call;
 	}
@@ -16,7 +16,7 @@ public class Effect<T> {
 		return this.effectType;
 	}
 
-	public T run(Player player) {
-		return this.call.run(player);
+	public void run(Player player) {
+		 this.call.run(player);
 	}
 }

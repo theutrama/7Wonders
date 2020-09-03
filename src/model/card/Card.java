@@ -37,7 +37,6 @@ public class Card implements Cloneable {
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
-
 	
 	public int isProducing(ResourceType type) {
 		for(Resource rs : getProducing())

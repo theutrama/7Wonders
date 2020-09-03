@@ -107,6 +107,10 @@ public class CardController {
 		countCards.put("workshop", new int[]{3,7,0});
 
 	}
+	
+	public boolean hasCard(Player player, String cardname) {
+		return false;
+	}
 
 	public Card[] generateCardStack() {
 		Card[] cards = new Card[78];

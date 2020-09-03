@@ -2,16 +2,13 @@ package view.gameboard;
 
 import java.io.IOException;
 
-import application.Main;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.player.Player;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.BorderPane;
 
 public class GameBoardViewController extends VBox {
     @FXML

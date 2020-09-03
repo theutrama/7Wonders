@@ -4,6 +4,8 @@ import model.board.BabylonBoard;
 import model.board.RhodosBoard;
 import model.board.WonderBoard;
 import java.util.ArrayList;
+
+import application.Utils;
 import model.card.Card;
 import model.card.ResourceType;
 import model.player.AI;
@@ -64,17 +66,9 @@ public class PlayerController {
 		return miliPoints;
 	}
 	
-	public int getSciencePoints(Player player) {
+
+	private int getSciencePoints(int[] amount) {
 		int victory_points = 0;
-		int[] amount = new int[] {0,0,0};
-		for(int i = 0; i < BabylonBoard.types.length; i++) {
-			for(Card card : player.getBoard().getResearch()) {
-				if(card.getScienceType() == BabylonBoard.types[i]) {
-					amount[i]++;
-				}
-			}
-		}
-		
 		for(int i = 0; i < amount.length; i++) {
 			victory_points += amount[i] * amount[i];
 		}
@@ -87,5 +81,40 @@ public class PlayerController {
 		}
 		
 		return victory_points;
+	}
+	
+	public int getSciencePoints(Player player) {
+		int[] amount = new int[] {0,0,0};
+		for(int i = 0; i < BabylonBoard.types.length; i++) {
+			for(Card card : player.getBoard().getResearch()) {
+				if(card.getScienceType() == BabylonBoard.types[i]) {
+					amount[i]++;
+				}
+			}
+		}
+		
+		boolean hasBabylon = (player.getBoard() instanceof BabylonBoard && ((BabylonBoard) player.getBoard()).isFilled(2));
+		boolean hasScientistsGuild = swController.getCardController().hasCard(player, "scientistsguild");
+		
+		if(hasBabylon && hasScientistsGuild) {
+			int result = 0;
+			int[] clone;
+			for(int i = 0; i < 3; i++) {
+				for(int a = 0; a < 3; a++) {
+					int type = getSciencePoints(Utils.addToIndex(1, i, clone = amount.clone()));
+					type = getSciencePoints(Utils.addToIndex(1, a, clone));
+					result = Math.max(type, result);
+				}
+			}
+			return result;
+		}else if(hasBabylon || hasScientistsGuild) {
+				int type1 = getSciencePoints(Utils.addToIndex(1, 0, amount.clone()));
+				int type2 = getSciencePoints(Utils.addToIndex(1, 1, amount.clone()));
+				int type3 = getSciencePoints(Utils.addToIndex(1, 2, amount.clone()));
+				
+				return Utils.max(new int[] {type1,type2,type3});
+			
+		}
+		return getSciencePoints(amount);
 	}
 }

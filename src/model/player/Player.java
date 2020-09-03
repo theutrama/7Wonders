@@ -78,4 +78,12 @@ public class Player {
 	public WonderBoard getBoard() {
 		return this.board;
 	}
+	
+	public void setMausoleum(boolean mausoleum) {
+		this.mausoleum = mausoleum;
+	}
+	
+	public void setHand(ArrayList<Card> hand) {
+		this.hand = hand;
+	}
 }

@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import model.card.Card;
 import model.player.Player;
 
 public class Game {
@@ -15,34 +14,34 @@ public class Game {
 
 	private ArrayList<GameState> states;
 
-	private ArrayList<Card> cardStack;
-	
-	public Game() {
-		
+	public Game(GameState initialState, String name) {
+		this.name = name;
+		states = new ArrayList<>();
+		states.add(initialState);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getCurrentState() {
 		return currentState;
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
-	
+
 	public ArrayList<GameState> getStates() {
 		return states;
 	}
-	
-	public ArrayList<Card> getCardStack() {
-		return cardStack;
-	}
-	
+
 	public void setCurrentState(int currentState) {
 		this.currentState = currentState;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 
 }

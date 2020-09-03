@@ -16,55 +16,74 @@ public class GameState {
 
 	private int round;
 
-	private int stackIndex;
+	private int currentPlayer;
 
 	private ArrayList<Player> players = new ArrayList<Player>();
 
 	private ArrayList<Card> trash = new ArrayList<Card>();
-	
-	public GameState(int age, int round,ArrayList<Player> players) {
+
+	private ArrayList<Card> cardStack;
+
+	public GameState(int age, int round, ArrayList<Player> players, ArrayList<Card> cards) {
 		this.players = players;
 		this.age = age;
 		this.round = round;
+		cardStack = cards;
 	}
-	
+
 	public int getAge() {
 		return age;
 	}
-	
+
 	public int getRound() {
 		return round;
 	}
-	
-	public void setStackIndex(int index) {
-		this.stackIndex = index;
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
-	
-	public int getStackIndex() {
-		return stackIndex;
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
 	}
-	
+
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+
 	public ArrayList<Card> getTrash() {
 		return trash;
 	}
+
+	public ArrayList<Card> getCardStack() {
+		return cardStack;
+	}
+
+	public GameState deepClone() {
+		try {
+			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+			ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
+			objOut.writeObject(this);
+			objOut.flush();
+			objOut.close();
+			byteOut.close();
+			ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+			ObjectInputStream objIn = new ObjectInputStream(byteIn);
+			GameState copy = (GameState) objIn.readObject();
+			byteIn.close();
+			objIn.close();
+			return copy;
+		} catch (IOException | ClassNotFoundException e) {
+			return null;
+		}
+	}
 	
-	public GameState deepClone() throws IOException, ClassNotFoundException {
-		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-		ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
-		objOut.writeObject(this);
-		objOut.flush();
-		objOut.close();
-		byteOut.close();
-		ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-		ObjectInputStream objIn = new ObjectInputStream(byteIn);
-		GameState copy = (GameState) objIn.readObject();
-		byteIn.close();
-		objIn.close();
-		return copy;
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+	public void setRound(int round) {
+		this.round = round;
 	}
 
 }

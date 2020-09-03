@@ -46,5 +46,19 @@ public class PlayerController {
 	public void chooseCard(Card card, Player player) {
 		player.setChooseCard(card);
 	}
-
+	
+	public Player getLeftNeighbour(Player player) {
+		ArrayList<Player> players = swController.getGame().getStates().get(swController.getGame().getCurrentState()).getPlayers();
+		if(players.indexOf(player) == 0) {
+			return players.get(players.size()-1);
+		}
+		return players.get(players.indexOf(player)-1);
+	}
+	public Player getRightNeighbour(Player player) {
+		ArrayList<Player> players = swController.getGame().getStates().get(swController.getGame().getCurrentState()).getPlayers();
+		if(players.indexOf(player) == players.size()-1) {
+			return players.get(0);
+		}
+		return players.get(players.indexOf(player)+1);
+	}
 }

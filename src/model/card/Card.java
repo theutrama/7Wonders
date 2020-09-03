@@ -7,25 +7,27 @@ public class Card implements Cloneable {
 	private int age;
 
 	private String name;
+	private String internalName;
 
 	private CardType type;
 	private ResourceType scienceType;
 
 	private ArrayList<Resource> producing;
 	private ArrayList<Resource> required;
-	private ArrayList<Card> dependencies;
+	private String[] dependencies;
 	private ArrayList<Effect> effects;
 
-	public Card(int age, String name, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required,
-			ArrayList<Card> dependencies, ArrayList<Effect> effects) {
-		this(ResourceType.NONE, age, name, type, producing, required, dependencies, effects);
+	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required,
+			String[] dependencies, ArrayList<Effect> effects) {
+		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
 	}
 
-	public Card(ResourceType scienceType, int age, String name, CardType type, ArrayList<Resource> producing,
-			ArrayList<Resource> required, ArrayList<Card> dependencies, ArrayList<Effect> effects) {
+	public Card(ResourceType scienceType, int age, String name, String internalName,CardType type, ArrayList<Resource> producing,
+			ArrayList<Resource> required, String[] dependencies, ArrayList<Effect> effects) {
 		this.age = age;
 		this.scienceType = scienceType;
 		this.name = name;
+		this.internalName = internalName;
 		this.type = type;
 		this.producing = producing;
 		this.required = required;
@@ -73,7 +75,7 @@ public class Card implements Cloneable {
 		return required;
 	}
 
-	public ArrayList<Card> getDependencies() {
+	public String[] getDependencies() {
 		return dependencies;
 	}
 

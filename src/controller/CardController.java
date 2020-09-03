@@ -4,10 +4,17 @@
 
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.board.WonderBoard;
 import model.card.Card;
+import model.card.CardType;
+import model.card.Effect;
+import model.card.EffectType;
+import model.card.Resource;
+import model.card.ResourceType;
 import model.player.Player;
 
 public class CardController {
@@ -111,7 +118,74 @@ public class CardController {
 	public Card[] generateCardStack() {
 		Card[] cards = new Card[78];
 		
-		return null;
+		cards[0] = new Card(ResourceType.COMPASS,3,"Akademie", "acadamy", CardType.GREEN, null, addRArray(new Resource(3,ResourceType.STONE),new Resource(1,ResourceType.GLASS)),new String[]{"school"},null);
+		cards[1] = new Card(1,"Altar", "altar", CardType.BLUE, null, null, null,
+				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> {p.addVictoryPoints(2);}))
+		);
+		cards[2] = new Card(ResourceType.COMPASS,1,"Apotheke", "apothecary", CardType.GREEN, null, addRArray(new Resource(3,ResourceType.CLOTH)),new String[]{"school"},null);
+		
+		cards[3] = new Card(2,"Aquädukt", "aqueduct", CardType.BLUE, null, addRArray(new Resource(3,ResourceType.STONE)), new String[]{"baths"},
+				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> {p.addVictoryPoints(5);}))
+		);
+		cards[3] = new Card(2,"Schießplatz", "archeryrange", CardType.RED, addRArray(new Resource(2,ResourceType.MILITARY)), addRArray(new Resource(2,ResourceType.WOOD),new Resource(1,ResourceType.ORE)), new String[]{"workshop"}, null);
+		cards[4] = new Card(3,"Arena", "arena", CardType.YELLOW, null, addRArray(new Resource(2,ResourceType.STONE),new Resource(1,ResourceType.ORE)),new String[]{"dispensary"},
+				addEArray(
+						new Effect(EffectType.WHEN_PLAYED, p -> {p.addCoins(3*(p.getBoard().nextSlot() == -1 ? 3 : p.getBoard().nextSlot()));}),
+						new Effect(EffectType.AT_MATCH_END, p -> {p.addVictoryPoints(p.getBoard().nextSlot() == -1 ? 3 : p.getBoard().nextSlot());})
+		));
+		cards[5] = new Card(3,"Waffenlager", "arsenal", CardType.RED, addRArray(new Resource(3,ResourceType.MILITARY)), addRArray(new Resource(2,ResourceType.WOOD),new Resource(1,ResourceType.ORE),new Resource(1,ResourceType.CLOTH)), new String[]{"workshop"}, null);
+		cards[6] = new Card(1,"Kaserne", "barracks", CardType.RED, addRArray(new Resource(1,ResourceType.MILITARY)), addRArray(new Resource(1,ResourceType.ORE)), new String[]{"workshop"}, null);
+		cards[7] = new Card(1,"Bäder", "baths", CardType.BLUE, null, addRArray(new Resource(1,ResourceType.STONE)), null,
+				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> {p.addVictoryPoints(3);}))
+		);
+		cards[8] = new Card(2,"Basar", "bazar", CardType.YELLOW, null, null, null,
+				addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
+					ArrayList<Card> brown1 = swController.getPlayerController().getLeftNeighbour(p).getBoard().getResources();
+					ArrayList<Card> brown2 = swController.getPlayerController().getRightNeighbour(p).getBoard().getResources();
+					ArrayList<Card> brown3 = p.getBoard().getResources();
+					int count = 0;
+					for(Card el : brown1) 
+						if(el.getType() == CardType.BROWN) count++;
+					for(Card el : brown2) 
+						if(el.getType() == CardType.BROWN) count++;
+					for(Card el : brown3) 
+						if(el.getType() == CardType.BROWN) count++;
+					p.addVictoryPoints(count);
+				})
+		));
+		
+		
+		return cards;
+	}
+	
+	public boolean hasCard(Player player, String cardname) {
+		WonderBoard board = player.getBoard();
+		
+		for(Card card : board.getCivil())
+			if(card.getName().equalsIgnoreCase(cardname))return true;
+		for(Card card : board.getGuilds())
+			if(card.getName().equalsIgnoreCase(cardname))return true;
+		for(Card card : board.getMilitary())
+			if(card.getName().equalsIgnoreCase(cardname))return true;
+		for(Card card : board.getResearch())
+			if(card.getName().equalsIgnoreCase(cardname))return true;
+		
+		return false;
+	}
+	private ArrayList<Resource> addRArray(Resource... ressource) {
+		ArrayList<Resource> array = new ArrayList<Resource>();
+		for(Resource res : ressource) {
+			array.add(res);
+		}
+		return array;
+	}
+	
+	private ArrayList<Effect> addEArray(Effect... effect) {
+		ArrayList<Effect> array = new ArrayList<Effect>();
+		for(Effect eff : array) {
+			array.add(eff);
+		}
+		return array;
 	}
 
 	public Card[] loadCardStack(String filepath) {

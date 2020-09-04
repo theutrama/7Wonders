@@ -11,6 +11,8 @@ public class Card implements Serializable {
 	private String name;
 	/** internal name */
 	private String internalName;
+	/** description */
+	private String description;
 	/** card type */
 	private CardType type;
 	/** the scienece type, NONE if {@link #type} is not {@link CardType#GREEN} */
@@ -186,6 +188,14 @@ public class Card implements Serializable {
 	 */
 	public String getInternalName() {
 		return internalName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

@@ -37,6 +37,7 @@ public class Player implements Serializable {
 	public Player(String name, WonderBoard board) {
 		this.name = name;
 		this.board = board;
+		this.hand = new ArrayList<Card>();
 	}
 
 	/**

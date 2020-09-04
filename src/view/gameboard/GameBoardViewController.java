@@ -9,6 +9,7 @@ import application.Utils;
 import controller.SevenWondersController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,232 +26,232 @@ import model.player.Player;
 
 public class GameBoardViewController extends VBox {
     @FXML
-    private ImageView btn_undo1;
+    public ImageView btn_undo1;
 
     @FXML
-    private ImageView btn_undo;
+    public ImageView btn_undo;
 
     @FXML
-    private ImageView btn_redo;
+    public ImageView btn_redo;
 
     @FXML
-    private Label label_gametime;
+    public Label label_gametime;
 
     @FXML
-    private Label label_age;
+    public Label label_age;
 
     @FXML
-    private HBox hbox_cards;
+    public HBox hbox_cards;
 
     @FXML
-    private VBox vbox_board1;
+    public VBox vbox_board1;
 
     @FXML
-    private HBox hbox_board1_ressources;
+    public HBox hbox_board1_ressources;
 
     @FXML
-    private HBox hbox_board1_military;
+    public HBox hbox_board1_military;
 
     @FXML
-    private HBox hbox_board1_civil;
+    public HBox hbox_board1_civil;
 
     @FXML
-    private HBox hbox_board1_trade;
+    public HBox hbox_board1_trade;
 
     @FXML
-    private HBox hbox_board1_uni;
+    public HBox hbox_board1_uni;
 
     @FXML
-    private HBox hbox_board1_guild;
+    public HBox hbox_board1_guild;
 
     @FXML
-    private ImageView img_boardcard1_1;
+    public ImageView img_boardcard1_1;
 
     @FXML
-    private ImageView img_boardcard1_2;
+    public ImageView img_boardcard1_2;
 
     @FXML
-    private ImageView img_boardcard1_3;
+    public ImageView img_boardcard1_3;
 
     @FXML
-    private VBox vbox_board6;
+    public VBox vbox_board6;
 
     @FXML
-    private HBox hbox_board6_ressources;
+    public HBox hbox_board6_ressources;
 
     @FXML
-    private HBox hbox_board6_military;
+    public HBox hbox_board6_military;
 
     @FXML
-    private HBox hbox_board6_civil;
+    public HBox hbox_board6_civil;
 
     @FXML
-    private HBox hbox_board6_trade;
+    public HBox hbox_board6_trade;
 
     @FXML
-    private HBox hbox_board6_uni;
+    public HBox hbox_board6_uni;
 
     @FXML
-    private HBox hbox_board6_guild;
+    public HBox hbox_board6_guild;
 
     @FXML
-    private ImageView img_boardcard6_1;
+    public ImageView img_boardcard6_1;
 
     @FXML
-    private ImageView img_boardcard6_2;
+    public ImageView img_boardcard6_2;
 
     @FXML
-    private ImageView img_boardcard6_3;
+    public ImageView img_boardcard6_3;
 
     @FXML
-    private VBox vbox_board7;
+    public VBox vbox_board7;
 
     @FXML
-    private HBox hbox_board7_ressources;
+    public HBox hbox_board7_ressources;
 
     @FXML
-    private HBox hbox_board7_military;
+    public HBox hbox_board7_military;
 
     @FXML
-    private HBox hbox_board7_civil;
+    public HBox hbox_board7_civil;
 
     @FXML
-    private HBox hbox_board7_trade;
+    public HBox hbox_board7_trade;
 
     @FXML
-    private HBox hbox_board7_uni;
+    public HBox hbox_board7_uni;
 
     @FXML
-    private HBox hbox_board7_guild;
+    public HBox hbox_board7_guild;
 
     @FXML
-    private ImageView img_boardcard7_1;
+    public ImageView img_boardcard7_1;
 
     @FXML
-    private ImageView img_boardcard7_2;
+    public ImageView img_boardcard7_2;
 
     @FXML
-    private ImageView img_boardcard7_3;
+    public ImageView img_boardcard7_3;
 
     @FXML
-    private VBox vbox_board2;
+    public VBox vbox_board2;
 
     @FXML
-    private HBox hbox_board2_ressources;
+    public HBox hbox_board2_ressources;
 
     @FXML
-    private HBox hbox_board2_military;
+    public HBox hbox_board2_military;
 
     @FXML
-    private HBox hbox_board2_civil;
+    public HBox hbox_board2_civil;
 
     @FXML
-    private HBox hbox_board2_trade;
+    public HBox hbox_board2_trade;
 
     @FXML
-    private HBox hbox_board2_uni;
+    public HBox hbox_board2_uni;
 
     @FXML
-    private HBox hbox_board2_guild;
+    public HBox hbox_board2_guild;
 
     @FXML
-    private ImageView img_boardcard2_1;
+    public ImageView img_boardcard2_1;
 
     @FXML
-    private ImageView img_boardcard2_2;
+    public ImageView img_boardcard2_2;
 
     @FXML
-    private ImageView img_boardcard2_3;
+    public ImageView img_boardcard2_3;
 
     @FXML
-    private VBox vbox_board4;
+    public VBox vbox_board4;
 
     @FXML
-    private HBox hbox_board4_ressources;
+    public HBox hbox_board4_ressources;
 
     @FXML
-    private HBox hbox_board4_military;
+    public HBox hbox_board4_military;
 
     @FXML
-    private HBox hbox_board4_civil;
+    public HBox hbox_board4_civil;
 
     @FXML
-    private HBox hbox_board4_trade;
+    public HBox hbox_board4_trade;
 
     @FXML
-    private HBox hbox_board4_uni;
+    public HBox hbox_board4_uni;
 
     @FXML
-    private HBox hbox_board4_guild;
+    public HBox hbox_board4_guild;
 
     @FXML
-    private ImageView img_boardcard4_1;
+    public ImageView img_boardcard4_1;
 
     @FXML
-    private ImageView img_boardcard4_2;
+    public ImageView img_boardcard4_2;
 
     @FXML
-    private ImageView img_boardcard4_3;
+    public ImageView img_boardcard4_3;
 
     @FXML
-    private VBox vbox_board3;
+    public VBox vbox_board3;
 
     @FXML
-    private HBox hbox_board3_ressources;
+    public HBox hbox_board3_ressources;
 
     @FXML
-    private HBox hbox_board3_military;
+    public HBox hbox_board3_military;
 
     @FXML
-    private HBox hbox_board3_civil;
+    public HBox hbox_board3_civil;
 
     @FXML
-    private HBox hbox_board3_trade;
+    public HBox hbox_board3_trade;
 
     @FXML
-    private HBox hbox_board3_uni;
+    public HBox hbox_board3_uni;
 
     @FXML
-    private HBox hbox_board3_guild;
+    public HBox hbox_board3_guild;
 
     @FXML
-    private ImageView img_boardcard3_1;
+    public ImageView img_boardcard3_1;
 
     @FXML
-    private ImageView img_boardcard3_2;
+    public ImageView img_boardcard3_2;
 
     @FXML
-    private ImageView img_boardcard3_3;
+    public ImageView img_boardcard3_3;
 
     @FXML
-    private VBox vbox_board5;
+    public VBox vbox_board5;
 
     @FXML
-    private HBox hbox_board5_ressources;
+    public HBox hbox_board5_ressources;
 
     @FXML
-    private HBox hbox_board5_military;
+    public HBox hbox_board5_military;
 
     @FXML
-    private HBox hbox_board5_civil;
+    public HBox hbox_board5_civil;
 
     @FXML
-    private HBox hbox_board5_trade;
+    public HBox hbox_board5_trade;
 
     @FXML
-    private HBox hbox_board5_uni;
+    public HBox hbox_board5_uni;
 
     @FXML
-    private HBox hbox_board5_guild;
+    public HBox hbox_board5_guild;
 
     @FXML
-    private ImageView img_boardcard5_1;
+    public ImageView img_boardcard5_1;
 
     @FXML
-    private ImageView img_boardcard5_2;
+    public ImageView img_boardcard5_2;
 
     @FXML
-    private ImageView img_boardcard5_3;
+    public ImageView img_boardcard5_3;
     private ArrayList<Board> boards = new ArrayList<Board>();
 
     public Board createBoard(Player player, int i) {
@@ -290,6 +291,12 @@ public class GameBoardViewController extends VBox {
 		}
 		
 		setup();
+	}
+	
+	public void setCards() {
+		Button btn = (Button) hbox_cards.getChildren().get(0);
+		ImageView img = (ImageView) btn.getChildrenUnmodifiable().get(0);
+		
 	}
 	
 	public void setup() {
@@ -343,21 +350,27 @@ public class GameBoardViewController extends VBox {
 			this.box = box;
 			this.board_boxes = boxes;
 			this.slots = imgs;
-			
-			setBackground(this.player.getBoard().getImage());
 		}
 		
 		public void refresh() {
-			
+			setBackground();
 		}
 		
-		private void setBackground(String img) {
-			GridPane pane = (GridPane) this.box.getChildren().get(1);
-			pane.setBackground(new Background(new BackgroundImage(new Image(img), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+		private void setBackground(){
+			try {
+				GridPane pane = (GridPane) this.box.getChildren().get(1);
+				pane.setBackground(new Background(new BackgroundImage(Utils.toImage(this.player.getBoard().getImage()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public VBox getBox() {
 			return box;
+		}
+		
+		public void setPlayer(Player player) {
+			this.player=player;
 		}
 		
 		public Player getPlayer() {
@@ -371,6 +384,24 @@ public class GameBoardViewController extends VBox {
 		public HBox getBoard(int index) {
 			return this.board_boxes[index];
 		}
+	}
+	
+	public void turnToNext() {
+		Player last = this.boards.get(0).getPlayer();
+		Player next = null;
+		for(int i = 1; i < this.boards.size(); i++) {
+			next = this.boards.get(i).getPlayer();
+			this.boards.get(i-1).setPlayer(last);
+			this.boards.get(i-1).refresh();
+			last = next;
+			
+			if(i == this.boards.size()-1) {
+				this.boards.get(0).setPlayer(last);
+				this.boards.get(0).refresh();
+			}
+		}
+		
+		
 		
 	}
 

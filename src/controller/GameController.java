@@ -39,6 +39,7 @@ public class GameController {
 	 */
 	public Game createGame(String name, ArrayList<Player> players) {
 		Game game = new Game(name);
+		this.swController.setGame(game);
 		game.setCurrentPlayer(players.get(0));
 		createGameFirstRound(players, game);
 		return game;
@@ -50,7 +51,7 @@ public class GameController {
 	 * @param players player list
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, Game game) {
-		GameState state = new GameState(0, 1, players, swController.getCardController().generateCardStack());
+		GameState state = new GameState(0, 1, players, swController.getCardController().generateCardStack(players));
 		nextAge(game, state);
 	}
 
@@ -132,9 +133,6 @@ public class GameController {
 	 */
 	private void nextAge(Game game, GameState previous) {
 		GameState state = previous.deepClone();
-
-		System.out.println("GAMESTATE : " + (state == null));
-
 		state.setBeginOfRound(true);
 		state.setAge(previous.getAge() + 1);
 		state.setRound(1);
@@ -152,6 +150,7 @@ public class GameController {
 
 			for (int i = 0; i < 7; i++) {
 				int index = randInt(0, ageCards.size());
+				
 				player.getHand().add(ageCards.get(index)); // assign card to player hand
 				state.getCardStack().remove(ageCards.get(index)); // delete card from card stack
 				ageCards.remove(index); // remove from help list

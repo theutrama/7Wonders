@@ -33,7 +33,7 @@ public abstract class WonderBoard implements Serializable{
 	
 	public String getImage() {
 		String name = getClass().getSimpleName().replaceAll("Board", "");
-		return File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
+		return "src"+File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
 	}
 
 	public void slot1() {

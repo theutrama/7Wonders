@@ -1,5 +1,6 @@
 package model.card;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -46,6 +47,10 @@ public class Card implements Serializable {
 		this.required = toCopy.required;
 		this.dependencies = toCopy.dependencies;
 		this.effects = toCopy.effects;
+	}
+	
+	public String getImage() {
+		return "src"+File.separator + "view" + File.separator + "images" + File.separator + "cards" + File.separator + internalName.toLowerCase() + ".png";
 	}
 	
 	public int isProducing(ResourceType type) {

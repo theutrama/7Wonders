@@ -61,8 +61,3 @@
 .hide-thumb .scroll-bar:vertical .thumb {
 	-fx-background-color: transparent;
 }
-.testbackround {
-	-fx-background-image: url("../images/boards/alexandria.jpg");
-	-fx-background-size: contain;
-	-fx-background-repeat: no-repeat;
-}

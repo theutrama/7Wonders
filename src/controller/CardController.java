@@ -26,8 +26,7 @@ public class CardController {
 
 	public CardController(SevenWondersController swController) {
 		this.swController=swController;
-		
-		
+		loadCards();
 	}
 	
 	/**
@@ -115,10 +114,10 @@ public class CardController {
 		countCards.put("workshop", new int[]{3,7,0});
 	}
 
-	public ArrayList<Card> generateCardStack() {
+	public ArrayList<Card> generateCardStack(ArrayList<Player> players) {
 		ArrayList<Card> cards = new ArrayList<Card>();
 		
-		cards.add(new Card(ResourceType.COMPASS,3,"Akademie", "acadamy", CardType.GREEN, null, addRArray(new Resource(3,ResourceType.STONE),new Resource(1,ResourceType.GLASS)),new String[]{"school"},null));
+		cards.add(new Card(ResourceType.COMPASS,3,"Akademie", "academy", CardType.GREEN, null, addRArray(new Resource(3,ResourceType.STONE),new Resource(1,ResourceType.GLASS)),new String[]{"school"},null));
 		cards.add(new Card(1,"Altar", "altar", CardType.BLUE, null, null, null,
 				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> {p.addVictoryPoints(2);}))
 		));
@@ -282,12 +281,13 @@ public class CardController {
 		cards.add(new Card(ResourceType.TABLET,3,"Universität", "university", CardType.GREEN, null, addRArray(new Resource(2,ResourceType.WOOD),new Resource(1,ResourceType.PAPYRUS),new Resource(1,ResourceType.GLASS)),new String[]{"library"},null));
 		cards.add(new Card(2,"Mauern", "walls", CardType.RED, addRArray(new Resource(2,ResourceType.MILITARY)), addRArray(new Resource(3,ResourceType.STONE)), null, null));
 		cards.add(new Card(ResourceType.GEAR,1,"Werkstatt", "workshop", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.GLASS)),null,null));
-
+		
 		//Clone cards depending on player number
-		int playersize = swController.getGame().getCurrentGameState().getPlayers().size();
+		int playersize = players.size();
 		ArrayList<Card> toadd = new ArrayList<Card>();
 		for(int i = 0; i < cards.size(); i++) {
 			int[] sizes = countCards.get(cards.get(i).getInternalName());		
+			
 			if(sizes[0] == 0) continue;
 			if(sizes[0] <= playersize) {
 				toadd.add(new Card(cards.get(i)));

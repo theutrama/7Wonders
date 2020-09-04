@@ -53,7 +53,25 @@ public class ResourceTree {
 	 */
 	public ArrayList<ResourceBundle> getAllCombinations() {
 		ArrayList<ResourceBundle> result = new ArrayList<>();
-		leaves.forEach(tree -> result.add(tree.resource));
+		leaves.forEach(tree -> result.add(tree.resourceSum));
+		return result;
+	}
+
+	/**
+	 * get all possible lists of resources
+	 * 
+	 * @return list of all resource combinations
+	 */
+	public ArrayList<ArrayList<ResourceBundle>> getAllCombinationsAsList() {
+		ArrayList<ArrayList<ResourceBundle>> result = new ArrayList<>();
+		for (InnerResourceTree tree : leaves) {
+			ArrayList<ResourceBundle> list = new ArrayList<>();
+			while (tree != null) {
+				list.add(tree.resource);
+				tree = tree.parent;
+			}
+			result.add(list);
+		}
 		return result;
 	}
 
@@ -63,8 +81,12 @@ public class ResourceTree {
 	private static class InnerResourceTree {
 		/** list of children */
 		private ArrayList<InnerResourceTree> children;
+		/** parent tree */
+		private InnerResourceTree parent;
 		/** resource held by this tree */
 		private ResourceBundle resource;
+		/** sum of resources of this tree and all parent trees */
+		private ResourceBundle resourceSum;
 
 		/**
 		 * create an inner tree with a resource
@@ -73,6 +95,7 @@ public class ResourceTree {
 		 */
 		private InnerResourceTree(ResourceBundle resource) {
 			this.resource = resource;
+			resourceSum = resource;
 			children = new ArrayList<>();
 		}
 
@@ -83,7 +106,8 @@ public class ResourceTree {
 		 */
 		private void addChild(InnerResourceTree tree) {
 			children.add(tree);
-			tree.resource = resource.add(tree.resource);
+			tree.resourceSum = resource.add(tree.resourceSum);
+			tree.parent = this;
 		}
 	}
 

@@ -313,8 +313,15 @@ public class PlayerController {
 
 		ArrayList<TradeOption> result = new ArrayList<>();
 		Player left = getLeftNeighbour(player), right = getRightNeighbour(player);
-		ArrayList<ResourceBundle> leftTrades = allSums(generateResourceTree(left, getStaticResources(left)).getAllCombinations());
-		ArrayList<ResourceBundle> rightTrades = allSums(generateResourceTree(right, getStaticResources(right)).getAllCombinations());
+		ArrayList<ArrayList<ResourceBundle>> leftTradeLists = generateResourceTree(left, getStaticResources(left)).getAllCombinationsAsList();
+		ArrayList<ArrayList<ResourceBundle>> rightTradeLists = generateResourceTree(right, getStaticResources(right)).getAllCombinationsAsList();
+		
+		ArrayList<ResourceBundle> leftTrades = new ArrayList<>(), rightTrades = new ArrayList<>();
+		leftTradeLists.forEach(list -> leftTrades.addAll(allSums(list)));
+		rightTradeLists.forEach(list -> rightTrades.addAll(allSums(list)));
+		
+		removeDuplicates(leftTrades);
+		removeDuplicates(rightTrades);
 
 		for (ResourceBundle missingResources : missing) {
 			for (ResourceBundle leftTrade : leftTrades) {
@@ -347,7 +354,7 @@ public class PlayerController {
 	 * 
 	 * @param list list of bundles
 	 */
-	private static void removeDuplicates(ArrayList<ResourceBundle> list) {
+	private void removeDuplicates(ArrayList<ResourceBundle> list) {
 		ResourceBundle[] copy = list.toArray(new ResourceBundle[] {});
 		for (ResourceBundle bundle : copy) {
 			int i = 0;
@@ -366,7 +373,7 @@ public class PlayerController {
 	 * @param bundles list of resource bundles
 	 * @return list of all sums
 	 */
-	private static ArrayList<ResourceBundle> allSums(ArrayList<ResourceBundle> bundles) {
+	private ArrayList<ResourceBundle> allSums(ArrayList<ResourceBundle> bundles) {
 		ArrayList<ResourceBundle> bundleSums = new ArrayList<>();
 		int max = 1 << bundles.size();
 

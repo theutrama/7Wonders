@@ -457,6 +457,7 @@ public class CardController {
 						"verschiedene Symbole.\r\n" + 
 						"Die Siegpunkte, die der Spieler auf diese beiden Weisen erhält,\r\n" + 
 						"werden addiert.");
+				break;
 			case PURPLE:
 				switch(card.getInternalName()) {
 				case "buildersguild":
@@ -505,6 +506,7 @@ public class CardController {
 				default:
 					System.out.println("Not assigned:"+ card.getInternalName());
 				}
+				break;
 			case YELLOW:
 			default:
 				return;

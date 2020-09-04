@@ -302,7 +302,7 @@ public class PlayerController {
 	 * @param resources required resources
 	 * @return list of trade options
 	 */
-	public ArrayList<TradeOption> getTradeOptions(Player player, ResourceBundle resources) {
+	private ArrayList<TradeOption> getTradeOptions(Player player, ResourceBundle resources) {
 		ArrayList<ResourceBundle> combinations = generateResourceTree(player, getStaticResources(player)).getAllCombinations();
 
 		removeDuplicates(combinations);
@@ -322,13 +322,24 @@ public class PlayerController {
 					if (leftTrade.getCostForPlayer(player, true) + rightTrade.getCostForPlayer(player, false) > player.getCoins())
 						continue;
 
-					if (leftTrade.add(rightTrade).greaterOrEqualThan(missingResources))
+					if (leftTrade.add(rightTrade).equals(missingResources)) // TODO maybe exchange with "greaterOrEqual"
 						result.add(new TradeOption(leftTrade, rightTrade, leftTrade.getCostForPlayer(player, true), leftTrade.getCostForPlayer(player, false)));
 				}
 			}
 		}
 
 		return result;
+	}
+
+	/**
+	 * find all options to trade with the two neighbours
+	 * 
+	 * @param player    player
+	 * @param resources required resources
+	 * @return list of trade options
+	 */
+	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources) {
+		return getTradeOptions(player, new ResourceBundle(resources));
 	}
 
 	/**

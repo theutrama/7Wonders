@@ -370,7 +370,9 @@ public class GameBoardViewController extends VBox {
 		private void setBackground(){
 			try {
 				GridPane pane = (GridPane) this.box.getChildren().get(1);
-				pane.setBackground(new Background(new BackgroundImage(Utils.toImage(this.player.getBoard().getImage()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+//				pane.setStyle("-fx-background-size: contain;");
+				Image img = Utils.toImage(this.player.getBoard().getImage());
+				pane.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(img.getWidth(), img.getHeight(), false,  false, true,  false))));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

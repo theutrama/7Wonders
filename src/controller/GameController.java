@@ -149,6 +149,10 @@ public class GameController {
 				state.getTrash().add(player.getHand().get(0));
 				player.getHand().clear();
 			}
+			
+			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1)) { // TODO use static value
+				player.setOlympiaUsed(false);
+			}
 
 			for (int i = 0; i < 7; i++) {
 				int index = randInt(0, ageCards.size());
@@ -245,8 +249,8 @@ public class GameController {
 	 * @param state the current game state
 	 */
 	private void doConflicts(GameState state) {
-		for (int i = 0; i < state.getPlayers().size(); i++) {
-			doConflict(state.getPlayers().get(i), state.getPlayers().get(i == state.getPlayers().size() - 1 ? 0 : i + 1), state.getAge());
+		for (Player player : state.getPlayers()) {
+			doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
 		}
 	}
 

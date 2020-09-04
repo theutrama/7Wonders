@@ -10,17 +10,20 @@ import model.player.Player;
 import model.card.CardType;
 
 public abstract class WonderBoard implements Serializable{
-
+	/** indicates if each slot (0-2) is filled with a card */
 	private boolean[] filled;
-
+	/** card lists on the board */
 	private ArrayList<Card> resources, military, trade, guilds, civil, research;
-
+	/** the resource produced by this board */
 	private Resource resource;
-
+	/** required resources to build the slots (0-2) */
 	protected Resource[] slotRequirements;
-	
+	/** assigned player */
 	protected Player player;
 	
+	/**
+	 * create wonder board
+	 */
 	public WonderBoard() {
 		resources = new ArrayList<>();
 		military = new ArrayList<>();
@@ -31,21 +34,39 @@ public abstract class WonderBoard implements Serializable{
 		filled = new boolean[3];
 	}
 	
+	/**
+	 * getter for the image path
+	 * @return path of the assigned image file
+	 */
 	public String getImage() {
 		String name = getClass().getSimpleName().replaceAll("Board", "");
 		return "src"+File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
 	}
 
+	/**
+	 * adds 3 victory points to the assigned player
+	 */
 	public void slot1() {
 		player.addVictoryPoints(3);
 	}
 
+	/**
+	 * abstract method implemented by all subclasses
+	 */
 	public abstract void slot2();
 
+	/**
+	 * adds 7 victory points to the assigned player
+	 */
 	public void slot3() {
 		player.addVictoryPoints(7);
 	}
 	
+	/**
+	 * getter for {@link #filled} at index slot
+	 * @param slot slot index
+	 * @return filled
+	 */
 	public boolean isFilled(int slot) {
 		return filled[slot];
 	}

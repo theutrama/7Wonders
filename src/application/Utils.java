@@ -1,7 +1,14 @@
 package application;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import javafx.scene.image.Image;
 
 public class Utils {
 	private static Random rand = new Random();
@@ -24,6 +31,10 @@ public class Utils {
 	public static int randInt(int min, int max) {
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 	    return randomNum;
+	}
+	
+	public static Image toImage(String path) throws IOException {
+		return new Image(new FileInputStream(path));
 	}
 	
 	public static <T> T getValue(Object obj, String name) {

@@ -242,6 +242,14 @@ public class PlayerController {
 
 		return tree;
 	}
+	
+	private ResourceTree generateTradeTree(Player player) {
+		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
+		for (Card card: player.getBoard().getResources()) {
+			tree.addResourceOption(card.getProducing());
+		}
+		return tree;
+	}
 
 	/**
 	 * used to find out the way a player can build a card
@@ -296,7 +304,7 @@ public class PlayerController {
 	}
 
 	/**
-	 * find all options to trade with the two neighbours
+	 * find all options to trade with the two neighbours to collect the specified resources
 	 * 
 	 * @param player    player
 	 * @param resources required resources
@@ -313,13 +321,13 @@ public class PlayerController {
 
 		ArrayList<TradeOption> result = new ArrayList<>();
 		Player left = getLeftNeighbour(player), right = getRightNeighbour(player);
-		ArrayList<ArrayList<ResourceBundle>> leftTradeLists = generateResourceTree(left, getStaticResources(left)).getAllCombinationsAsList();
-		ArrayList<ArrayList<ResourceBundle>> rightTradeLists = generateResourceTree(right, getStaticResources(right)).getAllCombinationsAsList();
-		
+		ArrayList<ArrayList<ResourceBundle>> leftTradeLists = generateTradeTree(left).getAllCombinationsAsList();
+		ArrayList<ArrayList<ResourceBundle>> rightTradeLists = generateTradeTree(right).getAllCombinationsAsList();
+
 		ArrayList<ResourceBundle> leftTrades = new ArrayList<>(), rightTrades = new ArrayList<>();
 		leftTradeLists.forEach(list -> leftTrades.addAll(allSums(list)));
 		rightTradeLists.forEach(list -> rightTrades.addAll(allSums(list)));
-		
+
 		removeDuplicates(leftTrades);
 		removeDuplicates(rightTrades);
 
@@ -339,7 +347,7 @@ public class PlayerController {
 	}
 
 	/**
-	 * find all options to trade with the two neighbours
+	 * find all options to trade with the two neighbours to collect the specified resources
 	 * 
 	 * @param player    player
 	 * @param resources required resources

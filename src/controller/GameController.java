@@ -50,7 +50,7 @@ public class GameController {
 	 * @param players player list
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, Game game) {
-		GameState state = new GameState(0, 1, players, new ArrayList<Card>(Arrays.asList(swController.getCardController().generateCardStack())));
+		GameState state = new GameState(0, 1, players, swController.getCardController().generateCardStack());
 		nextAge(game, state);
 	}
 

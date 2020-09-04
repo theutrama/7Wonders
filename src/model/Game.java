@@ -24,6 +24,10 @@ public class Game {
 		states = new ArrayList<>();
 	}
 	
+	/**
+	 * get current game state object
+	 * @return current game state
+	 */
 	public GameState getCurrentGameState() {
 		return this.states.get(this.currentState);
 	}

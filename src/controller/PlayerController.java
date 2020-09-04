@@ -13,10 +13,15 @@ import model.player.Difficulty;
 import model.player.Player;
 
 public class PlayerController {
-
+	/** main controller */
 	private SevenWondersController swController;
+	/** wonder board controller */
 	private WonderBoardController wb;
 
+	/**
+	 * 
+	 * @param swController
+	 */
 	public PlayerController(SevenWondersController swController) {
 		this.swController = swController;
 		this.wb = swController.getWonderBoardController();

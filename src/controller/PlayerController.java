@@ -19,7 +19,7 @@ public class PlayerController {
 	private WonderBoardController wb;
 
 	/**
-	 * 
+	 * create player controller
 	 * @param swController
 	 */
 	public PlayerController(SevenWondersController swController) {
@@ -27,6 +27,12 @@ public class PlayerController {
 		this.wb = swController.getWonderBoardController();
 	}
 
+	/**
+	 * 
+	 * @param playername
+	 * @param wonderboard
+	 * @return
+	 */
 	public Player createPlayer(String playername, String wonderboard) {
 		WonderBoard board = this.wb.createWonderBoard(wonderboard);
 		Player player = new Player(playername, board);

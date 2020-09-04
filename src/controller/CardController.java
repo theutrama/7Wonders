@@ -485,7 +485,8 @@ public class CardController {
 					break;
 				case "shipownersguild":
 					des.concat("1 Siegpunkt für jede braune, graue\r\n" + 
-							"und violette Karte in der eigenen Stadt.");
+							"und violette Karte in der eigenen Stadt.\r\n" + 
+							"Hinweis: Die Gilde der Reeder selbst zählt dabei auch mit.");
 					break;
 				case "spiesguild":
 					des.concat("1 Siegpunkt für jede rote\r\n" + 
@@ -508,6 +509,86 @@ public class CardController {
 				}
 				break;
 			case YELLOW:
+				switch(card.getInternalName()) {
+				case "arena":
+					des.concat("Diese Karte bringt 3 Münzen je Bauabschnitt des Weltwunders,\r\n" + 
+							"der bereits vollendet ist, wenn die Karte ins Spiel kommt\r\n" + 
+							"(also 3, 6, 9 oder 12 Münzen). Am Ende der Partie bringt\r\n" + 
+							"die Karte 1 Siegpunkt pro Bauabschnitt des Weltwunders\r\n" + 
+							"ein, der im Laufe der Partie vollendet worden ist (also 1, 2,\r\n" + 
+							"3 oder 4 Siegpunkte).");
+					break;
+				case "bazar":
+					des.concat("Diese Karte bringt 2 Münzen für jede graue Karte in\r\n" + 
+							"den Städten des Spielers UND seiner beiden Nachbarn.\r\n" + 
+							"Hinweis: Dabei zählen auch Gebäude grauer Karten,\r\n" + 
+							"die in derselben Runde wie der Basar in den\r\n" + 
+							"Nachbarstädten gebaut worden sind.");
+					break;
+				case "caravansery":
+					des.concat("Die Karte produziert jede Runde nach Wahl des\r\n" + 
+							"Spielers einen der vier abgebildeten Rohstoffe.\r\n" + 
+							"Hinweis: Diesen Ressourcen können die Nachbarstädte\r\n" + 
+							"nicht kaufen.");
+					break;
+				case "chamberofcommerce":
+					des.concat("Die Karte bringt 1 Münze für jede graue Karte, die sich in der\r\n" + 
+							"Stadt des Spielers befi ndet, wenn die Karte ins Spiel gebracht\r\n" + 
+							"wird. Am Ende der Partie bringt die Karte 2 Siegpunkte für jede\r\n" + 
+							"graue Karte in der Stadt des Spielers.");
+					break;
+				case "easttradingpost":
+					des.concat("Wenn der Spieler diese Karte ins Spiel gebracht\r\n" + 
+							"hat, zahlt er ab der nächsten Runde nur noch\r\n" + 
+							"1 statt 2 Münzen, wenn er von seinem rechten\r\n" + 
+							"Nachbarn Rohstoffe kauft.");
+					break;
+				case "forum":
+					des.concat("Die Karte produziert jede Runde nach Wahl des\r\n" + 
+							"Spielers eines der drei Manufakturprodukte.\r\n" + 
+							"Hinweis: Diesen Ressourcen können die Nachbarstädte\r\n" + 
+							"nicht kaufen.");
+					break;
+				case "haven":
+					des.concat("Die Karte bringt 1 Münze für jede braune Karte, die sich in der\r\n" + 
+							"Stadt des Spielers befi ndet, wenn die Karte ins Spiel gebracht\r\n" + 
+							"wird. Am Ende der Partie bringt die Karte 1 Siegpunkt für jede\r\n" + 
+							"braune Karte in der Stadt des Spielers.");
+					break;
+				case "lighthouse":
+					des.concat("Die Karte bringt 1 Münze für jede gelbe Karte, die sich in der\r\n" + 
+							"Stadt des Spielers befi ndet, wenn die Karte ins Spiel gebracht\r\n" + 
+							"wird. Am Ende der Partie bringt die Karte 1 Siegpunkt für jede\r\n" + 
+							"gelbe Karte in der Stadt des Spielers.");
+					break;
+				case "marketplace":
+					des.concat("Wenn der Spieler diese Karte ins Spiel gebracht\r\n" + 
+							"hat, zahlt er ab der nächsten Runde nur noch\r\n" + 
+							"1 statt 2 Münzen, wenn er von einem seiner\r\n" + 
+							"beiden Nachbarn Manufakturprodukte kauft.");
+					break;
+				case "tavern":
+					des.concat("Die Karte bringt 5 Münzen ein. Der Spieler\r\n" + 
+							"erhält die Münzen aus dem allgemeinen Vorrat, sobald er die Karte\r\n" + 
+							"ins Spiel bringt.");
+					break;
+				case "vineyard":
+					des.concat("Diese Karte bringt 1 Münze für jede braune Karte in\r\n" + 
+							"den Städten des Spielers UND seiner beiden Nachbarn.\r\n" + 
+							"Hinweis: Dabei zählen auch Gebäude brauner Karten,\r\n" + 
+							"die in derselben Runde wie die Presse in den\r\n" + 
+							"Nachbarstädten gebaut worden sind.");
+					break;
+				case "westtradingpost":
+					des.concat("Wenn der Spieler diese Karte ins Spiel gebracht\r\n" + 
+							"hat, zahlt er ab der nächsten Runde nur noch\r\n" + 
+							"1 statt 2 Münzen, wenn er von seinem linken\r\n" + 
+							"Nachbarn Rohstoffe kauft.");
+					break;
+				default:
+					System.out.println("Not assigned:"+ card.getInternalName());
+				}
+				break;
 			default:
 				return;
 			}

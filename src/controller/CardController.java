@@ -385,7 +385,7 @@ public class CardController {
 		)));
 		cards.add(new Card(ResourceType.GEAR,1,"Werkstatt", "workshop", CardType.GREEN, null, addRArray(new Resource(1,ResourceType.GLASS)),null,null));
 		
-		addDefaultDescriptions(cards);
+		addDescriptions(cards);
 		addOtherDescriptions();
 		
 		//Clone cards depending on player number
@@ -432,7 +432,7 @@ public class CardController {
 		return index;
 	}
 
-	private void addDefaultDescriptions(ArrayList<Card> cards) {
+	private void addDescriptions(ArrayList<Card> cards) {
 		for(Card card : cards) {
 			String des = new String(card.getName()+"\n\n");
 			if(card.getRequired() == null) 
@@ -459,7 +459,49 @@ public class CardController {
 						"werden addiert.");
 			case PURPLE:
 				switch(card.getInternalName()) {
-				case "":
+				case "buildersguild":
+					des.concat("1 Siegpunkt pro\r\n" + 
+							"Bauabschnitt der Weltwunder, die in den\r\n" + 
+							"beiden Nachbarstädten UND in der eigenen\r\n" + 
+							"Stadt vollendet worden sind.");
+					break;
+				case "craftmensguild":
+					des.concat("1 Siegpunkt für jede graue\r\n" + 
+							"Karte in den beiden Nachbarstädten.");
+					break;
+				case "magistratesguild":
+					des.concat("1 Siegpunkt für jede blaue\r\n" + 
+							"Karte in den beiden Nachbarstädten.");
+					break;
+				case "philosophersguild":
+					des.concat("1 Siegpunkt für jede\r\n" + 
+							"grüne Karte in den beiden Nachbarstädten.");
+					break;
+				case "scientistguild":
+					des.concat("Der Spieler profi\r\n" + 
+							"tiert nach seiner Wahl von einem der drei\r\n" + 
+							"Forschungssymbole.");
+					break;
+				case "shipownersguild":
+					des.concat("1 Siegpunkt für jede braune, graue\r\n" + 
+							"und violette Karte in der eigenen Stadt.");
+					break;
+				case "spiesguild":
+					des.concat("1 Siegpunkt für jede rote\r\n" + 
+							"Karte in den beiden Nachbarstädten.");
+					break;
+				case "strategistguild":
+					des.concat("1 Siegpunkt für jeden Niederlage-\r\n" + 
+							"Marker in den Nachbarstädten.");
+					break;
+				case "tradersguild":
+					des.concat("1 Siegpunkt für jede gelbe\r\n" + 
+							"Karte in den beiden Nachbarstädten.");
+					break;
+				case "workersguild":
+					des.concat("1 Siegpunkt für jede braune\r\n" + 
+							"Karte in den beiden Nachbarstädten.");
+					break;
 				default:
 					System.out.println("Not assigned:"+ card.getInternalName());
 				}

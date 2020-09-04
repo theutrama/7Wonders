@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import controller.CardController;
 import controller.SevenWondersController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Game;
+import model.card.Card;
 import model.player.Player;
 
 public class GameBoardViewController extends VBox {
@@ -293,10 +295,18 @@ public class GameBoardViewController extends VBox {
 		setup();
 	}
 	
-	public void setCards() {
-		Button btn = (Button) hbox_cards.getChildren().get(0);
-		ImageView img = (ImageView) btn.getChildrenUnmodifiable().get(0);
-		
+	public void setHandCards() {
+		Player player = this.boards.get(0).getPlayer();
+		ArrayList<Card> hand = player.getHand();
+		for(int i = 0; i < hand.size(); i++) {
+			try {
+				Button btn = (Button) hbox_cards.getChildren().get(i);
+				ImageView img = (ImageView) btn.getGraphic();
+				img.setImage(Utils.toImage(hand.get(i).getImage()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void setup() {
@@ -311,6 +321,7 @@ public class GameBoardViewController extends VBox {
 		for(Board board : this.boards) {
 			board.refresh();
 		}
+		setHandCards();
 	}
 	
 	
@@ -400,8 +411,7 @@ public class GameBoardViewController extends VBox {
 				this.boards.get(0).refresh();
 			}
 		}
-		
-		
+		setHandCards();
 		
 	}
 

@@ -185,10 +185,18 @@ public class Player implements Serializable {
 		this.hand = hand;
 	}
 	
+	/**
+	 * getter for {@link #olympiaUsed}
+	 * @return olympia ability used
+	 */
 	public boolean isOlympiaUsed() {
 		return olympiaUsed;
 	}
 	
+	/**
+	 * setter for {@link #olympiaUsed}
+	 * @param olympiaUsed olympia ability used
+	 */
 	public void setOlympiaUsed(boolean olympiaUsed) {
 		this.olympiaUsed = olympiaUsed;
 	}

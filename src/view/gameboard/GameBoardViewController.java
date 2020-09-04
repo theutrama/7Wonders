@@ -311,12 +311,12 @@ public class GameBoardViewController extends VBox {
 	
 	public void setup() {
 		Game game = Main.getSWController().getGame();
-		int count = 1;
+		int[] ids = loadBoards(game.getCurrentGameState().getPlayers().size());
+		int index = 0;
 		for(Player player : game.getCurrentGameState().getPlayers()) {
-			this.boards.add(createBoard(player, count));
-			count++;
+			this.boards.add(createBoard(player, ids[index]));
+			index++;
 		}
-		loadBoards(game.getCurrentGameState().getPlayers().size());
 		
 		for(Board board : this.boards) {
 			board.refresh();
@@ -369,6 +369,11 @@ public class GameBoardViewController extends VBox {
 		
 		private void setBackground(){
 			try {
+				System.out.println("BOX: "+(this.box==null));
+				System.out.println("BOX.getChildren(): "+(this.box.getChildren()==null));
+				System.out.println("BOX.getChildren(): "+this.box.getChildren().size());
+				
+				
 				GridPane pane = (GridPane) this.box.getChildren().get(1);
 				Image img = Utils.toImage(this.player.getBoard().getImage());
 				pane.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(img.getWidth(), img.getHeight(), false,  false, true,  false))));
@@ -416,7 +421,7 @@ public class GameBoardViewController extends VBox {
 		
 	}
 
-	private void loadBoards(int count) {
+	private int[] loadBoards(int count) {
 		switch(count) {
 		case 2:
 			vbox_board3.getChildren().clear();
@@ -424,29 +429,30 @@ public class GameBoardViewController extends VBox {
 			vbox_board5.getChildren().clear();
 			vbox_board6.getChildren().clear();
 			vbox_board7.getChildren().clear();
-			break;
+			return new int[] {1,2};
 		case 3:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			vbox_board6.getChildren().clear();
 			vbox_board7.getChildren().clear();
-			break;
+			return new int[] {1,2,3};
 		case 4:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			vbox_board7.getChildren().clear();
 			HBox parent1 = (HBox) vbox_board7.getParent();
 			parent1.getChildren().remove(vbox_board7);
-			break;
+			return new int[] {1,2,3,6};
 		case 5:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
-			break;
+			return new int[] {1,2,3,6,7};
 		case 6:
 			vbox_board7.getChildren().clear();
 			HBox parent2 = (HBox) vbox_board7.getParent();
 			parent2.getChildren().remove(vbox_board7);
-			break;
+			return new int[] {1,2,3,5,6};
 		}
+		return new int[] {1,2,3,5,6,7};
 	}
 }

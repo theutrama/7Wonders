@@ -9,7 +9,8 @@ import model.card.Resource;
 import model.player.Player;
 import model.card.CardType;
 
-public abstract class WonderBoard implements Serializable{
+public abstract class WonderBoard implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** indicates if each slot (0-2) is filled with a card */
 	private boolean[] filled;
 	/** card lists on the board */
@@ -20,7 +21,7 @@ public abstract class WonderBoard implements Serializable{
 	protected Resource[] slotRequirements;
 	/** assigned player */
 	protected Player player;
-	
+
 	/**
 	 * create wonder board
 	 */
@@ -33,14 +34,15 @@ public abstract class WonderBoard implements Serializable{
 		research = new ArrayList<>();
 		filled = new boolean[3];
 	}
-	
+
 	/**
 	 * getter for the image path
+	 * 
 	 * @return path of the assigned image file
 	 */
 	public String getImage() {
 		String name = getClass().getSimpleName().replaceAll("Board", "");
-		return "src"+File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
+		return "src" + File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
 	}
 
 	/**
@@ -61,80 +63,144 @@ public abstract class WonderBoard implements Serializable{
 	public void slot3() {
 		player.addVictoryPoints(7);
 	}
-	
+
 	/**
 	 * getter for {@link #filled} at index slot
+	 * 
 	 * @param slot slot index
 	 * @return filled
 	 */
 	public boolean isFilled(int slot) {
 		return filled[slot];
 	}
-	
+
+	/**
+	 * getter for one index of {@link #slotRequirements}
+	 * 
+	 * @param slot slot index (0-2)
+	 * @return slot requirement
+	 */
 	public Resource getSlotResquirement(int slot) {
 		return slotRequirements[slot];
 	}
-	
+
 	/**
 	 * getter to find the next unfinished build stage
+	 * 
 	 * @return the first unfinished build stage of the wonder or -1 if it is finished
 	 */
 	public int nextSlot() {
 		return filled[0] ? (filled[1] ? (filled[2] ? -1 : 2) : 1) : 0;
 	}
-	
+
 	/**
 	 * getter for the resources needed for the next wonder build stage
+	 * 
 	 * @return null if the wonder is finished or the resource requirement of the first unfinished build stage
 	 */
 	public Resource getNextSlotRequirement() {
 		int next = nextSlot();
 		return next == -1 ? null : slotRequirements[next];
 	}
-	
+
+	/**
+	 * getter for {@link #resource}
+	 * 
+	 * @return resource
+	 */
 	public Resource getResource() {
 		return resource;
 	}
-	
+
+	/**
+	 * getter for {@link #resources}
+	 * 
+	 * @return resource cards
+	 */
 	public ArrayList<Card> getResources() {
 		return resources;
 	}
-	
+
+	/**
+	 * getter for {@link #military}
+	 * 
+	 * @return military cards
+	 */
 	public ArrayList<Card> getMilitary() {
 		return military;
 	}
-	
+
+	/**
+	 * getter for {@link #trade}
+	 * 
+	 * @return trade cards
+	 */
 	public ArrayList<Card> getTrade() {
 		return trade;
 	}
-	
+
+	/**
+	 * getter for {@link #guilds}
+	 * 
+	 * @return guild cards
+	 */
 	public ArrayList<Card> getGuilds() {
 		return guilds;
 	}
-	
+
+	/**
+	 * getter for {@link #civil}
+	 * 
+	 * @return civil cards
+	 */
 	public ArrayList<Card> getCivil() {
 		return civil;
 	}
-	
+
+	/**
+	 * getter for {@link #research}
+	 * 
+	 * @return research cards
+	 */
 	public ArrayList<Card> getResearch() {
 		return research;
 	}
-	
+
+	/**
+	 * setter for {@link #player}
+	 * 
+	 * @param player player
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
+
+	/**
+	 * getter for {@link #player}
+	 * 
+	 * @return assigned player
+	 */
 	public Player getPlayer() {
 		return this.player;
 	}
-	
+
+	/**
+	 * getter for the board name
+	 * 
+	 * @return board name
+	 */
 	public String getBoardName() {
 		return getClass().getSimpleName().replaceAll("Board", "");
 	}
-	
+
+	/**
+	 * adds a card to the proper card list
+	 * 
+	 * @param card a card to be added
+	 */
 	public void addCard(Card card) {
-		CardType temp= card.getType();
-		switch(temp) {
+		CardType temp = card.getType();
+		switch (temp) {
 		case BROWN:
 		case GRAY:
 			resources.add(card);
@@ -155,7 +221,7 @@ public abstract class WonderBoard implements Serializable{
 			guilds.add(card);
 			break;
 		}
-		
+
 	}
 
 }

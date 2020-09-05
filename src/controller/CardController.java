@@ -794,6 +794,9 @@ public class CardController {
 	public boolean hasCard(Player player, String cardname) {
 		WonderBoard board = player.getBoard();
 
+		for (Card card : board.getResources())
+			if (card.getName().equalsIgnoreCase(cardname))
+				return true;
 		for (Card card : board.getCivil())
 			if (card.getName().equalsIgnoreCase(cardname))
 				return true;
@@ -804,6 +807,9 @@ public class CardController {
 			if (card.getName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getResearch())
+			if (card.getName().equalsIgnoreCase(cardname))
+				return true;
+		for (Card card : board.getTrade())
 			if (card.getName().equalsIgnoreCase(cardname))
 				return true;
 

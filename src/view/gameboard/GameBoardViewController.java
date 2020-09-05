@@ -451,8 +451,8 @@ public class GameBoardViewController extends VBox {
 			vbox_board7.getChildren().clear();
 			HBox parent2 = (HBox) vbox_board7.getParent();
 			parent2.getChildren().remove(vbox_board7);
-			return new int[] {1,2,3,5,6};
+			return new int[] {1,2,3,4,5,6};
 		}
-		return new int[] {1,2,3,5,6,7};
+		return new int[] {1,2,3,4,5,6,7};
 	}
 }

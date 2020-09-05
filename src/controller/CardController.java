@@ -467,7 +467,7 @@ public class CardController {
 							"beiden Nachbarstädten UND in der eigenen\r\n" + 
 							"Stadt vollendet worden sind.");
 					break;
-				case "craftmensguild":
+				case "craftsmensguild":
 					des.concat("1 Siegpunkt für jede graue\r\n" + 
 							"Karte in den beiden Nachbarstädten.");
 					break;
@@ -479,7 +479,7 @@ public class CardController {
 					des.concat("1 Siegpunkt für jede\r\n" + 
 							"grüne Karte in den beiden Nachbarstädten.");
 					break;
-				case "scientistguild":
+				case "scientistsguild":
 					des.concat("Der Spieler profi\r\n" + 
 							"tiert nach seiner Wahl von einem der drei\r\n" + 
 							"Forschungssymbole.");
@@ -493,7 +493,7 @@ public class CardController {
 					des.concat("1 Siegpunkt für jede rote\r\n" + 
 							"Karte in den beiden Nachbarstädten.");
 					break;
-				case "strategistguild":
+				case "strategistsguild":
 					des.concat("1 Siegpunkt für jeden Niederlage-\r\n" + 
 							"Marker in den Nachbarstädten.");
 					break;

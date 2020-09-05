@@ -409,20 +409,11 @@ public class GameBoardViewController extends VBox {
 			vbox.setAlignment(Pos.CENTER);
 			vbox.setSpacing(5);
 			btn.setGraphic(vbox);
-			btn.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), 
+			vbox.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), 
 					BackgroundRepeat.NO_REPEAT, 
 					BackgroundRepeat.NO_REPEAT, 
 					BackgroundPosition.CENTER, 
 					new BackgroundSize(1,1,false,false, true, false))));
-			
-			vbox.setVisible(false);
-			btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
-		            if (newValue) {
-		            	vbox.setVisible(true);
-		            } else {
-		            	vbox.setVisible(false);
-		            }
-		        });
 			
 			
 		} catch (IOException e) {
@@ -459,6 +450,11 @@ public class GameBoardViewController extends VBox {
 			System.out.println("SET CURRENT CARD "+i+" "+card.getName());
 			currentCards[i] = card;
 			Button btn = (Button) hbox_cards.getChildren().get(i);
+			
+			if(!(btn.getGraphic() instanceof ImageView)) {
+				btn.setGraphic(new ImageView());
+			}
+			
 			ImageView img = (ImageView) btn.getGraphic();
 			try {
 				img.setImage(Utils.toImage(card.getImage()));

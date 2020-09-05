@@ -18,6 +18,8 @@ public class Card implements Serializable {
 	private String name;
 	/** internal name */
 	private String internalName;
+	/** description */
+	private String description;
 	/** card type */
 	private CardType type;
 	/** the scienece type, NONE if {@link #type} is not {@link CardType#GREEN} */
@@ -30,7 +32,9 @@ public class Card implements Serializable {
 	private String[] dependencies;
 	/** effects on the player */
 	private ArrayList<Effect> effects;
-
+	/** Victory-Points from civil buildings */
+	private int vPoints;
+	
 	/**
 	 * create a card
 	 * 
@@ -46,6 +50,11 @@ public class Card implements Serializable {
 	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies,
 			ArrayList<Effect> effects) {
 		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
+	}
+	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies,
+			ArrayList<Effect> effects, int vpoints) {
+		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
+		this.vPoints = vpoints;
 	}
 
 	/**
@@ -89,6 +98,7 @@ public class Card implements Serializable {
 		this.required = toCopy.required;
 		this.dependencies = toCopy.dependencies;
 		this.effects = toCopy.effects;
+		this.description = toCopy.description;
 	}
 
 	/**
@@ -210,6 +220,17 @@ public class Card implements Serializable {
 	 */
 	public String getInternalName() {
 		return internalName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getvPoints() {
+		return vPoints;
 	}
 
 }

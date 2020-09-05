@@ -10,11 +10,6 @@ public class ResourceTree {
 	/** leaves */
 	private ArrayList<InnerResourceTree> leaves;
 
-	/** create a tree with a base resource of zero for all types */
-	public ResourceTree() {
-		this(new ResourceBundle());
-	}
-
 	/**
 	 * create a tree with a base requirement
 	 * 
@@ -32,7 +27,7 @@ public class ResourceTree {
 	 * @param resources list of resources
 	 */
 	public void addResourceOption(ArrayList<Resource> resources) {
-		if (resources.isEmpty())
+		if (resources == null || resources.isEmpty())
 			return;
 		ArrayList<InnerResourceTree> newLeaves = new ArrayList<>();
 		for (InnerResourceTree child : leaves) {
@@ -106,7 +101,7 @@ public class ResourceTree {
 		 */
 		private void addChild(InnerResourceTree tree) {
 			children.add(tree);
-			tree.resourceSum = resource.add(tree.resourceSum);
+			tree.resourceSum = resourceSum.add(tree.resource);
 			tree.parent = this;
 		}
 	}

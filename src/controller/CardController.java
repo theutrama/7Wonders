@@ -795,22 +795,22 @@ public class CardController {
 		WonderBoard board = player.getBoard();
 
 		for (Card card : board.getResources())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getCivil())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getGuilds())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getMilitary())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getResearch())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 		for (Card card : board.getTrade())
-			if (card.getName().equalsIgnoreCase(cardname))
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return true;
 
 		return false;

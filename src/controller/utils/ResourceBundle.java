@@ -153,6 +153,14 @@ public class ResourceBundle {
 		}
 	}
 
+	/**
+	 * getter for {@link #coins}
+	 * @return coins
+	 */
+	public int getCoins() {
+		return coins;
+	}
+	
 	@Override
 	public String toString() {
 		return "Resources: " + wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;

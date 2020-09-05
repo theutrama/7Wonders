@@ -58,4 +58,12 @@ public class TradeOption {
 		return rightCost;
 	}
 
+	/**
+	 * get description string
+	 */
+	@Override
+	public String toString() {
+		return "[" + leftTrade.toString() + "] (" + leftCost + " coins) <-> [" + rightTrade.toString() + "] (" + rightCost + " coins)";
+	}
+
 }

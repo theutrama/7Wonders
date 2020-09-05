@@ -57,8 +57,7 @@ public class PlayerController {
 	 * @return player object or null if no player of the current game has this name
 	 */
 	public Player getPlayer(String playername) {
-		int state = swController.getGame().getCurrentState();
-		ArrayList<Player> list = swController.getGame().getStates().get(state).getPlayers();
+		ArrayList<Player> list = swController.getGame().getCurrentGameState().getPlayers();
 
 		for (Player player : list) {
 			if (player.getName().equalsIgnoreCase(playername)) {
@@ -99,11 +98,12 @@ public class PlayerController {
 	 * @return left neighbour
 	 */
 	public Player getLeftNeighbour(Player player) {
-		ArrayList<Player> players = swController.getGame().getStates().get(swController.getGame().getCurrentState()).getPlayers();
-		if (players.indexOf(player) == 0) {
-			return players.get(players.size() - 1);
+		ArrayList<Player> players = swController.getGame().getCurrentGameState().getPlayers();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getName().equals(player.getName()))
+				return players.get(i == 0 ? players.size() - 1 : i - 1);
 		}
-		return players.get(players.indexOf(player) - 1);
+		return null;
 	}
 
 	/**
@@ -113,11 +113,12 @@ public class PlayerController {
 	 * @return right neighbour
 	 */
 	public Player getRightNeighbour(Player player) {
-		ArrayList<Player> players = swController.getGame().getStates().get(swController.getGame().getCurrentState()).getPlayers();
-		if (players.indexOf(player) == players.size() - 1) {
-			return players.get(0);
+		ArrayList<Player> players = swController.getGame().getCurrentGameState().getPlayers();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getName().equals(player.getName()))
+				return players.get(i == players.size() - 1 ? 0 : i + 1);
 		}
-		return players.get(players.indexOf(player) + 1);
+		return null;
 	}
 
 	/**
@@ -211,11 +212,12 @@ public class PlayerController {
 	 */
 	private ResourceBundle getStaticResources(Player player) {
 		ResourceBundle result = new ResourceBundle();
-		
+
 		result.add(player.getBoard().getResource());
-		System.out.println(player.getName() + " has board " + player.getBoard().getBoardName() + " with resource: " + player.getBoard().getResource().toString());
+		result.add(new Resource(player.getCoins(), ResourceType.COINS));
+
 		for (Card card : player.getBoard().getResources()) {
-			if (card.getProducing().size() == 1)
+			if (card.getProducing() != null && card.getProducing().size() == 1)
 				result.add(card.getProducing().get(0));
 		}
 		return result;
@@ -231,11 +233,11 @@ public class PlayerController {
 	private ResourceTree generateResourceTree(Player player, ResourceBundle staticResources) {
 		ResourceTree tree = new ResourceTree(staticResources);
 		for (Card card : player.getBoard().getResources()) {
-			if (card.getProducing().size() > 1)
+			if (card.getProducing() != null && card.getProducing().size() > 1)
 				tree.addResourceOption(card.getProducing());
 		}
 		for (Card card : player.getBoard().getTrade()) {
-			if (card.getProducing().size() > 1)
+			if (card.getProducing() != null && card.getProducing().size() > 1)
 				tree.addResourceOption(card.getProducing());
 		}
 		if (player.getBoard() instanceof AlexandriaBoard && player.getBoard().isFilled(1))
@@ -279,7 +281,7 @@ public class PlayerController {
 				return BuildCapability.FREE;
 		}
 
-		return card.getRequired() == null || card.getRequired().isEmpty() ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());
+		return (card.getRequired() == null || card.getRequired().isEmpty()) ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());
 	}
 
 	/**
@@ -292,29 +294,24 @@ public class PlayerController {
 	public BuildCapability hasResources(Player player, ArrayList<Resource> resources) {
 		if (resources.isEmpty())
 			return BuildCapability.OWN_RESOURCE;
+		
+		ResourceBundle cardRequirement = new ResourceBundle(resources);
+		if (cardRequirement.getCoins() > player.getCoins())
+			return BuildCapability.NONE;
 
 		ResourceBundle staticResources = getStaticResources(player);
-		ResourceBundle cardRequirement = new ResourceBundle(resources);
-		
-		System.out.println("static resources: " + staticResources.toString());
 
 		if (staticResources.greaterOrEqualThan(cardRequirement))
 			return BuildCapability.OWN_RESOURCE;
-		
-		System.out.println("step 1");
 
 		ArrayList<ResourceBundle> combinations = generateResourceTree(player, staticResources).getAllCombinations();
 
-		removeDuplicates(combinations);
-		
-		System.out.println(combinations.toString());
+		removeGOEDuplicates(combinations);
 
 		for (ResourceBundle bundle : combinations) {
 			if (bundle.greaterOrEqualThan(cardRequirement))
 				return BuildCapability.OWN_RESOURCE;
 		}
-		
-		System.out.println("step 2");
 
 		return getTradeOptions(player, cardRequirement).isEmpty() ? BuildCapability.NONE : BuildCapability.TRADE;
 	}
@@ -329,7 +326,7 @@ public class PlayerController {
 	private ArrayList<TradeOption> getTradeOptions(Player player, ResourceBundle resources) {
 		ArrayList<ResourceBundle> combinations = generateResourceTree(player, getStaticResources(player)).getAllCombinations();
 
-		removeDuplicates(combinations);
+		removeGOEDuplicates(combinations);
 
 		ArrayList<ResourceBundle> missing = new ArrayList<>();
 		for (ResourceBundle bundle : combinations) // get list of missing resource quantities per combination
@@ -337,6 +334,7 @@ public class PlayerController {
 
 		ArrayList<TradeOption> result = new ArrayList<>();
 		Player left = getLeftNeighbour(player), right = getRightNeighbour(player);
+
 		ArrayList<ArrayList<ResourceBundle>> leftTradeLists = generateTradeTree(left).getAllCombinationsAsList();
 		ArrayList<ArrayList<ResourceBundle>> rightTradeLists = generateTradeTree(right).getAllCombinationsAsList();
 
@@ -344,10 +342,19 @@ public class PlayerController {
 		leftTradeLists.forEach(list -> leftTrades.addAll(allSums(list)));
 		rightTradeLists.forEach(list -> rightTrades.addAll(allSums(list)));
 
-		removeDuplicates(leftTrades);
-		removeDuplicates(rightTrades);
+		removeEqualResources(leftTrades);
+		removeEqualResources(rightTrades);
 
 		for (ResourceBundle missingResources : missing) {
+
+			for (ResourceBundle leftTrade : leftTrades)
+				if (leftTrade.getCostForPlayer(player, true) <= player.getCoins() && leftTrade.equals(missingResources))
+					result.add(new TradeOption(leftTrade, null, leftTrade.getCostForPlayer(player, true), 0));
+
+			for (ResourceBundle rightTrade : rightTrades)
+				if (rightTrade.getCostForPlayer(player, false) <= player.getCoins() && rightTrade.equals(missingResources))
+					result.add(new TradeOption(null, rightTrade, 0, rightTrade.getCostForPlayer(player, true)));
+
 			for (ResourceBundle leftTrade : leftTrades) {
 				for (ResourceBundle rightTrade : rightTrades) {
 					if (leftTrade.getCostForPlayer(player, true) + rightTrade.getCostForPlayer(player, false) > player.getCoins())
@@ -378,16 +385,36 @@ public class PlayerController {
 	 * 
 	 * @param list list of bundles
 	 */
-	private void removeDuplicates(ArrayList<ResourceBundle> list) {
+	private void removeGOEDuplicates(ArrayList<ResourceBundle> list) {
+		ArrayList<ResourceBundle> toRemove = new ArrayList<>();
+		for (int i = 0; i < list.size(); i++) {
+			for (int j = 0; j < list.size(); j++)
+				if (i != j && list.get(i).greaterOrEqualThan(list.get(j))) {
+					toRemove.add(list.get(i));
+					break;
+				}
+		}
+		list.removeAll(toRemove);
+	}
+
+	/**
+	 * removes all bundles that are equal to any other bundle
+	 * 
+	 * @param list list of resource bundles
+	 */
+	private void removeEqualResources(ArrayList<ResourceBundle> list) {
 		ResourceBundle[] copy = list.toArray(new ResourceBundle[] {});
+		list.clear();
 		for (ResourceBundle bundle : copy) {
-			int i = 0;
-			while (i < list.size()) {
-				if (list.get(i).greaterOrEqualThan(bundle))
-					list.remove(i);
-				else
-					i++;
+			boolean add = true;
+			for (ResourceBundle listBundle : list) {
+				if (bundle.equals(listBundle)) {
+					add = false;
+					break;
+				}
 			}
+			if (add)
+				list.add(bundle);
 		}
 	}
 
@@ -401,7 +428,7 @@ public class PlayerController {
 		ArrayList<ResourceBundle> bundleSums = new ArrayList<>();
 		int max = 1 << bundles.size();
 
-		for (int i = 0; i < max; i++) {
+		for (int i = 1; i < max; i++) {
 			ResourceBundle res = new ResourceBundle();
 			for (int j = 0; j < bundles.size(); j++) {
 				if (((i >> j) & 1) == 1)

@@ -1,17 +1,11 @@
 package model.card;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import application.Utils;
-import javafx.scene.Node;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.ImageView;
-
 public class Card implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** age */
 	private int age;
 	/** displayed name */
@@ -34,7 +28,7 @@ public class Card implements Serializable {
 	private ArrayList<Effect> effects;
 	/** Victory-Points from civil buildings */
 	private int vPoints;
-	
+
 	/**
 	 * create a card
 	 * 
@@ -47,12 +41,11 @@ public class Card implements Serializable {
 	 * @param dependencies sets {@link #dependencies}
 	 * @param effects      sets {@link #effects}
 	 */
-	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies,
-			ArrayList<Effect> effects) {
+	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies, ArrayList<Effect> effects) {
 		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
 	}
-	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies,
-			ArrayList<Effect> effects, int vpoints) {
+
+	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies, ArrayList<Effect> effects, int vpoints) {
 		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
 		this.vPoints = vpoints;
 	}
@@ -70,8 +63,8 @@ public class Card implements Serializable {
 	 * @param dependencies sets {@link #dependencies}
 	 * @param effects      sets {@link #effects}
 	 */
-	public Card(ResourceType scienceType, int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required,
-			String[] dependencies, ArrayList<Effect> effects) {
+	public Card(ResourceType scienceType, int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies,
+			ArrayList<Effect> effects) {
 		this.age = age;
 		this.scienceType = scienceType;
 		this.name = name;
@@ -143,6 +136,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #age}
+	 * 
 	 * @return age
 	 */
 	public int getAge() {
@@ -151,6 +145,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #name}
+	 * 
 	 * @return name
 	 */
 	public String getName() {
@@ -159,6 +154,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #type}
+	 * 
 	 * @return card type
 	 */
 	public CardType getType() {
@@ -167,6 +163,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #producing}
+	 * 
 	 * @return produced resources
 	 */
 	public ArrayList<Resource> getProducing() {
@@ -175,6 +172,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #required}
+	 * 
 	 * @return required resources
 	 */
 	public ArrayList<Resource> getRequired() {
@@ -183,6 +181,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #dependencies}
+	 * 
 	 * @return card dependencies
 	 */
 	public String[] getDependencies() {
@@ -191,6 +190,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #effects}
+	 * 
 	 * @return effect list
 	 */
 	public ArrayList<Effect> getEffects() {
@@ -199,6 +199,7 @@ public class Card implements Serializable {
 
 	/**
 	 * getter for {@link #internalName}
+	 * 
 	 * @return internal name
 	 */
 	public String getInternalName() {
@@ -212,6 +213,7 @@ public class Card implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public int getvPoints() {
 		return vPoints;
 	}

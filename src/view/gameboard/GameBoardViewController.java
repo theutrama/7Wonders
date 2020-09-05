@@ -25,6 +25,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.Game;
 import model.card.Card;
@@ -338,7 +339,7 @@ public class GameBoardViewController extends VBox {
 					path += "check";
 					break;
 				case TRADE:
-					path += "buy";
+					path += "checkyellow";
 					break;
 				case NONE:
 					path += "cross";
@@ -346,12 +347,26 @@ public class GameBoardViewController extends VBox {
 				}
 				
 				currentCards[i] = card;
+				Pane pane = new Pane();
+				pane.setPrefWidth(100);
+				pane.setStyle("-fx-background-image: url('"+card.getImage()+"')");
+				VBox vbox = new VBox();
+				Button btn_place = new Button();
+				HBox hbox_place = new HBox();
+				ImageView img1 = new ImageView();
+				img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+				ImageView img2 = new ImageView();
+				img2.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"place.png"));
+				hbox_place.getChildren().add(img1);
+				hbox_place.getChildren().add(img2);
+				vbox.getChildren().add(hbox_place);
+				pane.getChildren().add(vbox);
+				hbox_cards.getChildren().add(pane);
+				
 				Button btn = (Button) hbox_cards.getChildren().get(i);
 				ImageView img = (ImageView) btn.getGraphic();
-				img.setImage(Utils.toImage(card.getImage()));
+				
 				btn.setTooltip(new Tooltip(card.getDescription()));
-				
-				
 				
 			} catch (IOException e) {
 				e.printStackTrace();

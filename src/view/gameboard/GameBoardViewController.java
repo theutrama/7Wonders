@@ -444,7 +444,7 @@ public class GameBoardViewController extends VBox {
 		            }
 		        });
 			
-			Tooltip tp = new Tooltip(card.getDescription());
+			Tooltip tp = new Tooltip("Test Description");
 			Tooltip.install(cardPane, tp);
 			hbox_cards.getChildren().add(cardPane);
 			

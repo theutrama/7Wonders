@@ -455,12 +455,13 @@ public class GameBoardViewController extends VBox {
 			}
 			
 			currentCards[i] = card;
-			
-			
 			Button btn = (Button) hbox_cards.getChildren().get(i);
 			ImageView img = (ImageView) btn.getGraphic();
-			
-			
+			try {
+				img.setImage(Utils.toImage(card.getImage()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

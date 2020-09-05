@@ -12,7 +12,7 @@ public class Player implements Serializable {
 	/** name */
 	private String name;
 	/** coins */
-	private int coins = 0;
+	private int coins = 3;
 	/** victory points */
 	private int victoryPoints = 0;
 	/** lose points */

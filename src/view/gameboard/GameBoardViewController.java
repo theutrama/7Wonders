@@ -320,8 +320,6 @@ public class GameBoardViewController extends VBox {
 		Player player = this.boards.get(0).getPlayer();
 		ArrayList<Card> hand = player.getHand();
 		
-		System.out.println(player.getName()+" HAND -> "+hand.size());
-		
 		Card card;
 		for(int i = 0; i < hand.size(); i++) {
 			try {
@@ -331,7 +329,8 @@ public class GameBoardViewController extends VBox {
 				Button btn = (Button) hbox_cards.getChildren().get(i);
 				ImageView img = (ImageView) btn.getGraphic();
 				img.setImage(Utils.toImage(card.getImage()));
-//				btn.setTooltip(card.getDescription());
+				System.out.println(card.getDescription());
+				btn.setTooltip(new Tooltip(card.getDescription()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

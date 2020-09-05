@@ -329,7 +329,6 @@ public class GameBoardViewController extends VBox {
 				Button btn = (Button) hbox_cards.getChildren().get(i);
 				ImageView img = (ImageView) btn.getGraphic();
 				img.setImage(Utils.toImage(card.getImage()));
-				System.out.println(card.getDescription());
 				btn.setTooltip(new Tooltip(card.getDescription()));
 			} catch (IOException e) {
 				e.printStackTrace();

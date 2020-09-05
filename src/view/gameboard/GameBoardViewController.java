@@ -267,6 +267,7 @@ public class GameBoardViewController extends VBox {
     private boolean choose = true;
     private Player firstPlayer;
     
+    private final String imagePath = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
     private final int ACTION_CARD_SLOT = 3;
     
     public Board createBoard(Player player, int i) {
@@ -304,7 +305,7 @@ public class GameBoardViewController extends VBox {
 			
 			e.printStackTrace();
 		}
-		
+
 		setup();
 	}
 	
@@ -315,20 +316,16 @@ public class GameBoardViewController extends VBox {
 		
 		try {
 			Button btn = (Button) hbox_cards.getChildren().get(ACTION_CARD_SLOT);
-			ImageView img = (ImageView) btn.getGraphic();
-			img.setImage(Utils.toImage(card.getImage()));
-		
 			VBox vbox = new VBox();
-			
 			//Button Place Card
 			Button btn_place = new Button();
 			HBox hbox_place = new HBox();
 			ImageView img1 = new ImageView();
-			img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img1.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 			img1.setFitWidth(38);
 			img1.setFitHeight(20);
 			ImageView img2 = new ImageView();
-			img2.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"place.png"));
+			img2.setImage(Utils.toImage(imagePath+"place.png"));
 			img2.setFitWidth(45);
 			img2.setFitHeight(30);
 			hbox_place.getChildren().add(img1);
@@ -339,9 +336,9 @@ public class GameBoardViewController extends VBox {
 			btn_place.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+						img1.setImage(Utils.toImage(imagePath+"arrowhover.png"));
 		            } else {
-		            	img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            	img1.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -353,11 +350,11 @@ public class GameBoardViewController extends VBox {
 			Button btn_wonder = new Button();
 			HBox hbox_wonder = new HBox();
 			ImageView img3 = new ImageView();
-			img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img3.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 			img3.setFitWidth(38);
 			img3.setFitHeight(20);
 			ImageView img4 = new ImageView();
-			img4.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"pyramid-stage3.png"));
+			img4.setImage(Utils.toImage(imagePath+"pyramid-stage3.png"));
 			img4.setFitWidth(45);
 			img4.setFitHeight(35);
 			hbox_wonder.getChildren().add(img3);
@@ -368,9 +365,9 @@ public class GameBoardViewController extends VBox {
 			btn_wonder.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+						img3.setImage(Utils.toImage(imagePath+"arrowhover.png"));
 		            } else {
-		            	img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            	img3.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -381,11 +378,11 @@ public class GameBoardViewController extends VBox {
 			Button btn_sell = new Button();
 			HBox hbox_sell = new HBox();
 			ImageView img5 = new ImageView();
-			img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img5.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 			img5.setFitWidth(38);
 			img5.setFitHeight(20);
 			ImageView img6 = new ImageView();
-			img6.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"coin3.png"));
+			img6.setImage(Utils.toImage(imagePath+"coin3.png"));
 			HBox.setMargin(img6, new Insets(0, 5, 0, 0));
 			img6.setFitWidth(35);
 			img6.setFitHeight(33);
@@ -397,9 +394,9 @@ public class GameBoardViewController extends VBox {
 			btn_sell.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+						img5.setImage(Utils.toImage(imagePath+"arrowhover.png"));
 		            } else {
-		            	img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            	img5.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -411,8 +408,13 @@ public class GameBoardViewController extends VBox {
 			vbox.getChildren().add(btn_sell);
 			vbox.setAlignment(Pos.CENTER);
 			vbox.setSpacing(5);
-			vbox.setStyle("-fx-background-color: #b6b6b6BB");
 			btn.setGraphic(vbox);
+			btn.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), 
+					BackgroundRepeat.NO_REPEAT, 
+					BackgroundRepeat.NO_REPEAT, 
+					BackgroundPosition.CENTER, 
+					new BackgroundSize(1,1,false,false, true, false))));
+			
 			vbox.setVisible(false);
 			btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
 		            if (newValue) {
@@ -421,6 +423,7 @@ public class GameBoardViewController extends VBox {
 		            	vbox.setVisible(false);
 		            }
 		        });
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -431,14 +434,13 @@ public class GameBoardViewController extends VBox {
 		if(!choose)return;
 		Player player = Main.getSWController().getGame().getCurrentPlayer();
 		ArrayList<Card> hand = player.getHand();
-		
+
 		Card card;
 		for(int i = 0; i < hand.size(); i++) {
 			card = hand.get(i);
 			
 			BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
-			System.out.println("CAPA:"+capability+" "+player.getName()+" "+card.getName()+" "+player.getCoins());
-			String path = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
+			String path = imagePath;
 			switch(capability) {
 			case FREE:
 				path += "free";
@@ -454,6 +456,7 @@ public class GameBoardViewController extends VBox {
 				break;
 			}
 			
+			System.out.println("SET CURRENT CARD "+i+" "+card.getName());
 			currentCards[i] = card;
 			Button btn = (Button) hbox_cards.getChildren().get(i);
 			ImageView img = (ImageView) btn.getGraphic();
@@ -484,11 +487,8 @@ public class GameBoardViewController extends VBox {
 				public void handle(ActionEvent event) {
 					if( choose ) {
 						getCurrentPlayer().setChooseCard(currentCards[a]);
-						System.out.println(getCurrentPlayer().getName()+" set card "+currentCards[a].getName());
 					} else {
 						getCurrentPlayer().setChooseCard(null);
-						System.out.println(getCurrentPlayer().getName()+" DO ACTION!");
-						
 					}
 					turnToNext();
 				}
@@ -499,11 +499,13 @@ public class GameBoardViewController extends VBox {
 		for(Board board : this.boards) {
 			board.refresh();
 		}
+		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
+		System.out.println("SetHandCards start");
 		setHandCards();
 	}
 	
 	public Player getCurrentPlayer() {
-		return this.boards.get(0).getPlayer();
+		return Main.getSWController().getGame().getCurrentPlayer();
 	}
 	
 	public void selectCardFromTrash(Player player) {
@@ -598,10 +600,10 @@ public class GameBoardViewController extends VBox {
 			choose = !choose;
 			
 			for(int i = 0; i < 7; i++) {
+				Node n = hbox_cards.getChildren().get(i);
 				if(i!=ACTION_CARD_SLOT) {
-					Node n = hbox_cards.getChildren().get(i);
 					n.setVisible(choose);
-				}
+				}else n.setVisible(true);
 			}
 			
 			
@@ -610,6 +612,9 @@ public class GameBoardViewController extends VBox {
 			else
 				System.out.println("Switch to action");
 		}
+		
+		System.out.println("CURRENT: "+this.boards.get(0).getPlayer().getName()+" "+this.boards.get(0).getPlayer().getBoard().getBoardName());
+		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		
 		if(choose) {
 			setHandCards();

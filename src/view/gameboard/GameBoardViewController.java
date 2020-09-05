@@ -1,17 +1,18 @@
 package view.gameboard;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
-import controller.CardController;
-import controller.SevenWondersController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -255,7 +256,12 @@ public class GameBoardViewController extends VBox {
     @FXML
     public ImageView img_boardcard5_3;
     private ArrayList<Board> boards = new ArrayList<Board>();
-
+    private Card[] currentCards = new Card[7];
+    private boolean choose = true;
+    private Player firstPlayer;
+    
+    private final int ACTION_CARD_SLOT = 3;
+    
     public Board createBoard(Player player, int i) {
     	VBox vbox_board = Utils.getValue(this, "vbox_board"+i);
     	HBox hbox_board_ressources = Utils.getValue(this, "hbox_board"+i+"_ressources");
@@ -295,14 +301,37 @@ public class GameBoardViewController extends VBox {
 		setup();
 	}
 	
+	public void setActionCard() {
+		if(choose)return;
+		Player player = this.boards.get(0).getPlayer();
+		Card card = player.getChosenCard();
+		
+		try {
+			Button btn = (Button) hbox_cards.getChildren().get(ACTION_CARD_SLOT);
+			ImageView img = (ImageView) btn.getGraphic();
+			img.setImage(Utils.toImage(card.getImage()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setHandCards() {
+		if(!choose)return;
 		Player player = this.boards.get(0).getPlayer();
 		ArrayList<Card> hand = player.getHand();
+		
+		System.out.println(player.getName()+" HAND -> "+hand.size());
+		
+		Card card;
 		for(int i = 0; i < hand.size(); i++) {
 			try {
+				card = hand.get(i);
+				
+				currentCards[i] = card;
 				Button btn = (Button) hbox_cards.getChildren().get(i);
 				ImageView img = (ImageView) btn.getGraphic();
-				img.setImage(Utils.toImage(hand.get(i).getImage()));
+				img.setImage(Utils.toImage(card.getImage()));
+//				btn.setTooltip(card.getDescription());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -313,9 +342,31 @@ public class GameBoardViewController extends VBox {
 		Game game = Main.getSWController().getGame();
 		int[] ids = loadBoards(game.getCurrentGameState().getPlayers().size());
 		int index = 0;
+		firstPlayer = game.getCurrentGameState().getPlayers().get(0);
 		for(Player player : game.getCurrentGameState().getPlayers()) {
 			this.boards.add(createBoard(player, ids[index]));
 			index++;
+		}
+		
+		for(int i = 0; i < 7; i++) {
+			Button btn = (Button) hbox_cards.getChildren().get(i);
+			
+			final int a = i;
+			btn.setOnAction( new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					if( choose ) {
+						getCurrentPlayer().setChooseCard(currentCards[a]);
+						System.out.println(getCurrentPlayer().getName()+" set card "+currentCards[a].getName());
+					} else {
+						getCurrentPlayer().setChooseCard(null);
+						System.out.println(getCurrentPlayer().getName()+" DO ACTION!");
+						
+					}
+					turnToNext();
+				}
+			} );
+			
 		}
 		
 		for(Board board : this.boards) {
@@ -324,6 +375,9 @@ public class GameBoardViewController extends VBox {
 		setHandCards();
 	}
 	
+	public Player getCurrentPlayer() {
+		return this.boards.get(0).getPlayer();
+	}
 	
 	public void selectCardFromTrash(Player player) {
 		
@@ -369,11 +423,6 @@ public class GameBoardViewController extends VBox {
 		
 		private void setBackground(){
 			try {
-				System.out.println("BOX: "+(this.box==null));
-				System.out.println("BOX.getChildren(): "+(this.box.getChildren()==null));
-				System.out.println("BOX.getChildren(): "+this.box.getChildren().size());
-				
-				
 				GridPane pane = (GridPane) this.box.getChildren().get(1);
 				Image img = Utils.toImage(this.player.getBoard().getImage());
 				pane.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, new BackgroundSize(img.getWidth(), img.getHeight(), false,  false, true,  false))));
@@ -408,8 +457,8 @@ public class GameBoardViewController extends VBox {
 		Player next = null;
 		for(int i = 1; i < this.boards.size(); i++) {
 			next = this.boards.get(i).getPlayer();
-			this.boards.get(i-1).setPlayer(last);
-			this.boards.get(i-1).refresh();
+			this.boards.get(i).setPlayer(last);
+			this.boards.get(i).refresh();
 			last = next;
 			
 			if(i == this.boards.size()-1) {
@@ -417,8 +466,29 @@ public class GameBoardViewController extends VBox {
 				this.boards.get(0).refresh();
 			}
 		}
-		setHandCards();
 		
+		if(this.boards.get(0).getPlayer().getName().equalsIgnoreCase(firstPlayer.getName())) {
+			choose = !choose;
+			
+			for(int i = 0; i < 7; i++) {
+				if(i!=ACTION_CARD_SLOT) {
+					Node n = hbox_cards.getChildren().get(i);
+					n.setVisible(choose);
+				}
+			}
+			
+			
+			if(choose)
+				System.out.println("Switch to choose");
+			else
+				System.out.println("Switch to action");
+		}
+		
+		if(choose) {
+			setHandCards();
+		}else {
+			setActionCard();
+		}
 	}
 
 	private int[] loadBoards(int count) {
@@ -429,30 +499,30 @@ public class GameBoardViewController extends VBox {
 			vbox_board5.getChildren().clear();
 			vbox_board6.getChildren().clear();
 			vbox_board7.getChildren().clear();
-			return new int[] {1,2};
+			return new int[] {2,1};
 		case 3:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			vbox_board6.getChildren().clear();
 			vbox_board7.getChildren().clear();
-			return new int[] {1,2,3};
+			return new int[] {3,2,1};
 		case 4:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
 			vbox_board7.getChildren().clear();
 			HBox parent1 = (HBox) vbox_board7.getParent();
 			parent1.getChildren().remove(vbox_board7);
-			return new int[] {1,2,3,6};
+			return new int[] {6,3,2,1};
 		case 5:
 			vbox_board4.getChildren().clear();
 			vbox_board5.getChildren().clear();
-			return new int[] {1,2,3,6,7};
+			return new int[] {7,6,3,2,1};
 		case 6:
 			vbox_board7.getChildren().clear();
 			HBox parent2 = (HBox) vbox_board7.getParent();
 			parent2.getChildren().remove(vbox_board7);
-			return new int[] {1,2,3,4,5,6};
+			return new int[] {6,5,4,3,2,1};
 		}
-		return new int[] {1,2,3,4,5,6,7};
+		return new int[] {7,6,5,4,3,2,1};
 	}
 }

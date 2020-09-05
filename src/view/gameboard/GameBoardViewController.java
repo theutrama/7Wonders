@@ -1,10 +1,12 @@
 package view.gameboard;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import controller.utils.BuildCapability;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.skin.ButtonSkin;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -325,11 +328,31 @@ public class GameBoardViewController extends VBox {
 			try {
 				card = hand.get(i);
 				
+				BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
+				String path = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
+				switch(capability) {
+				case FREE:
+					path += "free";
+					break;
+				case OWN_RESOURCE:
+					path += "check";
+					break;
+				case TRADE:
+					path += "buy";
+					break;
+				case NONE:
+					path += "cross";
+					break;
+				}
+				
 				currentCards[i] = card;
 				Button btn = (Button) hbox_cards.getChildren().get(i);
 				ImageView img = (ImageView) btn.getGraphic();
 				img.setImage(Utils.toImage(card.getImage()));
 				btn.setTooltip(new Tooltip(card.getDescription()));
+				
+				
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -53,8 +53,6 @@ public class GameController {
 		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
 		GameState state = new GameState(0, 1, players, cardStack);
 		nextAge(game, state);
-		for(Card card : cardStack)
-			System.out.println("\nBeschreibung:\n"+card.getDescription());
 	}
 
 	/**

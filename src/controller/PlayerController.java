@@ -213,6 +213,7 @@ public class PlayerController {
 		ResourceBundle result = new ResourceBundle();
 		
 		result.add(player.getBoard().getResource());
+		System.out.println(player.getName() + " has board " + player.getBoard().getBoardName() + " with resource: " + player.getBoard().getResource().toString());
 		for (Card card : player.getBoard().getResources()) {
 			if (card.getProducing().size() == 1)
 				result.add(card.getProducing().get(0));
@@ -278,7 +279,7 @@ public class PlayerController {
 				return BuildCapability.FREE;
 		}
 
-		return card.getRequired() == null ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());
+		return card.getRequired() == null || card.getRequired().isEmpty() ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());
 	}
 
 	/**
@@ -294,18 +295,26 @@ public class PlayerController {
 
 		ResourceBundle staticResources = getStaticResources(player);
 		ResourceBundle cardRequirement = new ResourceBundle(resources);
+		
+		System.out.println("static resources: " + staticResources.toString());
 
 		if (staticResources.greaterOrEqualThan(cardRequirement))
 			return BuildCapability.OWN_RESOURCE;
+		
+		System.out.println("step 1");
 
 		ArrayList<ResourceBundle> combinations = generateResourceTree(player, staticResources).getAllCombinations();
 
 		removeDuplicates(combinations);
+		
+		System.out.println(combinations.toString());
 
 		for (ResourceBundle bundle : combinations) {
 			if (bundle.greaterOrEqualThan(cardRequirement))
 				return BuildCapability.OWN_RESOURCE;
 		}
+		
+		System.out.println("step 2");
 
 		return getTradeOptions(player, cardRequirement).isEmpty() ? BuildCapability.NONE : BuildCapability.TRADE;
 	}

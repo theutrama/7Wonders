@@ -153,4 +153,8 @@ public class ResourceBundle {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Resources: " + wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;
+	}
 }

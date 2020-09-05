@@ -10,6 +10,7 @@ public class HalikarnassusBoard extends WonderBoard {
 	public HalikarnassusBoard() {
 		super();
 		slotRequirements = new Resource[] { new Resource(2, ResourceType.BRICK), new Resource(3, ResourceType.ORE), new Resource(2, ResourceType.CLOTH) };
+		this.resource = new Resource(1, ResourceType.CLOTH);
 	}
 
 	@Override

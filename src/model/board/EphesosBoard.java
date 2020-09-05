@@ -10,6 +10,7 @@ public class EphesosBoard extends WonderBoard {
 	public EphesosBoard() {
 		super();
 		slotRequirements = new Resource[] { new Resource(2, ResourceType.WOOD), new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE) };
+		this.resource = new Resource(1, ResourceType.PAPYRUS);
 	}
 
 	@Override

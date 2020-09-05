@@ -16,7 +16,7 @@ public abstract class WonderBoard implements Serializable {
 	/** card lists on the board */
 	private ArrayList<Card> resources, military, trade, guilds, civil, research;
 	/** the resource produced by this board */
-	private Resource resource;
+	protected Resource resource;
 	/** required resources to build the slots (0-2) */
 	protected Resource[] slotRequirements;
 	/** assigned player */

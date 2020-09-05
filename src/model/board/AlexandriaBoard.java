@@ -11,6 +11,7 @@ public class AlexandriaBoard extends WonderBoard {
 	public AlexandriaBoard() {
 		super();
 		slotRequirements = new Resource[] { new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE), new Resource(2, ResourceType.GLASS) };
+		this.resource = new Resource(1, ResourceType.GLASS);
 	}
 
 	@Override

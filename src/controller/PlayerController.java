@@ -211,6 +211,9 @@ public class PlayerController {
 	 */
 	private ResourceBundle getStaticResources(Player player) {
 		ResourceBundle result = new ResourceBundle();
+		
+		System.out.println(player.getName() + " "+ player.getBoard().getBoardName()+" "+(player.getBoard().getResource()==null));
+		
 		result.add(player.getBoard().getResource());
 		for (Card card : player.getBoard().getResources()) {
 			if (card.getProducing().size() == 1)

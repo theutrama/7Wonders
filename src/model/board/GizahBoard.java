@@ -10,6 +10,7 @@ public class GizahBoard extends WonderBoard {
 	public GizahBoard() {
 		super();
 		slotRequirements = new Resource[] { new Resource(2, ResourceType.STONE), new Resource(3, ResourceType.WOOD), new Resource(4, ResourceType.STONE) };
+		this.resource = new Resource(1, ResourceType.STONE);
 	}
 
 	@Override

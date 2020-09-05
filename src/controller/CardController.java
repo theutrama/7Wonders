@@ -459,6 +459,7 @@ public class CardController {
 						"werden addiert.");
 				break;
 			case PURPLE:
+				des.concat("\r\n");
 				switch(card.getInternalName()) {
 				case "buildersguild":
 					des.concat("1 Siegpunkt pro\r\n" + 
@@ -596,6 +597,7 @@ public class CardController {
 			//Getting dependencies
 			ArrayList<String> dep = new ArrayList<String>();
 			for(Card comp: cards) {
+				if(comp.getDependencies() == null) continue;
 				if(Arrays.asList(comp.getDependencies()).contains(card.getInternalName()))
 					dep.add(comp.getName());
 			}

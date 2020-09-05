@@ -51,8 +51,11 @@ public class GameController {
 	 * @param players player list
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, Game game) {
-		GameState state = new GameState(0, 1, players, swController.getCardController().generateCardStack(players));
+		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
+		GameState state = new GameState(0, 1, players, cardStack);
 		nextAge(game, state);
+		for(Card card : cardStack)
+			System.out.println("\nBeschreibung:\n"+card.getDescription());
 	}
 
 	/**

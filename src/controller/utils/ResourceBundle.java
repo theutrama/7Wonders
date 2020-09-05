@@ -8,7 +8,7 @@ import model.player.Player;
 
 public class ResourceBundle {
 	/** counters for resource quantities */
-	private int wood, stone, ore, cloth, glass, brick, papyrus;
+	private int wood, stone, ore, cloth, glass, brick, papyrus, coins;
 
 	/**
 	 * creates a bundle and adds the given resource using {@link #add(Resource)}
@@ -39,7 +39,7 @@ public class ResourceBundle {
 	 * @param brick   sets {@link #brick}
 	 * @param papyrus sets {@link #papyrus}
 	 */
-	private ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus) {
+	private ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus, int coins) {
 		this.wood = wood;
 		this.stone = stone;
 		this.ore = ore;
@@ -47,6 +47,7 @@ public class ResourceBundle {
 		this.glass = glass;
 		this.brick = brick;
 		this.papyrus = papyrus;
+		this.coins = coins;
 	}
 
 	/**
@@ -58,7 +59,8 @@ public class ResourceBundle {
 	 */
 	public int getCostForPlayer(Player player, boolean toLeftNeighbour) {
 		int cost = brick + stone + wood + ore;
-		if (!(toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "westtradingpost")) && !(!toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "easttradingpost")))
+		if (!(toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "westtradingpost"))
+				&& !(!toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "easttradingpost")))
 			cost *= 2;
 
 		int cost2 = glass + cloth + papyrus;
@@ -96,6 +98,8 @@ public class ResourceBundle {
 		case PAPYRUS:
 			papyrus += resource.getQuantity();
 			break;
+		case COINS:
+			coins += resource.getQuantity();
 		default:
 			break;
 		}
@@ -108,7 +112,8 @@ public class ResourceBundle {
 	 * @return a new resource bundle representing the combined resource requirements
 	 */
 	public ResourceBundle add(ResourceBundle bundle) {
-		return new ResourceBundle(wood + bundle.wood, stone + bundle.stone, ore + bundle.ore, cloth + bundle.cloth, glass + bundle.glass, brick + bundle.brick, papyrus + bundle.papyrus);
+		return new ResourceBundle(wood + bundle.wood, stone + bundle.stone, ore + bundle.ore, cloth + bundle.cloth, glass + bundle.glass, brick + bundle.brick, papyrus + bundle.papyrus,
+				coins + bundle.coins);
 	}
 
 	/**
@@ -120,7 +125,7 @@ public class ResourceBundle {
 	 */
 	public ResourceBundle getMissing(ResourceBundle bundle) {
 		return new ResourceBundle(Math.max(bundle.wood - wood, 0), Math.max(bundle.stone - stone, 0), Math.max(bundle.ore - ore, 0), Math.max(bundle.cloth - cloth, 0),
-				Math.max(bundle.glass - glass, 0), Math.max(bundle.brick - brick, 0), Math.max(bundle.papyrus - papyrus, 0));
+				Math.max(bundle.glass - glass, 0), Math.max(bundle.brick - brick, 0), Math.max(bundle.papyrus - papyrus, 0), Math.max(bundle.coins - coins, 0));
 	}
 
 	/**
@@ -130,7 +135,8 @@ public class ResourceBundle {
 	 * @return true if and only if all atomic values of this bundle are greater or equal than the same value of bundle
 	 */
 	public boolean greaterOrEqualThan(ResourceBundle bundle) {
-		return wood >= bundle.wood && stone >= bundle.stone && ore >= bundle.ore && cloth >= bundle.cloth && glass >= bundle.glass && brick >= bundle.brick && papyrus >= bundle.papyrus;
+		return wood >= bundle.wood && stone >= bundle.stone && ore >= bundle.ore && cloth >= bundle.cloth && glass >= bundle.glass && brick >= bundle.brick && papyrus >= bundle.papyrus
+				&& coins >= bundle.coins;
 	}
 
 	/**
@@ -140,10 +146,15 @@ public class ResourceBundle {
 	public boolean equals(Object obj) {
 		try {
 			ResourceBundle bundle = (ResourceBundle) obj;
-			return wood == bundle.wood && stone == bundle.stone && ore == bundle.ore && cloth == bundle.cloth && glass == bundle.glass && brick == bundle.brick && papyrus == bundle.papyrus;
+			return wood == bundle.wood && stone == bundle.stone && ore == bundle.ore && cloth == bundle.cloth && glass == bundle.glass && brick == bundle.brick && papyrus == bundle.papyrus
+					&& coins == bundle.coins;
 		} catch (Exception e) {
 			return false;
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Resources: " + wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;
+	}
 }

@@ -330,6 +330,7 @@ public class GameBoardViewController extends VBox {
 				card = hand.get(i);
 				
 				BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
+				System.out.println("CAPA:"+capability+" "+player.getName()+" "+card.getName()+" "+player.getCoins());
 				String path = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
 				switch(capability) {
 				case FREE:

@@ -13,6 +13,7 @@ public class RhodosBoard extends WonderBoard {
 	public RhodosBoard() {
 		super();
 		slotRequirements = new Resource[] { new Resource(2, ResourceType.WOOD), new Resource(3, ResourceType.BRICK), new Resource(4, ResourceType.ORE) };
+		this.resource = new Resource(1, ResourceType.ORE);
 	}
 
 	@Override

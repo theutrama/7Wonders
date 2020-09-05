@@ -35,4 +35,8 @@ public class Resource implements Serializable{
 		return type;
 	}
 
+	@Override
+	public String toString() {
+		return quantity + " x " + type;
+	}
 }

@@ -265,7 +265,7 @@ public class PlayerController {
 	 * @return the type of ability to build
 	 */
 	public BuildCapability canBuild(Player player, Card card) {
-		if (card.getDependencies() != null || card.getDependencies().length > 0) {
+		if (card.getDependencies() != null && card.getDependencies().length > 0) {
 			boolean dependencies = true;
 			for (String cardname : card.getDependencies()) {
 				if (!swController.getCardController().hasCard(player, cardname)) {

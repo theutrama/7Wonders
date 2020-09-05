@@ -317,29 +317,7 @@ public class GameBoardViewController extends VBox {
 			Button btn = (Button) hbox_cards.getChildren().get(ACTION_CARD_SLOT);
 			ImageView img = (ImageView) btn.getGraphic();
 			img.setImage(Utils.toImage(card.getImage()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void setHandCards() {
-		if(!choose)return;
-		Player player = Main.getSWController().getGame().getCurrentPlayer();
-		ArrayList<Card> hand = player.getHand();
 		
-		
-		try {
-			StackPane cardPane = new StackPane();
-			cardPane.setPrefWidth(100);
-			Image image = Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"cards"+File.separator+"buildersguild.png");
-			cardPane.setBackground(new Background(new BackgroundImage(
-		            image,
-		            BackgroundRepeat.NO_REPEAT,
-		            BackgroundRepeat.NO_REPEAT,
-		            BackgroundPosition.CENTER,
-		            new BackgroundSize(1,1,false,false, true, false)
-		    )));
-			
 			VBox vbox = new VBox();
 			
 			//Button Place Card
@@ -434,9 +412,9 @@ public class GameBoardViewController extends VBox {
 			vbox.setAlignment(Pos.CENTER);
 			vbox.setSpacing(5);
 			vbox.setStyle("-fx-background-color: #b6b6b6BB");
-			cardPane.getChildren().add(vbox);
+			btn.setGraphic(vbox);
 			vbox.setVisible(false);
-			cardPane.hoverProperty().addListener((obs, oldVal, newValue) -> {
+			btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
 		            if (newValue) {
 		            	vbox.setVisible(true);
 		            } else {
@@ -444,17 +422,15 @@ public class GameBoardViewController extends VBox {
 		            }
 		        });
 			
-			Tooltip tp = new Tooltip("Test Description");
-			Tooltip.install(cardPane, tp);
-			hbox_cards.getChildren().add(cardPane);
-			
-			
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	public void setHandCards() {
+		if(!choose)return;
+		Player player = Main.getSWController().getGame().getCurrentPlayer();
+		ArrayList<Card> hand = player.getHand();
 		
 		Card card;
 		for(int i = 0; i < hand.size(); i++) {

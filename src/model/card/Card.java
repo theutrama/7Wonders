@@ -1,8 +1,15 @@
 package model.card;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import application.Utils;
+import javafx.scene.Node;
+import javafx.scene.control.ToolBar;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 
 public class Card implements Serializable {
 	/** age */
@@ -130,6 +137,23 @@ public class Card implements Serializable {
 	 */
 	public int getAge() {
 		return age;
+	}
+	
+	public Tooltip getDescription() {
+		Tooltip tip = null;
+		
+		ResourceType type;
+//		if(this.required == null || this.required.isEmpty()) {
+			type = ResourceType.BRICK;
+//		}else type = this.required.get(0).getType();
+		
+		try {
+			Tooltip.install(new ImageView(Utils.toImage(type.getImagePath())), tip = new Tooltip("test\n test1"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tip;
 	}
 
 	/**

@@ -6,18 +6,22 @@ public enum Difficulty {
 
 	/**
 	 * inverse function to {@link #toString()}
-	 * @param s description of level 
+	 * 
+	 * @param s description of level
 	 * @return the associated difficulty constant
 	 */
 	public static Difficulty fromString(String s) {
 		switch (s.toLowerCase()) {
-		case "einfach": return EASY;
-		case "mittel": return MEDIUM;
-		case "schwer": return HARDCORE;
+		case "Einfach":
+			return EASY;
+		case "Mittel":
+			return MEDIUM;
+		case "Schwer":
+			return HARDCORE;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * returns a String representing the skill level
 	 */

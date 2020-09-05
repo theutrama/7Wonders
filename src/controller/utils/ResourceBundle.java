@@ -57,9 +57,8 @@ public class ResourceBundle {
 	 * @return cost of these resources
 	 */
 	public int getCostForPlayer(Player player, boolean toLeftNeighbour) {
-		boolean eastpost = Main.getSWController().getCardController().hasCard(player, "easttradingpost"), westpost = Main.getSWController().getCardController().hasCard(player, "westtradingpost");
 		int cost = brick + stone + wood + ore;
-		if (!(westpost && toLeftNeighbour) && !(eastpost && !toLeftNeighbour))
+		if (!(toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "westtradingpost")) && !(!toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "easttradingpost")))
 			cost *= 2;
 
 		int cost2 = glass + cloth + papyrus;
@@ -98,7 +97,7 @@ public class ResourceBundle {
 			papyrus += resource.getQuantity();
 			break;
 		default:
-			return;
+			break;
 		}
 	}
 

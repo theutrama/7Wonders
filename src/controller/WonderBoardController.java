@@ -26,8 +26,7 @@ public class WonderBoardController {
 
 	private SevenWondersController swController;
 
-	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>(
-			Arrays.asList(AlexandriaBoard.class, BabylonBoard.class, EphesosBoard.class, GizahBoard.class, HalikarnassusBoard.class, OlympiaBoard.class, RhodosBoard.class));
+	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 
 	public WonderBoardController(SevenWondersController swController) {
 		this.swController = swController;

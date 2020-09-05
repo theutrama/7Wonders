@@ -242,10 +242,16 @@ public class PlayerController {
 
 		return tree;
 	}
-	
+
+	/**
+	 * generates the tree of all possible resource combinations, including non-selective cards
+	 * 
+	 * @param player player
+	 * @return a resource tree
+	 */
 	private ResourceTree generateTradeTree(Player player) {
 		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
-		for (Card card: player.getBoard().getResources()) {
+		for (Card card : player.getBoard().getResources()) {
 			tree.addResourceOption(card.getProducing());
 		}
 		return tree;

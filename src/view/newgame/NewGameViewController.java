@@ -1,6 +1,5 @@
 package view.newgame;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +58,7 @@ public class NewGameViewController extends StackPane {
 
 	@FXML
 	private Label txt_maxplayers;
-	
+
 	@FXML
 	private TextField textfield_gamename;
 
@@ -68,14 +67,14 @@ public class NewGameViewController extends StackPane {
 
 	@FXML
 	private Button btn_mute;
-	
+
 	@FXML
 	private Label label_drag;
 
 	private ArrayList<HBox> players;
-	
+
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
-	
+
 	private static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
 
 	public NewGameViewController() {
@@ -89,7 +88,7 @@ public class NewGameViewController extends StackPane {
 
 			e.printStackTrace();
 		}
-		
+
 		label_drag.setWrapText(true);
 		label_drag.setText("Bitte ziehen Sie das Wunder auf den entsprechenden Spieler");
 		label_drag.getStyleClass().add("dropshadow");
@@ -135,7 +134,7 @@ public class NewGameViewController extends StackPane {
 
 		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
 		btn_add.setOnAction(event -> addPlayer());
-		
+
 		btn_done.setVisible(false);
 		btn_done.setOnAction(event -> done());
 
@@ -148,62 +147,63 @@ public class NewGameViewController extends StackPane {
 				textfield_playername.setText(textfield_playername.getText().substring(0, 15));
 			}
 		});
-		
+
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private void done() {
-		if(textfield_gamename.getText().isBlank()) {
+		if (textfield_gamename.getText().isBlank()) {
 			error("Bitte gib ein Spielnamen an!");
 			return;
 		}
-		
+
 		IOController ioCon = Main.getSWController().getIOController();
 		String[] files = ioCon.listGameFiles();
-		
-		for(String filename : files) {
-			if(filename.equalsIgnoreCase(textfield_gamename.getText())) {
-				error("Diese Spielname ist schon vergeben!");
+
+		for (String filename : files) {
+			if (filename.equalsIgnoreCase(textfield_gamename.getText())) {
+				error("Dieser Spielname ist schon vergeben!");
 				return;
 			}
 		}
-		
-		if(players.size() <= 1) {
-			error("Es müssen mindestens 2 Spieler mit spielen!");
+
+		if (players.size() <= 1) {
+			error("Es müssen mindestens 2 Spieler mitspielen!");
 			return;
 		}
-		
-		//Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
+
+		// Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
 		ObservableList<Node> last_wonders = vbox_wonders.getChildren();
-		for(HBox player : players) {
-			if(!hasWonder(player) && !last_wonders.isEmpty()) {
-				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size()-1));
+		for (HBox player : players) {
+			if (!hasWonder(player) && !last_wonders.isEmpty()) {
+				Label wonder = (Label) last_wonders.get(Utils.randInt(0, last_wonders.size() - 1));
 				last_wonders.remove(wonder);
 				addWonderToPlayer(player, wonder);
 			}
 		}
-		
+
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		GameController gcon = Main.getSWController().getGameController();
 		ArrayList<Player> game_players = new ArrayList<Player>();
-		for(HBox player : players) {
+		for (HBox player : players) {
 			Label nameLabel = (Label) player.getChildren().get(0);
 			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
 			String type = ((ComboBox<String>) player.getChildren().get(1)).getSelectionModel().getSelectedItem();
-			
-			if(type.contains("KI")) {
+
+			if (type.contains("KI")) {
 				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
 				game_players.add(pcon.createAI(nameLabel.getText(), wonderLabel.getText(), diff));
-			}else {
+			} else {
 				game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
 			}
 		}
 		Game game = gcon.createGame(textfield_gamename.getText(), game_players);
 		Main.getSWController().setGame(game);
-		
+
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
 	}
-	
+
 	private void error(String txt) {
 		txt_maxplayers.setText(txt);
 		txt_maxplayers.setVisible(true);
@@ -235,7 +235,7 @@ public class NewGameViewController extends StackPane {
 		Label label_player = new Label();
 		label_player.getStyleClass().add("playerstyle");
 		label_player.setText(textfield_playername.getText());
-		
+
 		ComboBox<String> type = new ComboBox<>(types);
 		type.getSelectionModel().select(0);
 
@@ -289,10 +289,10 @@ public class NewGameViewController extends StackPane {
 				addWonderToSidebox((Label) hbox.getChildren().get(WONDER_INDEX));
 			btn_done.setVisible(vbox_players.getChildren().size() > 1);
 		});
-		
+
 		btn_done.setVisible(vbox_players.getChildren().size() > 1);
 	}
-	
+
 	private boolean hasWonder(HBox playerBox) {
 		return playerBox.getChildren().size() == WONDER_ASSIGNED;
 	}

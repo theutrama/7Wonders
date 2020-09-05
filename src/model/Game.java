@@ -13,6 +13,8 @@ public class Game {
 	private String name;
 	/** list of game states */
 	private ArrayList<GameState> states;
+	/** true if the score is still valid */
+	private boolean allowHighscore = true;
 
 	/**
 	 * creates a new game with an empty states list
@@ -92,6 +94,14 @@ public class Game {
 	 */
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+	
+	public boolean highscoreAllowed() {
+		return allowHighscore;
+	}
+	
+	public void disableHighscore() {
+		allowHighscore = false;
 	}
 
 }

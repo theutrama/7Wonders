@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import application.Main;
 import model.Game;
@@ -51,14 +50,17 @@ public class GameController {
 	 * @param players player list
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, Game game) {
-		GameState state = new GameState(0, 1, players, swController.getCardController().generateCardStack(players));
+		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
+		GameState state = new GameState(0, 1, players, cardStack);
 		nextAge(game, state);
+		for(Card card : cardStack)
+			System.out.println("\nBeschreibung:\n"+card.getDescription());
 	}
 
 	/**
 	 * Creates a new game state and sets it to the current round of the specified game.<br>
-	 * If a player has finished the second stage of the mausoleum {@link Player#isMausoleum() (player attribute)} the method
-	 * {@link GameBoardViewController#selectCardFromTrash(Player)} is called<br>
+	 * If a player has finished the second stage of the mausoleum {@link Player#isMausoleum() (player attribute)} the method {@link GameBoardViewController#selectCardFromTrash(Player)}
+	 * is called<br>
 	 * and nothing happens.
 	 * 
 	 * @param game     game instance
@@ -79,7 +81,7 @@ public class GameController {
 		if (previous.getRound() == NUM_ROUNDS) {
 			if (previous.getAge() == NUM_AGES) {
 				doConflicts(previous);
-				endGame(previous);
+				endGame(game, previous);
 			} else {
 				doConflicts(previous);
 				nextAge(game, previous);
@@ -103,6 +105,8 @@ public class GameController {
 
 		if (!game.getStates().get(game.getCurrentState() + 1).isAtBeginOfRound())
 			game.deleteRedoStates();
+
+		game.disableHighscore();
 	}
 
 	/**
@@ -147,14 +151,14 @@ public class GameController {
 				state.getTrash().add(player.getHand().get(0));
 				player.getHand().clear();
 			}
-			
+
 			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1)) { // TODO use static value
 				player.setOlympiaUsed(false);
 			}
 
 			for (int i = 0; i < 7; i++) {
 				int index = randInt(0, ageCards.size());
-				
+
 				player.getHand().add(ageCards.get(index)); // assign card to player hand
 				state.getCardStack().remove(ageCards.get(index)); // delete card from card stack
 				ageCards.remove(index); // remove from help list
@@ -202,7 +206,7 @@ public class GameController {
 	 * @param game  current game
 	 * @param state current game state
 	 */
-	private void endGame(GameState state) {
+	private void endGame(Game game, GameState state) {
 
 		for (Player player : state.getPlayers()) {
 			// conflicts
@@ -219,9 +223,10 @@ public class GameController {
 		}
 
 		// update highscore list
-		for (Player player : state.getPlayers()) {
-			Main.getSWController().getRanking()
-					.addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
+		if (game.highscoreAllowed()) {
+			for (Player player : state.getPlayers()) {
+				Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
+			}
 		}
 
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));

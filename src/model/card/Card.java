@@ -148,23 +148,6 @@ public class Card implements Serializable {
 	public int getAge() {
 		return age;
 	}
-	
-	public Tooltip getDescription() {
-		Tooltip tip = null;
-		
-		ResourceType type;
-//		if(this.required == null || this.required.isEmpty()) {
-			type = ResourceType.BRICK;
-//		}else type = this.required.get(0).getType();
-		
-		try {
-			Tooltip.install(new ImageView(Utils.toImage(type.getImagePath())), tip = new Tooltip("test\n test1"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return tip;
-	}
 
 	/**
 	 * getter for {@link #name}

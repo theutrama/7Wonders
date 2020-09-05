@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +28,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import model.Game;
 import model.card.Card;
@@ -321,57 +324,167 @@ public class GameBoardViewController extends VBox {
 	
 	public void setHandCards() {
 		if(!choose)return;
-		Player player = this.boards.get(0).getPlayer();
+		Player player = Main.getSWController().getGame().getCurrentPlayer();
 		ArrayList<Card> hand = player.getHand();
+		
+		
+		try {
+			StackPane cardPane = new StackPane();
+			cardPane.setPrefWidth(100);
+			Image image = Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"cards"+File.separator+"buildersguild.png");
+			cardPane.setBackground(new Background(new BackgroundImage(
+		            image,
+		            BackgroundRepeat.NO_REPEAT,
+		            BackgroundRepeat.NO_REPEAT,
+		            BackgroundPosition.CENTER,
+		            new BackgroundSize(1,1,false,false, true, false)
+		    )));
+			
+			VBox vbox = new VBox();
+			
+			//Button Place Card
+			Button btn_place = new Button();
+			HBox hbox_place = new HBox();
+			ImageView img1 = new ImageView();
+			img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img1.setFitWidth(38);
+			img1.setFitHeight(20);
+			ImageView img2 = new ImageView();
+			img2.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"place.png"));
+			img2.setFitWidth(45);
+			img2.setFitHeight(30);
+			hbox_place.getChildren().add(img1);
+			hbox_place.getChildren().add(img2);
+			hbox_place.setAlignment(Pos.CENTER_LEFT);
+			hbox_place.setSpacing(5);
+			btn_place.setGraphic(hbox_place);
+			btn_place.hoverProperty().addListener((obs, oldVal, newValue) -> {
+				try {
+		            if (newValue) {
+						img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+		            } else {
+		            	img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            }
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        });
+			
+			
+			//Button place card on WonderBoard
+			Button btn_wonder = new Button();
+			HBox hbox_wonder = new HBox();
+			ImageView img3 = new ImageView();
+			img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img3.setFitWidth(38);
+			img3.setFitHeight(20);
+			ImageView img4 = new ImageView();
+			img4.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"pyramid-stage3.png"));
+			img4.setFitWidth(45);
+			img4.setFitHeight(35);
+			hbox_wonder.getChildren().add(img3);
+			hbox_wonder.getChildren().add(img4);
+			hbox_wonder.setAlignment(Pos.CENTER_LEFT);
+			hbox_wonder.setSpacing(5);
+			btn_wonder.setGraphic(hbox_wonder);
+			btn_wonder.hoverProperty().addListener((obs, oldVal, newValue) -> {
+				try {
+		            if (newValue) {
+						img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+		            } else {
+		            	img3.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            }
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        });
+			
+			//Button card sell
+			Button btn_sell = new Button();
+			HBox hbox_sell = new HBox();
+			ImageView img5 = new ImageView();
+			img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+			img5.setFitWidth(38);
+			img5.setFitHeight(20);
+			ImageView img6 = new ImageView();
+			img6.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"coin3.png"));
+			HBox.setMargin(img6, new Insets(0, 5, 0, 0));
+			img6.setFitWidth(35);
+			img6.setFitHeight(33);
+			hbox_sell.getChildren().add(img5);
+			hbox_sell.getChildren().add(img6);
+			hbox_sell.setAlignment(Pos.CENTER_LEFT);
+			hbox_sell.setSpacing(14);
+			btn_sell.setGraphic(hbox_sell);
+			btn_sell.hoverProperty().addListener((obs, oldVal, newValue) -> {
+				try {
+		            if (newValue) {
+						img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowhover.png"));
+		            } else {
+		            	img5.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
+		            }
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        });
+			
+			vbox.getChildren().add(btn_place);
+			vbox.getChildren().add(btn_wonder);
+			vbox.getChildren().add(btn_sell);
+			vbox.setAlignment(Pos.CENTER);
+			vbox.setSpacing(5);
+			vbox.setStyle("-fx-background-color: #b6b6b6BB");
+			cardPane.getChildren().add(vbox);
+			vbox.setVisible(false);
+			cardPane.hoverProperty().addListener((obs, oldVal, newValue) -> {
+		            if (newValue) {
+		            	vbox.setVisible(true);
+		            } else {
+		            	vbox.setVisible(false);
+		            }
+		        });
+			
+			Tooltip tp = new Tooltip(card.getDescription());
+			Tooltip.install(cardPane, tp);
+			hbox_cards.getChildren().add(cardPane);
+			
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		
 		Card card;
 		for(int i = 0; i < hand.size(); i++) {
-			try {
-				card = hand.get(i);
-				
-				BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
-				System.out.println("CAPA:"+capability+" "+player.getName()+" "+card.getName()+" "+player.getCoins());
-				String path = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
-				switch(capability) {
-				case FREE:
-					path += "free";
-					break;
-				case OWN_RESOURCE:
-					path += "check";
-					break;
-				case TRADE:
-					path += "checkyellow";
-					break;
-				case NONE:
-					path += "cross";
-					break;
-				}
-				
-				currentCards[i] = card;
-				Pane pane = new Pane();
-				pane.setPrefWidth(100);
-				pane.setStyle("-fx-background-image: url('"+card.getImage()+"')");
-				VBox vbox = new VBox();
-				Button btn_place = new Button();
-				HBox hbox_place = new HBox();
-				ImageView img1 = new ImageView();
-				img1.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"arrowgrey.png"));
-				ImageView img2 = new ImageView();
-				img2.setImage(Utils.toImage("src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator+"place.png"));
-				hbox_place.getChildren().add(img1);
-				hbox_place.getChildren().add(img2);
-				vbox.getChildren().add(hbox_place);
-				pane.getChildren().add(vbox);
-				hbox_cards.getChildren().add(pane);
-				
-				Button btn = (Button) hbox_cards.getChildren().get(i);
-				ImageView img = (ImageView) btn.getGraphic();
-				
-				btn.setTooltip(new Tooltip(card.getDescription()));
-				
-			} catch (IOException e) {
-				e.printStackTrace();
+			card = hand.get(i);
+			
+			BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
+			System.out.println("CAPA:"+capability+" "+player.getName()+" "+card.getName()+" "+player.getCoins());
+			String path = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
+			switch(capability) {
+			case FREE:
+				path += "free";
+				break;
+			case OWN_RESOURCE:
+				path += "check";
+				break;
+			case TRADE:
+				path += "checkyellow";
+				break;
+			case NONE:
+				path += "cross";
+				break;
 			}
+			
+			currentCards[i] = card;
+			
+			
+			Button btn = (Button) hbox_cards.getChildren().get(i);
+			ImageView img = (ImageView) btn.getGraphic();
+			
+			
 		}
 	}
 	

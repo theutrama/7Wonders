@@ -256,7 +256,11 @@ public class PlayerController {
 	private ResourceTree generateTradeTree(Player player) {
 		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
 		for (Card card : player.getBoard().getResources()) {
-			tree.addResourceOption(card.getProducing());
+			if (card.getProducing().size() == 1)
+				for (int i = 0; i < card.getProducing().get(0).getQuantity(); i++)
+					tree.addResourceOption(new Resource(1, card.getProducing().get(0).getType()));
+			else
+				tree.addResourceOption(card.getProducing());
 		}
 		return tree;
 	}
@@ -294,7 +298,7 @@ public class PlayerController {
 	public BuildCapability hasResources(Player player, ArrayList<Resource> resources) {
 		if (resources.isEmpty())
 			return BuildCapability.OWN_RESOURCE;
-		
+
 		ResourceBundle cardRequirement = new ResourceBundle(resources);
 		if (cardRequirement.getCoins() > player.getCoins())
 			return BuildCapability.NONE;
@@ -353,7 +357,7 @@ public class PlayerController {
 
 			for (ResourceBundle rightTrade : rightTrades)
 				if (rightTrade.getCostForPlayer(player, false) <= player.getCoins() && rightTrade.equals(missingResources))
-					result.add(new TradeOption(null, rightTrade, 0, rightTrade.getCostForPlayer(player, true)));
+					result.add(new TradeOption(null, rightTrade, 0, rightTrade.getCostForPlayer(player, false)));
 
 			for (ResourceBundle leftTrade : leftTrades) {
 				for (ResourceBundle rightTrade : rightTrades) {
@@ -361,10 +365,12 @@ public class PlayerController {
 						continue;
 
 					if (leftTrade.add(rightTrade).equals(missingResources)) // TODO maybe exchange with "greaterOrEqual"
-						result.add(new TradeOption(leftTrade, rightTrade, leftTrade.getCostForPlayer(player, true), leftTrade.getCostForPlayer(player, false)));
+						result.add(new TradeOption(leftTrade, rightTrade, leftTrade.getCostForPlayer(player, true), rightTrade.getCostForPlayer(player, false)));
 				}
 			}
 		}
+
+		result.sort((opt1, opt2) -> opt1.getLeftCost() + opt1.getRightCost() - opt2.getLeftCost() - opt2.getRightCost());
 
 		return result;
 	}
@@ -378,6 +384,23 @@ public class PlayerController {
 	 */
 	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources) {
 		return getTradeOptions(player, new ResourceBundle(resources));
+	}
+
+	/**
+	 * executes a trade by adding/removing coins
+	 * 
+	 * @param player player that trades
+	 * @param trade  the trade
+	 */
+	public void doTrade(Player player, TradeOption trade) {
+		if (trade.getLeftCost() > 0) {
+			getLeftNeighbour(player).addCoins(trade.getLeftCost());
+			player.addCoins(-trade.getLeftCost());
+		}
+		if (trade.getRightCost() > 0) {
+			getRightNeighbour(player).addCoins(trade.getRightCost());
+			player.addCoins(-trade.getRightCost());
+		}
 	}
 
 	/**

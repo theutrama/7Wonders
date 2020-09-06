@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import model.card.Resource;
 
 public class ResourceTree {
-	/** single inner tree */
-	private InnerResourceTree tree;
 	/** leaves */
 	private ArrayList<InnerResourceTree> leaves;
 
@@ -16,7 +14,7 @@ public class ResourceTree {
 	 * @param initial initial requirement
 	 */
 	public ResourceTree(ResourceBundle initial) {
-		tree = new InnerResourceTree(initial);
+		InnerResourceTree tree = new InnerResourceTree(initial);
 		leaves = new ArrayList<>();
 		leaves.add(tree);
 	}
@@ -36,6 +34,24 @@ public class ResourceTree {
 				child.addChild(newChild);
 				newLeaves.add(newChild);
 			}
+		}
+
+		leaves = newLeaves;
+	}
+
+	/**
+	 * add one resource
+	 * 
+	 * @param resource resource
+	 */
+	public void addResourceOption(Resource resource) {
+		if (resource == null)
+			return;
+		ArrayList<InnerResourceTree> newLeaves = new ArrayList<>();
+		for (InnerResourceTree child : leaves) {
+			InnerResourceTree newChild = new InnerResourceTree(new ResourceBundle(resource));
+			child.addChild(newChild);
+			newLeaves.add(newChild);
 		}
 
 		leaves = newLeaves;
@@ -74,8 +90,6 @@ public class ResourceTree {
 	 * inner class to modulate the tree
 	 */
 	private static class InnerResourceTree {
-		/** list of children */
-		private ArrayList<InnerResourceTree> children;
 		/** parent tree */
 		private InnerResourceTree parent;
 		/** resource held by this tree */
@@ -91,7 +105,6 @@ public class ResourceTree {
 		private InnerResourceTree(ResourceBundle resource) {
 			this.resource = resource;
 			resourceSum = resource;
-			children = new ArrayList<>();
 		}
 
 		/**
@@ -100,7 +113,6 @@ public class ResourceTree {
 		 * @param tree inner tree to become a child of this tree
 		 */
 		private void addChild(InnerResourceTree tree) {
-			children.add(tree);
 			tree.resourceSum = resourceSum.add(tree.resource);
 			tree.parent = this;
 		}

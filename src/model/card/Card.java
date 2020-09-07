@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import application.Main;
 
 public class Card implements Serializable {
+	/** serial version UID */
 	private static final long serialVersionUID = 1L;
 	/** age */
 	private int age;
@@ -18,7 +19,7 @@ public class Card implements Serializable {
 	private String description;
 	/** card type */
 	private CardType type;
-	/** the scienece type, NONE if {@link #type} is not {@link CardType#GREEN} */
+	/** the science type, NONE if {@link #type} is not {@link CardType#GREEN} */
 	private ResourceType scienceType;
 	/** list of resources this card produces */
 	private ArrayList<Resource> producing;
@@ -35,7 +36,7 @@ public class Card implements Serializable {
 	 * create a card
 	 * 
 	 * @param age          age
-	 * @param name         diplayed name
+	 * @param name         displayed name
 	 * @param internalName name
 	 * @param type         card type
 	 * @param producing    sets {@link #producing}
@@ -46,18 +47,29 @@ public class Card implements Serializable {
 	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies, ArrayList<Effect> effects) {
 		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
 	}
-
+	/**
+	 * create a card
+	 * 
+	 * @param age          age
+	 * @param name         displayed name
+	 * @param internalName name
+	 * @param type         card type
+	 * @param producing    sets {@link #producing}
+	 * @param required     sets {@link #required}
+	 * @param dependencies sets {@link #dependencies}
+	 * @param effects      sets {@link #effects}
+	 * @param vpoints 		sets {@link #vPoints}
+	 */
 	public Card(int age, String name, String internalName, CardType type, ArrayList<Resource> producing, ArrayList<Resource> required, String[] dependencies, ArrayList<Effect> effects, int vpoints) {
 		this(ResourceType.NONE, age, name, internalName, type, producing, required, dependencies, effects);
 		this.vPoints = vpoints;
 	}
-
 	/**
 	 * create a science card
 	 * 
-	 * @param scienceType  sciene type
+	 * @param scienceType  science type
 	 * @param age          age
-	 * @param name         diplayed name
+	 * @param name         displayed name
 	 * @param internalName name
 	 * @param type         card type
 	 * @param producing    sets {@link #producing}
@@ -77,7 +89,6 @@ public class Card implements Serializable {
 		this.dependencies = dependencies;
 		this.effects = effects;
 	}
-
 	/**
 	 * create new card equal to an existing card
 	 * 
@@ -95,7 +106,6 @@ public class Card implements Serializable {
 		this.effects = toCopy.effects;
 		this.description = toCopy.description;
 	}
-
 	/**
 	 * getter for pathname of the image of this card
 	 * 
@@ -104,7 +114,6 @@ public class Card implements Serializable {
 	public String getImage() {
 		return Main.CARDS_PATH + internalName.toLowerCase() + ".png";
 	}
-
 	/**
 	 * used to check if a card produces a specified resource
 	 * 
@@ -117,7 +126,6 @@ public class Card implements Serializable {
 				return rs.getQuantity();
 		return 0;
 	}
-
 	/**
 	 * getter for {@link #scienceType}
 	 * 
@@ -126,7 +134,6 @@ public class Card implements Serializable {
 	public ResourceType getScienceType() {
 		return this.scienceType;
 	}
-
 	/**
 	 * determine the science ability
 	 * 
@@ -135,7 +142,6 @@ public class Card implements Serializable {
 	public boolean isScienceCard() {
 		return getScienceType() != ResourceType.NONE;
 	}
-
 	/**
 	 * getter for {@link #age}
 	 * 
@@ -144,7 +150,6 @@ public class Card implements Serializable {
 	public int getAge() {
 		return age;
 	}
-
 	/**
 	 * getter for {@link #name}
 	 * 
@@ -153,7 +158,6 @@ public class Card implements Serializable {
 	public String getName() {
 		return name;
 	}
-
 	/**
 	 * getter for {@link #type}
 	 * 
@@ -162,7 +166,6 @@ public class Card implements Serializable {
 	public CardType getType() {
 		return type;
 	}
-
 	/**
 	 * getter for {@link #producing}
 	 * 
@@ -171,7 +174,6 @@ public class Card implements Serializable {
 	public ArrayList<Resource> getProducing() {
 		return producing;
 	}
-
 	/**
 	 * getter for {@link #required}
 	 * 
@@ -180,7 +182,6 @@ public class Card implements Serializable {
 	public ArrayList<Resource> getRequired() {
 		return required;
 	}
-
 	/**
 	 * getter for {@link #dependencies}
 	 * 
@@ -189,7 +190,6 @@ public class Card implements Serializable {
 	public String[] getDependencies() {
 		return dependencies;
 	}
-
 	/**
 	 * getter for {@link #effects}
 	 * 
@@ -198,7 +198,6 @@ public class Card implements Serializable {
 	public ArrayList<Effect> getEffects() {
 		return effects;
 	}
-
 	/**
 	 * getter for {@link #internalName}
 	 * 
@@ -207,17 +206,28 @@ public class Card implements Serializable {
 	public String getInternalName() {
 		return internalName;
 	}
-
+	/**
+	 * getter for {@link #description}
+	 * 
+	 * @return description
+	 */
 	public String getDescription() {
 		return description;
 	}
-
+	/**
+	 * setter for {@link #description}
+	 * 
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	/**
+	 * getter for {@link #vPoints}
+	 * 
+	 * @return vPoints
+	 */
 	public int getvPoints() {
 		return vPoints;
 	}
-
 }

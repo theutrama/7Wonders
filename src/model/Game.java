@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.player.Player;
 
+	/** Contains Game data for SevenWonders game */
 public class Game {
 	/** current state index */
 	private int currentState;
@@ -96,10 +97,17 @@ public class Game {
 		this.currentPlayer = currentPlayer;
 	}
 	
+	/**
+	 *  Returns if score is still valid
+	 * @return {@link #allowHighscore}
+	 */
 	public boolean highscoreAllowed() {
 		return allowHighscore;
 	}
 	
+	/**
+	 *  invalidates the score
+	 */
 	public void disableHighscore() {
 		allowHighscore = false;
 	}

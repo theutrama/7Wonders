@@ -23,16 +23,19 @@ import model.player.Player;
  * The Card-Controller controls the ingame cards.
  */
 public class CardController {
-
+	/** HashMap for frequency of cards */
 	Map<String, int[]> countCards = new HashMap<>();
-
+	/** SevenWonders Controller */
 	private SevenWondersController swController;
-
+	/**
+	 * create new Card Controller
+	 * 
+	 * @param swController		SevenWonders Controller
+	 */
 	public CardController(SevenWondersController swController) {
 		this.swController = swController;
 		loadCards();
 	}
-
 	/**
 	 * Loading all ingame cards with their parameters and frequency Matrix-scheme: amount of players when another card needs to be created
 	 */
@@ -116,7 +119,12 @@ public class CardController {
 		countCards.put("workersguild", new int[] { 0, 0, 0 });
 		countCards.put("workshop", new int[] { 3, 7, 0 });
 	}
-
+	/**
+	 * generates CardStack for given number of players
+	 * 
+	 * @param players		list of all players
+	 * @return cards		list of all necessary cards for players
+	 */
 	public ArrayList<Card> generateCardStack(ArrayList<Player> players) {
 		ArrayList<Card> cards = new ArrayList<Card>();
 
@@ -408,7 +416,12 @@ public class CardController {
 
 		return cards;
 	}
-
+	/**
+	 * returns max value of an integer array
+	 * 
+	 * @param count				array
+	 * @return index			max value of array
+	 */
 	private int getMax(int[] count) {
 		int max = 0;
 		int index = 0;
@@ -420,7 +433,11 @@ public class CardController {
 		}
 		return index;
 	}
-
+	/**
+	 * adds descriptions to cards in list
+	 * 
+	 * @param cards			list of cards
+	 */
 	private void addDescriptions(ArrayList<Card> cards) {
 		for (Card card : cards) {
 			StringBuilder des = new StringBuilder(card.getName() + "\n\n");
@@ -561,7 +578,12 @@ public class CardController {
 			card.setDescription(des.toString());
 		}
 	}
-
+	/**
+	 * returns descriptions for the resources of a card
+	 * 
+	 * @param resources		list of resources
+	 * @return string		string for description of resources
+	 */
 	private static String resToString(ArrayList<Resource> resources) {
 		StringBuilder string = new StringBuilder();
 		for (int i = 0; i < resources.size(); i++) {
@@ -612,7 +634,13 @@ public class CardController {
 		}
 		return string.toString();
 	}
-
+	/**
+	 * returns true if player has card
+	 * 
+	 * @param player	 	chosen player
+	 * @param cardname		name of card
+	 * @return boolean		true if player has card
+	 */
 	public boolean hasCard(Player player, String cardname) {
 		WonderBoard board = player.getBoard();
 
@@ -637,7 +665,12 @@ public class CardController {
 
 		return false;
 	}
-
+	/**
+	 * adds resources
+	 * 
+	 * @param ressource	 	resources to be added
+	 * @return array		list with resources
+	 */
 	private ArrayList<Resource> addRArray(Resource... ressource) {
 		ArrayList<Resource> array = new ArrayList<Resource>();
 		for (Resource res : ressource) {
@@ -645,7 +678,12 @@ public class CardController {
 		}
 		return array;
 	}
-
+	/**
+	 * adds effects
+	 * 
+	 * @param effect	effects to be added
+	 * @return array	list with effects
+	 */
 	private ArrayList<Effect> addEArray(Effect... effect) {
 		ArrayList<Effect> array = new ArrayList<Effect>();
 		for (Effect eff : array) {
@@ -653,7 +691,6 @@ public class CardController {
 		}
 		return array;
 	}
-
 	/**
 	 * sell a card and add it to the trash
 	 * 
@@ -666,9 +703,8 @@ public class CardController {
 		player.setChooseCard(null);
 		Main.getSWController().getGame().getCurrentGameState().getTrash().add(card);
 	}
-
 	/**
-	 * place a card on the wonderboard and pay for the required resources if necessary
+	 * place a card on the WonderBoard and pay for the required resources if necessary
 	 * 
 	 * @param card   card to be places
 	 * @param player player
@@ -686,9 +722,8 @@ public class CardController {
 			swController.getPlayerController().doTrade(player, trade);
 		}
 	}
-
 	/**
-	 * place a card in the next wonderboard slot and pay for the required resources if necessary
+	 * place a card in the next WonderBoard slot and pay for the required resources if necessary
 	 * 
 	 * @param card   card to be places
 	 * @param player player
@@ -720,7 +755,6 @@ public class CardController {
 			swController.getPlayerController().doTrade(player, trade);
 		}
 	}
-
 	/**
 	 * get Card by name
 	 * 
@@ -735,5 +769,4 @@ public class CardController {
 
 		return null;
 	}
-
 }

@@ -17,7 +17,7 @@ public class SevenWondersController {
 	/** Card Controller */
 	private CardController cardController;
 	/** IOController */
-	private IOController IOController;
+	private IOController ioController;
 	/** WonderBoard Controller */
 	private WonderBoardController wonderBoardController;
 	/** Current Game */

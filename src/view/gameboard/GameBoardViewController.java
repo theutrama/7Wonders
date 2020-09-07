@@ -454,7 +454,7 @@ public class GameBoardViewController extends VBox {
 			if(!(btn.getGraphic() instanceof ImageView)) {
 				btn.setGraphic(new ImageView());
 			}
-			
+			btn.setTooltip(new Tooltip(card.getDescription()));
 			ImageView img = (ImageView) btn.getGraphic();
 			try {
 				img.setImage(Utils.toImage(card.getImage()));

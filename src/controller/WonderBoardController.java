@@ -23,20 +23,32 @@ import model.card.Card;
 import model.player.Player;
 
 public class WonderBoardController {
-
+	/** SevenWonders Controller */
 	private SevenWondersController swController;
-
+	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
-
+	/**
+	 * create new WonderBoard controller
+	 * 
+	 * @param swController SevenWonders controller
+	 */
 	public WonderBoardController(SevenWondersController swController) {
 		this.swController = swController;
 		loadBoardClasses();
 	}
-
+	/**
+	 * create new WonderBoard
+	 * 
+	 * @param name 		the WonderBoard's name
+	 */
 	public WonderBoard createWonderBoard(String name) {
 		return createWonderBoard(getClassByName(name));
 	}
-
+	/**
+	 * create new WonderBoard
+	 * 
+	 * @param clazz 	the specific WonderBoard
+	 */
 	public WonderBoard createWonderBoard(Class<? extends WonderBoard> clazz) {
 		if (this.boards.isEmpty())
 			loadBoardClasses();
@@ -52,11 +64,18 @@ public class WonderBoardController {
 		}
 		return null;
 	}
-
+	/**
+	 * create new WonderBoard
+	 * 
+	 * @param clazz 	the specific WonderBoard
+	 */
 	private String toName(Class<? extends WonderBoard> clazz) {
 		return clazz.getSimpleName().replaceAll("Board", "");
 	}
-
+	/**
+	 * @return class by name
+	 * @param name	 	the name of the WonderBoard
+	 */
 	public Class<? extends WonderBoard> getClassByName(String name) {
 		for (Class<? extends WonderBoard> clazz : this.boards) {
 			if (toName(clazz).equalsIgnoreCase(name)) {
@@ -66,7 +85,9 @@ public class WonderBoardController {
 
 		return null;
 	}
-
+	/**
+	 * @return names of all WonderBoards
+	 */
 	public String[] getWonderBoardNames() {
 		String[] names = new String[this.boards.size()];
 
@@ -75,16 +96,22 @@ public class WonderBoardController {
 		}
 		return names;
 	}
-
+	/**
+	 * @return random WonderBoards
+	 */
 	public WonderBoard createWonderBoard() {
 		Class<? extends WonderBoard> clazz = this.boards.get(Utils.randInt(0, this.boards.size()));
 		return createWonderBoard(clazz);
 	}
-
+	/**
+	 * Clears all created boards
+	 */
 	public void reset() {
 		this.boards.clear();
 	}
-
+	/**
+	 * Loads all used boards
+	 */
 	private void loadBoardClasses() {
 		Reflections reflections = new Reflections("model.board");
 		List<Class<? extends WonderBoard>> moduleClasses = new ArrayList<>(reflections.getSubTypesOf(WonderBoard.class));

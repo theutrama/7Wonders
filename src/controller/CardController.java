@@ -217,7 +217,7 @@ public class CardController {
 				addRArray(new Resource(2, ResourceType.BRICK)), new String[] { "easttradingpost", "westtradingpost" }, null));
 		cards.add(new Card(2, "Giesserei", "foundry", CardType.BROWN, addRArray(new Resource(2, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(3, "Gärten", "gardens", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.STONE)), new String[] { "statue" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(5); })), 5));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(5); })), 5));
 		cards.add(new Card(1, "Glashütte", "glassworks1", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null));
 		cards.add(new Card(2, "Glashütte", "glassworks2", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null));
 		cards.add(new Card(1, "Wachturm", "guardtower", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.BRICK)), null, null));
@@ -264,7 +264,7 @@ public class CardController {
 				3, "Pantheon", "pantheon", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.ORE), new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.GLASS),
 						new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)),
 				new String[] { "temple" }, addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(7); })), 7));
-		cards.add(new Card(1, "Pfandhaus", "pawnshop", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(3); })), 3));
+		cards.add(new Card(1, "Pfandhaus", "pawnshop", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(3); })), 3));
 		cards.add(new Card(3, "Gilde der Philosophen", "philosophersguild", CardType.PURPLE, null,
 				addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS)), null, addEArray(new Effect(EffectType.AT_MATCH_END, player -> {
 					int left = swController.getPlayerController().getLeftNeighbour(player).getBoard().getResearch().size();
@@ -335,10 +335,10 @@ public class CardController {
 				}))));
 		cards.add(new Card(ResourceType.GEAR, 3, "Studierzimmer", "study", CardType.GREEN, null,
 				addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)), new String[] { "school" }, null));
-		cards.add(new Card(1, "Taverne", "tavern", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, p -> p.addCoins(5)))));
+		cards.add(new Card(1, "Taverne", "tavern", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, player -> player.addCoins(5)))));
 		cards.add(new Card(2, "Temple", "temple", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.GLASS)),
-				new String[] { "altar" }, addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(3); })), 3));
-		cards.add(new Card(1, "Theater", "theater", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(2); })), 2));
+				new String[] { "altar" }, addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(3); })), 3));
+		cards.add(new Card(1, "Theater", "theater", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(2); })), 2));
 		cards.add(new Card(1, "Forstwirtschaft", "timberyard", CardType.BROWN, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.STONE)),
 				addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(3, "Rathaus", "townhall", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.GLASS)), null,

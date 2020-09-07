@@ -2,8 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-import model.player.Player;
-
+/** Contains Game data for SevenWonders game */
 public class Game {
 	/** current state index */
 	private int currentState;
@@ -77,9 +76,9 @@ public class Game {
 	}
 
 	/**
-	 * getter for {@link #allowHighscore}
+	 * Returns if score is still valid
 	 * 
-	 * @return true if no one cheated
+	 * @return {@link #allowHighscore}
 	 */
 	public boolean highscoreAllowed() {
 		return allowHighscore;

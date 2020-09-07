@@ -1,9 +1,12 @@
 package controller;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import application.Main;
+import application.Utils;
+import controller.sound.Sound;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,22 +24,28 @@ public class SoundController {
 	public SoundController() {
 		players = new ArrayList<MediaPlayer>();
 	}
-
+	
+	public String play(Sound sound) {
+		String[] filenames = sound.getSoundFilenames();
+		
+		return play(filenames[Utils.randInt(0, filenames.length-1)]);
+	}
+	
 	/**
 	 * plays sound
 	 * @param sound 	name of sound
 	 */
-	public void play(String sound) {
-		try {
-			MediaPlayer player = new MediaPlayer(
-					new Media(getClass().getResource("../sounds/" + sound).toURI().toString()));
-			player.setOnEndOfMedia(() -> players.remove(player));
-			if (!mute)
-				player.play();
-			players.add(player);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+	private String play(String sound) {
+		System.out.println("SOUND: "+sound);
+		
+		File file = new File(Main.SOUNDS_PATH + sound + ".mp3");
+		MediaPlayer player = new MediaPlayer(new Media(file.toURI().toString()));
+		player.setOnEndOfMedia(() -> players.remove(player));
+		if (!mute)
+			player.play();
+		players.add(player);
+		
+		return sound;
 	}
 	/**
 	 * mutes or unmutes sound

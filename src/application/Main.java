@@ -3,6 +3,8 @@ package application;
 import java.io.File;
 
 import controller.SevenWondersController;
+import controller.SoundController;
+import controller.sound.Sound;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,7 +20,8 @@ public class Main extends Application {
 	public static final String TOKENS_PATH = DEFAULT_PATH + "tokens" + File.separator;
 	public static final String BOARD_PATH = DEFAULT_PATH + "boards" + File.separator;
 	public static final String CARDS_PATH = DEFAULT_PATH + "cards" + File.separator;
-
+	public static final String SOUNDS_PATH = "src" + File.separator + "controller" + File.separator + "sound" + File.separator + "sounds" + File.separator;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/images/7wonders_small.png")));

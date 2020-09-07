@@ -25,6 +25,10 @@ public class SoundController {
 		players = new ArrayList<SoundPlayer>();
 	}
 	
+	/**
+	 * set Volume for the Background Music!
+	 * @param vol between 0.0 and 1.0
+	 */
 	public void setVolume(double vol) {
 		this.volume = vol;
 		for(SoundPlayer player : players)
@@ -35,7 +39,6 @@ public class SoundController {
 	 * plays sound
 	 * @param sound 	name of sound
 	 */
-	
 	public void play(Sound sound) {
 		play(sound, false);
 	}
@@ -44,7 +47,6 @@ public class SoundController {
 	 * stops sound
 	 * @param sound 	name of sound
 	 */
-	
 	public void stop(Sound sound) {
 		SoundPlayer remove = null;
 		for(SoundPlayer player : players) {

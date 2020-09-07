@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import application.Main;
+import controller.sound.Sound;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -251,6 +252,7 @@ public class GameController {
 	 * @param state the current game state
 	 */
 	private void doConflicts(GameState state) {
+		swController.getSoundController().play(Sound.FIGHT);
 		for (Player player : state.getPlayers()) {
 			doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
 		}

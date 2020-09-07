@@ -1,6 +1,7 @@
 package controller;
 
 import model.board.AlexandriaBoard;
+
 import model.board.BabylonBoard;
 import model.board.RhodosBoard;
 import model.board.WonderBoard;
@@ -15,7 +16,7 @@ import controller.utils.TradeOption;
 import model.card.Card;
 import model.card.Resource;
 import model.card.ResourceType;
-import model.player.AI;
+import model.player.ArtInt;
 import model.player.Difficulty;
 import model.player.Player;
 
@@ -75,9 +76,9 @@ public class PlayerController {
 	 * @param difficulty  AI level
 	 * @return AI object
 	 */
-	public AI createAI(String playername, String wonderboard, Difficulty difficulty) {
+	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wb.createWonderBoard(wonderboard);
-		AI ai = new AI(difficulty, board);
+		ArtInt ai = new ArtInt(difficulty, board);
 		return ai;
 	}
 

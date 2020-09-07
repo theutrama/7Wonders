@@ -9,6 +9,11 @@ import model.player.Player;
 import model.ranking.Ranking;
 
 public class SevenWondersFactory {
+	
+	
+	
+	
+	
 
 	public static SevenWondersController create() {
 
@@ -20,7 +25,7 @@ public class SevenWondersFactory {
 		 * IOController ioController = sevenWondersController.getIOController(); SoundController soundController = sevenWondersController.getSoundController();
 		 */
 
-		Player player1 = playerController.createPlayer("erster", "Alexandria");
+		Player player1 = playerController.createPlayer("erster", "Alexandria");  
 		Player player2 = playerController.createPlayer("zweiter", "Babylon");
 		Player player3 = playerController.createPlayer("dritter", "Ephesos");
 		Player player4 = playerController.createPlayer("vierter", "Gizah");
@@ -51,8 +56,8 @@ public class SevenWondersFactory {
 		  *  				apothecary - compass
 		  *  				laboratory - gear
 		  *  				library - tablet
-		  *  				tree farm (Baumschule)
-		  *  				clay pit (Tongrube)
+		  *  				tree farm (Baumschule) - holz/ziegel
+		  *  				clay pit (Tongrube) - ziegel/erz
 		  *  
 		  *  Player2 Cards: archeryrange - 2 military points
 		  *  				academy - compass
@@ -80,7 +85,7 @@ public class SevenWondersFactory {
 		  *  				academy - compass			
 		  *  
 		  *  Player6 Cards: circus - 3 military points
-		  *  				academy - compass
+		  *  				laboratory - gear
 		  *  				study - gear
 		  *  
 		  *  Player7 Cards: circus - 3 military points
@@ -184,7 +189,7 @@ public class SevenWondersFactory {
 		player5.getBoard().addCard(card1);
 
 		player6.getBoard().addCard(card13);
-		player6.getBoard().addCard(card2);
+		player6.getBoard().addCard(card4);
 		player6.getBoard().addCard(card6);
 
 		player7.getBoard().addCard(card13);

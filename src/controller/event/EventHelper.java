@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EventHelper {
+	/** HashMap for handlers */
 	public static HashMap<EventListener,HashMap<Integer,ArrayList<Method>>> handlers = new HashMap<EventListener, HashMap<Integer,ArrayList<Method>>>();
-	
-	//unregestiert die Class
+	/**
+	 * unregisters class
+	 * @param c 	class to be unregistered
+	 * @return		returns true if class was successfully unregistered
+	 */
 	public static boolean unregister(Class c){
 		for(int i = 0; i<handlers.size(); i++)
 			if( ((EventListener) handlers.keySet().toArray()[i]).getClass().equals(c)){
@@ -16,7 +20,11 @@ public class EventHelper {
 			}
 		return false;
 	}
-	
+	/**
+	 * unregisters EventListener
+	 * @param listener		EventListener to be unregistered
+	 * @return				returns true if EventListener was successfully unregistered	
+	 */
 	public static boolean unregister(EventListener listener) {
 		if(handlers.containsKey(listener)) {
 			handlers.remove(listener);
@@ -24,8 +32,10 @@ public class EventHelper {
 		}
 		return false;
 	}
-
-	//Regestriert die Class mit den Events
+	/** 
+	 * Registers class with EventListener
+	 * @param listener		EventListener to be registered
+	 */
 	public static void register(EventListener listener){
 		if(handlers.containsKey(listener))return;
     	if(!handlers.containsKey(listener))handlers.put(listener, new HashMap<Integer,ArrayList<Method>>());
@@ -36,14 +46,16 @@ public class EventHelper {
             EventHandler eventHandler = methods[i].getAnnotation(EventHandler.class);
             
             if (eventHandler != null) {
-            	//Fügt ihn zur Liste hinzu
+            	//Fuegt ihn zur Liste hinzu
             	if(!handlers.get(listener).containsKey(eventHandler.priority().getPriority()))handlers.get(listener).put(eventHandler.priority().getPriority(), new ArrayList<Method>());
             	handlers.get(listener).get(eventHandler.priority().getPriority()).add(methods[i]);
             }
         }
 	}
-	
-	//Feuert das Event ab
+	/**
+	 * calls the event
+	 * @param event		event to be called
+	 */
 	public static void callEvent(final Event event) {
         for (EventListener listener : handlers.keySet()) {
             for (int i = 0; i<EventPriority.values().length; i++) {

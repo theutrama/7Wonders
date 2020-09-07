@@ -150,19 +150,19 @@ public class PlayerController {
 	 * @return points as specified in the game rule
 	 */
 	private int getSciencePoints(int[] amount) {
-		int victory_points = 0;
+		int victoryPoints = 0;
 		for (int i = 0; i < amount.length; i++) {
-			victory_points += amount[i] * amount[i];
+			victoryPoints += amount[i] * amount[i];
 		}
 
 		while (amount[0] >= 1 && amount[1] >= 1 && amount[2] >= 1) {
-			victory_points += 7;
+			victoryPoints += 7;
 			amount[0]--;
 			amount[1]--;
 			amount[2]--;
 		}
 
-		return victory_points;
+		return victoryPoints;
 	}
 
 	/**

@@ -58,6 +58,8 @@ public class SevenWondersFactory {
 		  *  				academy - compass
 		  *  				observatory - gear
 		  *  				school - tablet
+		  *  				lodge - compass
+		  *  				apothecary - compass
 		  *  				excavation (Ausgrabungsstätte)
 		  *  				timberyard (Forstwirtschaft)
 		  *  				brickyard (Ziegelbrennerei)
@@ -66,25 +68,25 @@ public class SevenWondersFactory {
 		  *  Player3 Cards: barracks - 1 military points
 		  *  				lodge - compass
 		  *  				study - gear
-		  *  				scriptorium - tablet
 		  *  				forestcave (Waldhöhle)
 		  * 				mine (Mine)
 		  *  
 		  *  Player4 Cards: stables - 2 military points
 		  *  				lodge - compass
-		  *  				observatory - gear
 		  *  
 		  *  Player5 Cards: archeryrange - 2 military points
 		  *  				lodge - compass
-		  *  				study - gear
+		  *  				apothecary - compass	
+		  *  				academy - compass			
 		  *  
 		  *  Player6 Cards: circus - 3 military points
 		  *  				academy - compass
 		  *  				study - gear
 		  *  
 		  *  Player7 Cards: circus - 3 military points
-		  *  				apothecary - compass
-		  *  				observatory - gear
+		  *  				archeryrange - 2 military points
+		  *  				alle science Karten
+		  *  				
 		  */
 
 		/*player1 = playerController.getPlayer("erster");
@@ -123,6 +125,8 @@ public class SevenWondersFactory {
 		Card card7 = cardController.getCard(cards, "library"); // tablet
 		Card card8 = cardController.getCard(cards, "school"); // tablet
 		Card card9 = cardController.getCard(cards, "scriptorium"); // tablet
+		
+		
 
 		cards.remove(card1);
 		cards.remove(card2);
@@ -152,6 +156,7 @@ public class SevenWondersFactory {
 		player1.getBoard().addCard(card7);
 		player1.getBoard().addCard(card14);
 		player1.getBoard().addCard(card16);
+		
 
 		player2.getBoard().addCard(card11);
 		player2.getBoard().addCard(card2);
@@ -161,21 +166,22 @@ public class SevenWondersFactory {
 		player2.getBoard().addCard(card18);
 		player2.getBoard().addCard(card15);
 		player2.getBoard().addCard(card21);
+		player2.getBoard().addCard(card3);
+		player2.getBoard().addCard(card1);
 
 		player3.getBoard().addCard(card10);
 		player3.getBoard().addCard(card3);
 		player3.getBoard().addCard(card6);
-		player3.getBoard().addCard(card9);
 		player3.getBoard().addCard(card19);
 		player3.getBoard().addCard(card20);
 
 		player4.getBoard().addCard(card12);
 		player4.getBoard().addCard(card3);
-		player4.getBoard().addCard(card5);
 
 		player5.getBoard().addCard(card11);
 		player5.getBoard().addCard(card3);
-		player5.getBoard().addCard(card6);
+		player5.getBoard().addCard(card2);
+		player5.getBoard().addCard(card1);
 
 		player6.getBoard().addCard(card13);
 		player6.getBoard().addCard(card2);
@@ -183,7 +189,15 @@ public class SevenWondersFactory {
 
 		player7.getBoard().addCard(card13);
 		player7.getBoard().addCard(card1);
+		player7.getBoard().addCard(card2);
+		player7.getBoard().addCard(card3);
+		player7.getBoard().addCard(card4);
 		player7.getBoard().addCard(card5);
+		player7.getBoard().addCard(card6);
+		player7.getBoard().addCard(card7);
+		player7.getBoard().addCard(card8);
+		player7.getBoard().addCard(card9);
+		player7.getBoard().addCard(card11);
 
 		player1.setChooseCard(card1);
 		player2.setChooseCard(card2);

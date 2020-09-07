@@ -313,9 +313,10 @@ public class GameBoardViewController extends VBox {
 		if(choose)return;
 		Player player = this.boards.get(0).getPlayer();
 		Card card = player.getChosenCard();
+		hbox_cards.getChildren().clear();
 		
 		try {
-			Button btn = (Button) hbox_cards.getChildren().get(ACTION_CARD_SLOT);
+			StackPane outter = new StackPane();
 			VBox vbox = new VBox();
 			//Button Place Card
 			Button btn_place = new Button();
@@ -408,8 +409,9 @@ public class GameBoardViewController extends VBox {
 			vbox.getChildren().add(btn_sell);
 			vbox.setAlignment(Pos.CENTER);
 			vbox.setSpacing(5);
-			btn.setGraphic(vbox);
-			vbox.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), 
+			vbox.setStyle("-fx-background-color: #d9d9d9BB");
+			outter.getChildren().add(vbox);
+			outter.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), 
 					BackgroundRepeat.NO_REPEAT, 
 					BackgroundRepeat.NO_REPEAT, 
 					BackgroundPosition.CENTER, 
@@ -423,9 +425,12 @@ public class GameBoardViewController extends VBox {
 	
 	public void setHandCards() {
 		if(!choose)return;
-		Player player = Main.getSWController().getGame().getCurrentPlayer();
+		Player player = this.boards.get(0).getPlayer();
 		ArrayList<Card> hand = player.getHand();
 
+		hbox_cards.getChildren().clear();
+		hbox_cards.setSpacing(10);
+		
 		Card card;
 		for(int i = 0; i < hand.size(); i++) {
 			card = hand.get(i);
@@ -449,40 +454,16 @@ public class GameBoardViewController extends VBox {
 			
 			System.out.println("SET CURRENT CARD "+i+" "+card.getName());
 			currentCards[i] = card;
-			Button btn = (Button) hbox_cards.getChildren().get(i);
 			
-			System.out.println("BTN ");
-			
-			if(!(btn.getGraphic() instanceof ImageView)) {
-				ImageView view = new ImageView();
-				view.setFitHeight(150);
-				view.setFitWidth(200);
-				view.setPickOnBounds(true);
-				view.setPreserveRatio(true);
-				btn.setGraphic(view);
-			}
-			btn.setTooltip(new Tooltip(card.getDescription()));
-			ImageView img = (ImageView) btn.getGraphic();
-			try {
-				img.setImage(Utils.toImage(card.getImage()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void setup() {
-		Game game = Main.getSWController().getGame();
-		int[] ids = loadBoards(game.getCurrentGameState().getPlayers().size());
-		int index = 0;
-		firstPlayer = game.getCurrentGameState().getPlayers().get(0);
-		for(Player player : game.getCurrentGameState().getPlayers()) {
-			this.boards.add(createBoard(player, ids[index]));
-			index++;
-		}
-		
-		for(int i = 0; i < 7; i++) {
-			Button btn = (Button) hbox_cards.getChildren().get(i);
+			Button btn = new Button();
+			VBox vbox = new VBox();
+			ImageView img = new ImageView();
+			img.setFitHeight(20);
+			img.setFitWidth(20);
+			img.getStyleClass().add("dropshadow");
+			vbox.getChildren().addAll(img,btn);
+			vbox.setAlignment(Pos.CENTER_RIGHT);
+			hbox_cards.getChildren().add(vbox);
 			
 			final int a = i;
 			btn.setOnAction( new EventHandler<ActionEvent>() {
@@ -497,13 +478,40 @@ public class GameBoardViewController extends VBox {
 				}
 			} );
 			
+			if(!(btn.getGraphic() instanceof ImageView)) {
+				ImageView view = new ImageView();
+				view.setFitHeight(215);
+				view.setFitWidth(141);
+				view.setPickOnBounds(true);
+				view.setPreserveRatio(true);
+				btn.setGraphic(view);
+			}
+			btn.setTooltip(new Tooltip(card.getDescription()));
+			ImageView img2 = (ImageView) btn.getGraphic();
+			try {
+				img.setImage(Utils.toImage(path+".png"));
+				img2.setImage(Utils.toImage(card.getImage()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void setup() {
+		Game game = Main.getSWController().getGame();
+		int[] ids = loadBoards(game.getCurrentGameState().getPlayers().size());
+		int index = 0;
+		for(Player player : game.getCurrentGameState().getPlayers()) {
+			this.boards.add(createBoard(player, ids[index]));
+			index++;
 		}
 		
 		for(Board board : this.boards) {
 			board.refresh();
 		}
-		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		System.out.println("SetHandCards start");
+		firstPlayer = this.boards.get(0).getPlayer();
+		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		setHandCards();
 	}
 	
@@ -601,14 +609,6 @@ public class GameBoardViewController extends VBox {
 		
 		if(this.boards.get(0).getPlayer().getName().equalsIgnoreCase(firstPlayer.getName())) {
 			choose = !choose;
-			
-			for(int i = 0; i < 7; i++) {
-				Node n = hbox_cards.getChildren().get(i);
-				if(i!=ACTION_CARD_SLOT) {
-					n.setVisible(choose);
-				}else n.setVisible(true);
-			}
-			
 			
 			if(choose)
 				System.out.println("Switch to choose");

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import controller.sound.Sound;
 import controller.utils.BuildCapability;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -469,6 +470,7 @@ public class GameBoardViewController extends VBox {
 				@Override
 				public void handle(ActionEvent event) {
 					if( choose ) {
+						Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
 						getCurrentPlayer().setChooseCard(currentCards[a]);
 					} else {
 						getCurrentPlayer().setChooseCard(null);

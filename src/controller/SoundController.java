@@ -26,8 +26,9 @@ public class SoundController {
 	}
 	
 	public void setVolume(double vol) {
+		this.volume = vol;
 		for(SoundPlayer player : players)
-			player.setVolume(vol);
+			if(player.getSound() == Sound.BACKGROUND_GAME || player.getSound() == Sound.BACKGROUND_MENU)player.setVolume(vol);
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class SoundController {
 	 */
 	public void play(Sound sound,boolean loop) {
 		if(!isMuted() || (this.mute && loop)) {
-			SoundPlayer player = new SoundPlayer(sound);
+			SoundPlayer player = new SoundPlayer(sound,(loop ? volume : 1.0));
 			if(loop)
 				player.setLoop();
 			else
@@ -124,11 +125,12 @@ public class SoundController {
 		private String[] filenames;
 		private Sound sound;
 		
-		public SoundPlayer(Sound sound) {
+		public SoundPlayer(Sound sound,double volume) {
 			this.sound = sound;
 			this.filenames = sound.getSoundFilenames();
 			this.index = Utils.randInt(0, this.filenames.length-1);
 			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+			setVolume(volume);
 		}
 		
 		public void setVolume(double vol) {

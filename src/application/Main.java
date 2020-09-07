@@ -28,7 +28,7 @@ public class Main extends Application {
 		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/images/7wonders_small.png")));
 
 		Main.primaryStage = primaryStage;
-		swController = new SevenWondersController();
+		swController = SevenWondersController.getInstance();
 		soundController = swController.getSoundController();
 
 		try {

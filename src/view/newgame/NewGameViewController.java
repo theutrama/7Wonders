@@ -74,8 +74,6 @@ public class NewGameViewController extends StackPane {
 	private Label label_drag;
 
 	private ArrayList<HBox> players;
-	
-	private static SevenWondersController swController;
 
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
 
@@ -92,8 +90,6 @@ public class NewGameViewController extends StackPane {
 
 			e.printStackTrace();
 		}
-		
-		swController = new SevenWondersController();
 
 		label_drag.setWrapText(true);
 		label_drag.setText("Bitte ziehen Sie das Wunder auf den entsprechenden Spieler");
@@ -138,7 +134,7 @@ public class NewGameViewController extends StackPane {
 
 		txt_maxplayers.setVisible(false);
 
-		btn_back.setOnAction(event -> {swController.getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController());});
+		btn_back.setOnAction(event -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController());});
 		btn_add.setOnAction(event -> addPlayer());
 
 		btn_done.setVisible(false);
@@ -159,7 +155,7 @@ public class NewGameViewController extends StackPane {
 
 	@SuppressWarnings("unchecked")
 	private void done() {
-		swController.getSoundController().play(Sound.BUTTON_CLICK);
+		Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 		if (textfield_gamename.getText().isBlank()) {
 			error("Bitte gib ein Spielnamen an!");
 			return;
@@ -217,7 +213,7 @@ public class NewGameViewController extends StackPane {
 	}
 
 	private void addPlayer() {
-		swController.getSoundController().play(Sound.KNOCK);
+		Main.getSWController().getSoundController().play(Sound.KNOCK);
 		if (textfield_playername.getText().isEmpty() || textfield_playername.getText().isBlank())
 			return;
 

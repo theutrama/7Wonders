@@ -58,6 +58,7 @@ public class SoundController {
 	 * @param sound 	name of sound
 	 */
 	public void play(Sound sound,boolean loop) {
+		System.out.println("SOUND:"+sound.name()+" mute:"+this.mute+" loop:"+loop);
 		if(!isMuted() || (this.mute && loop)) {
 			SoundPlayer player = new SoundPlayer(sound);
 			if(loop)
@@ -79,7 +80,9 @@ public class SoundController {
 	 * @return true if muted
 	 */
 	public boolean mute() {
+		System.out.println("1MUTE: "+this.mute);
 		this.mute = !this.mute;
+		System.out.println("2MUTE: "+this.mute);
 		for (SoundPlayer player : players)
 			if(this.mute) 
 				player.pause();

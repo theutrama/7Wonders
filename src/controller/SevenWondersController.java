@@ -4,6 +4,13 @@ import model.Game;
 import model.ranking.Ranking;
 
 public class SevenWondersController {
+	private static SevenWondersController instance = null;
+	
+	public static SevenWondersController getInstance() {
+		if(instance == null) instance = new SevenWondersController();
+		return instance;
+	}
+	
 	/** Game Controller */
 	private GameController gameController;
 	/** Player Controller */
@@ -23,7 +30,7 @@ public class SevenWondersController {
 	/**
 	 * create new SevenWonders Controller
 	 */
-	public SevenWondersController() {
+	private SevenWondersController() {
 		this.wonderBoardController = new WonderBoardController(this);
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this);

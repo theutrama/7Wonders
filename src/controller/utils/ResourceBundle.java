@@ -1,8 +1,12 @@
 package controller.utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
+import application.Utils;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import model.card.Resource;
 import model.player.Player;
 
@@ -153,8 +157,48 @@ public class ResourceBundle {
 		}
 	}
 
+	/**
+	 * getter for {@link #coins}
+	 * 
+	 * @return coins
+	 */
+	public int getCoins() {
+		return coins;
+	}
+
+	/**
+	 * String representation of all single resources
+	 */
 	@Override
 	public String toString() {
-		return "Resources: " + wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;
+		return wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;
+	}
+
+	/**
+	 * creates a Hbox of images that represent the amount of resources
+	 * 
+	 * @return hbox
+	 */
+	public HBox createResourceImages() {
+		HBox hbox = new HBox();
+		try {
+			for (int i = 0; i < wood; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/wood.png")));
+			for (int i = 0; i < stone; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/stone.png")));
+			for (int i = 0; i < brick; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/clay.png")));
+			for (int i = 0; i < ore; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/ore.png")));
+			for (int i = 0; i < glass; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/glass.png")));
+			for (int i = 0; i < cloth; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/linen.png")));
+			for (int i = 0; i < papyrus; i++)
+				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/paper.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return hbox;
 	}
 }

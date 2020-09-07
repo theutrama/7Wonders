@@ -75,6 +75,14 @@ public abstract class WonderBoard implements Serializable {
 	}
 
 	/**
+	 * setter for an index of {@link #filled}
+	 * @param slot slot index to be filled
+	 */
+	public void fill(int slot) {
+		filled[slot] = true;
+	}
+
+	/**
 	 * getter for one index of {@link #slotRequirements}
 	 * 
 	 * @param slot slot index (0-2)
@@ -223,5 +231,4 @@ public abstract class WonderBoard implements Serializable {
 		}
 
 	}
-
 }

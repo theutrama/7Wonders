@@ -28,9 +28,9 @@ public class Ranking {
 	 * @param stats
 	 */
 	public void addStats(PlayerStats stats) {
-		int i = 0;
-		while (i < playerStats.size() && stats.getVictoryPoints() < playerStats.get(i).getVictoryPoints())
-			i++;
-		this.playerStats.add(i, stats);
+		int count = 0;
+		while (count < playerStats.size() && stats.getVictoryPoints() < playerStats.get(count).getVictoryPoints())
+			count++;
+		this.playerStats.add(count, stats);
 	}
 }

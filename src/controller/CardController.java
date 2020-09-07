@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import application.Main;
+import controller.sound.Sound;
 import controller.utils.TradeOption;
 
 import java.util.Collections;
@@ -698,6 +699,7 @@ public class CardController {
 	 * @param player player
 	 */
 	public void sellCard(Card card, Player player) {
+		Main.getSWController().getSoundController().play(Sound.COIN);
 		player.addCoins(3);
 		player.getHand().remove(card);
 		player.setChooseCard(null);
@@ -713,7 +715,8 @@ public class CardController {
 	public void placeCard(Card card, Player player, TradeOption trade) {
 		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins())
 			return;
-
+		
+		swController.getSoundController().play(Sound.BUILD);
 		player.getHand().remove(card);
 		player.setChooseCard(null);
 		player.getBoard().addCard(card);
@@ -735,6 +738,7 @@ public class CardController {
 		if (player.getBoard().isFilled(3))
 			return;
 
+		swController.getSoundController().play(Sound.CHOOSE_CARD);
 		player.getHand().remove(card);
 		player.setChooseCard(null);
 		int slot = player.getBoard().nextSlot();

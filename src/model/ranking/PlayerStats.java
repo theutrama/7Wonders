@@ -25,12 +25,12 @@ public class PlayerStats {
 	 * @param conflict_points conflict winning points
 	 * @param coins           coins
 	 */
-	public PlayerStats(String name, int victory, int lose, int conflict_points, int coins) {
+	public PlayerStats(String name, int victory, int lose, int conflictPoints, int coins) {
 		this.name = name;
 		this.date = LocalDateTime.now();
 		this.victoryPoints = victory;
 		this.losePoints = lose;
-		this.conflictPoints = conflict_points;
+		this.conflictPoints = conflictPoints;
 		this.coins = coins;
 	}
 

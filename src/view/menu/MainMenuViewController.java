@@ -45,7 +45,6 @@ public class MainMenuViewController extends BorderPane {
 			e.printStackTrace();
 		}
 		
-		swController = new SevenWondersController();
 		SoundController.addMuteFunction(btn_mute, img_music);
 
 		btn_newgame.setOnAction(event -> {swController.getSoundController().play(Sound.BUTTON_CLICK);

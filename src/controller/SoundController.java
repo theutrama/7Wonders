@@ -14,6 +14,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class SoundController {
+	
 	/** mute sound */
 	private boolean mute = false;
 	/** list of media players */
@@ -43,14 +44,13 @@ public class SoundController {
 		SoundPlayer remove = null;
 		for(SoundPlayer player : players) {
 			if(player.getSound() == sound) {
-				
 				player.stop();
 				remove = player;
 				break;
 			}
 		}
 		
-		if(remove != null)players.remove(remove);
+		if(remove!=null)players.remove(remove);
 	}
 
 	/**
@@ -58,14 +58,20 @@ public class SoundController {
 	 * @param sound 	name of sound
 	 */
 	public void play(Sound sound,boolean loop) {
-		SoundPlayer player = new SoundPlayer(sound);
-		if(loop)
-			player.setLoop();
-		else
-			player.setAutoRemove();
-		if (!mute)
-			player.play();
-		players.add(player);
+		if(!isMuted() || (this.mute && loop)) {
+			SoundPlayer player = new SoundPlayer(sound);
+			if(loop)
+				player.setLoop();
+			else
+				player.setAutoRemove();
+			
+			if (!this.mute) {
+				player.play();
+			}
+			players.add(player);
+		}
+		
+		
 	}
 	
 	/**
@@ -73,19 +79,23 @@ public class SoundController {
 	 * @return true if muted
 	 */
 	public boolean mute() {
-		if (mute)
-			for (SoundPlayer player : players)
+		System.out.println("MUTE: "+this.mute);
+		this.mute = !this.mute;
+		System.out.println("MUTE: "+this.mute);
+		for (SoundPlayer player : players)
+			if(this.mute) 
+				player.pause();
+			else	
 				player.play();
-		else
-			for (SoundPlayer player: players)
-				player.stop();
-		return (mute ^= true);
+			
+		
+		return this.mute;
 	}
 	/**
 	 * @return true if muted
 	 */
 	public boolean isMuted() {
-		return mute;
+		return this.mute;
 	}
 	/**
 	 * @param btn 		adds mute button
@@ -144,9 +154,12 @@ public class SoundController {
 			return this.sound;
 		}
 		
+		public void pause() {
+			this.player.pause();
+		}
+		
 		public void stop() {
 			this.player.stop();
-			players.remove(this);
 		}
 		
 		public void play() {

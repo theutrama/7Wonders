@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import controller.SoundController;
 import controller.sound.Sound;
 import controller.utils.BuildCapability;
 import javafx.event.ActionEvent;
@@ -36,8 +37,12 @@ import model.card.Card;
 import model.player.Player;
 
 public class GameBoardViewController extends VBox {
-    @FXML
-    public ImageView btn_undo1;
+
+	@FXML
+	private Button btn_mute;
+
+	@FXML
+	private ImageView img_music;
 
     @FXML
     public ImageView btn_undo;
@@ -306,6 +311,7 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
+		SoundController.addMuteFunction(btn_mute, img_music);
 		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_MENU);
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME,true);
 		setup();

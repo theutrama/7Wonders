@@ -17,7 +17,7 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="backroundpane" stylesheets="@style.css" type="VBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="woodpane">
+      <VBox styleClass="woodpane">
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
@@ -87,89 +87,40 @@
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
-                  <Label fx:id="label_age" text="I" textFill="#d4d4d4">
+                  <ImageView fx:id="img_age" fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
+                     <image>
+                        <Image url="@../../../../../Desktop/src/image/icons/age1.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label text="Spielrichtung:" textFill="#d4d4d4">
                      <font>
-                        <Font name="Bookman Old Style" size="22.0" />
+                        <Font name="Book Antiqua Bold" size="22.0" />
                      </font>
                      <padding>
-                        <Insets left="5.0" />
+                        <Insets left="40.0" />
                      </padding>
                      <styleClass>
                         <String fx:value="dropshadow" />
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
+                  <ImageView fx:id="img_direction" fitHeight="21.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
+                     <image>
+                        <Image url="@../images/clockwise.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ImageView>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="hbox_cards" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/aqueduct.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/arsenal.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/buildersguild.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/claypit.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/chamberofcommerce.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/circus.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button mnemonicParsing="false" stylesheets="@style.css">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cards/academy.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
+            <HBox fx:id="hbox_cards" alignment="CENTER">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin>

@@ -15,6 +15,7 @@ public class Main extends Application {
 
 	public static Stage primaryStage;
 	private static SevenWondersController swController;
+	private static SoundController soundController;
 	
 	public static final String DEFAULT_PATH = "src"+File.separator + "view" + File.separator + "images" + File.separator;
 	public static final String TOKENS_PATH = DEFAULT_PATH + "tokens" + File.separator;
@@ -28,6 +29,7 @@ public class Main extends Application {
 
 		Main.primaryStage = primaryStage;
 		swController = new SevenWondersController();
+		soundController = swController.getSoundController();
 
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
@@ -36,6 +38,7 @@ public class Main extends Application {
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
+			soundController.play(Sound.BACKGROUND_MENU, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

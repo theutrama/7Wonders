@@ -267,7 +267,6 @@ public class GameBoardViewController extends VBox {
     private boolean choose = true;
     private Player firstPlayer;
     
-    private final String imagePath = "src"+File.separator+"view"+File.separator+"images"+File.separator+"tokens"+File.separator;
     private final int ACTION_CARD_SLOT = 3;
     
     public Board createBoard(Player player, int i) {
@@ -321,11 +320,11 @@ public class GameBoardViewController extends VBox {
 			Button btn_place = new Button();
 			HBox hbox_place = new HBox();
 			ImageView img1 = new ImageView();
-			img1.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+			img1.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 			img1.setFitWidth(38);
 			img1.setFitHeight(20);
 			ImageView img2 = new ImageView();
-			img2.setImage(Utils.toImage(imagePath+"place.png"));
+			img2.setImage(Utils.toImage(Main.TOKENS_PATH+"place.png"));
 			img2.setFitWidth(45);
 			img2.setFitHeight(30);
 			hbox_place.getChildren().add(img1);
@@ -336,9 +335,9 @@ public class GameBoardViewController extends VBox {
 			btn_place.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img1.setImage(Utils.toImage(imagePath+"arrowhover.png"));
+						img1.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowhover.png"));
 		            } else {
-		            	img1.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+		            	img1.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -350,11 +349,11 @@ public class GameBoardViewController extends VBox {
 			Button btn_wonder = new Button();
 			HBox hbox_wonder = new HBox();
 			ImageView img3 = new ImageView();
-			img3.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+			img3.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 			img3.setFitWidth(38);
 			img3.setFitHeight(20);
 			ImageView img4 = new ImageView();
-			img4.setImage(Utils.toImage(imagePath+"pyramid-stage3.png"));
+			img4.setImage(Utils.toImage(Main.TOKENS_PATH+"pyramid-stage3.png"));
 			img4.setFitWidth(45);
 			img4.setFitHeight(35);
 			hbox_wonder.getChildren().add(img3);
@@ -365,9 +364,9 @@ public class GameBoardViewController extends VBox {
 			btn_wonder.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img3.setImage(Utils.toImage(imagePath+"arrowhover.png"));
+						img3.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowhover.png"));
 		            } else {
-		            	img3.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+		            	img3.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -378,11 +377,11 @@ public class GameBoardViewController extends VBox {
 			Button btn_sell = new Button();
 			HBox hbox_sell = new HBox();
 			ImageView img5 = new ImageView();
-			img5.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+			img5.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 			img5.setFitWidth(38);
 			img5.setFitHeight(20);
 			ImageView img6 = new ImageView();
-			img6.setImage(Utils.toImage(imagePath+"coin3.png"));
+			img6.setImage(Utils.toImage(Main.TOKENS_PATH+"coin3.png"));
 			HBox.setMargin(img6, new Insets(0, 5, 0, 0));
 			img6.setFitWidth(35);
 			img6.setFitHeight(33);
@@ -394,9 +393,9 @@ public class GameBoardViewController extends VBox {
 			btn_sell.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 		            if (newValue) {
-						img5.setImage(Utils.toImage(imagePath+"arrowhover.png"));
+						img5.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowhover.png"));
 		            } else {
-		            	img5.setImage(Utils.toImage(imagePath+"arrowgrey.png"));
+		            	img5.setImage(Utils.toImage(Main.TOKENS_PATH+"arrowgrey.png"));
 		            }
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -431,7 +430,7 @@ public class GameBoardViewController extends VBox {
 			card = hand.get(i);
 			
 			BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
-			String path = imagePath;
+			String path = Main.TOKENS_PATH;
 			switch(capability) {
 			case FREE:
 				path += "free";

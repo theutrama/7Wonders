@@ -18,9 +18,7 @@ public class SoundController {
 	
 	public SoundController() {
 		players = new ArrayList<MediaPlayer>();
-		
 	}
-
 
 	public void play(String sound) {
 		try {

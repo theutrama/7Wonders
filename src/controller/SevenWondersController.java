@@ -17,7 +17,7 @@ public class SevenWondersController {
 	/** Card Controller */
 	private CardController cardController;
 	/** IOController */
-	private IOController IOController;
+	private IOController ioController;
 	/** WonderBoard Controller */
 	private WonderBoardController wonderBoardController;
 	/** Current Game */
@@ -34,10 +34,10 @@ public class SevenWondersController {
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this);
 		this.cardController = new CardController(this);
-		this.IOController = new IOController(this);
+		this.ioController = new IOController(this);
 		this.soundController = new SoundController();
 		
-		this.IOController.loadRanking();
+		this.ioController.loadRanking();
 	}
 	/**
 	 * @return GameController
@@ -61,7 +61,7 @@ public class SevenWondersController {
 	 * @return IOController
 	 */
 	public IOController getIOController() {
-		return IOController;
+		return ioController;
 	}
 	/**
 	 * @return PlayerController

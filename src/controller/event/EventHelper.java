@@ -12,9 +12,9 @@ public class EventHelper {
 	 * @param c 	class to be unregistered
 	 * @return		returns true if class was successfully unregistered
 	 */
-	public static boolean unregister(Class c){
+	public static boolean unregister(Class cla){
 		for(int i = 0; i<handlers.size(); i++)
-			if( ((EventListener) handlers.keySet().toArray()[i]).getClass().equals(c)){
+			if( ((EventListener) handlers.keySet().toArray()[i]).getClass().equals(cla)){
 				handlers.remove(i);
 				return true;
 			}

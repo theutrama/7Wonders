@@ -118,8 +118,8 @@ public class WonderBoardController {
 
 		Collections.sort(moduleClasses, new Comparator<Class<? extends WonderBoard>>() {
 			@Override
-			public int compare(Class<? extends WonderBoard> o1, Class<? extends WonderBoard> o2) {
-				return o1.getSimpleName().compareTo(o2.getSimpleName());
+			public int compare(Class<? extends WonderBoard> obj1, Class<? extends WonderBoard> obj2) {
+				return obj1.getSimpleName().compareTo(obj2.getSimpleName());
 			}
 		});
 

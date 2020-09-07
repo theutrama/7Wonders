@@ -5,6 +5,7 @@ import java.io.IOException;
 import application.Main;
 import controller.SevenWondersController;
 import controller.SoundController;
+import controller.sound.Sound;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -28,6 +29,8 @@ public class GameListViewController extends BorderPane {
 	@FXML
 	private VBox vbox_gameList;
 
+	private static SevenWondersController swController;
+	
 	public GameListViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameList/GameList.fxml"));
 		loader.setRoot(this);
@@ -37,8 +40,10 @@ public class GameListViewController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		swController = new SevenWondersController();
 
-		btn_back.setOnAction(e -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
+		btn_back.setOnAction(e -> {swController.getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController());});
 		
 		String[] games = Main.getSWController().getIOController().listGameFiles();
 		for (String game: games) {

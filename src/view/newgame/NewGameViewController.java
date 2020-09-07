@@ -138,7 +138,7 @@ public class NewGameViewController extends StackPane {
 
 		txt_maxplayers.setVisible(false);
 
-		btn_back.setOnAction(event -> Main.primaryStage.getScene().setRoot(new MainMenuViewController()));
+		btn_back.setOnAction(event -> {swController.getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController());});
 		btn_add.setOnAction(event -> addPlayer());
 
 		btn_done.setVisible(false);
@@ -159,6 +159,7 @@ public class NewGameViewController extends StackPane {
 
 	@SuppressWarnings("unchecked")
 	private void done() {
+		swController.getSoundController().play(Sound.BUTTON_CLICK);
 		if (textfield_gamename.getText().isBlank()) {
 			error("Bitte gib ein Spielnamen an!");
 			return;

@@ -451,8 +451,16 @@ public class GameBoardViewController extends VBox {
 			currentCards[i] = card;
 			Button btn = (Button) hbox_cards.getChildren().get(i);
 			
+			System.out.println("BTN ");
+			
 			if(!(btn.getGraphic() instanceof ImageView)) {
-				btn.setGraphic(new ImageView());
+				//fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
+				ImageView view = new ImageView();
+				view.setFitHeight(150);
+				view.setFitWidth(200);
+				view.setPickOnBounds(true);
+				view.setPreserveRatio(true);
+				btn.setGraphic(view);
 			}
 			btn.setTooltip(new Tooltip(card.getDescription()));
 			ImageView img = (ImageView) btn.getGraphic();

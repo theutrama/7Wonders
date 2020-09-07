@@ -217,6 +217,7 @@ public class NewGameViewController extends StackPane {
 	}
 
 	private void addPlayer() {
+		swController.getSoundController().play(Sound.KNOCK);
 		if (textfield_playername.getText().isEmpty() || textfield_playername.getText().isBlank())
 			return;
 

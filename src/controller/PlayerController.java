@@ -79,8 +79,8 @@ public class PlayerController {
 	 */
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wbc.createWonderBoard(wonderboard);
-		ArtInt ai = new ArtInt(difficulty, board);
-		return ai;
+		ArtInt artInt = new ArtInt(difficulty, board);
+		return artInt;
 	}
 
 	/**

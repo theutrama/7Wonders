@@ -3,6 +3,7 @@ package model.board;
 import model.card.Resource;
 import model.card.ResourceType;
 
+/** Rhodos Board */
 public class RhodosBoard extends WonderBoard {
 	private static final long serialVersionUID = 1L;
 

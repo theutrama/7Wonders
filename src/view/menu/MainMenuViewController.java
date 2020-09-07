@@ -31,8 +31,6 @@ public class MainMenuViewController extends BorderPane {
     
     @FXML
     private Button btn_mute;
-    
-    private static SevenWondersController swController;
 
 	public MainMenuViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu/MainMenu.fxml"));
@@ -45,16 +43,15 @@ public class MainMenuViewController extends BorderPane {
 			e.printStackTrace();
 		}
 		
-		swController = new SevenWondersController();
 		SoundController.addMuteFunction(btn_mute, img_music);
 
-		btn_newgame.setOnAction(event -> {swController.getSoundController().play(Sound.BUTTON_CLICK);
+		btn_newgame.setOnAction(event -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 			Main.primaryStage.getScene().setRoot(new NewGameViewController());
 		});
 		
-		btn_ranking.setOnAction(e -> {swController.getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new RankingViewController());});
+		btn_ranking.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new RankingViewController());});
 		
-		btn_loadgame.setOnAction(e -> {swController.getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new GameListViewController());});
+		btn_loadgame.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new GameListViewController());});
 		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_GAME);
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_MENU, true);
 	}

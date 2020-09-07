@@ -13,6 +13,9 @@ import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
 import view.result.ResultViewController;
 
+/**
+ * game controller for game controlling
+ */
 public class GameController {
 	/** constants for PMD */
 	private static final int NUM_ROUNDS = 6, NUM_AGES = 3, FIRST_AGE = 1, SECOND_AGE = 2;
@@ -40,7 +43,6 @@ public class GameController {
 	public Game createGame(String name, ArrayList<Player> players) {
 		Game game = new Game(name);
 		this.swController.setGame(game);
-		game.setCurrentPlayer(players.get(0));
 		createGameFirstRound(players, game);
 		return game;
 	}
@@ -54,6 +56,7 @@ public class GameController {
 		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
 		GameState state = new GameState(0, 1, players, cardStack);
 		nextAge(game, state);
+		game.getCurrentGameState().setFirstPlayer(0);
 	}
 
 	/**
@@ -163,8 +166,9 @@ public class GameController {
 				ageCards.remove(index); // remove from help list
 			}
 		}
-
-		state.setCurrentPlayer(0);
+		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
+		state.setFirstPlayer(startPlayer);
+		state.setCurrentPlayer(startPlayer);
 
 		game.deleteRedoStates();
 		game.getStates().add(state);
@@ -197,6 +201,10 @@ public class GameController {
 		game.deleteRedoStates();
 		game.getStates().add(state);
 		game.setCurrentState(game.getStates().size() - 1);
+		
+		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
+		state.setFirstPlayer(startPlayer);
+		state.setCurrentPlayer(startPlayer);
 	}
 
 	/**

@@ -514,12 +514,12 @@ public class GameBoardViewController extends VBox {
 		}
 		System.out.println("SetHandCards start");
 		firstPlayer = this.boards.get(0).getPlayer();
-		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
+//		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		setHandCards();
 	}
 	
 	public Player getCurrentPlayer() {
-		return Main.getSWController().getGame().getCurrentPlayer();
+		return null;
 	}
 	
 	public void selectCardFromTrash(Player player) {
@@ -620,7 +620,7 @@ public class GameBoardViewController extends VBox {
 		}
 		
 		System.out.println("CURRENT: "+this.boards.get(0).getPlayer().getName()+" "+this.boards.get(0).getPlayer().getBoard().getBoardName());
-		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
+//		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		
 		if(choose) {
 			setHandCards();

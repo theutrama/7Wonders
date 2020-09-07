@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-
 import application.Main;
 import application.Utils;
 import controller.sound.Sound;
@@ -14,6 +12,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class SoundController {
+	
+	private double volume = 1.0;
 	/** mute sound */
 	private boolean mute = false;
 	/** list of media players */
@@ -24,12 +24,21 @@ public class SoundController {
 	public SoundController() {
 		players = new ArrayList<SoundPlayer>();
 	}
+	
+	/**
+	 * set Volume for the Background Music!
+	 * @param vol between 0.0 and 1.0
+	 */
+	public void setVolume(double vol) {
+		this.volume = vol;
+		for(SoundPlayer player : players)
+			if(player.getSound() == Sound.BACKGROUND_GAME || player.getSound() == Sound.BACKGROUND_MENU)player.setVolume(vol);
+	}
 
 	/**
 	 * plays sound
 	 * @param sound 	name of sound
 	 */
-	
 	public void play(Sound sound) {
 		play(sound, false);
 	}
@@ -38,12 +47,10 @@ public class SoundController {
 	 * stops sound
 	 * @param sound 	name of sound
 	 */
-	
 	public void stop(Sound sound) {
 		SoundPlayer remove = null;
 		for(SoundPlayer player : players) {
 			if(player.getSound() == sound) {
-				System.out.println("SOUND STOP "+sound.name());
 				
 				player.stop();
 				remove = player;
@@ -59,15 +66,18 @@ public class SoundController {
 	 * @param sound 	name of sound
 	 */
 	public void play(Sound sound,boolean loop) {
-		SoundPlayer player = new SoundPlayer(sound);
-		System.out.println("SOUND PLAY "+sound.name());
-		if(loop)
-			player.setLoop();
-		else
-			player.setAutoRemove();
-		if (!mute)
-			player.play();
-		players.add(player);
+		if(!isMuted() || (this.mute && loop)) {
+			SoundPlayer player = new SoundPlayer(sound,(loop ? volume : 1.0));
+			if(loop)
+				player.setLoop();
+			else
+				player.setAutoRemove();
+			
+			if (!this.mute) {
+				player.play();
+			}
+			players.add(player);
+		}
 	}
 	
 	/**
@@ -75,13 +85,14 @@ public class SoundController {
 	 * @return true if muted
 	 */
 	public boolean mute() {
-		if (mute)
-			for (SoundPlayer player : players)
+		this.mute = !this.mute;
+		for (SoundPlayer player : players)
+			if(this.mute) 
+				player.pause();
+			else	
 				player.play();
-		else
-			for (SoundPlayer player: players)
-				player.stop();
-		return (mute ^= true);
+		
+		return mute;
 	}
 	/**
 	 * @return true if muted
@@ -116,11 +127,16 @@ public class SoundController {
 		private String[] filenames;
 		private Sound sound;
 		
-		public SoundPlayer(Sound sound) {
+		public SoundPlayer(Sound sound,double volume) {
 			this.sound = sound;
 			this.filenames = sound.getSoundFilenames();
 			this.index = Utils.randInt(0, this.filenames.length-1);
 			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+			setVolume(volume);
+		}
+		
+		public void setVolume(double vol) {
+			this.player.setVolume(vol);
 		}
 		
 		public void setAutoRemove() {
@@ -135,6 +151,7 @@ public class SoundController {
 					if(this.filenames.length == this.index)this.index = 0;
 					this.player.stop();
 					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+					setVolume(volume);
 					this.player.play();
 				});
 			else 
@@ -149,6 +166,10 @@ public class SoundController {
 		public void stop() {
 			this.player.stop();
 			players.remove(this);
+		}
+		
+		public void pause() {
+			this.player.pause();
 		}
 		
 		public void play() {

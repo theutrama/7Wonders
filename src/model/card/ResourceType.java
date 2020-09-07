@@ -2,6 +2,7 @@ package model.card;
 
 import application.Main;
 
+/** type of resource */
 public enum ResourceType {
 	
 	WOOD(Main.TOKENS_PATH + "wood.png"), 
@@ -19,12 +20,19 @@ public enum ResourceType {
 	COMPASS(""), 
 	NONE("");
 
+	/** path of image */
 	private String imagePath;
-	
+	/** 
+	 * adds image to ResourceType
+	 * @param imgPath		path of image
+	 */
 	private ResourceType(String imgPath) {
 		this.imagePath = imgPath;
 	}
-	
+	/**
+	 * getter for {@link #imagePath}
+	 * @return imagePath
+	 */
 	public String getImagePath() {
 		return this.imagePath;
 	}

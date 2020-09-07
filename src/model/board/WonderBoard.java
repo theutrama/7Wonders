@@ -10,6 +10,7 @@ import model.card.Resource;
 import model.player.Player;
 import model.card.CardType;
 
+/** Abstract Wonder Board*/
 public abstract class WonderBoard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/** indicates if each slot (0-2) is filled with a card */

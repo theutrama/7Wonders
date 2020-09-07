@@ -4,6 +4,12 @@ import model.Game;
 import model.ranking.Ranking;
 
 public class SevenWondersController {
+	private static SevenWondersController instance;
+	public static SevenWondersController getInstance() {
+		if(instance == null) instance= new SevenWondersController();
+		return instance;
+	}
+	
 	/** Game Controller */
 	private GameController gameController;
 	/** Player Controller */
@@ -11,7 +17,7 @@ public class SevenWondersController {
 	/** Card Controller */
 	private CardController cardController;
 	/** IOController */
-	private IOController IOController;
+	private IOController ioController;
 	/** WonderBoard Controller */
 	private WonderBoardController wonderBoardController;
 	/** Current Game */
@@ -23,15 +29,15 @@ public class SevenWondersController {
 	/**
 	 * create new SevenWonders Controller
 	 */
-	public SevenWondersController() {
+	protected SevenWondersController() {
 		this.wonderBoardController = new WonderBoardController(this);
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this);
 		this.cardController = new CardController(this);
-		this.IOController = new IOController(this);
+		this.ioController = new IOController(this);
 		this.soundController = new SoundController();
 		
-		this.IOController.loadRanking();
+		this.ioController.loadRanking();
 	}
 	/**
 	 * @return GameController
@@ -55,7 +61,7 @@ public class SevenWondersController {
 	 * @return IOController
 	 */
 	public IOController getIOController() {
-		return IOController;
+		return ioController;
 	}
 	/**
 	 * @return PlayerController

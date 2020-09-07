@@ -41,7 +41,7 @@ public class GameControllerTest {
 		gC.undo(swc.getGame());
 		//g3 = 3rd round 1st age
 		GameState g3 = swc.getGame().getCurrentGameState();
-		pC.chooseCard(cC.getCard(swc.getGame().getCurrentPlayer().getHand(), swc.getGame().getCurrentPlayer().getHand().get(2).toString()), pC.getPlayer("erster"));
+		pC.chooseCard(cC.getCard(swc.getGame().getCurrentGameState().getPlayer().getHand(), swc.getGame().getStates().get(swc.getGame().getCurrentState()).getPlayer().getHand().get(2).toString()), pC.getPlayer("erster"));
 		//card already chosen -> redo does nothing
 		assertEquals(g3, swc.getGame().getCurrentGameState());
 		

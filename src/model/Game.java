@@ -2,13 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
-import model.player.Player;
-
+/** Contains Game data for SevenWonders game */
 public class Game {
 	/** current state index */
 	private int currentState;
-	/** current player */
-	private Player currentPlayer;
 	/** name */
 	private String name;
 	/** list of game states */
@@ -61,15 +58,6 @@ public class Game {
 	}
 
 	/**
-	 * getter for {@link #currentPlayer}
-	 * 
-	 * @return current player
-	 */
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	/**
 	 * getter for {@link #states}
 	 * 
 	 * @return states list
@@ -88,18 +76,17 @@ public class Game {
 	}
 
 	/**
-	 * setter for {@link #currentPlayer}
+	 * Returns if score is still valid
 	 * 
-	 * @param currentPlayer current player
+	 * @return {@link #allowHighscore}
 	 */
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-	
 	public boolean highscoreAllowed() {
 		return allowHighscore;
 	}
-	
+
+	/**
+	 * signal that someone has cheated
+	 */
 	public void disableHighscore() {
 		allowHighscore = false;
 	}

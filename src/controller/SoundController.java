@@ -149,6 +149,7 @@ public class SoundController {
 					if(this.filenames.length == this.index)this.index = 0;
 					this.player.stop();
 					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+					setVolume(volume);
 					this.player.play();
 				});
 			else 

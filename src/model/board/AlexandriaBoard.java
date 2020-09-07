@@ -3,7 +3,7 @@ package model.board;
 import model.card.Resource;
 
 import model.card.ResourceType;
-
+/** Alexandria Board */
 public class AlexandriaBoard extends WonderBoard {
 	private static final long serialVersionUID = 1L;
 
@@ -20,9 +20,9 @@ public class AlexandriaBoard extends WonderBoard {
 	}
 
 	/**
-	 * Gibt alle 4 Ressourcen zurueck, es kann nur eine verwendet werden
+	 * Returns all 4 resources, only one can be used
 	 * 
-	 * @return
+	 * @return temp	all 4 resources
 	 */
 	public ResourceType[] resources() {
 

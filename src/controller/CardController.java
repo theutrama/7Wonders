@@ -302,19 +302,12 @@ public class CardController {
 				new String[] { "library" }, addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(6); })), 6));
 		cards.add(new Card(3, "Gilde der Reeder", "shipownersguild", CardType.PURPLE, null,
 				addRArray(new Resource(3, ResourceType.WOOD), new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.PAPYRUS)), null, addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
-					int count = 0;
-					for (Card el : p.getBoard().getResources())
-						count++;
-					for (Card el : p.getBoard().getGuilds())
-						if (el.getType() == CardType.GRAY)
-							count++;
-					p.addVictoryPoints(count);
+					p.addVictoryPoints(p.getBoard().getResources().size() + p.getBoard().getGuilds().size());
 				}))));
 		cards.add(new Card(3, "Belagerungsmaschinen", "siegeworkshop", CardType.RED, addRArray(new Resource(3, ResourceType.MILITARY)),
 				addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.WOOD)), new String[] { "laboratory" }, null));
 		cards.add(new Card(3, "Gilde der Spione", "spiesguild", CardType.PURPLE, null, addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.GLASS)), null,
 				addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
-					int count = 0;
 					int left = swController.getPlayerController().getLeftNeighbour(p).getBoard().getMilitary().size();
 					int right = swController.getPlayerController().getRightNeighbour(p).getBoard().getMilitary().size();
 					p.addVictoryPoints(left + right);
@@ -327,7 +320,6 @@ public class CardController {
 		cards.add(new Card(1, "Steinbruch", "stonepit", CardType.BROWN, addRArray(new Resource(1, ResourceType.STONE)), null, null, null));
 		cards.add(new Card(3, "Gilde der Strategen", "strategistsguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)), null, addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
-					int count = 0;
 					int left = swController.getPlayerController().getLeftNeighbour(p).getLosePoints();
 					int right = swController.getPlayerController().getRightNeighbour(p).getLosePoints();
 					p.addVictoryPoints(left + right);
@@ -344,7 +336,6 @@ public class CardController {
 				addEArray(new Effect(EffectType.WHEN_PLAYED, p -> { p.addVictoryPoints(6); })), 6));
 		cards.add(new Card(3, "Gilde der Händler", "tradersguild", CardType.PURPLE, null,
 				addRArray(new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.GLASS)), null, addEArray(new Effect(EffectType.AT_MATCH_END, p -> {
-					int count = 0;
 					int left = swController.getPlayerController().getLeftNeighbour(p).getBoard().getTrade().size();
 					int right = swController.getPlayerController().getRightNeighbour(p).getBoard().getTrade().size();
 					p.addVictoryPoints(left + right);

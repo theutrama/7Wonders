@@ -20,6 +20,7 @@ public class SevenWondersFactory {
 		SevenWondersController sevenWondersController = new SevenWondersController();
 		PlayerController playerController = sevenWondersController.getPlayerController();
 		CardController cardController = sevenWondersController.getCardController();
+		GameController gameController = sevenWondersController.getGameController();
 		/*
 		 * GameController gameController = sevenWondersController.getGameController(); WonderBoardController wwonderBoardController = sevenWondersController.getWonderBoardController();
 		 * IOController ioController = sevenWondersController.getIOController(); SoundController soundController = sevenWondersController.getSoundController();
@@ -42,12 +43,14 @@ public class SevenWondersFactory {
 		players.add(player6);
 		players.add(player7);
 
-		Game game = new Game("testgame1");
+		Game game = gameController.createGame("Testgame",  players);
+		//Game game = new Game("testgame1");
 		ArrayList<Card> cards = cardController.generateCardStack(players);
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
 		sevenWondersController.setGame(game);
 		sevenWondersController.setRanking(new Ranking());
+		
 
 		// @formatter:off
 		 /*

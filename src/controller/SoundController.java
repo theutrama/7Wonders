@@ -25,9 +25,9 @@ public class SoundController {
 		players = new ArrayList<SoundPlayer>();
 	}
 	
-	public void setVolume(double v) {
+	public void setVolume(double vol) {
 		for(SoundPlayer player : players)
-			player.setVolume(v);
+			player.setVolume(vol);
 	}
 
 	/**
@@ -131,8 +131,8 @@ public class SoundController {
 			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
 		}
 		
-		public void setVolume(double v) {
-			this.player.setVolume(v);
+		public void setVolume(double vol) {
+			this.player.setVolume(vol);
 		}
 		
 		public void setAutoRemove() {

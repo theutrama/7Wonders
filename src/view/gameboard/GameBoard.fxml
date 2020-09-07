@@ -21,9 +21,9 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button fx:id="btn_mute" mnemonicParsing="false">
+                  <Button mnemonicParsing="false">
                      <graphic>
-                        <ImageView fx:id="img_music" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btn_undo1" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/music.png" />
                            </image>

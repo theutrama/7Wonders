@@ -10,16 +10,12 @@ import java.io.ObjectOutputStream;
 import model.Game;
 import model.ranking.Ranking;
 
-/** Controls the Input-Output interaction */
 public class IOController {
-	/** folders where games and ranking are stored */
+
 	private static final String GAME_FOLDER = "games", RANKING = "ranking";
-	/** SevenWonders Controller */
+
 	private SevenWondersController swController;
-	/**
-	 * creates new IOController
-	 * @param swController		SevenWonder Controller
-	 */
+
 	public IOController(SevenWondersController swController) {
 		this.swController = swController;
 	}

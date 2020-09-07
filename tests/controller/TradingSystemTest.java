@@ -25,7 +25,6 @@ public class TradingSystemTest {
 		Player player1 = controller.getPlayerController().createPlayer("player 1", "Alexandria"), player2 = controller.getPlayerController().createPlayer("player 2", "Olympia"),
 				player3 = controller.getPlayerController().createPlayer("player 3", "Rhodos");
 		controller.setGame(controller.getGameController().createGame("game 1", createList(player1, player2, player3)));
-		controller.getGame().setCurrentPlayer(player1);
 
 		player1 = controller.getPlayerController().getPlayer("player 1");
 		player2 = controller.getPlayerController().getPlayer("player 2");

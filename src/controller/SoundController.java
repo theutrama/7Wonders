@@ -48,13 +48,14 @@ public class SoundController {
 		SoundPlayer remove = null;
 		for(SoundPlayer player : players) {
 			if(player.getSound() == sound) {
+				
 				player.stop();
 				remove = player;
 				break;
 			}
 		}
 		
-		if(remove!=null)players.remove(remove);
+		if(remove != null)players.remove(remove);
 	}
 
 	/**
@@ -74,8 +75,6 @@ public class SoundController {
 			}
 			players.add(player);
 		}
-		
-		
 	}
 	
 	/**
@@ -89,15 +88,14 @@ public class SoundController {
 				player.pause();
 			else	
 				player.play();
-			
 		
-		return this.mute;
+		return mute;
 	}
 	/**
 	 * @return true if muted
 	 */
 	public boolean isMuted() {
-		return this.mute;
+		return mute;
 	}
 	/**
 	 * @param btn 		adds mute button
@@ -160,12 +158,13 @@ public class SoundController {
 			return this.sound;
 		}
 		
-		public void pause() {
-			this.player.pause();
-		}
-		
 		public void stop() {
 			this.player.stop();
+			players.remove(this);
+		}
+		
+		public void pause() {
+			this.player.pause();
 		}
 		
 		public void play() {

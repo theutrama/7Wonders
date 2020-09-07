@@ -11,10 +11,7 @@ import java.util.ArrayList;
 import model.card.Card;
 import model.player.Player;
 
-public class GameState implements Serializable{
-	/**
-	 * 
-	 */
+public class GameState implements Serializable {
 	private static final long serialVersionUID = 6134733784450914362L;
 	/** current age */
 	private int age;
@@ -30,13 +27,16 @@ public class GameState implements Serializable{
 	private ArrayList<Card> cardStack;
 	/** true if no action was done in this round */
 	private boolean beginOfRound;
+	/** index of first player */
+	private int firstPlayer;
 
 	/**
 	 * not used other than the begin of a game
-	 * @param age current age
-	 * @param round current round
+	 * 
+	 * @param age     current age
+	 * @param round   current round
 	 * @param players player list
-	 * @param cards initial card stack
+	 * @param cards   initial card stack
 	 */
 	public GameState(int age, int round, ArrayList<Player> players, ArrayList<Card> cards) {
 		this.players = players;
@@ -48,6 +48,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #age}
+	 * 
 	 * @return age
 	 */
 	public int getAge() {
@@ -56,6 +57,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #round}
+	 * 
 	 * @return round
 	 */
 	public int getRound() {
@@ -64,6 +66,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * setter for {@link #currentPlayer}
+	 * 
 	 * @param currentPlayer current player index
 	 */
 	public void setCurrentPlayer(int currentPlayer) {
@@ -72,6 +75,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #currentPlayer}
+	 * 
 	 * @return current player index
 	 */
 	public int getCurrentPlayer() {
@@ -80,6 +84,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #players}
+	 * 
 	 * @return player list
 	 */
 	public ArrayList<Player> getPlayers() {
@@ -88,6 +93,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #trash}
+	 * 
 	 * @return trash cards
 	 */
 	public ArrayList<Card> getTrash() {
@@ -96,6 +102,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * getter for {@link #cardStack}
+	 * 
 	 * @return card stack
 	 */
 	public ArrayList<Card> getCardStack() {
@@ -104,6 +111,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * deep clones this game state
+	 * 
 	 * @return new game state instance that is equal to this one, but has no common references
 	 */
 	public GameState deepClone() {
@@ -114,7 +122,7 @@ public class GameState implements Serializable{
 			objOut.flush();
 			objOut.close();
 			byteOut.close();
-			
+
 			ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
 			ObjectInputStream objIn = new ObjectInputStream(byteIn);
 			GameState copy = (GameState) objIn.readObject();
@@ -126,42 +134,63 @@ public class GameState implements Serializable{
 			return null;
 		}
 	}
-	
+
 	/**
 	 * setter for {@link #age}
+	 * 
 	 * @param age age
 	 */
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	/**
 	 * setter for {@link #round}
+	 * 
 	 * @param round round
 	 */
 	public void setRound(int round) {
 		this.round = round;
 	}
-	
+
 	/**
 	 * setter for {@link #beginOfRound}
+	 * 
 	 * @param begin begin of round
 	 */
 	public void setBeginOfRound(boolean begin) {
 		beginOfRound = begin;
 	}
-	
+
 	/** sets {@link #beginOfRound} to false */
 	public void beginRound() {
 		beginOfRound = false;
 	}
-	
+
 	/**
 	 * getter for {@link #beginOfRound}
+	 * 
 	 * @return begin of round
 	 */
 	public boolean isAtBeginOfRound() {
 		return beginOfRound;
 	}
 
+	/**
+	 * getter for {@link #firstPlayer}
+	 * 
+	 * @return first player index
+	 */
+	public int getFirstPlayer() {
+		return firstPlayer;
+	}
+
+	/**
+	 * setter for {@link #firstPlayer}
+	 * 
+	 * @param firstPlayer first player index
+	 */
+	public void setFirstPlayer(int firstPlayer) {
+		this.firstPlayer = firstPlayer;
+	}
 }

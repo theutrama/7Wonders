@@ -4,10 +4,9 @@ import model.Game;
 import model.ranking.Ranking;
 
 public class SevenWondersController {
-	private static SevenWondersController instance = null;
-	
+	private static SevenWondersController instance;
 	public static SevenWondersController getInstance() {
-		if(instance == null) instance = new SevenWondersController();
+		if(instance == null) instance= new SevenWondersController();
 		return instance;
 	}
 	

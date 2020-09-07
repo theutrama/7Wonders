@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
-import controller.SoundController;
 import controller.sound.Sound;
 import controller.utils.BuildCapability;
 import javafx.event.ActionEvent;
@@ -37,12 +36,8 @@ import model.card.Card;
 import model.player.Player;
 
 public class GameBoardViewController extends VBox {
-
-	@FXML
-	private Button btn_mute;
-
-	@FXML
-	private ImageView img_music;
+    @FXML
+    public ImageView btn_undo1;
 
     @FXML
     public ImageView btn_undo;
@@ -311,7 +306,6 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
-		SoundController.addMuteFunction(btn_mute, img_music);
 		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_MENU);
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME,true);
 		setup();
@@ -520,12 +514,12 @@ public class GameBoardViewController extends VBox {
 		}
 		System.out.println("SetHandCards start");
 		firstPlayer = this.boards.get(0).getPlayer();
-		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
+//		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		setHandCards();
 	}
 	
 	public Player getCurrentPlayer() {
-		return Main.getSWController().getGame().getCurrentPlayer();
+		return null;
 	}
 	
 	public void selectCardFromTrash(Player player) {
@@ -626,7 +620,7 @@ public class GameBoardViewController extends VBox {
 		}
 		
 		System.out.println("CURRENT: "+this.boards.get(0).getPlayer().getName()+" "+this.boards.get(0).getPlayer().getBoard().getBoardName());
-		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
+//		Main.getSWController().getGame().setCurrentPlayer(this.boards.get(0).getPlayer());
 		
 		if(choose) {
 			setHandCards();

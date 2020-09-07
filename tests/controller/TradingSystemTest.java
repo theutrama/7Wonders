@@ -98,6 +98,7 @@ public class TradingSystemTest {
 				controller.getPlayerController().hasResources(player2, createList(new Resource(5, ResourceType.BRICK), new Resource(3, ResourceType.STONE))));
 		assertEquals(BuildCapability.NONE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(6, ResourceType.BRICK), new Resource(4, ResourceType.STONE))));
+		System.out.println(controller.getPlayerController().hasResources(player1, createList(new Resource(3, ResourceType.COINS))));
 	}
 
 	/**

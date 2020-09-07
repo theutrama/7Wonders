@@ -3,6 +3,7 @@ package controller;
 import model.Game;
 import model.ranking.Ranking;
 
+/** SevenWonders Controller */
 public class SevenWondersController {
 	
 	
@@ -22,8 +23,12 @@ public class SevenWondersController {
 	private Ranking ranking;
 	/** Sound Controller */
 	private SoundController soundController;
-	
+	/** instance of SevenWonders Controller */
 	private static SevenWondersController instance;
+	/**
+	 * getter for {@link #instance}
+	 * @return instance
+	 */
 	public static SevenWondersController getInstance() {
 		if(instance == null) instance= new SevenWondersController();
 		return instance;

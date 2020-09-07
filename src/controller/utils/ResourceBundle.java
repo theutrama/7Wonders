@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import model.card.Resource;
 import model.player.Player;
 
+/** stores ResourceBundles for all cards */
 public class ResourceBundle {
 	/** counters for resource quantities */
 	private int wood, stone, ore, cloth, glass, brick, papyrus, coins;

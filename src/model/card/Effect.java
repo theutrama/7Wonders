@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import model.player.Player;
 
+/** Effect of Cards and Wonders */
 public class Effect implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

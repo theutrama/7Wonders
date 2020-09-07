@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 
 import model.player.Player;
 
+/** trade options for left and right neighbors */
 public class TradeOption {
 	/** the traded resources to each side */
 	private ResourceBundle leftTrade, rightTrade;

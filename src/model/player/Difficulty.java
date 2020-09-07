@@ -1,5 +1,6 @@
 package model.player;
 
+/** difficulty of the AI */
 public enum Difficulty {
 
 	EASY, MEDIUM, HARDCORE;

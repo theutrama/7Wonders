@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controller.IOController;
 
+/** list of statistics from multiple players */
 public class Ranking {
 	/** ranking list */
 	private ArrayList<PlayerStats> playerStats;

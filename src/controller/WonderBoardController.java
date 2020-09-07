@@ -22,6 +22,7 @@ import model.board.WonderBoard;
 import model.card.Card;
 import model.player.Player;
 
+/** Controller for WonderBoard */
 public class WonderBoardController {
 	/** SevenWonders Controller */
 	private SevenWondersController swController;

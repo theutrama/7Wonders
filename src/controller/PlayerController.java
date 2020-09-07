@@ -20,6 +20,7 @@ import model.player.ArtInt;
 import model.player.Difficulty;
 import model.player.Player;
 
+/** Controller for Players */
 public class PlayerController {
 	/** main controller */
 	private SevenWondersController swController;

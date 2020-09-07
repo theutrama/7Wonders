@@ -2,10 +2,11 @@ package model.ranking;
 
 import java.time.LocalDateTime;
 
+/** Game Statistics for a certain player */
 public class PlayerStats {
 	/** player name */
 	private String name;
-	/** date and time when the game was finshed */
+	/** date and time when the game was finished */
 	private LocalDateTime date;
 	/** player's victory points */
 	private int victoryPoints;

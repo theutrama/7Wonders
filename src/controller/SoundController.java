@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+/** Sound Controller for sounds in Game */
 public class SoundController {
 	
 	private double volume = 1.0;

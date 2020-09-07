@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import model.card.Card;
 import model.player.Player;
 
+/** saves State of Game */
 public class GameState implements Serializable {
 	private static final long serialVersionUID = 6134733784450914362L;
 	/** current age */

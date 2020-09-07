@@ -9,13 +9,16 @@ import java.io.ObjectOutputStream;
 
 import model.Game;
 import model.ranking.Ranking;
-
+/** Controller for Input-Output interaction */
 public class IOController {
-
+	
 	private static final String GAME_FOLDER = "games", RANKING = "ranking";
 
 	private SevenWondersController swController;
-
+	/**
+	 * creates new IOController
+	 * @param swController		SevenWOnders Controller
+	 */
 	public IOController(SevenWondersController swController) {
 		this.swController = swController;
 	}
@@ -54,7 +57,7 @@ public class IOController {
 	public void save(Game game) {
 		save(game,File.separator + GAME_FOLDER + File.separator + game.getName());
 	}
-
+	
 	private void save(Object obj,String path) {
 		try {
 			File file1 = new File(getExecutionPath());

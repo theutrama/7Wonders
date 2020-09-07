@@ -2,6 +2,7 @@ package model.card;
 
 import java.io.Serializable;
 
+/** gives quantity and type of Resource */
 public class Resource implements Serializable{
 	private static final long serialVersionUID = 2837901052020132762L;
 	/** amount of resources produced or required */
@@ -35,6 +36,7 @@ public class Resource implements Serializable{
 		return type;
 	}
 
+	/** to String method */
 	@Override
 	public String toString() {
 		return quantity + " x " + type;

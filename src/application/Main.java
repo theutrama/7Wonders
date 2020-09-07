@@ -38,7 +38,6 @@ public class Main extends Application {
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
-			soundController.play(Sound.BACKGROUND_MENU, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

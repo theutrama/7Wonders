@@ -43,6 +43,8 @@ public class SoundController {
 		SoundPlayer remove = null;
 		for(SoundPlayer player : players) {
 			if(player.getSound() == sound) {
+				System.out.println("SOUND STOP "+sound.name());
+				
 				player.stop();
 				remove = player;
 				break;
@@ -58,6 +60,7 @@ public class SoundController {
 	 */
 	public void play(Sound sound,boolean loop) {
 		SoundPlayer player = new SoundPlayer(sound);
+		System.out.println("SOUND PLAY "+sound.name());
 		if(loop)
 			player.setLoop();
 		else
@@ -145,6 +148,7 @@ public class SoundController {
 		
 		public void stop() {
 			this.player.stop();
+			players.remove(this);
 		}
 		
 		public void play() {

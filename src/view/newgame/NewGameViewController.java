@@ -209,7 +209,6 @@ public class NewGameViewController extends StackPane {
 		Main.getSWController().setGame(game);
 
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
-		swController.getSoundController().play(Sound.BACKGROUND_GAME,true);
 	}
 
 	private void error(String txt) {

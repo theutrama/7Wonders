@@ -306,6 +306,8 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
+		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_MENU);
+		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME,true);
 		setup();
 	}
 	

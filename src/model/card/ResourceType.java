@@ -1,17 +1,17 @@
 package model.card;
 
-import java.io.File;
+import application.Main;
 
 public enum ResourceType {
 	
-	WOOD("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "wood.png"), 
-	BRICK("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "clay.png"), 
-	ORE("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "ore.png"), 
-	STONE("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "stone.png"), 
-	PAPYRUS("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "paper.png"), 
-	GLASS("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "glass.png"), 
-	CLOTH("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "linen.png"), 
-	COINS("src"+File.separator + "view" + File.separator + "images" + File.separator + "tokens" + File.separator + "coin.png"), 
+	WOOD(Main.TOKENS_PATH + "wood.png"), 
+	BRICK(Main.TOKENS_PATH + "clay.png"), 
+	ORE(Main.TOKENS_PATH + "ore.png"), 
+	STONE(Main.TOKENS_PATH + "stone.png"), 
+	PAPYRUS(Main.TOKENS_PATH + "paper.png"), 
+	GLASS(Main.TOKENS_PATH + "glass.png"), 
+	CLOTH(Main.TOKENS_PATH + "linen.png"), 
+	COINS(Main.TOKENS_PATH + "coin.png"), 
 	MILITARY(""),
 	/* SCIENCE TYPES */
 	TABLET(""), 

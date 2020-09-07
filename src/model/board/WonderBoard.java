@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import application.Main;
 import model.card.Card;
 import model.card.Resource;
 import model.player.Player;
@@ -42,7 +43,7 @@ public abstract class WonderBoard implements Serializable {
 	 */
 	public String getImage() {
 		String name = getClass().getSimpleName().replaceAll("Board", "");
-		return "src" + File.separator + "view" + File.separator + "images" + File.separator + "boards" + File.separator + name.toLowerCase() + ".jpg";
+		return Main.BOARD_PATH + name.toLowerCase() + ".jpg";
 	}
 
 	/**

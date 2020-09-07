@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import application.Main;
+
 public class Card implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/** age */
@@ -100,7 +102,7 @@ public class Card implements Serializable {
 	 * @return the pathname to an image file
 	 */
 	public String getImage() {
-		return "src" + File.separator + "view" + File.separator + "images" + File.separator + "cards" + File.separator + internalName.toLowerCase() + ".png";
+		return Main.CARDS_PATH + internalName.toLowerCase() + ".png";
 	}
 
 	/**

@@ -454,7 +454,6 @@ public class GameBoardViewController extends VBox {
 			System.out.println("BTN ");
 			
 			if(!(btn.getGraphic() instanceof ImageView)) {
-				//fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
 				ImageView view = new ImageView();
 				view.setFitHeight(150);
 				view.setFitWidth(200);

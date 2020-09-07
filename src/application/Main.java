@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import controller.SevenWondersController;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -10,8 +12,12 @@ import view.menu.MainMenuViewController;
 public class Main extends Application {
 
 	public static Stage primaryStage;
-
 	private static SevenWondersController swController;
+	
+	public static final String DEFAULT_PATH = "src"+File.separator + "view" + File.separator + "images" + File.separator;
+	public static final String TOKENS_PATH = DEFAULT_PATH + "tokens" + File.separator;
+	public static final String BOARD_PATH = DEFAULT_PATH + "boards" + File.separator;
+	public static final String CARDS_PATH = DEFAULT_PATH + "cards" + File.separator;
 
 	@Override
 	public void start(Stage primaryStage) {

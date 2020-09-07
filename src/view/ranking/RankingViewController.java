@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import application.Main;
 import controller.SevenWondersController;
 import controller.SoundController;
+import controller.sound.Sound;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -55,6 +56,8 @@ public class RankingViewController extends BorderPane {
 	@FXML
 	private ImageView img_music;
 
+	private static SevenWondersController swController;
+	
 	public RankingViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ranking/Ranking.fxml"));
 		loader.setRoot(this);
@@ -64,8 +67,10 @@ public class RankingViewController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		swController = new SevenWondersController();
 
-		btn_back.setOnAction(e -> {
+		btn_back.setOnAction(e -> { swController.getSoundController().play(Sound.BUTTON_CLICK);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 		});
 		

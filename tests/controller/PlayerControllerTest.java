@@ -24,13 +24,14 @@ public class PlayerControllerTest {
 	private SevenWondersController swc;
 	private PlayerController pController;
 	private CardController cController;
+	private WonderBoardController wbController;
 
 	@Before
 	public void setUp() {
 		SevenWondersController swc = SevenWondersFactory.create();
 		pController = swc.getPlayerController();
 		cController = swc.getCardController();
-
+		wbController = swc.getWonderBoardController();
 	}
 
 	/**
@@ -49,27 +50,23 @@ public class PlayerControllerTest {
 
 	}
 
-	@Test
+	
 	
 	/**
 	 * test science points
 	 */
+	@Test
 	public void createSciencePointsTest() {
 		
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("erster")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("zweiter")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("dritter")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("vierter")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("fünfter")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("sechster")));
-		 assertEquals(7, pController.getSciencePoints(pController.getPlayer("siebter")));
+		 assertEquals(10, pController.getSciencePoints(pController.getPlayer("erster")));
+		 assertEquals(18, pController.getSciencePoints(pController.getPlayer("zweiter")));
+		 assertEquals(2, pController.getSciencePoints(pController.getPlayer("dritter")));
+		 assertEquals(1, pController.getSciencePoints(pController.getPlayer("vierter")));
+		 assertEquals(9, pController.getSciencePoints(pController.getPlayer("fünfter")));
+		 assertEquals(4, pController.getSciencePoints(pController.getPlayer("sechster")));
+		 assertEquals(48, pController.getSciencePoints(pController.getPlayer("siebter")));
 		
 		 
 	}
-
-	public void createGetPlayerTest() {
-		Player player1 = pController.createPlayer("erster", "Alexandria");
-		// assertNotEqual
-	}
-
+	
 }

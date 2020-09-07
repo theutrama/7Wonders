@@ -7,8 +7,6 @@ import model.player.Player;
 public class Game {
 	/** current state index */
 	private int currentState;
-	/** current player */
-	private Player currentPlayer;
 	/** name */
 	private String name;
 	/** list of game states */
@@ -61,15 +59,6 @@ public class Game {
 	}
 
 	/**
-	 * getter for {@link #currentPlayer}
-	 * 
-	 * @return current player
-	 */
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	/**
 	 * getter for {@link #states}
 	 * 
 	 * @return states list
@@ -88,18 +77,17 @@ public class Game {
 	}
 
 	/**
-	 * setter for {@link #currentPlayer}
+	 * getter for {@link #allowHighscore}
 	 * 
-	 * @param currentPlayer current player
+	 * @return true if no one cheated
 	 */
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-	
 	public boolean highscoreAllowed() {
 		return allowHighscore;
 	}
-	
+
+	/**
+	 * signal that someone has cheated
+	 */
 	public void disableHighscore() {
 		allowHighscore = false;
 	}

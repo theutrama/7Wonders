@@ -40,7 +40,6 @@ public class GameController {
 	public Game createGame(String name, ArrayList<Player> players) {
 		Game game = new Game(name);
 		this.swController.setGame(game);
-		game.setCurrentPlayer(players.get(0));
 		createGameFirstRound(players, game);
 		return game;
 	}

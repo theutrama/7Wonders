@@ -17,54 +17,66 @@ public class SoundController {
 	/** mute sound */
 	private boolean mute = false;
 	/** list of media players */
-	private ArrayList<MediaPlayer> players;
+	private ArrayList<SoundPlayer> players;
 	/**
 	 * create new Sound Controller
 	 */
 	public SoundController() {
-		players = new ArrayList<MediaPlayer>();
+		players = new ArrayList<SoundPlayer>();
 	}
-	
-	public String play(Sound sound) {
-		return play(sound, false);
-	}
-	
-	public void stop(Sound sound) {
-		
-	}
-	
-	public String play(Sound sound,boolean loop) {
-		String[] filenames = sound.getSoundFilenames();
-		
-		return play(filenames[Utils.randInt(0, filenames.length-1)]);
-	}
-	
+
 	/**
 	 * plays sound
 	 * @param sound 	name of sound
 	 */
-	private String play(String sound) {
-		System.out.println("SOUND: "+sound);
+	
+	public void play(Sound sound) {
+		play(sound, false);
+	}
+
+	/**
+	 * stops sound
+	 * @param sound 	name of sound
+	 */
+	
+	public void stop(Sound sound) {
+		SoundPlayer remove = null;
+		for(SoundPlayer player : players) {
+			if(player.getSound() == sound) {
+				player.stop();
+				remove = player;
+				break;
+			}
+		}
 		
-		File file = new File(Main.SOUNDS_PATH + sound + ".mp3");
-		MediaPlayer player = new MediaPlayer(new Media(file.toURI().toString()));
-		player.setOnEndOfMedia(() -> players.remove(player));
+		if(remove != null)players.remove(remove);
+	}
+
+	/**
+	 * plays sound with/without loop
+	 * @param sound 	name of sound
+	 */
+	public void play(Sound sound,boolean loop) {
+		SoundPlayer player = new SoundPlayer(sound);
+		if(loop)
+			player.setLoop();
+		else
+			player.setAutoRemove();
 		if (!mute)
 			player.play();
 		players.add(player);
-		
-		return sound;
 	}
+	
 	/**
 	 * mutes or unmutes sound
 	 * @return true if muted
 	 */
 	public boolean mute() {
 		if (mute)
-			for (MediaPlayer player : players)
+			for (SoundPlayer player : players)
 				player.play();
 		else
-			for (MediaPlayer player: players)
+			for (SoundPlayer player: players)
 				player.stop();
 		return (mute ^= true);
 	}
@@ -93,5 +105,50 @@ public class SoundController {
 			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/musicoff.png")));
 		else
 			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/music.png")));
+	}
+	
+	private class SoundPlayer{
+		private MediaPlayer player;
+		private int index;
+		private String[] filenames;
+		private Sound sound;
+		
+		public SoundPlayer(Sound sound) {
+			this.sound = sound;
+			this.filenames = sound.getSoundFilenames();
+			this.index = Utils.randInt(0, this.filenames.length-1);
+			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+		}
+		
+		public void setAutoRemove() {
+			SoundPlayer tthis = this;
+			player.setOnEndOfMedia(() -> players.remove(tthis));
+		}
+		
+		public boolean setLoop() {
+			if(filenames.length > 1)
+				player.setOnEndOfMedia(() -> {
+					this.index++;
+					if(this.filenames.length == this.index)this.index = 0;
+					this.player.stop();
+					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+					this.player.play();
+				});
+			else 
+				player.setCycleCount(MediaPlayer.INDEFINITE);
+			return filenames.length > 1;
+		}
+		
+		public Sound getSound() {
+			return this.sound;
+		}
+		
+		public void stop() {
+			this.player.stop();
+		}
+		
+		public void play() {
+			this.player.play();
+		}
 	}
 }

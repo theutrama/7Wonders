@@ -2,7 +2,7 @@ package model.board;
 
 import model.card.Resource;
 import model.card.ResourceType;
-
+/** Gizah Board */
 public class GizahBoard extends WonderBoard {
 	private static final long serialVersionUID = 1L;
 

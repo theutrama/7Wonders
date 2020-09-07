@@ -3,6 +3,7 @@ package model.board;
 import model.card.Resource;
 import model.card.ResourceType;
 
+/** Babylon Board */
 public class BabylonBoard extends WonderBoard {
 	private static final long serialVersionUID = 1L;
 	/** static list of research types */

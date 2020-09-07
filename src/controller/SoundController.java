@@ -26,6 +26,14 @@ public class SoundController {
 	}
 	
 	public String play(Sound sound) {
+		return play(sound, false);
+	}
+	
+	public void stop(Sound sound) {
+		
+	}
+	
+	public String play(Sound sound,boolean loop) {
 		String[] filenames = sound.getSoundFilenames();
 		
 		return play(filenames[Utils.randInt(0, filenames.length-1)]);

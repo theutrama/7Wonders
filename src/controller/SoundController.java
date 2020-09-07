@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-
 import application.Main;
 import application.Utils;
 import controller.sound.Sound;
@@ -15,6 +13,7 @@ import javafx.scene.media.MediaPlayer;
 
 public class SoundController {
 	
+	private double volume = 1.0;
 	/** mute sound */
 	private boolean mute = false;
 	/** list of media players */
@@ -24,6 +23,11 @@ public class SoundController {
 	 */
 	public SoundController() {
 		players = new ArrayList<SoundPlayer>();
+	}
+	
+	public void setVolume(double v) {
+		for(SoundPlayer player : players)
+			player.setVolume(v);
 	}
 
 	/**
@@ -58,7 +62,6 @@ public class SoundController {
 	 * @param sound 	name of sound
 	 */
 	public void play(Sound sound,boolean loop) {
-		System.out.println("SOUND:"+sound.name()+" mute:"+this.mute+" loop:"+loop);
 		if(!isMuted() || (this.mute && loop)) {
 			SoundPlayer player = new SoundPlayer(sound);
 			if(loop)
@@ -80,9 +83,7 @@ public class SoundController {
 	 * @return true if muted
 	 */
 	public boolean mute() {
-		System.out.println("1MUTE: "+this.mute);
 		this.mute = !this.mute;
-		System.out.println("2MUTE: "+this.mute);
 		for (SoundPlayer player : players)
 			if(this.mute) 
 				player.pause();
@@ -130,6 +131,10 @@ public class SoundController {
 			this.filenames = sound.getSoundFilenames();
 			this.index = Utils.randInt(0, this.filenames.length-1);
 			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+		}
+		
+		public void setVolume(double v) {
+			this.player.setVolume(v);
 		}
 		
 		public void setAutoRemove() {

@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import controller.classes.SevenWondersTestController;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -17,7 +18,7 @@ public class SevenWondersFactory {
 
 	public static SevenWondersController create() {
 
-		SevenWondersController sevenWondersController = new SevenWondersController();
+		SevenWondersTestController sevenWondersController = new SevenWondersTestController();
 		PlayerController playerController = sevenWondersController.getPlayerController();
 		CardController cardController = sevenWondersController.getCardController();
 		GameController gameController = sevenWondersController.getGameController();

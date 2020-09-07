@@ -25,7 +25,7 @@ public class PlayerController {
 	/** main controller */
 	private SevenWondersController swController;
 	/** wonder board controller */
-	private WonderBoardController wb;
+	private WonderBoardController wbc;
 
 	/**
 	 * create player controller
@@ -34,7 +34,7 @@ public class PlayerController {
 	 */
 	public PlayerController(SevenWondersController swController) {
 		this.swController = swController;
-		this.wb = swController.getWonderBoardController();
+		this.wbc = swController.getWonderBoardController();
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class PlayerController {
 	 * @return Player object
 	 */
 	public Player createPlayer(String playername, String wonderboard) {
-		WonderBoard board = this.wb.createWonderBoard(wonderboard);
+		WonderBoard board = this.wbc.createWonderBoard(wonderboard);
 		Player player = new Player(playername, board);
 		board.setPlayer(player);
 
@@ -78,7 +78,7 @@ public class PlayerController {
 	 * @return AI object
 	 */
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
-		WonderBoard board = wb.createWonderBoard(wonderboard);
+		WonderBoard board = wbc.createWonderBoard(wonderboard);
 		ArtInt ai = new ArtInt(difficulty, board);
 		return ai;
 	}

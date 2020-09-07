@@ -11,32 +11,73 @@ public class GameControllerTest {
 
 	private SevenWondersController swc;
 	private GameController gC;
-	
+	private PlayerController pC;
+	private CardController cC;
+
 	@Before
 	public void setUp() {
-		SevenWondersController swc = SevenWondersFactory.create();
+		// hier lag unser fehler... wir hatten vor swc in der nöchsten zeile noch
+		// SevenWondersController stehen
+		// und haben uns damit ein neues objekt erzeugt... logisch, dass es dann null
+		// ist :D
+		swc = SevenWondersFactory.create();
 		gC = swc.getGameController();
-		
-		
+		cC = swc.getCardController();
 		
 	}
+
 	
 	@Test
-	public void createNextRoundTest() {
-	
+	public void undoRedoTest() {
+
+		GameState g1 = swc.getGame().getCurrentGameState();
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.undo(swc.getGame());
+		assertEquals(g1, swc.getGame().getCurrentGameState());
 		
-			try {
-				GameState g1 = swc.getGame().getCurrentGameState();
-				gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
-				gC.undo(swc.getGame());
-				assertEquals (g1, swc.getGame().getCurrentGameState());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.undo(swc.getGame());
+		//g3 = 3rd round 1st age
+		GameState g3 = swc.getGame().getCurrentGameState();
+		pC.chooseCard(cC.getCard(swc.getGame().getCurrentPlayer().getHand(), swc.getGame().getCurrentPlayer().getHand().get(2).toString()), pC.getPlayer("erster"));
+		//card already chosen -> redo does nothing
+		assertEquals(g3, swc.getGame().getCurrentGameState());
+		
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		//6th round 1st age
+		GameState g2 = swc.getGame().getCurrentGameState();
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		// 3rd round 2nd age
+		gC.undo(swc.getGame());
+		gC.undo(swc.getGame());
+		gC.undo(swc.getGame());
+		gC.undo(swc.getGame());
+		// 6th round 1st age
+		//komischer Fehler...
+		assertEquals(g2, swc.getGame().getCurrentGameState());
+	}
+
+	@Test
+	public void createNextRoundTest() {
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		GameState round7age1 = swc.getGame().getCurrentGameState();
+		assertEquals(round7age1.getAge(), 7);
 		
 	}
-	
-	//create game correctly adding players/ boards
-	//...
+	// create game correctly adding players/ boards
+	// ...
 }

@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import application.Main;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -44,11 +45,11 @@ public class SevenWondersFactory {
 		players.add(player7);
 
 		Game game = gameController.createGame("Testgame",  players);
+		sevenWondersController.setGame(game);
 		//Game game = new Game("testgame1");
 		ArrayList<Card> cards = cardController.generateCardStack(players);
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		sevenWondersController.setGame(game);
 		sevenWondersController.setRanking(new Ranking());
 		
 

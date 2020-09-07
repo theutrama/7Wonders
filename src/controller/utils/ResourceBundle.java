@@ -183,19 +183,19 @@ public class ResourceBundle {
 		HBox hbox = new HBox();
 		try {
 			for (int i = 0; i < wood; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/wood.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"wood.png")));
 			for (int i = 0; i < stone; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/stone.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"stone.png")));
 			for (int i = 0; i < brick; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/clay.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"clay.png")));
 			for (int i = 0; i < ore; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/ore.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"ore.png")));
 			for (int i = 0; i < glass; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/glass.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"glass.png")));
 			for (int i = 0; i < cloth; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/linen.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"linen.png")));
 			for (int i = 0; i < papyrus; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage("src/view/images/tokens/paper.png")));
+				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"paper.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

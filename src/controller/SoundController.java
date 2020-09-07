@@ -79,9 +79,7 @@ public class SoundController {
 	 * @return true if muted
 	 */
 	public boolean mute() {
-		System.out.println("MUTE: "+this.mute);
 		this.mute = !this.mute;
-		System.out.println("MUTE: "+this.mute);
 		for (SoundPlayer player : players)
 			if(this.mute) 
 				player.pause();

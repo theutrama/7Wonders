@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import view.menu.MainMenuViewController;
 
 public class Main extends Application {
+	public static boolean TEST = false;
 
 	public static Stage primaryStage;
 	private static SevenWondersController swController;

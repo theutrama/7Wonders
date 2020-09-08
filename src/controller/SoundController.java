@@ -67,6 +67,7 @@ public class SoundController {
 	 * @param sound 	name of sound
 	 */
 	public void play(Sound sound,boolean loop) {
+		if(Main.TEST)return;
 		if(!isMuted() || (this.mute && loop)) {
 			SoundPlayer player = new SoundPlayer(sound,(loop ? volume : 1.0));
 			if(loop)

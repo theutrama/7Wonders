@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import application.Main;
 import javafx.application.Platform;
 import model.GameState;
 
@@ -29,7 +30,7 @@ public class GameControllerTest {
 		gC = swc.getGameController();
 		cC = swc.getCardController();
 		pC = swc.getPlayerController();
-
+		Main.TEST = true;
 	}
 	/**
 	 * tests undo redo methods

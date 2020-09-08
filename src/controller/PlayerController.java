@@ -474,13 +474,14 @@ public class PlayerController {
 	 * @return list of all sums
 	 */
 	private ArrayList<ResourceBundle> allSums(ArrayList<ResourceBundle> bundles) {
+		final int ONE = 1;
 		ArrayList<ResourceBundle> bundleSums = new ArrayList<>();
 		int max = 1 << bundles.size();
 
 		for (int i = 1; i < max; i++) {
 			ResourceBundle res = new ResourceBundle();
 			for (int j = 0; j < bundles.size(); j++) {
-				if (((i >> j) & 1) == 1)
+				if (((i >> j) & 1) == ONE)
 					res = res.add(bundles.get(j));
 			}
 			bundleSums.add(res);

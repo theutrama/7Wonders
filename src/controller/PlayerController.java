@@ -256,9 +256,10 @@ public class PlayerController {
 	 * @return a resource tree
 	 */
 	private ResourceTree generateTradeTree(Player player) {
+		final int ONE = 1;
 		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
 		for (Card card : player.getBoard().getResources()) {
-			if (card.getProducing().size() == 1)
+			if (card.getProducing().size() == ONE)
 				for (int i = 0; i < card.getProducing().get(0).getQuantity(); i++)
 					tree.addResourceOption(new Resource(1, card.getProducing().get(0).getType()));
 			else

@@ -2,6 +2,7 @@ package model.card;
 
 import java.io.Serializable;
 
+import controller.PlayerController;
 import model.player.Player;
 
 /** Effect of Cards and Wonders */
@@ -34,7 +35,7 @@ public class Effect implements Serializable{
 	 * calls {@link EffectCall#run(Player) run} on the {@link #call effect call}
 	 * @param player the player the effect should be applied to
 	 */
-	public void run(Player player) {
-		 this.call.run(player);
+	public void run(Player player, PlayerController controller) {
+		 this.call.run(player, controller);
 	}
 }

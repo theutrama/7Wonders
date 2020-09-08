@@ -6,7 +6,6 @@ import model.ranking.Ranking;
 /** SevenWonders Controller */
 public class SevenWondersController {
 	
-	
 	/** Game Controller */
 	private GameController gameController;
 	/** Player Controller */

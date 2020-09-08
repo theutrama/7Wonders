@@ -9,20 +9,23 @@ import java.io.ObjectOutputStream;
 
 import model.Game;
 import model.ranking.Ranking;
+
 /** Controller for Input-Output interaction */
 public class IOController {
-	
+
 	private static final String GAME_FOLDER = "games", RANKING = "ranking";
 
 	private SevenWondersController swController;
+
 	/**
 	 * creates new IOController
-	 * @param swController		SevenWOnders Controller
+	 * 
+	 * @param swController SevenWOnders Controller
 	 */
 	public IOController(SevenWondersController swController) {
 		this.swController = swController;
 	}
-	
+
 	/**
 	 * loads the game with the specified name
 	 * 
@@ -32,7 +35,7 @@ public class IOController {
 	public Game load(String filename) {
 		return (Game) loadObject(File.separator + GAME_FOLDER + File.separator + filename);
 	}
-	
+
 	private Object loadObject(String path) {
 		File file = new File(getExecutionPath() + path);
 		if (!file.exists())
@@ -49,16 +52,15 @@ public class IOController {
 	}
 
 	/**
-	 * Saves a game at any state as a file with the same name. If such a file
-	 * already exists, it is overwritten.
+	 * Saves a game at any state as a file with the same name. If such a file already exists, it is overwritten.
 	 * 
 	 * @param game
 	 */
 	public void save(Game game) {
-		save(game,File.separator + GAME_FOLDER + File.separator + game.getName());
+		save(game, File.separator + GAME_FOLDER + File.separator + game.getName());
 	}
-	
-	private void save(Object obj,String path) {
+
+	private void save(Object obj, String path) {
 		try {
 			File file1 = new File(getExecutionPath());
 			if (!file1.exists()) {
@@ -85,7 +87,6 @@ public class IOController {
 		File[] games = new File(getExecutionPath() + File.separator + GAME_FOLDER).listFiles();
 		if (games == null) // directory does not exist
 			return new String[] {};
-		System.out.println(games.length + " files found");
 		String[] result = new String[games.length];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = games[i].getName();
@@ -110,20 +111,19 @@ public class IOController {
 	 * saves the ranking object of the {@link SevenWondersController main controller} into a ranking file
 	 */
 	public void saveRanking() {
-		save(swController.getRanking(),File.separator + RANKING);
+		save(swController.getRanking(), File.separator + RANKING);
 	}
 
 	/**
-	 * Reads the ranking object from the resources and sets the ranking attribute of
-	 * the {@link #swController main controller} to this one.<br>
+	 * Reads the ranking object from the resources and sets the ranking attribute of the {@link #swController main controller} to this one.<br>
 	 * If no file exists a new Ranking object is assigned.
 	 */
 	public void loadRanking() {
 		Ranking rank = (Ranking) loadObject(File.separator + RANKING);
-		
-		if(rank!=null) {
+
+		if (rank != null) {
 			swController.setRanking(rank);
-		}else {
+		} else {
 			swController.setRanking(new Ranking());
 		}
 	}

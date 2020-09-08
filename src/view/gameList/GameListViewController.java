@@ -43,7 +43,7 @@ public class GameListViewController extends BorderPane {
 		vbox_gameList.setAlignment(Pos.CENTER);
 
 		String[] games = Main.getSWController().getIOController().listGameFiles();
-		System.out.println("number of games: " + games.length);
+		
 		for (String game : games) {
 			Button button = new Button(game);
 			button.setOnAction(event -> { Main.getSWController().setGame(Main.getSWController().getIOController().load(game)); Main.primaryStage.getScene().setRoot(new GameBoardViewController()); });
@@ -51,7 +51,8 @@ public class GameListViewController extends BorderPane {
 			button.setMinSize(534, 56);
 			button.setPrefSize(534, 56);
 			button.setMaxSize(534, 56);
-			button.getStyleClass().add("menubutton");
+			button.getStyleClass().add("buttonback");
+			button.setAlignment(Pos.CENTER);
 			vbox_gameList.getChildren().add(button);
 		}
 

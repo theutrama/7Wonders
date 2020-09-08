@@ -99,6 +99,7 @@ public class GameBoardViewController extends VBox {
 		
 		Main.primaryStage.setOnCloseRequest(event -> {
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
+			Main.getSWController().getIOController().saveRanking();
 		});
 
 		scrollpane.setMinSize(1200, 800);
@@ -109,7 +110,7 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
-			Main.primaryStage.setOnCloseRequest(null);
+			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 		});
 
 		btn_undo.setOnMouseClicked(event -> Main.getSWController().getGameController().undo(Main.getSWController().getGame()));

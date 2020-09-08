@@ -31,6 +31,7 @@ public class Main extends Application {
 		Main.primaryStage = primaryStage;
 		swController = SevenWondersController.getInstance();
 		soundController = swController.getSoundController();
+		swController.getIOController().loadRanking();
 
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
@@ -39,6 +40,7 @@ public class Main extends Application {
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
+			primaryStage.setOnCloseRequest(event -> swController.getIOController().saveRanking());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

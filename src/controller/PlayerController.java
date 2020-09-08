@@ -1,10 +1,5 @@
 package controller;
 
-import model.board.AlexandriaBoard;
-
-import model.board.BabylonBoard;
-import model.board.RhodosBoard;
-import model.board.WonderBoard;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,12 +8,16 @@ import controller.utils.BuildCapability;
 import controller.utils.ResourceBundle;
 import controller.utils.ResourceTree;
 import controller.utils.TradeOption;
+import model.board.AlexandriaBoard;
+import model.board.BabylonBoard;
+import model.board.RhodosBoard;
+import model.board.WonderBoard;
 import model.card.Card;
 import model.card.Resource;
 import model.card.ResourceType;
-import model.player.ArtInt;
-import model.player.Difficulty;
 import model.player.Player;
+import model.player.ai.ArtInt;
+import model.player.ai.Difficulty;
 
 /** Controller for Players */
 public class PlayerController {

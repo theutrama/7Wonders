@@ -9,7 +9,6 @@ import application.Utils;
 import controller.GameController;
 import controller.IOController;
 import controller.PlayerController;
-import controller.SevenWondersController;
 import controller.SoundController;
 import controller.sound.Sound;
 import javafx.collections.FXCollections;
@@ -33,8 +32,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import model.Game;
-import model.player.Difficulty;
 import model.player.Player;
+import model.player.ai.Difficulty;
 import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
 

@@ -465,6 +465,8 @@ public class GameBoardViewController extends VBox {
 			return;
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
+		
+		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
 		int arrowWidth = 45, arrowHeight = 25;
 		double scaleFactor = 1.2;

@@ -12,7 +12,6 @@ import model.card.Resource;
 import model.player.Player;
 
 /** stores ResourceBundles for all cards */
-@SuppressWarnings("PMD")
 public class ResourceBundle {
 	/** counters for resource quantities */
 	private int wood, stone, ore, cloth, glass, brick, papyrus, coins;

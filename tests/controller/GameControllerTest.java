@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.application.Platform;
 import model.GameState;
 
 public class GameControllerTest {
@@ -16,7 +17,7 @@ public class GameControllerTest {
 
 	@Before
 	public void setUp() {
-		// hier lag unser fehler... wir hatten vor swc in der nöchsten zeile noch
+		// hier lag unser fehler... wir hatten vor swc in der nï¿½chsten zeile noch
 		// SevenWondersController stehen
 		// und haben uns damit ein neues objekt erzeugt... logisch, dass es dann null
 		// ist :D
@@ -68,7 +69,8 @@ public class GameControllerTest {
 
 	@Test
 	public void createNextRoundTest() {
-		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		Platform.startup(() -> {
+			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
@@ -76,6 +78,8 @@ public class GameControllerTest {
 		gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 		GameState round7age1 = swc.getGame().getCurrentGameState();
 		assertEquals(round7age1.getAge(), 7);
+		});
+		
 		
 	}
 	// create game correctly adding players/ boards

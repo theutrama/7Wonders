@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import application.Main;
 import controller.sound.Sound;
 import controller.utils.TradeOption;
 import javafx.embed.swing.SwingFXUtils;
@@ -31,9 +32,9 @@ import model.player.Player;
  * The Card-Controller controls the ingame cards.
  */
 public class CardController {
-	ArrayList<Card> loaded_cards = new ArrayList<Card>();
+	private ArrayList<Card> loaded_cards = new ArrayList<Card>();
 	/** HashMap for frequency of cards */
-	Map<String, int[]> countCards = new HashMap<>();
+	private Map<String, int[]> countCards = new HashMap<>();
 	/** SevenWonders Controller */
 	private SevenWondersController swController;
 
@@ -132,35 +133,45 @@ public class CardController {
 		countCards.put("workshop", new int[] { 3, 7, 0 });
 	}
 
-	public ArrayList<Card> loadAllCards(){
-		if(!loaded_cards.isEmpty())return (ArrayList<Card>) loaded_cards.clone();
+	/**
+	 * does something unimportant
+	 * 
+	 * @return list of cards
+	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Card> loadAllCards() {
+		if (!loaded_cards.isEmpty())
+			return (ArrayList<Card>) loaded_cards.clone();
 		ArrayList<Card> cards = loaded_cards;
 
 		cards.add(new Card(ResourceType.COMPASS, 3, "Akademie", "academy", CardType.GREEN, null, addRArray(new Resource(3, ResourceType.STONE), new Resource(1, ResourceType.GLASS)),
 				new String[] { "school" }, null));
-		cards.add(new Card(1, "Altar", "altar", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(2); })), 2));
+		cards.add(
+				new Card(1, "Altar", "altar", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(2); })), 2));
 		cards.add(new Card(ResourceType.COMPASS, 1, "Apotheke", "apothecary", CardType.GREEN, null, addRArray(new Resource(3, ResourceType.CLOTH)), new String[] { "school" }, null));
 
 		cards.add(new Card(2, "Aquädukt", "aqueduct", CardType.BLUE, null, addRArray(new Resource(3, ResourceType.STONE)), new String[] { "baths" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(5); })), 5));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(5); })), 5));
 		cards.add(new Card(2, "Schießplatz", "archeryrange", CardType.RED, addRArray(new Resource(2, ResourceType.MILITARY)),
 				addRArray(new Resource(2, ResourceType.WOOD), new Resource(1, ResourceType.ORE)), new String[] { "workshop" }, null));
 		cards.add(new Card(3, "Arena", "arena", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.ORE)), new String[] { "dispensary" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addCoins(3 * (player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot())); }),
-						new Effect(EffectType.AT_MATCH_END, (player, controller) -> { player.addVictoryPoints(player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot()); }))));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addCoins(3 * (player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot())); }),
+						new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> { player.addVictoryPoints(player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot()); }))));
 		cards.add(new Card(3, "Waffenlager", "arsenal", CardType.RED, addRArray(new Resource(3, ResourceType.MILITARY)),
 				addRArray(new Resource(2, ResourceType.WOOD), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.CLOTH)), new String[] { "workshop" }, null));
 		cards.add(new Card(1, "Kaserne", "barracks", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.ORE)), new String[] { "workshop" }, null));
 		cards.add(new Card(1, "Bäder", "baths", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.STONE)), null,
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(3); })), 3));
-		cards.add(new Card(2, "Basar", "bazar", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> {
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(3); })), 3));
+		cards.add(new Card(2, "Basar", "bazar", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> {
 			int count = 0;
 			for (Card el : controller.getLeftNeighbour(player).getBoard().getResources())
 				if (el.getType() == CardType.GRAY)
 					count++;
-			for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
-				if (el.getType() == CardType.GRAY)
-					count++;
+			if (!twoPlayers) {
+				for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
+					if (el.getType() == CardType.GRAY)
+						count++;
+			}
 			for (Card el : player.getBoard().getResources())
 				if (el.getType() == CardType.GRAY)
 					count++;
@@ -169,9 +180,9 @@ public class CardController {
 		cards.add(new Card(2, "Ziegelbrennerei", "brickyard", CardType.BROWN, addRArray(new Resource(2, ResourceType.BRICK)), addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(3, "Gilde der Baumeister", "buildersguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.BRICK), new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.GLASS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int purple1 = controller.getLeftNeighbour(player).getBoard().nextSlot();
-					int purple2 = controller.getRightNeighbour(player).getBoard().nextSlot();
+					int purple2 = twoPlayers ? 0 : controller.getRightNeighbour(player).getBoard().nextSlot();
 					int purple3 = player.getBoard().nextSlot();
 					purple1 = purple1 == -1 ? 3 : purple1;
 					purple2 = purple2 == -1 ? 3 : purple2;
@@ -182,13 +193,13 @@ public class CardController {
 				addRArray(new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.WOOD)),
 				addRArray(new Resource(2, ResourceType.WOOD)), new String[] { "market" }, null));
 		cards.add(new Card(3, "Handelskammer", "chamberofcommerce", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.BRICK)), null,
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> {
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : player.getBoard().getResources())
 						if (el.getType() == CardType.GRAY)
 							count++;
 					player.addCoins(2 * count);
-				}), new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				}), new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : player.getBoard().getResources())
 						if (el.getType() == CardType.GRAY)
@@ -201,16 +212,18 @@ public class CardController {
 				null, null));
 		cards.add(new Card(1, "Ziegelei", "claypool", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK)), null, null, null));
 		cards.add(new Card(2, "Gericht", "courthouse", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.STONE)), new String[] { "scriptorium" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(4); })), 4));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(4); })), 4));
 		cards.add(new Card(3, "Gilde der Künstler", "craftsmensguild", CardType.PURPLE, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : controller.getLeftNeighbour(player).getBoard().getResources())
 						if (el.getType() == CardType.GRAY)
 							count++;
-					for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
-						if (el.getType() == CardType.GRAY)
-							count++;
+					if (!twoPlayers) {
+						for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
+							if (el.getType() == CardType.GRAY)
+								count++;
+					}
 					player.addVictoryPoints(2 * count);
 				}))));
 		cards.add(new Card(ResourceType.COMPASS, 2, "Arzneiausgabe", "dispensary", CardType.GREEN, null, addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.GLASS)),
@@ -226,18 +239,18 @@ public class CardController {
 				addRArray(new Resource(2, ResourceType.BRICK)), new String[] { "easttradingpost", "westtradingpost" }, null));
 		cards.add(new Card(2, "Giesserei", "foundry", CardType.BROWN, addRArray(new Resource(2, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(3, "Gärten", "gardens", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.STONE)), new String[] { "statue" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(5); })), 5));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(5); })), 5));
 		cards.add(new Card(1, "Glashütte", "glassworks1", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null));
 		cards.add(new Card(2, "Glashütte", "glassworks2", CardType.GRAY, addRArray(new Resource(1, ResourceType.GLASS)), null, null, null));
 		cards.add(new Card(1, "Wachturm", "guardtower", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.BRICK)), null, null));
 		cards.add(new Card(3, "Hafen", "haven", CardType.YELLOW, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.CLOTH)),
-				new String[] { "forum" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> {
+				new String[] { "forum" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : player.getBoard().getResources())
 						if (el.getType() == CardType.BROWN)
 							count++;
 					player.addCoins(count);
-				}), new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				}), new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : player.getBoard().getResources())
 						if (el.getType() == CardType.BROWN)
@@ -249,8 +262,8 @@ public class CardController {
 		cards.add(new Card(ResourceType.TABLET, 2, "Bibliothek", "library", CardType.GREEN, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)),
 				new String[] { "scriptorium" }, null));
 		cards.add(new Card(3, "Leuchtturm", "lighthouse", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.BRICK)), new String[] { "caravansery" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addCoins(player.getBoard().getTrade().size()); }),
-						new Effect(EffectType.AT_MATCH_END, (player, controller) -> { player.addVictoryPoints(player.getBoard().getTrade().size()); }))));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addCoins(player.getBoard().getTrade().size()); }),
+						new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> { player.addVictoryPoints(player.getBoard().getTrade().size()); }))));
 		cards.add(new Card(ResourceType.COMPASS, 3, "Loge", "lodge", CardType.GREEN, null,
 				addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)), new String[] { "dispensary" }, null));
 		cards.add(new Card(1, "Webstuhl", "loom1", CardType.GRAY, addRArray(new Resource(1, ResourceType.CLOTH)), null, null, null));
@@ -258,7 +271,7 @@ public class CardController {
 		cards.add(new Card(1, "Holzplatz", "lumberyard", CardType.BROWN, addRArray(new Resource(1, ResourceType.WOOD)), null, null, null));
 		cards.add(new Card(3, "Gilde der Beamten", "magistratesguild", CardType.PURPLE, null,
 				addRArray(new Resource(3, ResourceType.WOOD), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> { player.addVictoryPoints(player.getBoard().getCivil().size()); }))));
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> { player.addVictoryPoints(player.getBoard().getCivil().size()); }))));
 		cards.add(new Card(1, "Markt", "marketplace", CardType.YELLOW, null, null, null, null));
 		cards.add(new Card(1, "Mine", "mine", CardType.BROWN, addRArray(new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)), null,
 				null));
@@ -268,17 +281,18 @@ public class CardController {
 		cards.add(new Card(3, "Palast", "palace", CardType.BLUE, null,
 				addRArray(new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK),
 						new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)),
-				null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(8); })), 8));
-		cards.add(new Card(
-				3, "Pantheon", "pantheon", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.ORE), new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.GLASS),
-						new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)),
-				new String[] { "temple" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(7); })), 7));
-		cards.add(new Card(1, "Pfandhaus", "pawnshop", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(3); })), 3));
+				null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(8); })), 8));
+		cards.add(new Card(3, "Pantheon", "pantheon", CardType.BLUE, null,
+				addRArray(new Resource(1, ResourceType.ORE), new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.PAPYRUS),
+						new Resource(1, ResourceType.CLOTH)),
+				new String[] { "temple" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(7); })), 7));
+		cards.add(new Card(1, "Pfandhaus", "pawnshop", CardType.BLUE, null, null, null,
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(3); })), 3));
 		cards.add(new Card(3, "Gilde der Philosophen", "philosophersguild", CardType.PURPLE, null,
 				addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int left = controller.getLeftNeighbour(player).getBoard().getResearch().size();
-					int right = controller.getRightNeighbour(player).getBoard().getResearch().size();
+					int right = twoPlayers ? 0 : controller.getRightNeighbour(player).getBoard().getResearch().size();
 					player.addVictoryPoints(left + right);
 				}))));
 		cards.add(new Card(1, "Presse", "press1", CardType.GRAY, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null, null));
@@ -288,7 +302,7 @@ public class CardController {
 		cards.add(new Card(ResourceType.TABLET, 2, "Schule", "school", CardType.GREEN, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.PAPYRUS)), null, null));
 		cards.add(new Card(3, "Gilde der Wissenschaftler", "scientistsguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.WOOD), new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.PAPYRUS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int[] count = new int[3];
 					for (Card res : player.getBoard().getResearch()) {
 						switch (res.getScienceType()) {
@@ -319,64 +333,66 @@ public class CardController {
 				}))));
 		cards.add(new Card(ResourceType.TABLET, 1, "Skriptorium", "scriptorium", CardType.GREEN, null, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null));
 		cards.add(new Card(3, "Senat", "senate", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.WOOD), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE)),
-				new String[] { "library" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(6); })), 6));
+				new String[] { "library" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(6); })), 6));
 		cards.add(new Card(3, "Gilde der Reeder", "shipownersguild", CardType.PURPLE, null,
-				addRArray(new Resource(3, ResourceType.WOOD), new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.PAPYRUS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> { player.addVictoryPoints(player.getBoard().getResources().size() + player.getBoard().getGuilds().size()); }))));
+				addRArray(new Resource(3, ResourceType.WOOD), new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.PAPYRUS)), null, addEArray(new Effect(EffectType.AT_MATCH_END,
+						(player, controller, twoPlayers) -> { player.addVictoryPoints(player.getBoard().getResources().size() + player.getBoard().getGuilds().size()); }))));
 		cards.add(new Card(3, "Belagerungsmaschinen", "siegeworkshop", CardType.RED, addRArray(new Resource(3, ResourceType.MILITARY)),
 				addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.WOOD)), new String[] { "laboratory" }, null));
 		cards.add(new Card(3, "Gilde der Spione", "spiesguild", CardType.PURPLE, null, addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.GLASS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int left = controller.getLeftNeighbour(player).getBoard().getMilitary().size();
-					int right = controller.getRightNeighbour(player).getBoard().getMilitary().size();
+					int right = twoPlayers ? 0 : controller.getRightNeighbour(player).getBoard().getMilitary().size();
 					player.addVictoryPoints(left + right);
 				}))));
 		cards.add(new Card(2, "Ställe", "stables", CardType.RED, addRArray(new Resource(2, ResourceType.MILITARY)),
 				addRArray(new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.WOOD)), new String[] { "apothecary" }, null));
 		cards.add(new Card(2, "Statue", "statue", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(2, ResourceType.ORE)), new String[] { "theater" },
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(4); })), 4));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(4); })), 4));
 		cards.add(new Card(3, "Befestigungsanlage", "stockade", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.WOOD)), null, null));
 		cards.add(new Card(1, "Steinbruch", "stonepit", CardType.BROWN, addRArray(new Resource(1, ResourceType.STONE)), null, null, null));
 		cards.add(new Card(3, "Gilde der Strategen", "strategistsguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)), null,
 				addEArray(new Effect(EffectType.AT_MATCH_END,
-						(player, controller) -> {
+						(player, controller, twoPlayers) -> {
 							int left = controller.getLeftNeighbour(player).getLosePoints();
-							int right = controller.getRightNeighbour(player).getLosePoints();
+							int right = twoPlayers ? 0 : controller.getRightNeighbour(player).getLosePoints();
 							player.addVictoryPoints(left + right);
 						}))));
 		cards.add(new Card(ResourceType.GEAR, 3, "Studierzimmer", "study", CardType.GREEN, null,
 				addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)), new String[] { "school" }, null));
-		cards.add(new Card(1, "Taverne", "tavern", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> player.addCoins(5)))));
+		cards.add(new Card(1, "Taverne", "tavern", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> player.addCoins(5)))));
 		cards.add(new Card(2, "Temple", "temple", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.GLASS)),
-				new String[] { "altar" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(3); })), 3));
-		cards.add(new Card(1, "Theater", "theater", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(2); })), 2));
+				new String[] { "altar" }, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(3); })), 3));
+		cards.add(new Card(1, "Theater", "theater", CardType.BLUE, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(2); })),
+				2));
 		cards.add(new Card(1, "Forstwirtschaft", "timberyard", CardType.BROWN, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.STONE)),
 				addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(3, "Rathaus", "townhall", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.GLASS)), null,
-				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> { player.addVictoryPoints(6); })), 6));
+				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(6); })), 6));
 		cards.add(new Card(3, "Gilde der Händler", "tradersguild", CardType.PURPLE, null,
 				addRArray(new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.GLASS)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END,
-						(player, controller) -> {
-							int left = controller.getLeftNeighbour(player).getBoard().getTrade().size();
-							int right = controller.getRightNeighbour(player).getBoard().getTrade().size();
-							player.addVictoryPoints(left + right);
-						}))));
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
+					int left = controller.getLeftNeighbour(player).getBoard().getTrade().size();
+					int right = twoPlayers ? 0 : controller.getRightNeighbour(player).getBoard().getTrade().size();
+					player.addVictoryPoints(left + right);
+				}))));
 		cards.add(new Card(2, "Trainingsgelände", "trainingground", CardType.RED, addRArray(new Resource(2, ResourceType.MILITARY)),
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.WOOD)), null, null));
 		cards.add(new Card(1, "Baumschule", "treefarm", CardType.BROWN, addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK)),
 				addRArray(new Resource(1, ResourceType.COINS)), null, null));
 		cards.add(new Card(ResourceType.TABLET, 3, "Universität", "university", CardType.GREEN, null,
 				addRArray(new Resource(2, ResourceType.WOOD), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.GLASS)), new String[] { "library" }, null));
-		cards.add(new Card(2, "Weinberg", "vineyard", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller) -> {
+		cards.add(new Card(2, "Weinberg", "vineyard", CardType.YELLOW, null, null, null, addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> {
 			int count = 0;
 			for (Card el : controller.getLeftNeighbour(player).getBoard().getResources())
 				if (el.getType() == CardType.BROWN)
 					count++;
-			for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
-				if (el.getType() == CardType.BROWN)
-					count++;
+			if (!twoPlayers) {
+				for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
+					if (el.getType() == CardType.BROWN)
+						count++;
+			}
 			for (Card el : player.getBoard().getResources())
 				if (el.getType() == CardType.BROWN)
 					count++;
@@ -386,22 +402,24 @@ public class CardController {
 		cards.add(new Card(1, "Kontor West", "westtradingpost", CardType.YELLOW, null, null, null, null));
 		cards.add(new Card(3, "Gilde der Arbeiter", "workersguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.WOOD)), null,
-				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller) -> {
+				addEArray(new Effect(EffectType.AT_MATCH_END, (player, controller, twoPlayers) -> {
 					int count = 0;
 					for (Card el : controller.getLeftNeighbour(player).getBoard().getResources())
 						if (el.getType() == CardType.BROWN)
 							count++;
-					for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
-						if (el.getType() == CardType.BROWN)
-							count++;
+					if (!twoPlayers) {
+						for (Card el : controller.getRightNeighbour(player).getBoard().getResources())
+							if (el.getType() == CardType.BROWN)
+								count++;
+					}
 					player.addVictoryPoints(count);
 				}))));
 		cards.add(new Card(ResourceType.GEAR, 1, "Werkstatt", "workshop", CardType.GREEN, null, addRArray(new Resource(1, ResourceType.GLASS)), null, null));
 		addDescriptions(cards);
-		
+
 		return cards;
 	}
-	
+
 	/**
 	 * generates CardStack for given number of players
 	 * 
@@ -758,7 +776,7 @@ public class CardController {
 		if (card.getEffects() != null) {
 			for (Effect effect : card.getEffects()) {
 				if (effect.getType() == EffectType.WHEN_PLAYED)
-					effect.run(player, swController.getPlayerController());
+					effect.run(player, swController.getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
 			}
 		}
 
@@ -801,7 +819,7 @@ public class CardController {
 			swController.getPlayerController().doTrade(player, trade);
 		}
 	}
-	
+
 	/**
 	 * get Card by name
 	 * 
@@ -809,7 +827,7 @@ public class CardController {
 	 * @return Card object with the given name or null if no such card was found
 	 */
 	public Card getCard(String cardname) {
-		return getCard(loaded_cards,cardname);
+		return getCard(loaded_cards, cardname);
 	}
 
 	/**
@@ -820,8 +838,8 @@ public class CardController {
 	 * @return Card object with the given name or null if no such card was found
 	 */
 	public Card getCard(ArrayList<Card> cards, String cardname) {
-		for (Card card : cards) 
-			if (card.getInternalName().equalsIgnoreCase(cardname)) 
+		for (Card card : cards)
+			if (card.getInternalName().equalsIgnoreCase(cardname))
 				return card;
 		return null;
 	}

@@ -102,7 +102,7 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().getIOController().saveRanking();
 		});
 
-		scrollpane.setMinSize(1200, 800);
+		scrollpane.setMinSize(1000, 500);
 		hbox_cards.setAlignment(Pos.CENTER);
 		
 		btn_back.setOnAction(event -> {

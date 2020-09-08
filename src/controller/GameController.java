@@ -10,6 +10,7 @@ import model.card.Card;
 import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
+import model.player.ai.ArtInt;
 import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
 import view.result.ResultViewController;
@@ -203,7 +204,7 @@ public class GameController {
 		game.deleteRedoStates();
 		game.getStates().add(state);
 		game.setCurrentState(game.getStates().size() - 1);
-		
+
 		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
 		state.setFirstPlayer(startPlayer);
 		state.setCurrentPlayer(startPlayer);
@@ -218,9 +219,9 @@ public class GameController {
 	private void endGame(Game game, GameState state) {
 
 		for (Player player : state.getPlayers()) {
-			runEffects(player, player.getBoard().getTrade());
-			runEffects(player, player.getBoard().getGuilds());
-			runEffects(player, player.getBoard().getCivil());
+			runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
+			runEffects(player, player.getBoard().getGuilds(), state.isTwoPlayers());
+			runEffects(player, player.getBoard().getCivil(), state.isTwoPlayers());
 			// conflicts
 			player.addVictoryPoints(player.getConflictPoints());
 			player.addVictoryPoints(-player.getLosePoints());
@@ -233,26 +234,27 @@ public class GameController {
 		// update highscore list
 		if (game.highscoreAllowed()) {
 			for (Player player : state.getPlayers()) {
-				Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
+				if (!(player instanceof ArtInt))
+					Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
 			}
 		}
 		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 	}
-	
+
 	/**
 	 * calls {@link Effect#run(Player)} for all effects for each given card
 	 * 
 	 * @param player player
 	 * @param cards  list of cards from the player's game board
 	 */
-	private void runEffects(Player player, ArrayList<Card> cards) {
-		for (Card card: cards) {
+	private void runEffects(Player player, ArrayList<Card> cards, boolean twoPlayers) {
+		for (Card card : cards) {
 			if (card.getEffects() == null)
 				continue;
-			for (Effect effect: card.getEffects())
+			for (Effect effect : card.getEffects())
 				if (effect.getType() == EffectType.AT_MATCH_END)
-					effect.run(player, swController.getPlayerController());
+					effect.run(player, swController.getPlayerController(), twoPlayers);
 		}
 	}
 
@@ -263,8 +265,12 @@ public class GameController {
 	 */
 	private void doConflicts(GameState state) {
 		swController.getSoundController().play(Sound.FIGHT);
-		for (Player player : state.getPlayers()) {
-			doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
+		if (state.isTwoPlayers())
+			doConflict(state.getPlayers().get(0), state.getPlayers().get(1), state.getAge());
+		else {
+			for (Player player : state.getPlayers()) {
+				doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
+			}
 		}
 	}
 

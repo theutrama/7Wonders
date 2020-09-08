@@ -3,29 +3,19 @@ package controller;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import org.reflections.Reflections;
 
 import application.Utils;
-import model.board.AlexandriaBoard;
-import model.board.BabylonBoard;
-import model.board.EphesosBoard;
-import model.board.GizahBoard;
-import model.board.HalikarnassusBoard;
-import model.board.OlympiaBoard;
-import model.board.RhodosBoard;
 import model.board.WonderBoard;
-import model.card.Card;
-import model.player.Player;
 
 /** Controller for WonderBoard */
 public class WonderBoardController {
 	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
+
 	/**
 	 * create new WonderBoard controller
 	 * 
@@ -34,18 +24,20 @@ public class WonderBoardController {
 	public WonderBoardController() {
 		loadBoardClasses();
 	}
+
 	/**
 	 * create new WonderBoard
 	 * 
-	 * @param name 		the WonderBoard's name
+	 * @param name the WonderBoard's name
 	 */
 	public WonderBoard createWonderBoard(String name) {
 		return createWonderBoard(getClassByName(name));
 	}
+
 	/**
 	 * create new WonderBoard
 	 * 
-	 * @param clazz 	the specific WonderBoard
+	 * @param clazz the specific WonderBoard
 	 */
 	public WonderBoard createWonderBoard(Class<? extends WonderBoard> clazz) {
 		if (this.boards.isEmpty())
@@ -62,17 +54,19 @@ public class WonderBoardController {
 		}
 		return null;
 	}
+
 	/**
 	 * create new WonderBoard
 	 * 
-	 * @param clazz 	the specific WonderBoard
+	 * @param clazz the specific WonderBoard
 	 */
 	private String toName(Class<? extends WonderBoard> clazz) {
 		return clazz.getSimpleName().replaceAll("Board", "");
 	}
+
 	/**
 	 * @return class by name
-	 * @param name	 	the name of the WonderBoard
+	 * @param name the name of the WonderBoard
 	 */
 	public Class<? extends WonderBoard> getClassByName(String name) {
 		for (Class<? extends WonderBoard> clazz : this.boards) {
@@ -81,8 +75,9 @@ public class WonderBoardController {
 			}
 		}
 
-		throw new NullPointerException("No Call found by name "+name);
+		throw new NullPointerException("No Call found by name " + name);
 	}
+
 	/**
 	 * @return names of all WonderBoards
 	 */
@@ -94,6 +89,7 @@ public class WonderBoardController {
 		}
 		return names;
 	}
+
 	/**
 	 * @return random WonderBoards
 	 */
@@ -101,12 +97,14 @@ public class WonderBoardController {
 		Class<? extends WonderBoard> clazz = this.boards.get(Utils.randInt(0, this.boards.size()));
 		return createWonderBoard(clazz);
 	}
+
 	/**
 	 * Clears all created boards
 	 */
 	public void reset() {
 		this.boards.clear();
 	}
+
 	/**
 	 * Loads all used boards
 	 */

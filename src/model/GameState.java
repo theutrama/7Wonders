@@ -66,6 +66,15 @@ public class GameState implements Serializable {
 	}
 
 	/**
+	 * check if only two players are playing
+	 * 
+	 * @return players == 2
+	 */
+	public boolean isTwoPlayers() {
+		return players.size() == 2;
+	}
+
+	/**
 	 * setter for {@link #currentPlayer}
 	 * 
 	 * @param currentPlayer current player index

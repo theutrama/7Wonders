@@ -7,10 +7,12 @@ import model.player.Player;
 
 /** EffectCall for player */
 public interface EffectCall extends Serializable {
-	/** 
-	 * apply the effect on the specified player 
-	 * @param player
-	 * @param controller 
+	/**
+	 * apply the effect on the specified player
+	 * 
+	 * @param player     player
+	 * @param controller game controller
+	 * @param twoPlayers true if the game has two players
 	 */
-	public void run(Player player, PlayerController controller);
+	public void run(Player player, PlayerController controller, boolean twoPlayers);
 }

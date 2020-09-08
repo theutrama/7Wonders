@@ -747,9 +747,13 @@ public class CardController {
 		player.getHand().remove(card);
 		player.setChooseCard(null);
 		player.getBoard().addCard(card);
-		for (Effect effect : card.getEffects()) {
-			if (effect.getType() == EffectType.WHEN_PLAYED)
-				effect.run(player, swController.getPlayerController());
+		
+		
+		if(card.getEffects() != null) {
+			for (Effect effect : card.getEffects()) {
+				if (effect.getType() == EffectType.WHEN_PLAYED)
+					effect.run(player, swController.getPlayerController());
+			}
 		}
 
 		if (trade != null) {

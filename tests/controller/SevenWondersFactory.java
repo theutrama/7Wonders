@@ -2,6 +2,9 @@ package controller;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import application.Main;
 import model.Game;
 import model.GameState;
@@ -12,10 +15,11 @@ import model.ranking.Ranking;
 public class SevenWondersFactory {
 	
 	
-	
-	
+		
 	
 
+	
+	
 	public static SevenWondersController create() {
 
 		SevenWondersController sevenWondersController = new SevenWondersController();
@@ -44,9 +48,10 @@ public class SevenWondersFactory {
 		players.add(player6);
 		players.add(player7);
 
-		Game game = gameController.createGame("Testgame",  players);
+		//Game game = gameController.createGame("Testgame",  players);
+		
+		Game game = new Game("testgame1");
 		sevenWondersController.setGame(game);
-		//Game game = new Game("testgame1");
 		ArrayList<Card> cards = cardController.generateCardStack(players);
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
@@ -215,6 +220,7 @@ public class SevenWondersFactory {
 		player5.setChooseCard(card1);
 		player5.setChooseCard(card2);
 		player5.setChooseCard(card3);
+	
 
 		return sevenWondersController;
 	}

@@ -40,13 +40,17 @@ public class PlayerControllerTest {
 	@Test
 	public void createMilitaryPointsTest() {
 
-		assertEquals(3, pController.getMilitaryPoints(pController.getPlayer("erster")));
-		assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("zweiter")));
-		assertEquals(1, pController.getMilitaryPoints(pController.getPlayer("dritter")));
-		assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("vierter")));
-		assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("fünfter")));
-		assertEquals(3, pController.getMilitaryPoints(pController.getPlayer("sechster")));
-		assertEquals(5, pController.getMilitaryPoints(pController.getPlayer("siebter")));
+			
+				
+				assertEquals(3, pController.getMilitaryPoints(pController.getPlayer("erster")));
+				assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("zweiter")));
+				assertEquals(1, pController.getMilitaryPoints(pController.getPlayer("dritter")));
+				assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("vierter")));
+				assertEquals(2, pController.getMilitaryPoints(pController.getPlayer("fünfter")));
+				assertEquals(3, pController.getMilitaryPoints(pController.getPlayer("sechster")));
+				assertEquals(5, pController.getMilitaryPoints(pController.getPlayer("siebter")));
+			
+		
 
 	}
 
@@ -58,13 +62,15 @@ public class PlayerControllerTest {
 	@Test
 	public void createSciencePointsTest() {
 		
-		 assertEquals(10, pController.getSciencePoints(pController.getPlayer("erster")));
-		 assertEquals(18, pController.getSciencePoints(pController.getPlayer("zweiter")));
-		 assertEquals(2, pController.getSciencePoints(pController.getPlayer("dritter")));
-		 assertEquals(1, pController.getSciencePoints(pController.getPlayer("vierter")));
-		 assertEquals(9, pController.getSciencePoints(pController.getPlayer("fünfter")));
-		 assertEquals(4, pController.getSciencePoints(pController.getPlayer("sechster")));
-		 assertEquals(48, pController.getSciencePoints(pController.getPlayer("siebter")));
+		
+			assertEquals(10, pController.getSciencePoints(pController.getPlayer("erster")));
+			 assertEquals(18, pController.getSciencePoints(pController.getPlayer("zweiter")));
+			 assertEquals(2, pController.getSciencePoints(pController.getPlayer("dritter")));
+			 assertEquals(1, pController.getSciencePoints(pController.getPlayer("vierter")));
+			 assertEquals(9, pController.getSciencePoints(pController.getPlayer("fünfter")));
+			 assertEquals(4, pController.getSciencePoints(pController.getPlayer("sechster")));
+			 assertEquals(48, pController.getSciencePoints(pController.getPlayer("siebter")));
+		
 		
 		 
 	}

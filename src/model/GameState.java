@@ -91,9 +91,10 @@ public class GameState implements Serializable {
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
-	
+
 	/**
 	 * returns current player as Player
+	 * 
 	 * @return Player player
 	 */
 	public Player getPlayer() {
@@ -127,7 +128,6 @@ public class GameState implements Serializable {
 		try {
 			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 			ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
-			System.out.println("write " + this.getClass().getCanonicalName());
 			objOut.writeObject(this);
 			objOut.flush();
 			objOut.close();

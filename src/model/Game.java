@@ -12,6 +12,8 @@ public class Game {
 	private ArrayList<GameState> states;
 	/** true if the score is still valid */
 	private boolean allowHighscore = true;
+	/** seconds played */
+	private int seconds;
 
 	/**
 	 * creates a new game with an empty states list
@@ -22,6 +24,22 @@ public class Game {
 		this.name = name;
 		this.currentState = 0;
 		states = new ArrayList<>();
+	}
+
+	/**
+	 * getter for {@link #seconds}
+	 * 
+	 * @return seconds
+	 */
+	public int getSeconds() {
+		return seconds;
+	}
+
+	/**
+	 * increase {@link #seconds} by 1
+	 */
+	public void nextSecond() {
+		seconds++;
 	}
 
 	/**

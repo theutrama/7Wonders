@@ -236,7 +236,7 @@ public class GameController {
 				Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
 			}
 		}
-
+		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 	}
 	
@@ -248,6 +248,8 @@ public class GameController {
 	 */
 	private void runEffects(Player player, ArrayList<Card> cards) {
 		for (Card card: cards) {
+			if (card.getEffects() == null)
+				continue;
 			for (Effect effect: card.getEffects())
 				if (effect.getType() == EffectType.AT_MATCH_END)
 					effect.run(player, swController.getPlayerController());

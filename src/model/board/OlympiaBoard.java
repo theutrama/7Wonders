@@ -17,7 +17,6 @@ public class OlympiaBoard extends WonderBoard {
 	@Override
 	public void slot2() {
 		player.setOlympiaUsed(false);
-		System.out.println(player.getName() + " can use olympia now");
 	}
 
 }

@@ -57,7 +57,7 @@
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
-                  <Label fx:id="label_gametime" text="00:00" textFill="#d4d4d4">
+                  <Label fx:id="label_gametime" text="00:00:00" textFill="#d4d4d4">
                      <font>
                         <Font name="Book Antiqua Bold" size="22.0" />
                      </font>
@@ -124,7 +124,7 @@
             </HBox>
          </children>
       </VBox>
-      <ScrollPane styleClass="my-scroll-pane" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+      <ScrollPane fx:id="scrollpane" styleClass="my-scroll-pane" stylesheets="@style.css" VBox.vgrow="ALWAYS">
          <content>
             <BorderPane fx:id="borderpane" minWidth="800.0" stylesheets="@style.css">
                <padding>

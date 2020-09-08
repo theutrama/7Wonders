@@ -747,9 +747,11 @@ public class CardController {
 		player.getHand().remove(card);
 		player.setChooseCard(null);
 		player.getBoard().addCard(card);
-		for (Effect effect : card.getEffects()) {
-			if (effect.getType() == EffectType.WHEN_PLAYED)
-				effect.run(player, swController.getPlayerController());
+		if (card.getEffects() != null) {
+			for (Effect effect : card.getEffects()) {
+				if (effect.getType() == EffectType.WHEN_PLAYED)
+					effect.run(player, swController.getPlayerController());
+			}
 		}
 
 		if (trade != null) {
@@ -776,13 +778,13 @@ public class CardController {
 		int slot = player.getBoard().nextSlot();
 		player.getBoard().fill(slot);
 		switch (slot) {
-		case 1:
+		case 0:
 			player.getBoard().slot1();
 			break;
-		case 2:
+		case 1:
 			player.getBoard().slot2();
 			break;
-		case 3:
+		case 2:
 			player.getBoard().slot3();
 			break;
 		}

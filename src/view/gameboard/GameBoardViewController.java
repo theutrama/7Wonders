@@ -3,6 +3,8 @@ package view.gameboard;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import application.Main;
 import application.Utils;
@@ -10,6 +12,7 @@ import controller.SoundController;
 import controller.sound.Sound;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,7 +21,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -33,6 +39,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import model.Game;
 import model.GameState;
 import model.card.Card;
 import model.player.Player;
@@ -66,8 +74,13 @@ public class GameBoardViewController extends VBox {
 	@FXML
 	private BorderPane borderpane;
 
+	@FXML
+	private ScrollPane scrollpane;
+
 	private ArrayList<StackPane> boardPanes;
 	private boolean action;
+
+	private Timer timer;
 
 	public GameBoardViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameboard/GameBoard.fxml"));
@@ -80,7 +93,7 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
-		borderpane.setMinSize(1200, 800);
+		scrollpane.setMinSize(1200, 800);
 		hbox_cards.setAlignment(Pos.CENTER);
 
 		btn_undo.setOnMouseClicked(event -> Main.getSWController().getGameController().undo(Main.getSWController().getGame()));
@@ -94,6 +107,21 @@ public class GameBoardViewController extends VBox {
 		boardPanes = new ArrayList<>();
 		generatePanes();
 		refreshBoards();
+
+		timer = new Timer(true);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Game game = Main.getSWController().getGame();
+				game.nextSecond();
+				Platform.runLater(() -> label_gametime
+						.setText(String.format("%02d", game.getSeconds() / 3600) + ":" + String.format("%02d", (game.getSeconds() / 60) % 60) + ":" + String.format("%02d", game.getSeconds() % 60)));
+			}
+		}, 1000, 1000);
+	}
+
+	public void exit() {
+		timer.cancel();
 	}
 
 	private void generatePanes() {
@@ -117,6 +145,8 @@ public class GameBoardViewController extends VBox {
 			boardPanes.add(pane);
 			right.getChildren().add(pane);
 
+			borderpane.setRight(right);
+
 			bottom = new HBox();
 			pane = new StackPane();
 			boardPanes.add(pane);
@@ -126,6 +156,10 @@ public class GameBoardViewController extends VBox {
 			boardPanes.add(pane);
 			bottom.getChildren().add(0, pane);
 
+			bottom.setSpacing(75);
+			bottom.setAlignment(Pos.CENTER);
+			borderpane.setBottom(bottom);
+
 			pane = new StackPane();
 			boardPanes.add(pane);
 			left.getChildren().add(pane);
@@ -133,6 +167,8 @@ public class GameBoardViewController extends VBox {
 			pane = new StackPane();
 			boardPanes.add(pane);
 			left.getChildren().add(0, pane);
+
+			borderpane.setLeft(left);
 			break;
 		case 6:
 			left = new VBox();
@@ -146,6 +182,8 @@ public class GameBoardViewController extends VBox {
 			boardPanes.add(pane);
 			right.getChildren().add(pane);
 
+			borderpane.setRight(right);
+
 			pane = new StackPane();
 			boardPanes.add(pane);
 			borderpane.setBottom(pane);
@@ -157,6 +195,8 @@ public class GameBoardViewController extends VBox {
 			pane = new StackPane();
 			boardPanes.add(pane);
 			left.getChildren().add(0, pane);
+
+			borderpane.setLeft(left);
 			break;
 		case 5:
 			pane = new StackPane();
@@ -171,6 +211,10 @@ public class GameBoardViewController extends VBox {
 			pane = new StackPane();
 			boardPanes.add(pane);
 			bottom.getChildren().add(0, pane);
+
+			bottom.setSpacing(75);
+			bottom.setAlignment(Pos.CENTER);
+			borderpane.setBottom(bottom);
 
 			pane = new StackPane();
 			boardPanes.add(pane);
@@ -395,8 +439,9 @@ public class GameBoardViewController extends VBox {
 		}
 
 		private void adaptSize(ImageView view) {
-			view.setFitWidth(view.getImage().getWidth() * (isCurrentBoard() ? 50 : 40) / view.getImage().getHeight());
-			view.setFitHeight(isCurrentBoard() ? 50 : 40);
+			view.setFitWidth(view.getImage().getWidth() * (isCurrentBoard() ? 40 : 30) / view.getImage().getHeight());
+			view.setFitHeight(isCurrentBoard() ? 40 : 30);
+			view.setEffect(new InnerShadow(BlurType.THREE_PASS_BOX, Color.BLACK, 4, 0.5, 0, 0));
 		}
 
 		private void updatePlayer() {
@@ -418,6 +463,7 @@ public class GameBoardViewController extends VBox {
 				ImageView resicon = new ImageView();
 				resicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
 				Tooltip.install(resicon, new Tooltip(card.getDescription()));
+				resicon.setStyle("-fx-border-color: black; -fx-border-style: solid; -fx-border-width: 2px;");
 				adaptSize(resicon);
 				hboxresources.getChildren().add(resicon);
 			}
@@ -708,8 +754,8 @@ public class GameBoardViewController extends VBox {
 			Button btn = new Button();
 			VBox vbox = new VBox();
 			ImageView img = new ImageView();
-			img.setFitHeight(20);
-			img.setFitWidth(20);
+			img.setFitHeight(25);
+			img.setFitWidth(25);
 			img.getStyleClass().add("dropshadow");
 			Tooltip.install(img, new Tooltip(tooltip));
 			vbox.getChildren().addAll(img, btn);

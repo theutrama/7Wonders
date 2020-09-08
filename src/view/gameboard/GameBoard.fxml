@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -112,6 +113,23 @@
                         <Insets left="5.0" />
                      </HBox.margin>
                   </ImageView>
+                  <StackPane HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="btn_back" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets right="20.0" top="10.0" />
+                           </StackPane.margin>
+                           <graphic>
+                              <Label text="Hauptmenü" textFill="#d4d4d4">
+                                 <styleClass>
+                                    <String fx:value="fontstyle" />
+                                    <String fx:value="dropshadow" />
+                                 </styleClass>
+                              </Label>
+                           </graphic>
+                        </Button>
+                     </children>
+                  </StackPane>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />

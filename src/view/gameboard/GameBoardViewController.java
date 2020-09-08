@@ -44,6 +44,7 @@ import model.Game;
 import model.GameState;
 import model.card.Card;
 import model.player.Player;
+import view.menu.MainMenuViewController;
 
 public class GameBoardViewController extends VBox {
 
@@ -69,6 +70,9 @@ public class GameBoardViewController extends VBox {
 	private ImageView img_direction;
 
 	@FXML
+	private Button btn_back;
+	
+	@FXML
 	private HBox hbox_cards;
 
 	@FXML
@@ -92,9 +96,21 @@ public class GameBoardViewController extends VBox {
 
 			e.printStackTrace();
 		}
+		
+		Main.primaryStage.setOnCloseRequest(event -> {
+			Main.getSWController().getIOController().save(Main.getSWController().getGame());
+		});
 
 		scrollpane.setMinSize(1200, 800);
 		hbox_cards.setAlignment(Pos.CENTER);
+		
+		btn_back.setOnAction(event -> {
+			exit();
+			Main.getSWController().getIOController().save(Main.getSWController().getGame());
+			Main.getSWController().setGame(null);
+			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
+			Main.primaryStage.setOnCloseRequest(null);
+		});
 
 		btn_undo.setOnMouseClicked(event -> Main.getSWController().getGameController().undo(Main.getSWController().getGame()));
 		btn_redo.setOnMouseClicked(event -> Main.getSWController().getGameController().redo(Main.getSWController().getGame()));

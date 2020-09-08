@@ -61,8 +61,10 @@ public class IOController {
 	private void save(Object obj,String path) {
 		try {
 			File file1 = new File(getExecutionPath());
-			if (!file1.exists())
-				file1.createNewFile();
+			if (!file1.exists()) {
+				new File(getExecutionPath() + File.separator + GAME_FOLDER).mkdirs();
+				new File(getExecutionPath() + File.separator + RANKING).createNewFile();
+			}
 			File file2 = new File(getExecutionPath() + path);
 			if (!file2.exists())
 				file2.createNewFile();
@@ -83,6 +85,7 @@ public class IOController {
 		File[] games = new File(getExecutionPath() + File.separator + GAME_FOLDER).listFiles();
 		if (games == null) // directory does not exist
 			return new String[] {};
+		System.out.println(games.length + " files found");
 		String[] result = new String[games.length];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = games[i].getName();

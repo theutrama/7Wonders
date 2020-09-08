@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /** Contains Game data for SevenWonders game */
-public class Game {
+public class Game implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** current state index */
 	private int currentState;
 	/** name */

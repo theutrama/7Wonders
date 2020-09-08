@@ -3,6 +3,11 @@
     -fx-background-radius:0;
     -fx-border-color:transparent;
 }
+.buttonback {
+	-fx-background-color:#00000033;
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:20;
+}
 .my-scroll-pane {
     -fx-fit-to-height: true;
     -fx-fit-to-width: true;

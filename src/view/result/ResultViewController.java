@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import application.Main;
 import controller.SoundController;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -77,8 +78,6 @@ public class ResultViewController extends BorderPane {
 
 		table_result.setEditable(false);
 
-		col_rank.setSortType(SortType.ASCENDING);
-
 		SoundController.addMuteFunction(btn_mute, img_music);
 
 		players.sort((p1, p2) -> p2.getVictoryPoints() - p1.getVictoryPoints());
@@ -89,6 +88,10 @@ public class ResultViewController extends BorderPane {
 			stats.add(new Stats(player, rank));
 			rank++;
 		}
+		
+		table_result.setItems(FXCollections.observableList(stats));
+		
+		col_rank.setSortType(SortType.ASCENDING);
 	}
 
 	private static class Stats {

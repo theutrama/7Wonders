@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import application.Main;
-import controller.SevenWondersController;
 import controller.SoundController;
 import controller.sound.Sound;
 import javafx.beans.property.SimpleObjectProperty;
@@ -88,36 +87,26 @@ public class RankingViewController extends BorderPane {
 		
 		table_ranking.setEditable(false);
 		
-		col_rank.setSortType(SortType.ASCENDING);
-		
 		SoundController.addMuteFunction(btn_mute, img_music);
 
 		ArrayList<Stats> list = new ArrayList<>();
 		int rank = 1;
 		for (PlayerStats stats : Main.getSWController().getRanking().getStats()) {
-			list.add(new Stats(stats, this, rank));
+			list.add(new Stats(stats, rank));
 			rank++;
 		}
 		
-		list.add(new Stats(new PlayerStats("Test1", 1, 2, 3, 4), this, rank));
-		rank++;
-		list.add(new Stats(new PlayerStats("Test2", 4,3,2,1), this, rank));
-		rank++;
-		list.add(new Stats(new PlayerStats("Test3", 2,2,2,2), this, rank));
-		rank++;
-		
 		table_ranking.setItems(FXCollections.observableArrayList(list));
+		col_rank.setSortType(SortType.ASCENDING);
 	}
 
 	private static class Stats{
 		private PlayerStats stats;
 		private int rank;
-		private RankingViewController view;
 
-		private Stats(PlayerStats stats,RankingViewController view, int rank) {
+		private Stats(PlayerStats stats, int rank) {
 			this.stats = stats;
 			this.rank = rank;
-			this.view = view;
 		}
 
 		public int getRank() {

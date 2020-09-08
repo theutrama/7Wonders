@@ -95,7 +95,7 @@ public class GameControllerTest {
 		assertEquals(g7, swc.getGame().getCurrentGameState());
 	}
 	/**
-	 * nextRount test methods
+	 * nextRound test methods
 	 */
 	@Test
 	public void createNextRoundTest() {

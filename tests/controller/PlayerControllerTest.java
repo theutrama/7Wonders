@@ -26,6 +26,7 @@ public class PlayerControllerTest {
 	private CardController cController;
 	private WonderBoardController wbController;
 
+	/** sets up PlayerController test */
 	@Before
 	public void setUp() {
 		SevenWondersController swc = SevenWondersFactory.create();

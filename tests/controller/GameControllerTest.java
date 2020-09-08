@@ -8,7 +8,7 @@ import org.junit.Test;
 import javafx.application.Platform;
 import model.GameState;
 
-
+/** tests Game Controller */
 public class GameControllerTest {
 
 	private SevenWondersController swc;

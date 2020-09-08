@@ -2,10 +2,12 @@ package controller;
 
 import org.junit.Before;
 
+/** test for WonderBoard Controller */
 public class WonderBoardControllerTest {
 	private SevenWondersController swController;
 	private WonderBoardController wbController;
 	
+	/** sets up test for WonderBoard Controller */
 	@Before
 	public void setUp() {
 		swController = new SevenWondersController();

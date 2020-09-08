@@ -12,14 +12,9 @@ import model.card.Card;
 import model.player.Player;
 import model.ranking.Ranking;
 
+/** creates SevenWonders tests */
 public class SevenWondersFactory {
-	
-	
-		
-	
-
-	
-	
+	/** creates new SevenWonders Controller in Factory */
 	public static SevenWondersController create() {
 
 		SevenWondersController sevenWondersController = new SevenWondersController();

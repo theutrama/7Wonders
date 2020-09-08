@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import application.Main;
 
+/** tests Card Controller */
 public class CardControllerTest {
 	
 	private SevenWondersController swc;
@@ -26,6 +27,8 @@ public class CardControllerTest {
 		pC = swc.getPlayerController();
 		Main.TEST = true;
 	}
+	
+	/** tests if first player has card */
 
 	@Test
 	public void createHasCardTest() {
@@ -33,6 +36,7 @@ public class CardControllerTest {
 		assertEquals(false,cC.hasCard(swc.getPlayerController().getPlayer("erster"), "academy"));
 	}
 	
+	/** tests if first player can sell cards */
 	@Test
 	public void createSellCardTest() {
 		//Wenn bei getCard ein falscher name angegeben wird kommt null zurück 

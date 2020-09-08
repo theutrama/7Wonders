@@ -169,6 +169,23 @@ public class SevenWondersFactory {
 		player1.getBoard().addCard(card7);
 		player1.getBoard().addCard(card14);
 		player1.getBoard().addCard(card16);
+		ArrayList<Card> hand= new ArrayList <Card>();
+		hand.add(card1);
+		hand.add(card2);
+		hand.add(card3);
+		hand.add(card4);
+		hand.add(card5);
+		hand.add(card6);
+		hand.add(card7);
+		
+		player1.setHand(hand);
+		player2.setHand(hand);
+		player3.setHand(hand);
+		player4.setHand(hand);
+		player5.setHand(hand);
+		player6.setHand(hand);
+		player7.setHand(hand);
+		
 		
 
 		player2.getBoard().addCard(card11);

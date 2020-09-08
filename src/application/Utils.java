@@ -29,12 +29,26 @@ public class Utils {
 	
 	
 	public static void main(String[] args) {
-		load("C:"+File.separator+"Users"+File.separator+"obena"+File.separator+"Downloads"+File.separator+"ki-turnier-gesamt.csv");
+		load("C:"+File.separator+"Users"+File.separator+"obena"+File.separator+"Downloads"+File.separator+"ki-turnier-beispiel.csv");
+	}
+	
+	public static String toWonder(String w) {
+		if(w.equalsIgnoreCase("ephesus"))return "ephesos";
+		return w;
+	}
+	
+	public static String toCard(String c,int age) {
+		if(c.equalsIgnoreCase("glassworks"))return "glassworks1";
+		if(c.equalsIgnoreCase("loom"))return "loom"+age;
+		if(c.equalsIgnoreCase("press"))return "press"+age;
+		if(c.equalsIgnoreCase("craftsmen_guild"))return "craftsmensguild";
+		if(c.contains("_"))return c.replaceAll("_", "");
+		return c;
 	}
 	
 	public static void load(String filepath) {
 		File file = new File(filepath);
-		SevenWondersController con = Main.getSWController();
+		SevenWondersController con = SevenWondersController.getInstance();
 		CardController card_con = con.getCardController();
 		PlayerController p_con = con.getPlayerController();
 		
@@ -44,11 +58,11 @@ public class Utils {
 			int counter = 0;
 			String line = null;
 			line = in.readLine(); // age,card
-			String wonder1 = in.readLine(); //
-			String wonder2 = in.readLine();
+			String wonder1 = in.readLine().split(",")[1]; 
+			String wonder2 = in.readLine().split(",")[1];
 			
-			Player p = p_con.createPlayer("Spieler", wonder1);
-			ArtInt ai = p_con.createAI("AI-Spieler", wonder2, Difficulty.HARDCORE);
+			Player p = p_con.createPlayer("Spieler", toWonder(wonder1));
+			ArtInt ai = p_con.createAI("AI-Spieler", toWonder(wonder2), Difficulty.HARDCORE);
 			
 			Game game = new Game("KI-Turnier");
 			ArrayList<Card> cards = new ArrayList<Card>();
@@ -61,8 +75,11 @@ public class Utils {
 					split = line.split(",");
 					
 					int age = Integer.valueOf(split[0]);
-					String cardname = split[1];
+					String cardname = toCard(split[1],age);
+
+					Card card = card_con.getCard(cardname);
 					
+					System.out.println("CARD: "+card.getInternalName()+" "+card.getAge()+" == "+age);
 				}
 			}
 			

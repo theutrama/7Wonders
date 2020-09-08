@@ -81,7 +81,7 @@ public class WonderBoardController {
 			}
 		}
 
-		return null;
+		throw new NullPointerException("No Call found by name "+name);
 	}
 	/**
 	 * @return names of all WonderBoards

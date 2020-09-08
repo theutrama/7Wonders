@@ -45,6 +45,7 @@ public class CardController {
 	public CardController(SevenWondersController swController) {
 		this.swController = swController;
 		loadCards();
+		loadAllCards();
 	}
 
 	/**
@@ -800,6 +801,16 @@ public class CardController {
 			swController.getPlayerController().doTrade(player, trade);
 		}
 	}
+	
+	/**
+	 * get Card by name
+	 * 
+	 * @param cardname card's internal name
+	 * @return Card object with the given name or null if no such card was found
+	 */
+	public Card getCard(String cardname) {
+		return getCard(loaded_cards,cardname);
+	}
 
 	/**
 	 * get Card by name
@@ -809,10 +820,9 @@ public class CardController {
 	 * @return Card object with the given name or null if no such card was found
 	 */
 	public Card getCard(ArrayList<Card> cards, String cardname) {
-		for (Card card : cards)
-			if (card.getInternalName().equalsIgnoreCase(cardname))
+		for (Card card : cards) 
+			if (card.getInternalName().equalsIgnoreCase(cardname)) 
 				return card;
-
 		return null;
 	}
 

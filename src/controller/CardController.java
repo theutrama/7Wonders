@@ -202,7 +202,7 @@ public class CardController {
 				new String[] { "trainingground" }, null));
 		cards.add(new Card(1, "Tongrube", "claypit", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)),
 				null, null));
-		cards.add(new Card(1, "Ziegelei", "claypit", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK)), null, null, null));
+		cards.add(new Card(1, "Ziegelei", "claypool", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK)), null, null, null));
 		cards.add(new Card(2, "Gericht", "courthouse", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.STONE)), new String[] { "scriptorium" },
 				addEArray(new Effect(EffectType.WHEN_PLAYED, player -> { player.addVictoryPoints(4); })), 4));
 		cards.add(new Card(3, "Gilde der Künstler", "craftsmensguild", CardType.PURPLE, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE)), null,

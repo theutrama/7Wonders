@@ -708,7 +708,7 @@ public class CardController {
 	 */
 	private ArrayList<Effect> addEArray(Effect... effect) {
 		ArrayList<Effect> array = new ArrayList<Effect>();
-		for (Effect eff : array) {
+		for (Effect eff : effect) {
 			array.add(eff);
 		}
 		return array;

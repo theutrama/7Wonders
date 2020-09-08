@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/** Helps realizing events */
 public class EventHelper {
 	/** HashMap for handlers */
 	public static HashMap<EventListener,HashMap<Integer,ArrayList<Method>>> handlers = new HashMap<EventListener, HashMap<Integer,ArrayList<Method>>>();

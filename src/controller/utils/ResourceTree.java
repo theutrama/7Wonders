@@ -3,7 +3,7 @@ package controller.utils;
 import java.util.ArrayList;
 
 import model.card.Resource;
-
+/** tree created from ResourceBundles */
 public class ResourceTree {
 	/** leaves */
 	private ArrayList<InnerResourceTree> leaves;

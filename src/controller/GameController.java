@@ -8,6 +8,7 @@ import model.Game;
 import model.GameState;
 import model.card.Card;
 import model.card.Effect;
+import model.card.EffectType;
 import model.player.Player;
 import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
@@ -217,6 +218,9 @@ public class GameController {
 	private void endGame(Game game, GameState state) {
 
 		for (Player player : state.getPlayers()) {
+			runEffects(player, player.getBoard().getTrade());
+			runEffects(player, player.getBoard().getGuilds());
+			runEffects(player, player.getBoard().getCivil());
 			// conflicts
 			player.addVictoryPoints(player.getConflictPoints());
 			player.addVictoryPoints(-player.getLosePoints());
@@ -238,6 +242,14 @@ public class GameController {
 		}
 
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
+	}
+	
+	private void runEffects(Player player, ArrayList<Card> cards) {
+		for (Card card: cards) {
+			for (Effect effect: card.getEffects())
+				if (effect.getType() == EffectType.AT_MATCH_END)
+					effect.run(player);
+		}
 	}
 
 	/**

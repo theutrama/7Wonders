@@ -7,7 +7,6 @@ import application.Main;
 
 /** Card in SevenWonders */
 public class Card implements Serializable {
-	/** serial version UID */
 	private static final long serialVersionUID = 1L;
 	/** age */
 	private int age;

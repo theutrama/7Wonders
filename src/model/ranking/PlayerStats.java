@@ -1,9 +1,11 @@
 package model.ranking;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /** Game Statistics for a certain player */
-public class PlayerStats {
+public class PlayerStats implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** player name */
 	private String name;
 	/** date and time when the game was finished */

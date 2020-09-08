@@ -1,11 +1,13 @@
 package model.ranking;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import controller.IOController;
 
 /** list of statistics from multiple players */
-public class Ranking {
+public class Ranking implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** ranking list */
 	private ArrayList<PlayerStats> playerStats;
 

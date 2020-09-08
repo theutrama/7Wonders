@@ -8,7 +8,6 @@ import model.card.Card;
 
 /** Player for the Game */
 public class Player implements Serializable {
-
 	private static final long serialVersionUID = 8987094360643416900L;
 	/** name */
 	private String name;

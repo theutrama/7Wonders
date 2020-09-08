@@ -13,7 +13,7 @@ import model.player.Player;
 
 /** saves State of Game */
 public class GameState implements Serializable {
-	private static final long serialVersionUID = 6134733784450914362L;
+	private static final long serialVersionUID = 1L;
 	/** current age */
 	private int age;
 	/** current round */

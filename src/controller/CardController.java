@@ -14,6 +14,7 @@ import controller.sound.Sound;
 import controller.utils.TradeOption;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Collections;
 
@@ -824,52 +825,52 @@ public class CardController {
 		case BROWN:
 			if (card.getProducing().size() == ONE) {
 				if (card.getProducing().get(0).getQuantity() == ONE)
-					return getSubimage(full, 64, 12, 54, 50);
+					return getSubimage(full, new Rectangle(64, 12, 54, 50));
 				else
-					return getSubimage(full, 42, 9, 110, 50);
+					return getSubimage(full, new Rectangle(42, 9, 110, 50));
 			} else
-				return getSubimage(full, 37, 8, 120, 50);
+				return getSubimage(full, new Rectangle(37, 8, 120, 50));
 		case GRAY:
-			return getSubimage(full, 64, 12, 54, 50);
+			return getSubimage(full, new Rectangle(64, 12, 54, 50));
 		case BLUE:
-			return getSubimage(full, 68, 12, 59, 50);
+			return getSubimage(full, new Rectangle(68, 12, 59, 50));
 		case GREEN:
-			return getSubimage(full, 74, 11, 48, 50);
+			return getSubimage(full, new Rectangle(74, 11, 48, 50));
 		case RED:
 			switch (card.getProducing().get(0).getQuantity()) {
 			case 1:
-				return getSubimage(full, 68, 8, 59, 50);
+				return getSubimage(full, new Rectangle(68, 8, 59, 50));
 			case 2:
-				return getSubimage(full, 54, 11, 100, 50);
+				return getSubimage(full, new Rectangle(54, 11, 100, 50));
 			case 3:
-				return getSubimage(full, 47, 9, 123, 50);
+				return getSubimage(full, new Rectangle(47, 9, 123, 50));
 			}
 		case YELLOW:
 			switch (card.getInternalName()) {
 			case "arena":
-				return getSubimage(full, 66, 10, 72, 50);
+				return getSubimage(full, new Rectangle(66, 10, 72, 50));
 			case "bazar":
-				return getSubimage(full, 32, 10, 119, 56);
+				return getSubimage(full, new Rectangle(32, 10, 119, 56));
 			case "caravansery":
-				return getSubimage(full, 45, 18, 126, 32);
+				return getSubimage(full, new Rectangle(45, 18, 126, 32));
 			case "chamberofcommerce":
-				return getSubimage(full, 65, 10, 60, 50);
+				return getSubimage(full, new Rectangle(65, 10, 60, 50));
 			case "easttradingpost":
-				return getSubimage(full, 40, 8, 126, 54);
+				return getSubimage(full, new Rectangle(40, 8, 126, 54));
 			case "forum":
-				return getSubimage(full, 44, 14, 128, 43);
+				return getSubimage(full, new Rectangle(44, 14, 128, 43));
 			case "haven":
-				return getSubimage(full, 71, 10, 60, 50);
+				return getSubimage(full, new Rectangle(71, 10, 60, 50));
 			case "lighthouse":
-				return getSubimage(full, 71, 10, 60, 50);
+				return getSubimage(full, new Rectangle(71, 10, 60, 50));
 			case "marketplace":
-				return getSubimage(full, 35, 11, 125, 50);
+				return getSubimage(full, new Rectangle(35, 11, 125, 50));
 			case "tavern":
-				return getSubimage(full, 63, 8, 55, 50);
+				return getSubimage(full, new Rectangle(63, 8, 55, 50));
 			case "vineyard":
-				return getSubimage(full, 32, 10, 119, 56);
+				return getSubimage(full, new Rectangle(32, 10, 119, 56));
 			case "westtradingpost":
-				return getSubimage(full, 33, 10, 127, 50);
+				return getSubimage(full, new Rectangle(33, 10, 127, 50));
 			}
 		case PURPLE:
 			switch (card.getInternalName()) {
@@ -879,15 +880,15 @@ public class CardController {
 			case "spiesguild":
 			case "tradersguild":
 			case "workersguild":
-				return getSubimage(full, 36, 9, 130, 50);
+				return getSubimage(full, new Rectangle(36, 9, 130, 50));
 			case "buildersguild":
-				return getSubimage(full, 37, 16, 125, 52);
+				return getSubimage(full, new Rectangle(37, 16, 125, 52));
 			case "scientistsguild":
-				return getSubimage(full, 34, 9, 134, 50);
+				return getSubimage(full, new Rectangle(34, 9, 134, 50));
 			case "shipownersguild":
-				return getSubimage(full, 47, 10, 104, 50);
+				return getSubimage(full, new Rectangle(47, 10, 104, 50));
 			case "strategistsguild":
-				return getSubimage(full, 36, 12, 130, 50);
+				return getSubimage(full, new Rectangle(36, 12, 130, 50));
 			}
 		}
 		return null;
@@ -903,8 +904,8 @@ public class CardController {
 	 * @param height height
 	 * @return subimage with the specified coordinates
 	 */
-	private Image getSubimage(BufferedImage img, int xpos, int ypos, int width, int height) {
-		return SwingFXUtils.toFXImage(img.getSubimage(xpos, ypos, width, height), null);
+	private Image getSubimage(BufferedImage img, Rectangle rect) {
+		return SwingFXUtils.toFXImage(img.getSubimage((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight()), null);
 	}
 
 }

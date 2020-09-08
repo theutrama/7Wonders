@@ -31,7 +31,7 @@ public class WonderBoardController {
 	 * 
 	 * @param swController SevenWonders controller
 	 */
-	public WonderBoardController(SevenWondersController swController) {
+	public WonderBoardController() {
 		loadBoardClasses();
 	}
 	/**

@@ -401,7 +401,8 @@ public class CardController {
 
 		// Clone cards depending on player number
 		int playersize = players.size();
-		if (playersize == 2)
+		final int TWO = 2;
+		if (playersize == TWO)
 			playersize++;
 		ArrayList<Card> toadd = new ArrayList<Card>();
 		for (int i = 0; i < cards.size(); i++) {
@@ -603,6 +604,7 @@ public class CardController {
 	 */
 	private static String resToString(ArrayList<Resource> resources) {
 		StringBuilder string = new StringBuilder();
+		final int ONE = 1;
 		for (int i = 0; i < resources.size(); i++) {
 			Resource res = resources.get(i);
 			switch (res.getType()) {
@@ -617,7 +619,7 @@ public class CardController {
 				string.append("" + res.getQuantity() + " " + "Stoff");
 				break;
 			case COINS:
-				if (res.getQuantity() == 1)
+				if (res.getQuantity() == ONE)
 					string.append("" + res.getQuantity() + " " + "Münze");
 				else
 					string.append("" + res.getQuantity() + " " + "Münzen");
@@ -626,7 +628,7 @@ public class CardController {
 				string.append("" + res.getQuantity() + " " + "Glas");
 				break;
 			case MILITARY:
-				if (res.getQuantity() == 1)
+				if (res.getQuantity() == ONE)
 					string.append("" + res.getQuantity() + " " + "Schild");
 				else
 					string.append("" + res.getQuantity() + " " + "Schilder");
@@ -638,7 +640,7 @@ public class CardController {
 				string.append("" + res.getQuantity() + " " + "Papyros");
 				break;
 			case STONE:
-				if (res.getQuantity() == 1)
+				if (res.getQuantity() == ONE)
 					string.append("" + res.getQuantity() + " " + "Stein");
 				else
 					string.append("" + res.getQuantity() + " " + "Steine");
@@ -804,6 +806,7 @@ public class CardController {
 	 */
 	public Image getPreviewImage(Card card) {
 		BufferedImage full = null;
+		final int ONE = 1;
 		try {
 			full = ImageIO.read(new File(card.getImage()));
 		} catch (IOException e) {
@@ -811,8 +814,8 @@ public class CardController {
 		}
 		switch (card.getType()) {
 		case BROWN:
-			if (card.getProducing().size() == 1) {
-				if (card.getProducing().get(0).getQuantity() == 1)
+			if (card.getProducing().size() == ONE) {
+				if (card.getProducing().get(0).getQuantity() == ONE)
 					return getSubimage(full, 64, 12, 54, 50);
 				else
 					return getSubimage(full, 42, 9, 110, 50);

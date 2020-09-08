@@ -58,6 +58,9 @@ public class GameBoardViewController extends VBox {
 	private ImageView img_age;
 
 	@FXML
+	private ImageView img_direction;
+
+	@FXML
 	private HBox hbox_cards;
 
 	@FXML
@@ -219,6 +222,7 @@ public class GameBoardViewController extends VBox {
 
 		try {
 			img_age.setImage(Utils.toImage(Main.TOKENS_PATH + "age" + game().getAge() + ".png"));
+			img_direction.setImage(Utils.toImage(Main.DEFAULT_PATH + (game().getAge() == 2 ? "a" : "") + "clockwise.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -413,36 +417,42 @@ public class GameBoardViewController extends VBox {
 			for (Card card : player.getBoard().getResources()) {
 				ImageView resicon = new ImageView();
 				resicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(resicon, new Tooltip(card.getDescription()));
 				adaptSize(resicon);
 				hboxresources.getChildren().add(resicon);
 			}
 			for (Card card : player.getBoard().getMilitary()) {
 				ImageView milicon = new ImageView();
 				milicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(milicon, new Tooltip(card.getDescription()));
 				adaptSize(milicon);
 				hboxmilitary.getChildren().add(milicon);
 			}
 			for (Card card : player.getBoard().getCivil()) {
 				ImageView civilicon = new ImageView();
 				civilicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(civilicon, new Tooltip(card.getDescription()));
 				adaptSize(civilicon);
 				hboxcivil.getChildren().add(0, civilicon);
 			}
 			for (Card card : player.getBoard().getResearch()) {
 				ImageView scicon = new ImageView();
 				scicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(scicon, new Tooltip(card.getDescription()));
 				adaptSize(scicon);
 				hboxscience.getChildren().add(0, scicon);
 			}
 			for (Card card : player.getBoard().getTrade()) {
 				ImageView tricon = new ImageView();
 				tricon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(tricon, new Tooltip(card.getDescription()));
 				adaptSize(tricon);
 				hboxtrade.getChildren().add(tricon);
 			}
 			for (Card card : player.getBoard().getGuilds()) {
 				ImageView guildicon = new ImageView();
 				guildicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
+				Tooltip.install(guildicon, new Tooltip(card.getDescription()));
 				adaptSize(guildicon);
 				hboxguild.getChildren().add(0, guildicon);
 			}
@@ -465,7 +475,7 @@ public class GameBoardViewController extends VBox {
 			return;
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
-		
+
 		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
 		int arrowWidth = 45, arrowHeight = 25;
@@ -505,6 +515,7 @@ public class GameBoardViewController extends VBox {
 				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null); getCurrentPlayer().setOlympiaUsed(true); turn(); });
 				btnOlympia.setTooltip(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos"));
 				vbox.getChildren().add(btnOlympia);
+				btnOlympia.setDisable(hasCard);
 			}
 			Button btn_place = new Button();
 			HBox hbox_place = new HBox();
@@ -552,7 +563,7 @@ public class GameBoardViewController extends VBox {
 					break;
 				}
 			});
-			btn_place.setDisable(Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card) == BuildCapability.NONE);
+			btn_place.setDisable(hasCard || Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card) == BuildCapability.NONE);
 
 			// Button place card on WonderBoard
 			Button btn_wonder = new Button();
@@ -668,21 +679,30 @@ public class GameBoardViewController extends VBox {
 		for (int i = 0; i < hand.size(); i++) {
 			card = hand.get(i);
 
-			BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
-			String path = Main.TOKENS_PATH;
-			switch (capability) {
-			case FREE:
-				path += "free";
-				break;
-			case OWN_RESOURCE:
-				path += "check";
-				break;
-			case TRADE:
-				path += "checkyellow";
-				break;
-			case NONE:
-				path += "cross";
-				break;
+			String path = Main.TOKENS_PATH, tooltip = null;
+			if (Main.getSWController().getCardController().hasCard(player, card.getInternalName())) {
+				path += "noplace";
+				tooltip = "Du besitzt diese Karte bereits";
+			} else {
+				BuildCapability capability = Main.getSWController().getPlayerController().canBuild(player, card);
+				switch (capability) {
+				case FREE:
+					path += "free";
+					tooltip = "Diese Karte kann kostenlos gebaut werden,\nda alle erforderlichen Karten bereits gebaut sind";
+					break;
+				case OWN_RESOURCE:
+					path += "check";
+					tooltip = "Du kannst diese Karte mit eigenen Ressourcen bezahlen";
+					break;
+				case TRADE:
+					path += "checkyellow";
+					tooltip = "Du kannst die erforderlichen Resourcen von Nachbarstädten kaufen";
+					break;
+				case NONE:
+					path += "cross";
+					tooltip = "Diese Karte kann nicht gebaut werden";
+					break;
+				}
 			}
 
 			Button btn = new Button();
@@ -691,6 +711,7 @@ public class GameBoardViewController extends VBox {
 			img.setFitHeight(20);
 			img.setFitWidth(20);
 			img.getStyleClass().add("dropshadow");
+			Tooltip.install(img, new Tooltip(tooltip));
 			vbox.getChildren().addAll(img, btn);
 			vbox.setAlignment(Pos.CENTER_RIGHT);
 			hbox_cards.getChildren().add(vbox);

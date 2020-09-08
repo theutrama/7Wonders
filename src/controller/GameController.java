@@ -228,10 +228,6 @@ public class GameController {
 			player.addVictoryPoints(player.getCoins() / 3);
 			// science
 			player.addVictoryPoints(swController.getPlayerController().getSciencePoints(player));
-			// trading
-			runCardEffects(player.getBoard().getTrade(), player);
-			// guilds
-			runCardEffects(player.getBoard().getGuilds(), player);
 		}
 
 		// update highscore list
@@ -244,26 +240,17 @@ public class GameController {
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 	}
 	
+	/**
+	 * calls {@link Effect#run(Player)} for all effects for each given card
+	 * 
+	 * @param player player
+	 * @param cards  list of cards from the player's game board
+	 */
 	private void runEffects(Player player, ArrayList<Card> cards) {
 		for (Card card: cards) {
 			for (Effect effect: card.getEffects())
 				if (effect.getType() == EffectType.AT_MATCH_END)
-					effect.run(player);
-		}
-	}
-
-	/**
-	 * calls {@link Effect#run(Player)} for all effects for each given card
-	 * 
-	 * @param cards  list of cards from the player's game board
-	 * @param state  the current game state
-	 * @param player player
-	 */
-	private void runCardEffects(ArrayList<Card> cards, Player player) {
-		for (Card card : cards) {
-			for (Effect effect : card.getEffects()) {
-				effect.run(player);
-			}
+					effect.run(player, swController.getPlayerController());
 		}
 	}
 

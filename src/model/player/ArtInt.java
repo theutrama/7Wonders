@@ -4,6 +4,7 @@ import model.board.WonderBoard;
 
 /** Artificial Intelligence for SevenWonders */
 public class ArtInt extends Player {
+	private static final long serialVersionUID = 1L;
 	/** level of skill */
 	private Difficulty difficulty;
 

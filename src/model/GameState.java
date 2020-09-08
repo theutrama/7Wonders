@@ -127,6 +127,7 @@ public class GameState implements Serializable {
 		try {
 			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 			ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
+			System.out.println("write " + this.getClass().getCanonicalName());
 			objOut.writeObject(this);
 			objOut.flush();
 			objOut.close();

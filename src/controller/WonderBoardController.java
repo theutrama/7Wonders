@@ -24,8 +24,6 @@ import model.player.Player;
 
 /** Controller for WonderBoard */
 public class WonderBoardController {
-	/** SevenWonders Controller */
-	private SevenWondersController swController;
 	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 	/**
@@ -33,8 +31,7 @@ public class WonderBoardController {
 	 * 
 	 * @param swController SevenWonders controller
 	 */
-	public WonderBoardController(SevenWondersController swController) {
-		this.swController = swController;
+	public WonderBoardController() {
 		loadBoardClasses();
 	}
 	/**

@@ -38,7 +38,7 @@ public class SevenWondersController {
 	 * create new SevenWonders Controller
 	 */
 	protected SevenWondersController() {
-		this.wonderBoardController = new WonderBoardController(this);
+		this.wonderBoardController = new WonderBoardController();
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this);
 		this.cardController = new CardController(this);

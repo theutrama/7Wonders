@@ -146,7 +146,8 @@ public class SoundController {
 		}
 		
 		public boolean setLoop() {
-			if(filenames.length > 1)
+			final int ONE = 1;
+			if(filenames.length > ONE)
 				player.setOnEndOfMedia(() -> {
 					this.index++;
 					if(this.filenames.length == this.index)this.index = 0;

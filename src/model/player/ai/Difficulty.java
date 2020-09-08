@@ -1,4 +1,4 @@
-package model.player;
+package model.player.ai;
 
 /** difficulty of the AI */
 public enum Difficulty {

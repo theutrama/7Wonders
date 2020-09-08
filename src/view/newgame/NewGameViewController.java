@@ -33,8 +33,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import model.Game;
-import model.player.Difficulty;
 import model.player.Player;
+import model.player.ai.Difficulty;
 import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
 

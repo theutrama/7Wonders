@@ -21,8 +21,8 @@ public class Player implements Serializable {
 	private int conflictPoints = 0;
 	/** true if the player has finished the mausoleum stage 2 in the current round */
 	private boolean mausoleum = false;
-	/** true if the player has used the opympia ability in the current age */
-	private boolean olympiaUsed = false;
+	/** true if the player has used the opympia ability in the current age or if the player does not have Olympia or if the second slot is not filled */
+	private boolean olympiaUsed = true;
 	/** the cards currently at the players "hand" */
 	private ArrayList<Card> hand;
 	/** the chosen card */
@@ -50,7 +50,6 @@ public class Player implements Serializable {
 	public void setChooseCard(Card card) {
 		this.chosenCard = card;
 	}
-
 
 	/**
 	 * getter for {@link #chosenCard}
@@ -184,17 +183,19 @@ public class Player implements Serializable {
 	public void setHand(ArrayList<Card> hand) {
 		this.hand = hand;
 	}
-	
+
 	/**
 	 * getter for {@link #olympiaUsed}
+	 * 
 	 * @return olympia ability used
 	 */
 	public boolean isOlympiaUsed() {
 		return olympiaUsed;
 	}
-	
+
 	/**
 	 * setter for {@link #olympiaUsed}
+	 * 
 	 * @param olympiaUsed olympia ability used
 	 */
 	public void setOlympiaUsed(boolean olympiaUsed) {

@@ -370,6 +370,8 @@ public class PlayerController {
 				}
 			}
 		}
+		
+		removeEqualTrades(result);
 
 		result.sort((opt1, opt2) -> opt1.getLeftCost() + opt1.getRightCost() - opt2.getLeftCost() - opt2.getRightCost());
 
@@ -439,6 +441,27 @@ public class PlayerController {
 			}
 			if (add)
 				list.add(bundle);
+		}
+	}
+
+	/**
+	 * removes all trade options that are equal to any other option
+	 * 
+	 * @param trades list of trade options
+	 */
+	private void removeEqualTrades(ArrayList<TradeOption> trades) {
+		TradeOption[] copy = trades.toArray(new TradeOption[] {});
+		trades.clear();
+		for (TradeOption option : copy) {
+			boolean add = true;
+			for (TradeOption listOption : trades) {
+				if (option.equals(listOption)) {
+					add = false;
+					break;
+				}
+			}
+			if (add)
+				trades.add(option);
 		}
 	}
 

@@ -16,7 +16,7 @@ public class HalikarnassusBoard extends WonderBoard {
 
 	@Override
 	public void slot2() {
-
+		player.setMausoleum(true);
 	}
 
 }

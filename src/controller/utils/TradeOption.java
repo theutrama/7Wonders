@@ -6,6 +6,7 @@ import application.Main;
 import application.Utils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -87,21 +88,34 @@ public class TradeOption {
 	 * @return a node that contains all resources
 	 */
 	public HBox getNode(Player player, EventHandler<ActionEvent> tradeAction) {
-		HBox hbox = new HBox(5);
+		HBox hbox = new HBox(7);
 		if (leftCost != 0) {
 			hbox.getChildren().add(leftTrade.createResourceImages());
-			hbox.getChildren().add(new Label("an " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()));
+			Label label = new Label("an " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName());
+			hbox.getChildren().add(label);
+			//label.getStyleClass().addAll("fontstyle", "dropshadow");
 			hbox.getChildren().add(createCoinsNode(leftCost));
-			if (rightCost != 0)
-				hbox.getChildren().add(new Label(" und "));
+			if (rightCost != 0) {
+				Label label2 = new Label(" und ");
+				//label2.getStyleClass().addAll("fontstyle", "dropshadow");
+				hbox.getChildren().add(label2);
+			}
 		}
 		if (rightCost != 0) {
 			hbox.getChildren().add(rightTrade.createResourceImages());
-			hbox.getChildren().add(new Label("an " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()));
+			Label label = new Label("an " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName());
+			hbox.getChildren().add(label);
+			//label.getStyleClass().addAll("fontstyle", "dropshadow");
 			hbox.getChildren().add(createCoinsNode(rightCost));
 		}
 		Button btn = new Button("Kaufen");
+		//btn.getStyleClass().addAll("fontstyle", "dropshadow");
 		btn.setOnAction(tradeAction);
+		btn.setStyle("-fx-background-color: #0000EE");
+		btn.setStyle("-fx-background-radius: 4px");
+		hbox.setAlignment(Pos.TOP_CENTER);
+		hbox.setStyle("-fx-background-color: white");
+		//hbox.setStyle("-fx-background-radius: 4px");
 		hbox.getChildren().add(btn);
 
 		return hbox;
@@ -117,7 +131,10 @@ public class TradeOption {
 		HBox hbox = new HBox();
 		hbox.getChildren().add(new Label("(" + coins));
 		try {
-			hbox.getChildren().add(new ImageView(Utils.toImage("../view/images/tokens/coin.png")));
+			ImageView img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin.png"));
+			img.setFitWidth(20);
+			img.setFitHeight(20);
+			hbox.getChildren().add(img);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -125,4 +142,16 @@ public class TradeOption {
 		return hbox;
 	}
 
+	/**
+	 * checks if the resources 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		try {
+			TradeOption other = (TradeOption) obj;
+			return ((leftTrade == null && other.leftTrade == null) || leftTrade.equals(other.leftTrade)) && ((rightTrade == null && other.rightTrade == null) || rightTrade.equals(other.rightTrade));
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

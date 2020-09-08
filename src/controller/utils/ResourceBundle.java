@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.card.Resource;
@@ -183,22 +184,35 @@ public class ResourceBundle {
 		HBox hbox = new HBox();
 		try {
 			for (int i = 0; i < wood; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"wood.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "wood.png")));
 			for (int i = 0; i < stone; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"stone.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "stone.png")));
 			for (int i = 0; i < brick; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"clay.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "clay.png")));
 			for (int i = 0; i < ore; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"ore.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "ore.png")));
 			for (int i = 0; i < glass; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"glass.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "glass.png")));
 			for (int i = 0; i < cloth; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"linen.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "linen.png")));
 			for (int i = 0; i < papyrus; i++)
-				hbox.getChildren().add(new ImageView(Utils.toImage(Main.TOKENS_PATH+"paper.png")));
+				hbox.getChildren().add(getImageView(Utils.toImage(Main.TOKENS_PATH + "paper.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return hbox;
+	}
+
+	/**
+	 * creates an ImageView with a size of 20x20
+	 * 
+	 * @param img image
+	 * @return imageview
+	 */
+	private ImageView getImageView(Image img) {
+		ImageView image = new ImageView(img);
+		image.setFitWidth(20);
+		image.setFitHeight(20);
+		return image;
 	}
 }

@@ -757,7 +757,7 @@ public class CardController {
 	public void setSlotCard(Card card, Player player, TradeOption trade) {
 		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins())
 			return;
-		if (player.getBoard().isFilled(3))
+		if (player.getBoard().isFilled(2))
 			return;
 
 		swController.getSoundController().play(Sound.CHOOSE_CARD);
@@ -867,6 +867,7 @@ public class CardController {
 			case "philosophersguild":
 			case "spiesguild":
 			case "tradersguild":
+			case "workersguild":
 				return getSubimage(full, 36, 9, 130, 50);
 			case "buildersguild":
 				return getSubimage(full, 37, 16, 125, 52);
@@ -874,6 +875,8 @@ public class CardController {
 				return getSubimage(full, 34, 9, 134, 50);
 			case "shipownersguild":
 				return getSubimage(full, 47, 10, 104, 50);
+			case "strategistsguild":
+				return getSubimage(full, 36, 12, 130, 50);
 			}
 		}
 		return null;

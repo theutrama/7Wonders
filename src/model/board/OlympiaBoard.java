@@ -10,13 +10,14 @@ public class OlympiaBoard extends WonderBoard {
 	/** create Olympia board */
 	public OlympiaBoard() {
 		super();
-		slotRequirements = new Resource[] { new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.WOOD), new Resource(2, ResourceType.PAPYRUS) };
+		slotRequirements = new Resource[] { new Resource(2, ResourceType.WOOD), new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE) };
 		this.resource = new Resource(1, ResourceType.WOOD);
 	}
 
 	@Override
 	public void slot2() {
-
+		player.setOlympiaUsed(false);
+		System.out.println(player.getName() + " can use olympia now");
 	}
 
 }

@@ -57,6 +57,7 @@ public class GameController {
 		GameState state = new GameState(0, 1, players, cardStack);
 		nextAge(game, state);
 		game.getCurrentGameState().setFirstPlayer(0);
+		game.getCurrentGameState().setCurrentPlayer(0);
 	}
 
 	/**

@@ -16,8 +16,12 @@ import model.card.Resource;
 import model.card.ResourceType;
 import model.player.Player;
 
+/** testing trading system */
 public class TradingSystemTest {
-
+	
+	/**
+	 * creating players and trading with neighbors
+	 */
 	@Test
 	public void testTrading() {
 		SevenWondersController controller = new SevenWondersController();
@@ -80,6 +84,9 @@ public class TradingSystemTest {
 		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(50, ResourceType.COINS))));
 	}
 
+	/**
+	 *  creating players and trading with neighbors 
+	 */
 	@Test
 	public void testTrading2() {
 		SevenWondersController controller = SevenWondersFactory.create();

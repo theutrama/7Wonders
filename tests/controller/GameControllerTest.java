@@ -30,7 +30,7 @@ public class GameControllerTest {
 		gC = swc.getGameController();
 		cC = swc.getCardController();
 		pC = swc.getPlayerController();
-		Main.TEST = true;
+		Main.TEST=true;
 	}
 	/**
 	 * tests undo redo methods

@@ -99,7 +99,6 @@ public class GameControllerTest {
 	 */
 	@Test
 	public void createNextRoundTest() {
-		Platform.startup(() -> {
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
@@ -109,8 +108,6 @@ public class GameControllerTest {
 			GameState round1age2 = swc.getGame().getCurrentGameState();
 			assertEquals(round1age2.getAge(), 2);
 			assertEquals(round1age2.getRound(), 1);
-		});
-		Platform.exit();
 
 	}
 	// create game correctly adding players/ boards

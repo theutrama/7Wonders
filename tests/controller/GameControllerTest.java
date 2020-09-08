@@ -109,6 +109,7 @@ public class GameControllerTest {
 			assertEquals(round1age2.getAge(), 2);
 			assertEquals(round1age2.getRound(), 1);
 		});
+		Platform.exit();
 
 	}
 	// create game correctly adding players/ boards

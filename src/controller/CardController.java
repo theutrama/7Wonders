@@ -31,6 +31,7 @@ import model.player.Player;
  * The Card-Controller controls the ingame cards.
  */
 public class CardController {
+	ArrayList<Card> loaded_cards = new ArrayList<Card>();
 	/** HashMap for frequency of cards */
 	Map<String, int[]> countCards = new HashMap<>();
 	/** SevenWonders Controller */
@@ -130,14 +131,9 @@ public class CardController {
 		countCards.put("workshop", new int[] { 3, 7, 0 });
 	}
 
-	/**
-	 * generates CardStack for given number of players
-	 * 
-	 * @param players list of all players
-	 * @return cards list of all necessary cards for players
-	 */
-	public ArrayList<Card> generateCardStack(ArrayList<Player> players) {
-		ArrayList<Card> cards = new ArrayList<Card>();
+	public ArrayList<Card> loadAllCards(){
+		if(!loaded_cards.isEmpty())return (ArrayList<Card>) loaded_cards.clone();
+		ArrayList<Card> cards = loaded_cards;
 
 		cards.add(new Card(ResourceType.COMPASS, 3, "Akademie", "academy", CardType.GREEN, null, addRArray(new Resource(3, ResourceType.STONE), new Resource(1, ResourceType.GLASS)),
 				new String[] { "school" }, null));
@@ -400,8 +396,19 @@ public class CardController {
 					player.addVictoryPoints(count);
 				}))));
 		cards.add(new Card(ResourceType.GEAR, 1, "Werkstatt", "workshop", CardType.GREEN, null, addRArray(new Resource(1, ResourceType.GLASS)), null, null));
-
 		addDescriptions(cards);
+		
+		return cards;
+	}
+	
+	/**
+	 * generates CardStack for given number of players
+	 * 
+	 * @param players list of all players
+	 * @return cards list of all necessary cards for players
+	 */
+	public ArrayList<Card> generateCardStack(ArrayList<Player> players) {
+		ArrayList<Card> cards = loadAllCards();
 
 		// Clone cards depending on player number
 		int playersize = players.size();

@@ -8,11 +8,16 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
+import controller.CardController;
+import controller.PlayerController;
 import controller.SevenWondersController;
 import javafx.scene.image.Image;
 import model.Game;
+import model.GameState;
+import model.card.Card;
 import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.Difficulty;
@@ -30,6 +35,8 @@ public class Utils {
 	public static void load(String filepath) {
 		File file = new File(filepath);
 		SevenWondersController con = Main.getSWController();
+		CardController card_con = con.getCardController();
+		PlayerController p_con = con.getPlayerController();
 		
 		try {
 			DataInputStream in = new DataInputStream(new FileInputStream(file));
@@ -40,13 +47,21 @@ public class Utils {
 			String wonder1 = in.readLine(); //
 			String wonder2 = in.readLine();
 			
-			Player p = con.getPlayerController().createPlayer("Spieler", wonder1);
-			ArtInt ai = con.getPlayerController().createAI("AI-Spieler", wonder2, Difficulty.HARDCORE);
+			Player p = p_con.createPlayer("Spieler", wonder1);
+			ArtInt ai = p_con.createAI("AI-Spieler", wonder2, Difficulty.HARDCORE);
 			
-			Game game = con.getGameController().createGame("KI-Turnier", new ArrayList<Player>(Arrays.asList(p,ai)));
+			Game game = new Game("KI-Turnier");
+			ArrayList<Card> cards = new ArrayList<Card>();
+			GameState state = new GameState(1, 1, new ArrayList<Player>(Arrays.asList(p,ai)), cards);
 			
+			String[] split;
+			HashMap<Integer,ArrayList<Card>> map = new HashMap<Integer,ArrayList<Card>>();
 			while((line = in.readLine()) != null) {
-				if(counter > 0) {
+				if(line.contains("")) {
+					split = line.split(",");
+					
+					int age = Integer.valueOf(split[0]);
+					String cardname = split[1];
 					
 				}
 			}

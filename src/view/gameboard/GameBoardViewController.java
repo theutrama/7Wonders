@@ -119,6 +119,7 @@ public class GameBoardViewController extends VBox {
 		btn_back.setOnAction(event -> {
 			exit();
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
+			Main.getSWController().getSoundController().stopAll();
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
@@ -127,7 +128,6 @@ public class GameBoardViewController extends VBox {
 
 		btn_undo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
-				System.out.println("undo");
 				action = false;
 				refreshBoards();
 				setHandCards();
@@ -137,7 +137,6 @@ public class GameBoardViewController extends VBox {
 		btn_undo.setPickOnBounds(true);
 		btn_redo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().redo(Main.getSWController().getGame())) {
-				System.out.println("redo");
 				action = false;
 				refreshBoards();
 				setHandCards();
@@ -154,9 +153,13 @@ public class GameBoardViewController extends VBox {
 		boardPanes = new ArrayList<>();
 		generatePanes();
 		refreshBoards();
+		
+		System.out.println("choosing player: " + game().getChoosingPlayer());
+		System.out.println("chosen card: " + getCurrentPlayer().getChosenCard());
+		System.out.println("begin of round: " + game().isAtBeginOfRound());
 
 		if (game().getChoosingPlayer() == null) {
-			if (getCurrentPlayer().getChosenCard() == null) {
+			if (game().isAtBeginOfRound() || getCurrentPlayer().getChosenCard() == null) {
 				action = false;
 				setHandCards();
 			} else {
@@ -348,45 +351,43 @@ public class GameBoardViewController extends VBox {
 	 */
 	public void turn() {
 
-		Thread thread = new Thread(new Runnable() {
+		Thread thread = new Thread(() -> {
 
-			@Override
-			public void run() {
-
-				if (game().isAtBeginOfRound()) {
-					GameState state = game().deepClone();
-					Main.getSWController().getGame().deleteRedoStates();
-					Main.getSWController().getGame().getStates().add(state);
-					Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
-					updateAllBoards();
-					game().setBeginOfRound(false);
-				}
-
-				if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
-					game().setCurrentPlayer(0);
-				} else {
-					game().setCurrentPlayer(game().getCurrentPlayer() + 1);
-				}
-
-				if (game().getCurrentPlayer() == game().getFirstPlayer()) {
-					action = !action;
-
-					if (!action) { // neue Spielrunde hat begonnen
-						Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
-						updateAllBoards();
-					}
-				}
-
-				Platform.runLater(() -> {
-					refreshBoards();
-					updateMouseBlocking();
-
-					if (action)
-						setActionCard();
-					else
-						setHandCards();
-				});
+			if (game().isAtBeginOfRound()) {
+				GameState state = game().deepClone();
+				Main.getSWController().getGame().deleteRedoStates();
+				Main.getSWController().getGame().getStates().add(state);
+				Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
+				updateAllBoards();
+				game().setBeginOfRound(false);
 			}
+
+			if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
+				game().setCurrentPlayer(0);
+			} else {
+				game().setCurrentPlayer(game().getCurrentPlayer() + 1);
+			}
+
+			if (game().getCurrentPlayer() == game().getFirstPlayer()) {
+				action = !action;
+
+				if (!action) { // neue Spielrunde hat begonnen
+					if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+						return;
+					updateAllBoards();
+				}
+			}
+
+			Platform.runLater(() -> {
+				refreshBoards();
+				updateMouseBlocking();
+
+				if (action)
+					setActionCard();
+				else
+					setHandCards();
+			});
+
 		});
 		thread.setDaemon(true);
 		thread.setName("turn thread");
@@ -488,7 +489,7 @@ public class GameBoardViewController extends VBox {
 		 */
 		public Board(Player player) {
 			this.player = player;
-			
+
 			VBox mainBox = new VBox();
 
 			BorderPane playerstats = new BorderPane();
@@ -601,7 +602,7 @@ public class GameBoardViewController extends VBox {
 			stackpane = new StackPane(mainBox);
 
 			this.getChildren().add(stackpane);
-			
+
 			this.getChildren().add(hboxSlots);
 		}
 
@@ -721,7 +722,7 @@ public class GameBoardViewController extends VBox {
 				e.printStackTrace();
 			}
 			BorderPane borderpane = new BorderPane(hbox);
-			borderpane.setStyle("-fx-background-color: #FFFFFF80;");
+			borderpane.setStyle("-fx-background-color: #FFFFFF80; -fx-background-radius: 10px");
 			stackpane.getChildren().add(borderpane);
 		}
 
@@ -742,6 +743,7 @@ public class GameBoardViewController extends VBox {
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
 
+		System.out.println("current player: " + getCurrentPlayer());
 		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
 		int arrowWidth = 45, arrowHeight = 25;
@@ -820,7 +822,8 @@ public class GameBoardViewController extends VBox {
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(getCurrentPlayer(), card.getRequired());
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option, false); turn(); }));
+						tradeNodes.getChildren()
+								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option, false); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
@@ -1051,7 +1054,7 @@ public class GameBoardViewController extends VBox {
 				hbox_cards.getChildren().add(label);
 			});
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -1059,16 +1062,25 @@ public class GameBoardViewController extends VBox {
 			exitHalikarnassus();
 			return;
 		}
-		
+
 		game().setChoosingPlayer(player);
 
 		Platform.runLater(() -> {
 			hbox_cards.getChildren().clear();
 			HBox hboxTitle = new HBox(50);
 			Label label = new Label("Wähle eine Karte vom Ablagestapel");
-			Button exit = new Button("Keine Karte auswählen");
+			label.getStyleClass().addAll("fontstyle", "dropshadow");
+			label.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
+			Label labelBtn = new Label("Keine Karte auswählen");
+			labelBtn.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelBtn.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
+			Button exit = new Button();
+			exit.setStyle("-fx-border-width: 3px; -fx-border-color: #11111188;");
+			exit.getStyleClass().add("buttonback");
+			exit.setGraphic(labelBtn);
 			exit.setOnAction(event -> exitHalikarnassus());
 			hboxTitle.getChildren().addAll(label, exit);
+			hboxTitle.setAlignment(Pos.CENTER);
 
 			HBox hboxChooseCard = new HBox(10);
 
@@ -1104,7 +1116,6 @@ public class GameBoardViewController extends VBox {
 			ScrollPane scrollpane = new ScrollPane(hboxChooseCard);
 			scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
-			// scrollpane.setMinViewportWidth(hboxChooseCard.getPrefWidth());
 			scrollpane.setMinViewportHeight(240);
 
 			VBox vboxChoose = new VBox(10);
@@ -1127,8 +1138,8 @@ public class GameBoardViewController extends VBox {
 	 * @param choosing the player that used the choosing ability
 	 */
 	private void exitHalikarnassus() {
-		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 		game().setChoosingPlayer(null);
+		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 		refreshBoards();
 		setHandCards();
 	}

@@ -35,7 +35,7 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="textfield_gamename" maxHeight="47.2" maxWidth="326.8" promptText="Gamename">
+                  <TextField fx:id="textfield_gamename" maxHeight="47.2" maxWidth="326.8" promptText="Spielname">
                      <styleClass>
                         <String fx:value="textfield" />
                         <String fx:value="dropshadow" />
@@ -122,7 +122,7 @@
                         <String fx:value="dropshadow" />
                      </styleClass>
                      <VBox.margin>
-                        <Insets right="5.0" />
+                        <Insets right="30.0" />
                      </VBox.margin>
                   </Label>
                   <Label fx:id="label_drag" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="37.0" prefWidth="196.0" styleClass="draganddrop" textFill="#efefef">

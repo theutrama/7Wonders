@@ -127,7 +127,7 @@ public class TradeOption implements Serializable {
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
 		}
-		Label labelbuy = new Label(" handeln");
+		Label labelbuy = new Label(" kaufen");
 		hbox.getChildren().add(labelbuy);
 		if(rightCost != 0) hbox.getChildren().add(arrowright);
 		labelbuy.getStyleClass().addAll("fontstyle", "dropshadow");
@@ -140,11 +140,13 @@ public class TradeOption implements Serializable {
 		btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
 			try {
 				if (newValue) {
+					btn.setStyle("-fx-background-color: #D5D5D560");
 					if(arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhoverleft.png"));
 					if(arrowright != null)
 						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
 				} else {
+					btn.setStyle("-fx-background-color: transparent");
 					if(arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
 					if(arrowright != null)
@@ -154,6 +156,7 @@ public class TradeOption implements Serializable {
 				e.printStackTrace();
 			}
 		});
+		hbox.setStyle("-fx-background-radius: 5px");
 		return btn;
 	}
 

@@ -52,7 +52,6 @@ public class MainMenuViewController extends BorderPane {
 		btn_ranking.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new RankingViewController());});
 		
 		btn_loadgame.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new GameListViewController());});
-		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_MENU, true);
 	}
 }

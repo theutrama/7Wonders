@@ -77,6 +77,11 @@ public class SoundController {
 		if (Main.TEST)
 			return;
 		if (!isMuted() || (this.mute && loop)) {
+			for (SoundPlayer player : players)
+				for (String soundname : player.filenames)
+					for (String soundname2 : sound.getSoundFilenames())
+						if (soundname.equals(soundname2))
+							return;
 			SoundPlayer player = new SoundPlayer(sound, (loop ? volume : 1.0));
 			if (loop)
 				player.setLoop();
@@ -89,13 +94,13 @@ public class SoundController {
 			players.add(player);
 		}
 	}
-	
+
 	/**
 	 * stops all sounds
 	 */
 	public void stopAll() {
-		for (SoundPlayer player: players)
-			player.stop();
+		while (!players.isEmpty())
+			players.get(0).stop();
 		players.clear();
 	}
 

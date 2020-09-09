@@ -308,9 +308,20 @@ public class CardControllerTest {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
+	}
+	
+	/**
+	 * tests if slot card gets placed correctly
+	 */
+	@Test
+	public void setSlotCardTest() {
+		assertFalse(pC.getPlayer("erster").getBoard().isFilled(0));
+		cC.setSlotCard(cC.getCard("lumberyard"), pC.getPlayer("erster"), null);
+		cC.setSlotCard(cC.getCard("lumberyard"), pC.getPlayer("erster"), null);
+		cC.setSlotCard(cC.getCard("lumberyard"), pC.getPlayer("erster"), null);
+		assertTrue(pC.getPlayer("erster").getBoard().isFilled(0));
+		assertTrue(pC.getPlayer("erster").getBoard().isFilled(1));
+		assertTrue(pC.getPlayer("erster").getBoard().isFilled(2));
 	}
 
 }

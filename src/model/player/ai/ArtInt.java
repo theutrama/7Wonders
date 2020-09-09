@@ -98,8 +98,16 @@ public class ArtInt extends Player {
 				v +=2;
 			case TRADE: 
 				//MUSS NOCH GEMACHT WERDEN!
+
+				//MUSS NOCH GEMACHT WERDEN!
 				ArrayList<TradeOption> trade = pcon.getTradeOptions(this, card.getRequired());
-				move.setTradeOption(trade.get(0));
+				
+				if(trade.isEmpty()) {
+					return Integer.MIN_VALUE;
+				}else {
+					move.setTradeOption(trade.get(0));
+					v+=2;
+				}
 			case OWN_RESOURCE:
 				switch(card.getType()) {
 				//CIVIL
@@ -187,15 +195,21 @@ public class ArtInt extends Player {
 				case TRADE: 
 					//MUSS NOCH GEMACHT WERDEN!
 					ArrayList<TradeOption> trade = pcon.getTradeOptions(this, card.getRequired());
-					move.setTradeOption(trade.get(0));
-					v+=2;
+					
+					if(trade.isEmpty()) {
+						return Integer.MIN_VALUE;
+					}else {
+						move.setTradeOption(trade.get(0));
+						v+=2;
+					}
+					
 					break;
 				case NONE: return Integer.MIN_VALUE;
 				}
 			}
 			break;
 		case SELL: 
-			v+=3;
+			v+=2;
 			break;
 		}
 		

@@ -70,6 +70,7 @@ public class WonderBoardController {
 	 */
 	public Class<? extends WonderBoard> getClassByName(String name) {
 		for (Class<? extends WonderBoard> clazz : this.boards) {
+			System.out.println(toName(clazz)+" == "+name);
 			if (toName(clazz).equalsIgnoreCase(name)) {
 				return clazz;
 			}

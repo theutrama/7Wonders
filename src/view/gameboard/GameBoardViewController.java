@@ -50,6 +50,7 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
+import model.player.ai.Move.Action;
 import view.menu.MainMenuViewController;
 
 /**
@@ -372,9 +373,34 @@ public class GameBoardViewController extends VBox {
 			}
 		}
 
+		if(game().getPlayer() instanceof ArtInt) {
+			ArtInt ai = (ArtInt) game().getPlayer();
+			if(action) {
+				Action action = ai.getAction();
+				
+				switch(action) {
+				case BUILD:
+					Main.getSWController().getCardController().placeCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
+					break;
+				case PLACE_SLOT: 
+					Main.getSWController().getCardController().setSlotCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
+					break;
+				case SELL: 
+					Main.getSWController().getCardController().sellCard(ai.getChosenCard(), ai); 
+					break;
+				}
+			} else {
+				System.out.println("AI findMove "+action);
+				ai.findMove();
+				Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
+				getCurrentPlayer().setChooseCard(ai.getChosenCard());
+			}
+			turn();
+		}
+		
 		refreshBoards();
 		updateMouseBlocking();
-
+		
 		if (action)
 			setActionCard();
 		else
@@ -993,7 +1019,7 @@ public class GameBoardViewController extends VBox {
 					if (card.getEffects() != null) {
 						for (Effect effect : card.getEffects()) {
 							if (effect.getType() == EffectType.WHEN_PLAYED)
-								effect.run(player, Main.getSWController().getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
+								effect.run(player, Main.getSWController().getGame());
 						}
 					}
 					exitHalikarnassus();
@@ -1032,8 +1058,11 @@ public class GameBoardViewController extends VBox {
 		setHandCards();
 	}
 
+	/**
+	 * sets the mouse blocking property depending on the current player
+	 */
 	private void updateMouseBlocking() {
-		if (getCurrentPlayer() instanceof ArtInt) {
+		if (getCurrentPlayer() instanceof ArtInt || (game().getChoosingPlayer() != null && game().getChoosingPlayer() instanceof ArtInt)) {
 			hbox_cards.addEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.addEventFilter(MouseEvent.ANY, inputBlocker);
 		} else {

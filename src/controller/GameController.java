@@ -164,7 +164,6 @@ public class GameController {
 		Stack<Card> ageCards = new Stack<Card>();
 		for (Card card : state.getCardStack())
 			if (card.getAge() == state.getAge()) {
-				System.out.println("PUSH TO STACK "+card);
 				ageCards.push(card);
 			}
 
@@ -179,9 +178,9 @@ public class GameController {
 				player.setOlympiaUsed(false);
 			}
 
+			System.out.println("ageCards: "+ageCards.size()+" "+player.getName());
 			for (int i = 0; i < 7; i++) {
 				Card card = ageCards.pop();
-				System.out.println(player+ " POP to HAND "+card);
 				
 				player.getHand().add(card); // assign card to player hand
 				state.getCardStack().remove(card); // delete card from card stack
@@ -194,7 +193,6 @@ public class GameController {
 			Card card = ageCards.pop();
 			state.getTrash().add(card);
 			state.getCardStack().remove(card);
-			System.out.println(i+" ADD TO TRASH "+card);
 		}
 		
 		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
@@ -353,7 +351,7 @@ public class GameController {
 				continue;
 			for (Effect effect : card.getEffects())
 				if (effect.getType() == EffectType.AT_MATCH_END)
-					effect.run(player, swController.getPlayerController(), twoPlayers);
+					effect.run(player, swController.getGame().getCurrentGameState(), twoPlayers);
 		}
 	}
 

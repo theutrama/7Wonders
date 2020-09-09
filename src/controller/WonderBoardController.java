@@ -16,15 +16,11 @@ public class WonderBoardController {
 	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 
-	/**
-	 * create new WonderBoard controller
-	 * 
-	 * @param swController SevenWonders controller
-	 */
+	
 	public WonderBoardController() {
 		loadBoardClasses();
 	}
-
+	
 	/**
 	 * create new WonderBoard
 	 * 
@@ -71,6 +67,7 @@ public class WonderBoardController {
 	 */
 	public Class<? extends WonderBoard> getClassByName(String name) {
 		for (Class<? extends WonderBoard> clazz : this.boards) {
+			System.out.println(toName(clazz)+" == "+name);
 			if (toName(clazz).equalsIgnoreCase(name)) {
 				return clazz;
 			}
@@ -109,7 +106,8 @@ public class WonderBoardController {
 	/**
 	 * Loads all used boards
 	 */
-	private void loadBoardClasses() {
+	public void loadBoardClasses() {
+		reset();
 		Reflections reflections = new Reflections("model.board");
 		List<Class<? extends WonderBoard>> moduleClasses = new ArrayList<>(reflections.getSubTypesOf(WonderBoard.class));
 

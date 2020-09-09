@@ -91,6 +91,7 @@ public class NewGameViewController extends StackPane {
 			e.printStackTrace();
 		}
 
+		Main.getSWController().getWonderBoardController().loadBoardClasses();
 		label_drag.setWrapText(true);
 		label_drag.setText("Bitte ziehen Sie das Wunder auf den entsprechenden Spieler");
 		label_drag.getStyleClass().add("dropshadow");

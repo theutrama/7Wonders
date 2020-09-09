@@ -48,6 +48,7 @@ public class SevenWondersFactory {
 		Game game = new Game("testgame1");
 		sevenWondersController.setGame(game);
 		ArrayList<Card> cards = cardController.generateCardStack(players);
+		
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
 		sevenWondersController.setRanking(new Ranking());
@@ -136,7 +137,7 @@ public class SevenWondersFactory {
 		Card card9 = cardController.getCard(cards, "scriptorium"); // tablet
 		
 		
-
+		/*
 		cards.remove(card1);
 		cards.remove(card2);
 		cards.remove(card3);
@@ -158,6 +159,8 @@ public class SevenWondersFactory {
 		cards.remove(card19);
 		cards.remove(card20);
 		cards.remove(card21);
+		*/
+		
 
 		player1.getBoard().addCard(card13);
 		player1.getBoard().addCard(card1);

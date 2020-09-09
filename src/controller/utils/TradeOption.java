@@ -1,6 +1,7 @@
 package controller.utils;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import application.Main;
 import application.Utils;
@@ -16,7 +17,7 @@ import javafx.scene.layout.HBox;
 import model.player.Player;
 
 /** trade options for left and right neighbors */
-public class TradeOption {
+public class TradeOption implements Serializable {
 	/** the traded resources to each side */
 	private ResourceBundle leftTrade, rightTrade;
 	/** cost for each trade */

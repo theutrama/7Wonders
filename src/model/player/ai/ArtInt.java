@@ -19,7 +19,17 @@ public class ArtInt extends Player {
 	 * @param board wonder board
 	 */
 	public ArtInt(Difficulty difficulty, WonderBoard board) {
-		super("KI - " + difficulty.toString(), board);
+		this("KI",difficulty,board);
+	}
+	
+	/**
+	 * creates a new AI using the given board
+	 * @param name custom KI Name
+	 * @param difficulty level
+	 * @param board wonder board
+	 */
+	public ArtInt(String name, Difficulty difficulty, WonderBoard board) {
+		super(name + " - " + difficulty.toString(), board);
 		this.difficulty = difficulty;
 	}
 	

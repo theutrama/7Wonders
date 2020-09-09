@@ -67,7 +67,7 @@ public class CardController {
 		countCards.put("buildersguild", new int[] { 0, 0, 0 });
 		countCards.put("caravansery", new int[] { 3, 5, 6 });
 		countCards.put("chamberofcommerce", new int[] { 4, 6, 0 });
-		countCards.put("circus", new int[] { 4, 6, 6 });
+		countCards.put("circus", new int[] { 4, 5, 6 });
 		countCards.put("claypit", new int[] { 3, 0, 0 });
 		countCards.put("claypool", new int[] { 3, 5, 0 });
 		countCards.put("courthouse", new int[] { 3, 5, 0 });

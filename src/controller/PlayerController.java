@@ -10,6 +10,7 @@ import controller.utils.ResourceBundle;
 import controller.utils.ResourceTree;
 import controller.utils.TradeOption;
 import model.Game;
+import model.GameState;
 import model.board.AlexandriaBoard;
 import model.board.BabylonBoard;
 import model.board.RhodosBoard;
@@ -102,8 +103,8 @@ public class PlayerController {
 	 * @param player player
 	 * @return left neighbour
 	 */
-	public Player getNeighbour(Game game,boolean left, Player player) {
-		ArrayList<Player> players = game.getCurrentGameState().getPlayers();
+	public Player getNeighbour(GameState state,boolean left, Player player) {
+		ArrayList<Player> players = state.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getName().equals(player.getName()))
 				return players.get( (left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)) );
@@ -118,7 +119,7 @@ public class PlayerController {
 	 * @return left neighbour
 	 */
 	public Player getLeftNeighbour(Player player) {
-		return getNeighbour(swController.getGame(), true, player);
+		return getNeighbour(swController.getGame().getCurrentGameState(), true, player);
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class PlayerController {
 	 * @return right neighbour
 	 */
 	public Player getRightNeighbour(Player player) {
-		return getNeighbour(swController.getGame(), false, player);
+		return getNeighbour(swController.getGame().getCurrentGameState(), false, player);
 	}
 
 	/**

@@ -7,6 +7,7 @@ import controller.PlayerController;
 import controller.utils.BuildCapability;
 import model.board.WonderBoard;
 import model.card.Card;
+import model.card.Effect;
 import model.card.Resource;
 import model.card.ResourceType;
 import model.player.Player;
@@ -120,7 +121,21 @@ public class ArtInt extends Player {
 					break;
 				//TRADING
 				case YELLOW: 
-//					PlayerController copy = pcon.cl
+					
+//					Game copy = (Game) Main.getSWController().getGame().cl
+					ArrayList<Effect> effects = card.getEffects();
+					for(Effect effect : effects) {
+						switch(effect.getType()) {
+						case AT_MATCH_END: break;
+						case WHEN_PLAYED: 
+							
+//							effect.run(player, game, twoPlayers);
+							
+							
+							break;
+						}
+					}
+					
 					
 					break;
 				}

@@ -25,11 +25,20 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="btn_load" mnemonicParsing="false">
+               <graphic>
+                  <ImageView fx:id="img_load" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/csv.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </HBox>
    </top>
    <center>
-      <VBox alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="box" alignment="CENTER" spacing="30.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="30.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>

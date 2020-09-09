@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import application.Main;
+import application.Utils;
 import controller.sound.Sound;
 import controller.utils.TradeOption;
 import javafx.embed.swing.SwingFXUtils;
@@ -319,7 +320,7 @@ public class CardController {
 							break;
 						}
 					}
-					switch (getMax(count)) {
+					switch (Utils.getMax(count)) {
 					case 0:
 						player.getBoard().addCard(new Card(ResourceType.COMPASS, 1, "Gildenkarte", "guildcard", CardType.GREEN, null, null, null, null));
 						break;
@@ -466,24 +467,6 @@ public class CardController {
 		Collections.shuffle(cards);
 
 		return cards;
-	}
-
-	/**
-	 * returns max value of an integer array
-	 * 
-	 * @param count array
-	 * @return index max value of array
-	 */
-	private static int getMax(int[] count) {
-		int max = 0;
-		int index = 0;
-		for (int i = 0; i < count.length; i++) {
-			if (count[i] > max) {
-				max = count[i];
-				index = i;
-			}
-		}
-		return index;
 	}
 
 	/**

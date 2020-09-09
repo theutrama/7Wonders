@@ -1,9 +1,18 @@
 package controller;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Stack;
 
 import application.Main;
+import application.Utils;
+import controller.exceptions.CardOutOfAgeException;
 import controller.sound.Sound;
 import model.Game;
 import model.GameState;
@@ -12,6 +21,7 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
+import model.player.ai.Difficulty;
 import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
 import view.result.ResultViewController;
@@ -181,8 +191,9 @@ public class GameController {
 		int size=ageCards.size();
 		//Add the rest of the cards from this age to the Trash
 		for(int i = 0; i < size; i++) {
-			Card card;
-			state.getTrash().add(card = ageCards.pop());
+			Card card = ageCards.pop();
+			state.getTrash().add(card);
+			state.getCardStack().remove(card);
 			System.out.println(i+" ADD TO TRASH "+card);
 		}
 		
@@ -193,6 +204,71 @@ public class GameController {
 		game.deleteRedoStates();
 		game.getStates().add(state);
 		game.setCurrentState(game.getStates().size() - 1);
+	}
+	
+	/**
+	 * To Load a Game for Two Player!
+	 * @param filepath Filepath of the csv file
+	 * @return boolean weather all is fine...
+	 * @throws CardOutOfAgeException If the Card age from the table doesn't suit with age of the loaded card
+	 */
+	public boolean loadCSV(File file) throws CardOutOfAgeException {
+		// Wrong File Type
+		if(!file.getName().endsWith(".csv"))return false;
+		
+		SevenWondersController con = SevenWondersController.getInstance();
+		GameController game_con = con.getGameController();
+		CardController card_con = con.getCardController();
+		PlayerController p_con = con.getPlayerController();
+		
+		try {
+			DataInputStream in = new DataInputStream(new FileInputStream(file));
+			
+			int counter = 0;
+			String line = null;
+			line = in.readLine(); // age,card
+			String wonder1 = in.readLine().split(",")[1]; 
+			String wonder2 = in.readLine().split(",")[1];
+			
+			Player p = p_con.createPlayer("Spieler", Utils.toWonder(wonder1));
+			ArtInt ai = p_con.createAI("AI-Spieler", Utils.toWonder(wonder2), Difficulty.HARDCORE);
+			
+			Game game = new Game("KI-Turnier");
+			con.setGame(game);
+			ArrayList<Card> cards = new ArrayList<Card>();
+			
+			
+			String[] split;
+			while((line = in.readLine()) != null) {
+				if(line.contains(",")) {
+					split = line.split(",");
+					int age = Integer.valueOf(split[0]);
+					String cardname = Utils.toCard(split[1],age);
+					Card card = card_con.getCard(cardname);
+					
+					if(age != card.getAge()) {
+						throw new CardOutOfAgeException(card,age);
+					}
+					
+					cards.add(card);
+				}else {
+					System.out.println("This thing shouldn't never happen?! LINE:"+line);
+					return false;
+				}
+			}
+			
+			//Reverse Array to get the right order by taking from the TOP
+			Collections.reverse(cards);
+			game_con.nextAge(game, new GameState(0, 1, new ArrayList<Player>(Arrays.asList(p,ai)), cards));
+			game.getCurrentGameState().setFirstPlayer(0);
+			game.getCurrentGameState().setCurrentPlayer(0);
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**

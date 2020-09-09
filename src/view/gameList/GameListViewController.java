@@ -1,10 +1,15 @@
 package view.gameList;
 
+import java.io.File;
 import java.io.IOException;
 
 import application.Main;
+import controller.GameController;
 import controller.SoundController;
+import controller.exceptions.CardOutOfAgeException;
 import controller.sound.Sound;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -12,6 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
 
@@ -24,10 +31,15 @@ public class GameListViewController extends BorderPane {
 	private Button btn_back;
 
 	@FXML
+	private Button btn_load;
+
+	@FXML
 	private Button btn_mute;
 
 	@FXML
 	private VBox vbox_gameList;
+	@FXML
+	private VBox box;
 
 	public GameListViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameList/GameList.fxml"));
@@ -57,6 +69,30 @@ public class GameListViewController extends BorderPane {
 		}
 
 		SoundController.addMuteFunction(btn_mute, img_music);
+		
+		FileChooser file_chooser = new FileChooser();
+		btn_load.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				File file = file_chooser.showOpenDialog(Main.primaryStage);
+				
+				if(file != null) {
+					GameController con = Main.getSWController().getGameController();
+					try {
+						boolean loaded = con.loadCSV(file);
+						
+						if(loaded) {
+							Main.primaryStage.getScene().setRoot(new GameBoardViewController());
+						} else {
+							System.out.println("Die Datei konnte nicht geladen werden!");
+						}
+					} catch (CardOutOfAgeException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 
 }

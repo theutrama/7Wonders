@@ -2,12 +2,19 @@ package controller;
 
 import static org.junit.Assert.*;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import application.Main;
+import javafx.scene.shape.Rectangle;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -212,5 +219,18 @@ public class CardControllerTest {
 	}
 	
 
+	/**
+	 * tests getPreviewImage
+	 */
+	@Test 
+	public void getPreviewImageTest(){
+		try {
+			BufferedImage full = ImageIO.read(new File(cC.getCard("lumberyard").getImage()));
+			assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight() ,cC.getPreviewImage(cC.getCard("lumberyard")).getHeight(), 0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

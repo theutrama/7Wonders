@@ -101,10 +101,11 @@ public class GameController {
 	 * Redo is enabled if the current state is at the beginning of a round.
 	 * 
 	 * @param game the {@link Game}
+	 * @return true if undo was successfull
 	 */
-	public void undo(Game game) {
+	public boolean undo(Game game) {
 		if (game.getCurrentState() == 0)
-			return;
+			return false;
 
 		game.setCurrentState(game.getCurrentState() - 1);
 
@@ -112,17 +113,21 @@ public class GameController {
 			game.deleteRedoStates();
 
 		game.disableHighscore();
+		return true;
 	}
 
 	/**
 	 * goes to undone state of the specified game
 	 * 
 	 * @param game the {@link Game}
+	 * @return true if redo was successfull
 	 */
-	public void redo(Game game) {
+	public boolean redo(Game game) {
 		if (game.getCurrentState() < game.getStates().size() - 1) {
 			game.setCurrentState(game.getCurrentState() + 1);
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -240,6 +245,7 @@ public class GameController {
 		}
 		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
+		Main.getSWController().getIOController().deleteFile(game.getName());
 	}
 
 	/**

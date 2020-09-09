@@ -1,6 +1,5 @@
 package model.board;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,11 +9,13 @@ import model.card.Resource;
 import model.player.Player;
 import model.card.CardType;
 
-/** Abstract Wonder Board*/
+/** Abstract Wonder Board */
 public abstract class WonderBoard implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/** indicates if each slot (0-2) is filled with a card */
 	private boolean[] filled;
+	/** saves the age of the card that each slot is filled with */
+	private int[] ageOfSlotCards;
 	/** card lists on the board */
 	private ArrayList<Card> resources, military, trade, guilds, civil, research;
 	/** the resource produced by this board */
@@ -35,6 +36,27 @@ public abstract class WonderBoard implements Serializable {
 		civil = new ArrayList<>();
 		research = new ArrayList<>();
 		filled = new boolean[3];
+		ageOfSlotCards = new int[3];
+	}
+
+	/**
+	 * getter for one index of {@link #ageOfSlotCards}
+	 * 
+	 * @param slot slot index
+	 * @return
+	 */
+	public int getAgeOfSlotCards(int slot) {
+		return ageOfSlotCards[slot];
+	}
+
+	/**
+	 * setter for an index of {@link #ageOfSlotCards}
+	 * 
+	 * @param slot slot index
+	 * @param age  age
+	 */
+	public void setAgeOfSlotCards(int slot, int age) {
+		this.ageOfSlotCards[slot] = age;
 	}
 
 	/**
@@ -78,6 +100,7 @@ public abstract class WonderBoard implements Serializable {
 
 	/**
 	 * setter for an index of {@link #filled}
+	 * 
 	 * @param slot slot index to be filled
 	 */
 	public void fill(int slot) {

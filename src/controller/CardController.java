@@ -814,6 +814,7 @@ public class CardController {
 		player.setChooseCard(null);
 		int slot = player.getBoard().nextSlot();
 		player.getBoard().fill(slot);
+		player.getBoard().setAgeOfSlotCards(slot, card.getAge());
 		switch (slot) {
 		case 0:
 			player.getBoard().slot1();

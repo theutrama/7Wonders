@@ -611,7 +611,7 @@ public class GameBoardViewController extends VBox {
 
 			for (int i = 0; i < 3 && player.getBoard().isFilled(i); i++) {
 				try {
-					ImageView img = new ImageView(Utils.toImage(Main.CARDS_PATH + "age" + (i + 1) + ".png"));
+					ImageView img = new ImageView(Utils.toImage(Main.CARDS_PATH + "age" + player.getBoard().getAgeOfSlotCards(i) + ".png"));
 					img.setFitWidth(isCurrentBoard() ? 158 : 118.5);
 					img.setFitHeight(isCurrentBoard() ? 80 : 60);
 					hboxSlots.getChildren().add(img);

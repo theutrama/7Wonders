@@ -2,7 +2,7 @@ package model.player.ai;
 
 import model.card.Card;
 
-@SuppressWarnings("PMD.UnusedPrivateFields")
+@SuppressWarnings("PMD")
 
 public class Move {
 

@@ -30,6 +30,8 @@ public class GameState implements Serializable {
 	private boolean beginOfRound;
 	/** index of first player */
 	private int firstPlayer;
+	/** the player that currently chooses a card using the halikarnassos ability */
+	private Player choosingPlayer;
 
 	/**
 	 * not used other than the begin of a game
@@ -211,5 +213,23 @@ public class GameState implements Serializable {
 	 */
 	public void setFirstPlayer(int firstPlayer) {
 		this.firstPlayer = firstPlayer;
+	}
+
+	/**
+	 * getter for {@link #choosingPlayer}
+	 * 
+	 * @return choosing player
+	 */
+	public Player getChoosingPlayer() {
+		return choosingPlayer;
+	}
+
+	/**
+	 * setter for {@link #choosingPlayer}
+	 * 
+	 * @param choosingPlayer choosing player for mausoleum
+	 */
+	public void setChoosingPlayer(Player choosingPlayer) {
+		this.choosingPlayer = choosingPlayer;
 	}
 }

@@ -107,7 +107,8 @@ public class SevenWondersFactory {
 		player1 = playerController.getPlayer("siebter");*/
 		// @formatter:on
 
-
+		Card card26 = cardController.getCard(cards, "lumberyard");
+		
 		Card card14 = cardController.getCard(cards, "treefarm");
 		Card card16 = cardController.getCard(cards, "claypit");
 		Card card17 = cardController.getCard(cards, "excavation");

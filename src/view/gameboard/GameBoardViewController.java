@@ -45,9 +45,15 @@ import javafx.util.Duration;
 import model.Game;
 import model.GameState;
 import model.card.Card;
+import model.card.Effect;
+import model.card.EffectType;
 import model.player.Player;
+import model.player.ai.ArtInt;
 import view.menu.MainMenuViewController;
 
+/**
+ * this controller controls the game flow
+ */
 public class GameBoardViewController extends VBox {
 
 	@FXML
@@ -113,6 +119,7 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
+			Main.getSWController().getGameController().setGbvController(null);
 		});
 
 		btn_undo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -143,13 +150,21 @@ public class GameBoardViewController extends VBox {
 		generatePanes();
 		refreshBoards();
 
-		if (getCurrentPlayer().getChosenCard() == null) {
-			action = false;
-			setHandCards();
+		if (game().getChoosingPlayer() == null) {
+			if (getCurrentPlayer().getChosenCard() == null) {
+				action = false;
+				setHandCards();
+			} else {
+				action = true;
+				setActionCard();
+			}
 		} else {
-			action = true;
-			setActionCard();
+			selectCardFromTrash(game().getChoosingPlayer());
 		}
+
+		System.out.println("active: " + action);
+
+		Main.getSWController().getGameController().setGbvController(this);
 
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -601,7 +616,7 @@ public class GameBoardViewController extends VBox {
 
 			for (int i = 0; i < 3 && player.getBoard().isFilled(i); i++) {
 				try {
-					ImageView img = new ImageView(Utils.toImage(Main.CARDS_PATH + "age" + (i + 1) + ".png"));
+					ImageView img = new ImageView(Utils.toImage(Main.CARDS_PATH + "age" + player.getBoard().getAgeOfSlotCards(i) + ".png"));
 					img.setFitWidth(isCurrentBoard() ? 158 : 118.5);
 					img.setFitHeight(isCurrentBoard() ? 80 : 60);
 					hboxSlots.getChildren().add(img);
@@ -750,8 +765,8 @@ public class GameBoardViewController extends VBox {
 							new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))));
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren()
-								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(),
+								event2 -> { System.out.println("event triggered"); Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
@@ -906,7 +921,73 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
+		if (game().getTrash().isEmpty()) {
+			// TODO ausgeben
+			System.out.println("stack is empty");
+			exitHalikarnassus();
+			return;
+		}
 
+		game().setChoosingPlayer(player);
+
+		hbox_cards.getChildren().clear();
+		HBox hboxTitle = new HBox(50);
+		Label label = new Label("Wähle eine Karte vom Ablagestapel");
+		Button exit = new Button("Keine Karte auswählen");
+		exit.setOnAction(event -> exitHalikarnassus());
+		hboxTitle.getChildren().addAll(label, exit);
+
+		HBox hboxChooseCard = new HBox(10);
+
+		for (Card card : game().getTrash()) {
+			Button button = new Button();
+			try {
+				ImageView img = new ImageView(Utils.toImage(card.getImage()));
+				img.setFitWidth(141);
+				img.setFitHeight(215);
+				img.setPickOnBounds(true);
+				img.setPreserveRatio(true);
+				button.setGraphic(img);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			button.setTooltip(noDelay(new Tooltip(card.getDescription())));
+			button.setOnAction(event -> {
+				game().getTrash().remove(card);
+				player.getBoard().addCard(card);
+				Main.getSWController().getSoundController().play(Sound.BUILD);
+				if (card.getEffects() != null) {
+					for (Effect effect : card.getEffects()) {
+						if (effect.getType() == EffectType.WHEN_PLAYED)
+							effect.run(player, Main.getSWController().getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
+					}
+				}
+				exitHalikarnassus();
+			});
+
+			hboxChooseCard.getChildren().add(button);
+
+			if (player instanceof ArtInt) {
+				// TODO control AI
+			}
+		}
+
+		VBox vboxChoose = new VBox(10);
+		vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
+
+		hbox_cards.getChildren().add(vboxChoose);
+	}
+
+	/**
+	 * continue the game and do all procedures
+	 * 
+	 * @param choosing the player that used the choosing ability
+	 */
+	private void exitHalikarnassus() {
+		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
+		game().setChoosingPlayer(null);
+		refreshBoards();
+		setHandCards();
 	}
 
 	/**

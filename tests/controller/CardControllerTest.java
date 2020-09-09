@@ -2,12 +2,19 @@ package controller;
 
 import static org.junit.Assert.*;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import application.Main;
+import javafx.scene.shape.Rectangle;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -80,8 +87,7 @@ public class CardControllerTest {
 	 */
 	@Test
 	public void generateCardStackTest() {
-		System.out.println(swc.getGame().getCurrentGameState().getPlayers().size());
-		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 216);
+		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 147);
 	}
 	
 	/**
@@ -102,10 +108,129 @@ public class CardControllerTest {
 		game.setCurrentState(0);
 		
 		swc1.getCardController().loadAllCards();
-		System.out.println(players.size());
-		assertEquals(swc1.getCardController().generateCardStack(players).size(), 136);
+		assertEquals(swc1.getCardController().generateCardStack(players).size(), 63);
+	}
+	
+	/**
+	 * tests three player variant
+	 */
+	@Test
+	public void threePlayersTest() {
+		Game game = new Game("testgame4");
+		SevenWondersController swc3 = new SevenWondersController();
+		swc3.setGame(game);
+		Player player01 = swc3.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player02 = swc3.getPlayerController().createPlayer("second", "Babylon");
+		Player player03 = swc3.getPlayerController().createPlayer("third", "Gizah");
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player01);
+		players.add(player02);
+		players.add(player03);
+		ArrayList<Card> cards = cC.generateCardStack(players);
+		
+		game.getStates().add(new GameState(1, 1, players, cards));
+		game.setCurrentState(0);
+		
+		swc3.getCardController().loadAllCards();
+		
+		assertEquals(swc3.getCardController().generateCardStack(players).size(), 63);
+	}
+	
+	/**
+	 * tests four player variant
+	 */
+	@Test
+	public void fourPlayersTest() {
+		Game game = new Game("testgame4");
+		SevenWondersController swc5 = new SevenWondersController();
+		swc5.setGame(game);
+		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player02 = swc5.getPlayerController().createPlayer("second", "Babylon");
+		Player player03 = swc5.getPlayerController().createPlayer("third", "Gizah");
+		Player player04 = swc5.getPlayerController().createPlayer("fourth", "Rhodos");
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player01);
+		players.add(player02);
+		players.add(player03);
+		players.add(player04);
+		ArrayList<Card> cards = cC.generateCardStack(players);
+		
+		game.getStates().add(new GameState(1, 1, players, cards));
+		game.setCurrentState(0);
+		
+		swc5.getCardController().loadAllCards();
+		
+		assertEquals(swc5.getCardController().generateCardStack(players).size(), 84);
+	}
+	
+	/**
+	 * tests five player variant
+	 */
+	@Test
+	public void fivePlayersTest() {
+		Game game = new Game("testgame5");
+		SevenWondersController swc5 = new SevenWondersController();
+		swc5.setGame(game);
+		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player02 = swc5.getPlayerController().createPlayer("second", "Babylon");
+		Player player03 = swc5.getPlayerController().createPlayer("third", "Gizah");
+		Player player04 = swc5.getPlayerController().createPlayer("fourth", "Rhodos");
+		Player player05 = swc5.getPlayerController().createPlayer("fifth", "Olympia");
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player01);
+		players.add(player02);
+		players.add(player03);
+		players.add(player04);
+		players.add(player05);
+		ArrayList<Card> cards = cC.generateCardStack(players);
+		
+		game.getStates().add(new GameState(1, 1, players, cards));
+		game.setCurrentState(0);
+		
+		swc5.getCardController().loadAllCards();
+		assertEquals(swc5.getCardController().generateCardStack(players).size(), 105);
+	}
+	
+	@Test
+	public void sixPlayersTest() {
+		Game game = new Game("testgame6");
+		SevenWondersController swc6 = new SevenWondersController();
+		swc6.setGame(game);
+		Player player01 = swc6.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player02 = swc6.getPlayerController().createPlayer("second", "Babylon");
+		Player player03 = swc6.getPlayerController().createPlayer("third", "Gizah");
+		Player player04 = swc6.getPlayerController().createPlayer("fourth", "Rhodos");
+		Player player05 = swc6.getPlayerController().createPlayer("fifth", "Olympia");
+		Player player06 = swc6.getPlayerController().createPlayer("fifth", "Ephesos");
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player01);
+		players.add(player02);
+		players.add(player03);
+		players.add(player04);
+		players.add(player05);
+		players.add(player06);
+		ArrayList<Card> cards = cC.generateCardStack(players);
+		
+		game.getStates().add(new GameState(1, 1, players, cards));
+		game.setCurrentState(0);
+		
+		swc6.getCardController().loadAllCards();
+		assertEquals(swc6.getCardController().generateCardStack(players).size(), 126);
 	}
 	
 
+	/**
+	 * tests getPreviewImage
+	 */
+	@Test 
+	public void getPreviewImageTest(){
+		try {
+			BufferedImage full = ImageIO.read(new File(cC.getCard("lumberyard").getImage()));
+			assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight() ,cC.getPreviewImage(cC.getCard("lumberyard")).getHeight(), 0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -242,7 +242,7 @@ public class GameController {
 					
 					if(age == 0) {
 						String wonder = Utils.toCard(split[1],age);
-						ArtInt ai = p_con.createAI("AI-Spieler"+(players.size()-1), Utils.toWonder(wonder), Difficulty.HARDCORE);
+						ArtInt ai = p_con.createAI("AI-Spieler"+players.size(), Utils.toWonder(wonder), Difficulty.HARDCORE);
 						players.add(ai);
 					} else {
 						String cardname = Utils.toCard(split[1],age);

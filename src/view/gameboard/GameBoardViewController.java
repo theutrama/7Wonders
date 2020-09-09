@@ -383,6 +383,7 @@ public class GameBoardViewController extends VBox {
 					break;
 				}
 			} else {
+				System.out.println("AI findMove "+action);
 				ai.findMove();
 				Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
 				getCurrentPlayer().setChooseCard(ai.getChosenCard());

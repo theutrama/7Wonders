@@ -80,6 +80,7 @@ public class GameListViewController extends BorderPane {
 				if(file != null) {
 					GameController con = Main.getSWController().getGameController();
 					try {
+						Main.getSWController().getWonderBoardController().loadBoardClasses();
 						boolean loaded = con.loadCSV(file);
 						
 						if(loaded) {

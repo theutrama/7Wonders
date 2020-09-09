@@ -923,59 +923,60 @@ public class GameBoardViewController extends VBox {
 	public void selectCardFromTrash(Player player) {
 		if (game().getTrash().isEmpty()) {
 			// TODO ausgeben
-			System.out.println("stack is empty");
 			exitHalikarnassus();
 			return;
 		}
-
 		game().setChoosingPlayer(player);
 
-		hbox_cards.getChildren().clear();
-		HBox hboxTitle = new HBox(50);
-		Label label = new Label("Wähle eine Karte vom Ablagestapel");
-		Button exit = new Button("Keine Karte auswählen");
-		exit.setOnAction(event -> exitHalikarnassus());
-		hboxTitle.getChildren().addAll(label, exit);
+		Platform.runLater(() -> {
+			hbox_cards.getChildren().clear();
+			HBox hboxTitle = new HBox(50);
+			Label label = new Label("Wähle eine Karte vom Ablagestapel");
+			Button exit = new Button("Keine Karte auswählen");
+			exit.setOnAction(event -> exitHalikarnassus());
+			hboxTitle.getChildren().addAll(label, exit);
 
-		HBox hboxChooseCard = new HBox(10);
+			HBox hboxChooseCard = new HBox(10);
 
-		for (Card card : game().getTrash()) {
-			Button button = new Button();
-			try {
-				ImageView img = new ImageView(Utils.toImage(card.getImage()));
-				img.setFitWidth(141);
-				img.setFitHeight(215);
-				img.setPickOnBounds(true);
-				img.setPreserveRatio(true);
-				button.setGraphic(img);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			button.setTooltip(noDelay(new Tooltip(card.getDescription())));
-			button.setOnAction(event -> {
-				game().getTrash().remove(card);
-				player.getBoard().addCard(card);
-				Main.getSWController().getSoundController().play(Sound.BUILD);
-				if (card.getEffects() != null) {
-					for (Effect effect : card.getEffects()) {
-						if (effect.getType() == EffectType.WHEN_PLAYED)
-							effect.run(player, Main.getSWController().getGame(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
-					}
+			for (Card card : game().getTrash()) {
+				Button button = new Button();
+				try {
+					ImageView img = new ImageView(Utils.toImage(card.getImage()));
+					img.setFitWidth(141);
+					img.setFitHeight(215);
+					img.setPickOnBounds(true);
+					img.setPreserveRatio(true);
+					button.setGraphic(img);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				exitHalikarnassus();
-			});
+				button.setTooltip(noDelay(new Tooltip(card.getDescription())));
+				button.setOnAction(event -> {
+					game().getTrash().remove(card);
+					player.getBoard().addCard(card);
+					Main.getSWController().getSoundController().play(Sound.BUILD);
+					if (card.getEffects() != null) {
+						for (Effect effect : card.getEffects()) {
+							if (effect.getType() == EffectType.WHEN_PLAYED)
+								effect.run(player, Main.getSWController().getGame(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
+						}
+					}
+					exitHalikarnassus();
+				});
 
-			hboxChooseCard.getChildren().add(button);
+				hboxChooseCard.getChildren().add(button);
+			}
+
+			VBox vboxChoose = new VBox(10);
+			vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
+			vboxChoose.setPadding(new Insets(0, 10, 0, 20));
+
+			hbox_cards.getChildren().add(vboxChoose);
 
 			if (player instanceof ArtInt) {
 				// TODO control AI
 			}
-		}
-
-		VBox vboxChoose = new VBox(10);
-		vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
-
-		hbox_cards.getChildren().add(vboxChoose);
+		});
 	}
 
 	/**

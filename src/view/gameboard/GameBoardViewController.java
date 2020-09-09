@@ -959,7 +959,7 @@ public class GameBoardViewController extends VBox {
 				if (card.getEffects() != null) {
 					for (Effect effect : card.getEffects()) {
 						if (effect.getType() == EffectType.WHEN_PLAYED)
-							effect.run(player, Main.getSWController().getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
+							effect.run(player, Main.getSWController().getGame(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
 					}
 				}
 				exitHalikarnassus();

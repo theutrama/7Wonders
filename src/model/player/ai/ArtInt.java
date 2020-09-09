@@ -2,7 +2,13 @@ package model.player.ai;
 
 import java.util.ArrayList;
 
+import application.Main;
+import controller.PlayerController;
+import controller.utils.BuildCapability;
 import model.board.WonderBoard;
+import model.card.Card;
+import model.card.Resource;
+import model.card.ResourceType;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
@@ -12,6 +18,7 @@ import model.player.ai.Move.Action;
 public class ArtInt extends Player {
 	/** level of skill */
 	private Difficulty difficulty;
+	private PlayerController pcon;
 
 	/**
 	 * creates a new AI using the given board
@@ -31,6 +38,7 @@ public class ArtInt extends Player {
 	public ArtInt(String name, Difficulty difficulty, WonderBoard board) {
 		super(name + " - " + difficulty.toString(), board);
 		this.difficulty = difficulty;
+		this.pcon = Main.getSWController().getPlayerController();
 	}
 	
 	public Difficulty getDifficulty() {
@@ -45,26 +53,88 @@ public class ArtInt extends Player {
 		return 0;
 	}
 	
-	public int max(int tiefe,int alpha, int beta) {
+	public int AlphaBeta(int tiefe, int alpha, int beta) {
 		if(tiefe == 0)return 0;
-		int maxWert = alpha;
-		
-		
-		return maxWert;
-	}
-	
-	public int min(int tiefe,int alpha, int beta) {
-		if(tiefe == 0)return 0;
-		int minWert = beta;
-		
 		ArrayList<Move> moves = generateMoves();
+		
 		for(Move move : moves) {
-			
+			doMove(move);
 		}
-		return minWert;
+		
+		return 0;
 	}
 	
 	public int doMove(Move move) {
+		Card card = move.getCard();
+		Action action = move.getAction();
+		
+		switch(action) {
+		case BUILD:
+			BuildCapability capa = pcon.canBuild(this, card);
+			
+			int v = 0;
+			switch(capa) {
+			case FREE:
+				v +=2;
+			case OWN_RESOURCE:
+				v += 1;
+			case TRADE: 
+				
+				switch(card.getType()) {
+				//CIVIL
+				case BLUE: 
+					v+= card.getvPoints();
+					break;
+				//RESOURCE
+				case BROWN: 
+				case GRAY: 
+					WonderBoard board = getBoard();
+					int next_slot = board.nextSlot();
+					
+					if(next_slot != -1) {
+						Resource requirement = board.getSlotResquirement(next_slot);
+						
+						for(Resource rs : card.getProducing()) {
+							if(rs.getType() == requirement.getType()) {
+								v+=requirement.getQuantity();
+							}
+						}
+					}
+					break;
+				//SCIENCE
+				case GREEN: break;
+				//GUILD
+				case PURPLE: break;
+				//MILITARY
+				case RED:
+					Player leftN = pcon.getLeftNeighbour(this);
+					Player rightN = pcon.getRightNeighbour(this);
+					
+					int military = pcon.getMilitaryPoints(this);
+					int left_mili = pcon.getMilitaryPoints(leftN);
+					int right_mili = pcon.getMilitaryPoints(rightN);
+					
+					if(left_mili >= military || right_mili >= military) {
+						v+=card.getProducing().get(0).getQuantity();
+					}
+					break;
+				//TRADING
+				case YELLOW: 
+//					PlayerController copy = pcon.cl
+					
+					break;
+				}
+				break;
+			case NONE: return Integer.MIN_VALUE;
+			}
+			break;
+		case PLACE:
+		
+			break;
+		case SELL: 
+			
+			break;
+		}
 		
 		
 		return 0;
@@ -75,7 +145,7 @@ public class ArtInt extends Player {
 		
 		for(int i = 0; i < this.getHand().size(); i++) {
 			for(Action action : Move.Action.values()) {
-				list.add(new Move(this, this.getHand().get(i), action));
+				list.add(new Move(this.getHand().get(i), action));
 			}
 		}
 		

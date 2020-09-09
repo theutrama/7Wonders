@@ -353,7 +353,7 @@ public class GameController {
 				continue;
 			for (Effect effect : card.getEffects())
 				if (effect.getType() == EffectType.AT_MATCH_END)
-					effect.run(player, swController.getPlayerController(), twoPlayers);
+					effect.run(player, swController.getGame(), twoPlayers);
 		}
 	}
 

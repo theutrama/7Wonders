@@ -9,6 +9,7 @@ import controller.utils.BuildCapability;
 import controller.utils.ResourceBundle;
 import controller.utils.ResourceTree;
 import controller.utils.TradeOption;
+import model.Game;
 import model.board.AlexandriaBoard;
 import model.board.BabylonBoard;
 import model.board.RhodosBoard;
@@ -32,9 +33,9 @@ public class PlayerController {
 	 * 
 	 * @param swController
 	 */
-	public PlayerController(SevenWondersController swController) {
+	public PlayerController(SevenWondersController swController,WonderBoardController wbc) {
 		this.swController = swController;
-		this.wbc = swController.getWonderBoardController();
+		this.wbc = wbc;
 	}
 
 	/**
@@ -94,18 +95,30 @@ public class PlayerController {
 	}
 
 	/**
+	 * fing neighbour
+	 * 
+	 * @param game
+	 * @param left = True -> Left Neighbour or False -> Right Neighbour
+	 * @param player player
+	 * @return left neighbour
+	 */
+	public Player getNeighbour(Game game,boolean left, Player player) {
+		ArrayList<Player> players = game.getCurrentGameState().getPlayers();
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getName().equals(player.getName()))
+				return players.get( (left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)) );
+		}
+		return null;
+	}
+
+	/**
 	 * find left neighbour
 	 * 
 	 * @param player player
 	 * @return left neighbour
 	 */
 	public Player getLeftNeighbour(Player player) {
-		ArrayList<Player> players = swController.getGame().getCurrentGameState().getPlayers();
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getName().equals(player.getName()))
-				return players.get(i == 0 ? players.size() - 1 : i - 1);
-		}
-		return null;
+		return getNeighbour(swController.getGame(), true, player);
 	}
 
 	/**
@@ -115,12 +128,7 @@ public class PlayerController {
 	 * @return right neighbour
 	 */
 	public Player getRightNeighbour(Player player) {
-		ArrayList<Player> players = swController.getGame().getCurrentGameState().getPlayers();
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getName().equals(player.getName()))
-				return players.get(i == players.size() - 1 ? 0 : i + 1);
-		}
-		return null;
+		return getNeighbour(swController.getGame(), false, player);
 	}
 
 	/**

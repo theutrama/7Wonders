@@ -3,6 +3,7 @@ package model.card;
 import java.io.Serializable;
 
 import controller.PlayerController;
+import model.Game;
 import model.player.Player;
 
 /** EffectCall for player */
@@ -14,5 +15,5 @@ public interface EffectCall extends Serializable {
 	 * @param controller game controller
 	 * @param twoPlayers true if the game has two players
 	 */
-	public void run(Player player, PlayerController controller, boolean twoPlayers);
+	public void run(Player player, Game game, boolean twoPlayers);
 }

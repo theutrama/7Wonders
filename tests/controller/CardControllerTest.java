@@ -80,6 +80,7 @@ public class CardControllerTest {
 	 */
 	@Test
 	public void generateCardStackTest() {
+		System.out.println(swc.getGame().getCurrentGameState().getPlayers().size());
 		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 216);
 	}
 	
@@ -101,6 +102,7 @@ public class CardControllerTest {
 		game.setCurrentState(0);
 		
 		swc1.getCardController().loadAllCards();
+		System.out.println(players.size());
 		assertEquals(swc1.getCardController().generateCardStack(players).size(), 136);
 	}
 	

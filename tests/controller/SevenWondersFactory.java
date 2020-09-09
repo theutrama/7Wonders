@@ -137,7 +137,7 @@ public class SevenWondersFactory {
 		Card card9 = cardController.getCard(cards, "scriptorium"); // tablet
 		
 		
-
+		/*
 		cards.remove(card1);
 		cards.remove(card2);
 		cards.remove(card3);
@@ -159,6 +159,8 @@ public class SevenWondersFactory {
 		cards.remove(card19);
 		cards.remove(card20);
 		cards.remove(card21);
+		*/
+		
 
 		player1.getBoard().addCard(card13);
 		player1.getBoard().addCard(card1);

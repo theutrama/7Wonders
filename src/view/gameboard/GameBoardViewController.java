@@ -712,6 +712,7 @@ public class GameBoardViewController extends VBox {
 			hbox.setAlignment(Pos.CENTER);
 			Label points = new Label(String.valueOf(player.getConflictPoints() - player.getLosePoints()));
 			points.getStyleClass().addAll("fontstyle", "dropshadow");
+			points.setStyle("-fx-text-fill: black");
 			hbox.getChildren().add(points);
 			try {
 				ImageView img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "conflictPoints.png"));
@@ -1060,6 +1061,7 @@ public class GameBoardViewController extends VBox {
 			exitHalikarnassus();
 			return;
 		}
+		
 		game().setChoosingPlayer(player);
 
 		Platform.runLater(() -> {
@@ -1104,6 +1106,8 @@ public class GameBoardViewController extends VBox {
 			ScrollPane scrollpane = new ScrollPane(hboxChooseCard);
 			scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 			scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+			// scrollpane.setMinViewportWidth(hboxChooseCard.getPrefWidth());
+			scrollpane.setMinViewportHeight(240);
 
 			VBox vboxChoose = new VBox(10);
 			vboxChoose.getChildren().addAll(hboxTitle, scrollpane);

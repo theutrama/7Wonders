@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import application.Main;
 import application.Utils;
@@ -15,7 +13,6 @@ import controller.sound.Sound;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -151,7 +148,7 @@ public class GameBoardViewController extends VBox {
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 
-		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_MENU);
+		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME, true);
 
 		boardPanes = new ArrayList<>();
@@ -476,11 +473,11 @@ public class GameBoardViewController extends VBox {
 	/**
 	 * inner class that represents a game board
 	 */
-	private static class Board extends StackPane {
+	private static class Board extends VBox {
 		private Player player;
 
 		private HBox hboxmilitary, hboxtrade, hboxscience, hboxguild, hboxcivil, hboxresources, hboxSlots;
-		private VBox mainBox;
+		private StackPane stackpane;
 
 		Label labelcoins, labelplayer;
 
@@ -491,8 +488,8 @@ public class GameBoardViewController extends VBox {
 		 */
 		public Board(Player player) {
 			this.player = player;
-
-			mainBox = new VBox();
+			
+			VBox mainBox = new VBox();
 
 			BorderPane playerstats = new BorderPane();
 			labelplayer = new Label();
@@ -601,10 +598,11 @@ public class GameBoardViewController extends VBox {
 				this.setMaxWidth(450);
 			}
 			mainBox.getChildren().add(grid);
+			stackpane = new StackPane(mainBox);
 
-			mainBox.getChildren().add(hboxSlots);
-
-			this.getChildren().add(mainBox);
+			this.getChildren().add(stackpane);
+			
+			this.getChildren().add(hboxSlots);
 		}
 
 		/**
@@ -724,14 +722,14 @@ public class GameBoardViewController extends VBox {
 			}
 			BorderPane borderpane = new BorderPane(hbox);
 			borderpane.setStyle("-fx-background-color: #FFFFFF80;");
-			this.getChildren().add(borderpane);
+			stackpane.getChildren().add(borderpane);
 		}
 
 		/**
 		 * hide conflict points
 		 */
 		private void hideConflict() {
-			this.getChildren().remove(1);
+			stackpane.getChildren().remove(1);
 		}
 	}
 

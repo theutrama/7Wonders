@@ -434,7 +434,7 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -779,7 +779,7 @@ public class GameBoardViewController extends VBox {
 						e.printStackTrace();
 					}
 				});
-				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null); getCurrentPlayer().setOlympiaUsed(true); turn(); });
+				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, true); getCurrentPlayer().setOlympiaUsed(true); turn(); });
 				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
@@ -814,14 +814,14 @@ public class GameBoardViewController extends VBox {
 				switch (Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card)) {
 				case FREE:
 				case OWN_RESOURCE:
-					Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null);
+					Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, false);
 					turn();
 					break;
 				case TRADE:
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(getCurrentPlayer(), card.getRequired());
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option, false); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);

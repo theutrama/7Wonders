@@ -71,7 +71,7 @@ public class CardControllerTest {
 	public void placeCardTest() {
 		int countScienceCards = pC.getPlayer("erster").getBoard().getResearch().size();
 		Card randomCard = cC.getCard("library");
-		cC.placeCard(randomCard, pC.getPlayer("erster"), null);
+		cC.placeCard(randomCard, pC.getPlayer("erster"), null, false);
 		assertEquals(pC.getPlayer("erster").getBoard().getResearch().get(countScienceCards), randomCard);
 	}
 

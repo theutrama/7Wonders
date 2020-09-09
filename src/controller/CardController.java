@@ -772,8 +772,9 @@ public class CardController {
 	 * @param card   card to be places
 	 * @param player player
 	 * @param trade  the trade that was made or null if the card is built with own resources
+	 * @param freeBuild true if the player uses olympia ability to build this card
 	 */
-	public void placeCard(Card card, Player player, TradeOption trade) {
+	public void placeCard(Card card, Player player, TradeOption trade, boolean freeBuild) {
 		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins())
 			return;
 
@@ -788,7 +789,7 @@ public class CardController {
 			}
 		}
 
-		if (card.getRequired() != null) {
+		if (!freeBuild && card.getRequired() != null) {
 			for (Resource resource : card.getRequired()) {
 				if (resource.getType() == ResourceType.COINS)
 					player.addCoins(-resource.getQuantity());

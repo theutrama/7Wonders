@@ -441,7 +441,7 @@ public class CardController {
 			if (sizes[0] == 0)
 				continue;
 			if (sizes[0] <= playersize) {
-				toadd.add(new Card(cards.get(i)));
+				toadd.add(cards.get(i));
 			}
 			if (sizes[1] == 0)
 				continue;
@@ -454,7 +454,7 @@ public class CardController {
 				toadd.add(new Card(cards.get(i)));
 			}
 		}
-		cards.addAll(toadd);
+		cards = toadd;
 
 		// shuffle cards
 		Collections.shuffle(cards);

@@ -16,7 +16,7 @@ public class WonderBoardController {
 	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 
-	
+	/** loads the board classes */
 	public WonderBoardController() {
 		loadBoardClasses();
 	}

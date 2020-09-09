@@ -35,6 +35,11 @@ public class Effect implements Serializable {
 		return this.effectType;
 	}
 	
+	/**
+	 * runs effect on player and game
+	 * @param player	the player
+	 * @param game		the game
+	 */
 	public void run(Player player, Game game) {
 		run(player, game.getCurrentGameState(), game.getCurrentGameState().isTwoPlayers());
 	}

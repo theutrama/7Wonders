@@ -781,7 +781,7 @@ public class GameBoardViewController extends VBox {
 					}
 				});
 				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, true); getCurrentPlayer().setOlympiaUsed(true); turn(); });
-				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos")));
+				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Faehigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
 			}
@@ -980,7 +980,7 @@ public class GameBoardViewController extends VBox {
 					break;
 				case TRADE:
 					path += "checkyellow";
-					tooltip = "Du kannst die erforderlichen Resourcen von Nachbarstädten kaufen";
+					tooltip = "Du kannst die erforderlichen Resourcen von Nachbarstaedten kaufen";
 					break;
 				case NONE:
 					path += "cross";
@@ -1049,7 +1049,7 @@ public class GameBoardViewController extends VBox {
 		if (game().getTrash().isEmpty()) {
 			Platform.runLater(() -> {
 				hbox_cards.getChildren().clear();
-				Label label = new Label(player.getName() + " kann keine Karte wählen, da der Ablagestapel leer ist!");
+				Label label = new Label(player.getName() + " kann keine Karte waehlen, da der Ablagestapel leer ist!");
 				label.getStyleClass().addAll("fontstyle", "dropshadow");
 				hbox_cards.getChildren().add(label);
 			});
@@ -1068,10 +1068,10 @@ public class GameBoardViewController extends VBox {
 		Platform.runLater(() -> {
 			hbox_cards.getChildren().clear();
 			HBox hboxTitle = new HBox(50);
-			Label label = new Label("Wähle eine Karte vom Ablagestapel");
+			Label label = new Label("Waehle eine Karte vom Ablagestapel");
 			label.getStyleClass().addAll("fontstyle", "dropshadow");
 			label.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
-			Label labelBtn = new Label("Keine Karte auswählen");
+			Label labelBtn = new Label("Keine Karte auswaehlen");
 			labelBtn.getStyleClass().addAll("fontstyle", "dropshadow");
 			labelBtn.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
 			Button exit = new Button();

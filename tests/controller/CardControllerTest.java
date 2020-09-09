@@ -56,7 +56,7 @@ public class CardControllerTest {
 	/** tests if first player can sell cards */
 	@Test
 	public void createSellCardTest() {
-		// Wenn bei getCard ein falscher name angegeben wird kommt null zurück
+		// Wenn bei getCard ein falscher name angegeben wird kommt null zurueck
 		cC.sellCard(cC.getCard(pC.getPlayer("erster").getHand(), "lodge"), pC.getPlayer("erster"));
 		assertEquals(pC.getPlayer("erster").getCoins(), 6);
 		cC.sellCard(cC.getCard(pC.getPlayer("erster").getHand(), "study"), pC.getPlayer("erster"));
@@ -192,6 +192,7 @@ public class CardControllerTest {
 		assertEquals(swc5.getCardController().generateCardStack(players).size(), 105);
 	}
 
+	/** tests six player variant */
 	@Test
 	public void sixPlayersTest() {
 		Game game = new Game("testgame6");

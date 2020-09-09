@@ -22,7 +22,7 @@ public class GameControllerTest {
 	 */
 	@Before
 	public void setUp() {
-		// hier lag unser fehler... wir hatten vor swc in der n�chsten zeile noch
+		// hier lag unser fehler... wir hatten vor swc in der naechsten zeile noch
 		// SevenWondersController stehen
 		// und haben uns damit ein neues objekt erzeugt... logisch, dass es dann null
 		// ist :D

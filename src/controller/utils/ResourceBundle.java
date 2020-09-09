@@ -64,10 +64,10 @@ public class ResourceBundle {
 	 * @param toLeftNeighbour true if these resources are bought from the player's left neighbour
 	 * @return cost of these resources
 	 */
-	public int getCostForPlayer(Player player, boolean toLeftNeighbour) {
+	public int getCostForPlayer(Player player, boolean toLeftNeighbour, boolean twoPlayers) {
 		int cost = brick + stone + wood + ore;
-		if (!(toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "westtradingpost"))
-				&& !(!toLeftNeighbour && Main.getSWController().getCardController().hasCard(player, "easttradingpost")))
+		if (!((toLeftNeighbour || twoPlayers) && Main.getSWController().getCardController().hasCard(player, "westtradingpost"))
+				&& !((!toLeftNeighbour || twoPlayers) && Main.getSWController().getCardController().hasCard(player, "easttradingpost")))
 			cost *= 2;
 
 		int cost2 = glass + cloth + papyrus;

@@ -350,8 +350,8 @@ public class PlayerController {
 
 			for (ResourceBundle missingResources : missing) {
 				for (ResourceBundle trade : trades) {
-					if (trade.getCostForPlayer(player, true) <= player.getCoins() && trade.equals(missingResources))
-						result.add(new TradeOption(trade, null, trade.getCostForPlayer(player, true), 0));
+					if (trade.getCostForPlayer(player, true, true) <= player.getCoins() && trade.equals(missingResources))
+						result.add(new TradeOption(trade, null, trade.getCostForPlayer(player, true, true), 0));
 				}
 			}
 
@@ -373,20 +373,20 @@ public class PlayerController {
 			for (ResourceBundle missingResources : missing) {
 
 				for (ResourceBundle leftTrade : leftTrades)
-					if (leftTrade.getCostForPlayer(player, true) <= player.getCoins() && leftTrade.equals(missingResources))
-						result.add(new TradeOption(leftTrade, null, leftTrade.getCostForPlayer(player, true), 0));
+					if (leftTrade.getCostForPlayer(player, true, false) <= player.getCoins() && leftTrade.equals(missingResources))
+						result.add(new TradeOption(leftTrade, null, leftTrade.getCostForPlayer(player, true, false), 0));
 
 				for (ResourceBundle rightTrade : rightTrades)
-					if (rightTrade.getCostForPlayer(player, false) <= player.getCoins() && rightTrade.equals(missingResources))
-						result.add(new TradeOption(null, rightTrade, 0, rightTrade.getCostForPlayer(player, false)));
+					if (rightTrade.getCostForPlayer(player, false, false) <= player.getCoins() && rightTrade.equals(missingResources))
+						result.add(new TradeOption(null, rightTrade, 0, rightTrade.getCostForPlayer(player, false, false)));
 
 				for (ResourceBundle leftTrade : leftTrades) {
 					for (ResourceBundle rightTrade : rightTrades) {
-						if (leftTrade.getCostForPlayer(player, true) + rightTrade.getCostForPlayer(player, false) > player.getCoins())
+						if (leftTrade.getCostForPlayer(player, true, false) + rightTrade.getCostForPlayer(player, false, false) > player.getCoins())
 							continue;
 
 						if (leftTrade.add(rightTrade).equals(missingResources)) // TODO maybe exchange with "greaterOrEqual"
-							result.add(new TradeOption(leftTrade, rightTrade, leftTrade.getCostForPlayer(player, true), rightTrade.getCostForPlayer(player, false)));
+							result.add(new TradeOption(leftTrade, rightTrade, leftTrade.getCostForPlayer(player, true, false), rightTrade.getCostForPlayer(player, false, false)));
 					}
 				}
 			}

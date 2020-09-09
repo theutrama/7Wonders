@@ -202,6 +202,7 @@ public class Player implements Serializable {
 		this.olympiaUsed = olympiaUsed;
 	}
 	
+	/** toString method */
 	public String toString() {
 		return getName();
 	}

@@ -6,6 +6,8 @@ import model.board.WonderBoard;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
+@SuppressWarnings("PMD.UnusedLocalVariable")
+
 /** Artificial Intelligence for SevenWonders */
 public class ArtInt extends Player {
 	/** level of skill */
@@ -46,13 +48,13 @@ public class ArtInt extends Player {
 		int minWert = beta;
 		
 		ArrayList<Move> moves = generateMoves();
-		for(Move m : moves) {
+		for(Move move : moves) {
 			
 		}
 		return minWert;
 	}
 	
-	public int doMove(Move m) {
+	public int doMove(Move move) {
 		
 		
 		return 0;

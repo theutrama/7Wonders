@@ -29,6 +29,7 @@
 .fontstyle {
 	-fx-font-family: 'Bookman Old Style';
 	-fx-font-size:24;
+	-fx-text-fill: #d4d4d4;
 }
 .bold {
 	-fx-font-weight: bold;

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import application.Main;
 import javafx.application.Platform;
 import model.GameState;
 
@@ -29,6 +30,7 @@ public class GameControllerTest {
 		gC = swc.getGameController();
 		cC = swc.getCardController();
 		pC = swc.getPlayerController();
+		Main.TEST = true;
 
 	}
 	/**
@@ -98,7 +100,7 @@ public class GameControllerTest {
 	 */
 	@Test
 	public void createNextRoundTest() {
-		Platform.startup(() -> {
+		
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
@@ -108,7 +110,7 @@ public class GameControllerTest {
 			GameState round1age2 = swc.getGame().getCurrentGameState();
 			assertEquals(round1age2.getAge(), 2);
 			assertEquals(round1age2.getRound(), 1);
-		});
+		
 
 	}
 	// create game correctly adding players/ boards

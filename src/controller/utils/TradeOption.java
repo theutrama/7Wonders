@@ -88,38 +88,68 @@ public class TradeOption {
 	 * @param tradeAction the action executed by the created button
 	 * @return a node that contains all resources
 	 */
-	public HBox getNode(Player player, EventHandler<ActionEvent> tradeAction) {
-		HBox hbox = new HBox(7);
+	public Button getNode(Player player, EventHandler<ActionEvent> tradeAction) {
+		HBox hbox = new HBox();
+		final ImageView arrowright = new ImageView();
+		final ImageView arrowleft = new ImageView();
 		if (leftCost != 0) {
-			hbox.getChildren().add(leftTrade.createResourceImages());
-			Label label = new Label("an " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName());
-			hbox.getChildren().add(label);
-			//label.getStyleClass().addAll("fontstyle", "dropshadow");
-			hbox.getChildren().add(createCoinsNode(leftCost));
+			try {
+				arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			arrowleft.setFitWidth(45);
+			arrowleft.setFitHeight(25);
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" für ");
+			label.getStyleClass().addAll("fontstyle","dropshadow");
+			hbox.getChildren().addAll(arrowleft,leftTrade.createResourceImages(),label,createCoinsNode(leftCost));
 			if (rightCost != 0) {
 				Label label2 = new Label(" und ");
-				//label2.getStyleClass().addAll("fontstyle", "dropshadow");
+				label2.getStyleClass().addAll("fontstyle", "dropshadow");
 				hbox.getChildren().add(label2);
 			}
+			
 		}
 		if (rightCost != 0) {
-			hbox.getChildren().add(rightTrade.createResourceImages());
-			Label label = new Label("an " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName());
-			hbox.getChildren().add(label);
-			//label.getStyleClass().addAll("fontstyle", "dropshadow");
-			hbox.getChildren().add(createCoinsNode(rightCost));
+			try {
+				arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			arrowright.setFitWidth(45);
+			arrowright.setFitHeight(25);
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" für ");
+			label.getStyleClass().addAll("fontstyle","dropshadow");
+			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
 		}
-		Button btn = new Button("Kaufen");
-		//btn.getStyleClass().addAll("fontstyle", "dropshadow");
-		btn.setOnAction(tradeAction);
-		btn.setStyle("-fx-background-color: #0000EE");
-		btn.setStyle("-fx-background-radius: 4px");
-		hbox.setAlignment(Pos.TOP_CENTER);
+		Label labelbuy = new Label(" handeln");
+		hbox.getChildren().add(labelbuy);
+		if(rightCost != 0) hbox.getChildren().add(arrowright);
+		labelbuy.getStyleClass().addAll("fontstyle", "dropshadow");
+		hbox.setAlignment(Pos.CENTER);
 		hbox.setStyle("-fx-background-color: white");
-		//hbox.setStyle("-fx-background-radius: 4px");
-		hbox.getChildren().add(btn);
-
-		return hbox;
+		hbox.setStyle("-fx-background-radius: 4px");
+		Button btn = new Button();
+		btn.setGraphic(hbox);
+		btn.setOnAction(tradeAction);
+		btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
+			try {
+				if (newValue) {
+					if(arrowleft != null)
+						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhoverleft.png"));
+					if(arrowright != null)
+						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
+				} else {
+					if(arrowleft != null)
+						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
+					if(arrowright != null)
+						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		return btn;
 	}
 
 	/**
@@ -130,16 +160,18 @@ public class TradeOption {
 	 */
 	private HBox createCoinsNode(int coins) {
 		HBox hbox = new HBox();
-		hbox.getChildren().add(new Label("(" + coins));
+		Label label = new Label(""+coins+" ");
+		label.getStyleClass().addAll("fontstyle","dropshadow");
+		ImageView img = null;
 		try {
-			ImageView img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin.png"));
+			img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin.png"));
 			img.setFitWidth(20);
 			img.setFitHeight(20);
-			hbox.getChildren().add(img);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		hbox.getChildren().add(new Label(")"));
+		hbox.getChildren().addAll(label,img);
+		hbox.setAlignment(Pos.CENTER);
 		return hbox;
 	}
 

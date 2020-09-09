@@ -435,26 +435,32 @@ public class CardController {
 		if (playersize == TWO)
 			playersize++;
 		ArrayList<Card> toadd = new ArrayList<Card>();
+		ArrayList<Card> guilds = new ArrayList<Card>();
+		
 		for (int i = 0; i < cards.size(); i++) {
 			int[] sizes = countCards.get(cards.get(i).getInternalName());
 
-			if (sizes[0] == 0)
+			if (sizes[0] == 0) {
+				guilds.add(cards.get(i));
 				continue;
-			if (sizes[0] <= playersize) {
-				toadd.add(new Card(cards.get(i)));
 			}
+			if (sizes[0] <= playersize) 
+				toadd.add(cards.get(i));
 			if (sizes[1] == 0)
 				continue;
-			if (sizes[1] <= playersize) {
+			if (sizes[1] <= playersize) 
 				toadd.add(new Card(cards.get(i)));
-			}
 			if (sizes[2] == 0)
 				continue;
-			if (sizes[2] <= playersize) {
+			if (sizes[2] <= playersize) 
 				toadd.add(new Card(cards.get(i)));
-			}
 		}
-		cards.addAll(toadd);
+		
+		//Add Guild Cards
+		Collections.shuffle(guilds);
+		for(int i = 0; i < playersize+2; i++) toadd.add(guilds.get(i));
+		
+		cards = toadd;
 
 		// shuffle cards
 		Collections.shuffle(cards);

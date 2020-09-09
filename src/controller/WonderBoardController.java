@@ -44,7 +44,8 @@ public class WonderBoardController {
 			loadBoardClasses();
 
 		if (this.boards.contains(clazz)) {
-			this.boards.remove(clazz);
+			//this.boards.remove(clazz);
+			
 			try {
 				Constructor<? extends WonderBoard> con = clazz.getConstructor();
 				return con.newInstance(new Object[] {});

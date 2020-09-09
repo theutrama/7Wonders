@@ -22,6 +22,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
@@ -63,10 +64,10 @@ public class GameBoardViewController extends VBox {
 	private ImageView img_music;
 
 	@FXML
-	private ImageView btn_undo;
+	private Button btn_undo;
 
 	@FXML
-	private ImageView btn_redo;
+	private Button btn_redo;
 
 	@FXML
 	private Label label_gametime;
@@ -93,6 +94,8 @@ public class GameBoardViewController extends VBox {
 	private boolean action;
 
 	private Timer timer;
+
+	private EventHandler<MouseEvent> inputBlocker = MouseEvent::consume;
 
 	/**
 	 * create new controller
@@ -122,21 +125,23 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().getGameController().setGbvController(null);
 		});
 
-		btn_undo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("undo");
+		btn_undo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
-				System.out.println("undo2");
+				System.out.println("undo");
+				action = false;
 				refreshBoards();
 				setHandCards();
+				updateMouseBlocking();
 			}
 		});
 		btn_undo.setPickOnBounds(true);
-		btn_redo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("redo");
+		btn_redo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().redo(Main.getSWController().getGame())) {
-				System.out.println("redo2");
+				System.out.println("redo");
+				action = false;
 				refreshBoards();
 				setHandCards();
+				updateMouseBlocking();
 			}
 		});
 		btn_redo.setPickOnBounds(true);
@@ -161,8 +166,7 @@ public class GameBoardViewController extends VBox {
 		} else {
 			selectCardFromTrash(game().getChoosingPlayer());
 		}
-
-		System.out.println("active: " + action);
+		updateMouseBlocking();
 
 		Main.getSWController().getGameController().setGbvController(this);
 
@@ -343,6 +347,16 @@ public class GameBoardViewController extends VBox {
 	 * next player
 	 */
 	public void turn() {
+
+		if (game().isAtBeginOfRound()) {
+			GameState state = game().deepClone();
+			Main.getSWController().getGame().deleteRedoStates();
+			Main.getSWController().getGame().getStates().add(state);
+			Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
+			updateAllBoards();
+			game().setBeginOfRound(false);
+		}
+
 		if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
 			game().setCurrentPlayer(0);
 		} else {
@@ -356,16 +370,10 @@ public class GameBoardViewController extends VBox {
 				Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 				updateAllBoards();
 			}
-		} else if (game().isAtBeginOfRound()) {
-			GameState state = game().deepClone();
-			Main.getSWController().getGame().deleteRedoStates();
-			Main.getSWController().getGame().getStates().add(state);
-			Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
-			updateAllBoards();
-			game().setBeginOfRound(false);
 		}
 
 		refreshBoards();
+		updateMouseBlocking();
 
 		if (action)
 			setActionCard();
@@ -718,6 +726,10 @@ public class GameBoardViewController extends VBox {
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
+					
+					if (getCurrentPlayer() instanceof ArtInt) {
+						// TODO control AI
+					}
 					break;
 				default:
 					break;
@@ -765,11 +777,14 @@ public class GameBoardViewController extends VBox {
 							new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))));
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(),
-								event2 -> { System.out.println("event triggered"); Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren()
+								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
+					if (getCurrentPlayer() instanceof ArtInt) {
+						// TODO control AI
+					}
 					break;
 				default:
 					break;
@@ -824,6 +839,10 @@ public class GameBoardViewController extends VBox {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		if (getCurrentPlayer() instanceof ArtInt) {
+			// TODO control AI
 		}
 	}
 
@@ -913,6 +932,10 @@ public class GameBoardViewController extends VBox {
 				e.printStackTrace();
 			}
 		}
+		
+		if (player instanceof ArtInt) {
+			// TODO control AI
+		}
 	}
 
 	/**
@@ -921,8 +944,20 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
+		
 		if (game().getTrash().isEmpty()) {
-			// TODO ausgeben
+			Platform.runLater(() -> {
+				hbox_cards.getChildren().clear();
+				Label label = new Label(player.getName() + " kann keine Karte wählen, da der Ablagestapel leer ist!");
+				label.getStyleClass().addAll("fontstyle", "dropshadow");
+				hbox_cards.getChildren().add(label);
+			});
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Platform.runLater(() -> { hbox_cards.getChildren().clear(); });
 			exitHalikarnassus();
 			return;
 		}
@@ -967,11 +1002,17 @@ public class GameBoardViewController extends VBox {
 				hboxChooseCard.getChildren().add(button);
 			}
 
+			ScrollPane scrollpane = new ScrollPane(hboxChooseCard);
+			scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+
 			VBox vboxChoose = new VBox(10);
-			vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
+			vboxChoose.getChildren().addAll(hboxTitle, scrollpane);
 			vboxChoose.setPadding(new Insets(0, 10, 0, 20));
 
 			hbox_cards.getChildren().add(vboxChoose);
+
+			updateMouseBlocking();
 
 			if (player instanceof ArtInt) {
 				// TODO control AI
@@ -989,6 +1030,16 @@ public class GameBoardViewController extends VBox {
 		game().setChoosingPlayer(null);
 		refreshBoards();
 		setHandCards();
+	}
+
+	private void updateMouseBlocking() {
+		if (getCurrentPlayer() instanceof ArtInt) {
+			hbox_cards.addEventFilter(MouseEvent.ANY, inputBlocker);
+			scrollpane.addEventFilter(MouseEvent.ANY, inputBlocker);
+		} else {
+			hbox_cards.removeEventFilter(MouseEvent.ANY, inputBlocker);
+			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
+		}
 	}
 
 	/**

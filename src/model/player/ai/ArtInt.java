@@ -6,6 +6,8 @@ import model.board.WonderBoard;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
+@SuppressWarnings("PMD.UnusedLocalVariable")
+
 /** Artificial Intelligence for SevenWonders */
 public class ArtInt extends Player {
 	/** level of skill */

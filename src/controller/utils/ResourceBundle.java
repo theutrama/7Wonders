@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import application.Main;
 import application.Utils;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -201,6 +202,7 @@ public class ResourceBundle {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		hbox.setAlignment(Pos.CENTER);
 		return hbox;
 	}
 
@@ -212,8 +214,8 @@ public class ResourceBundle {
 	 */
 	private ImageView getImageView(Image img) {
 		ImageView image = new ImageView(img);
-		image.setFitWidth(20);
-		image.setFitHeight(20);
+		image.setFitWidth(25);
+		image.setFitHeight(25);
 		return image;
 	}
 }

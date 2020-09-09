@@ -83,6 +83,9 @@ public class CardControllerTest {
 		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 216);
 	}
 	
+	/**
+	 * tests two player variant
+	 */
 	@Test
 	public void twoPlayersTest() {
 		Game game = new Game("testgame2");

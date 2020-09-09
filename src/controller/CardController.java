@@ -436,7 +436,7 @@ public class CardController {
 			playersize++;
 		ArrayList<Card> toadd = new ArrayList<Card>();
 		ArrayList<Card> guilds = new ArrayList<Card>();
-		
+
 		for (int i = 0; i < cards.size(); i++) {
 			int[] sizes = countCards.get(cards.get(i).getInternalName());
 
@@ -444,22 +444,23 @@ public class CardController {
 				guilds.add(cards.get(i));
 				continue;
 			}
-			if (sizes[0] <= playersize) 
+			if (sizes[0] <= playersize)
 				toadd.add(cards.get(i));
 			if (sizes[1] == 0)
 				continue;
-			if (sizes[1] <= playersize) 
+			if (sizes[1] <= playersize)
 				toadd.add(new Card(cards.get(i)));
 			if (sizes[2] == 0)
 				continue;
-			if (sizes[2] <= playersize) 
+			if (sizes[2] <= playersize)
 				toadd.add(new Card(cards.get(i)));
 		}
-		
-		//Add Guild Cards
+
+		// Add Guild Cards
 		Collections.shuffle(guilds);
-		for(int i = 0; i < playersize+2; i++) toadd.add(guilds.get(i));
-		
+		for (int i = 0; i < playersize + 2; i++)
+			toadd.add(guilds.get(i));
+
 		cards = toadd;
 
 		// shuffle cards
@@ -785,10 +786,12 @@ public class CardController {
 					effect.run(player, swController.getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
 			}
 		}
-		
-		for (Resource resource: card.getRequired()) {
-			if (resource.getType() == ResourceType.COINS)
-				player.addCoins(-resource.getQuantity());
+
+		if (card.getRequired() != null) {
+			for (Resource resource : card.getRequired()) {
+				if (resource.getType() == ResourceType.COINS)
+					player.addCoins(-resource.getQuantity());
+			}
 		}
 
 		if (trade != null) {

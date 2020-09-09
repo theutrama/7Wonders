@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -23,19 +24,19 @@ import model.ranking.Ranking;
 
 /** tests Card Controller */
 public class CardControllerTest {
-	
+
 	private SevenWondersController swc;
 	private GameController gC;
 	private PlayerController pC;
 	private CardController cC;
 	private WonderBoardController wbc;
-	
+
 	/**
 	 * Setup test methods
 	 */
 	@Before
 	public void setUp() {
-		
+
 		swc = SevenWondersFactory.create();
 		gC = swc.getGameController();
 		cC = swc.getCardController();
@@ -43,26 +44,26 @@ public class CardControllerTest {
 		wbc = swc.getWonderBoardController();
 		Main.TEST = true;
 	}
-	
+
 	/** tests if first player has card */
 
 	@Test
 	public void createHasCardTest() {
-		assertEquals(true,cC.hasCard(swc.getPlayerController().getPlayer("erster"), "library"));
-		assertEquals(false,cC.hasCard(swc.getPlayerController().getPlayer("erster"), "academy"));
+		assertEquals(true, cC.hasCard(swc.getPlayerController().getPlayer("erster"), "library"));
+		assertEquals(false, cC.hasCard(swc.getPlayerController().getPlayer("erster"), "academy"));
 	}
-	
+
 	/** tests if first player can sell cards */
 	@Test
 	public void createSellCardTest() {
-		//Wenn bei getCard ein falscher name angegeben wird kommt null zurück 
+		// Wenn bei getCard ein falscher name angegeben wird kommt null zurück
 		cC.sellCard(cC.getCard(pC.getPlayer("erster").getHand(), "lodge"), pC.getPlayer("erster"));
-		assertEquals(pC.getPlayer("erster").getCoins(),6);
+		assertEquals(pC.getPlayer("erster").getCoins(), 6);
 		cC.sellCard(cC.getCard(pC.getPlayer("erster").getHand(), "study"), pC.getPlayer("erster"));
-		assertEquals(pC.getPlayer("erster").getCoins(),9);
-		
+		assertEquals(pC.getPlayer("erster").getCoins(), 9);
+
 	}
-	
+
 	/**
 	 * tests if card gets placed correctly
 	 */
@@ -73,7 +74,7 @@ public class CardControllerTest {
 		cC.placeCard(randomCard, pC.getPlayer("erster"), null);
 		assertEquals(pC.getPlayer("erster").getBoard().getResearch().get(countScienceCards), randomCard);
 	}
-	
+
 	/**
 	 * tests if cards are getting created correctly
 	 */
@@ -81,7 +82,7 @@ public class CardControllerTest {
 	public void loadAllCardTest() {
 		assertEquals(cC.loadAllCards().size(), 78);
 	}
-	
+
 	/**
 	 * tests if cards are getting loaded correctly
 	 */
@@ -89,7 +90,7 @@ public class CardControllerTest {
 	public void generateCardStackTest() {
 		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 147);
 	}
-	
+
 	/**
 	 * tests two player variant
 	 */
@@ -98,7 +99,7 @@ public class CardControllerTest {
 		Game game = new Game("testgame2");
 		SevenWondersController swc1 = new SevenWondersController();
 		swc1.setGame(game);
-		Player player01 = swc1.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player01 = swc1.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc1.getPlayerController().createPlayer("second", "Babylon");
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(player01);
@@ -106,11 +107,11 @@ public class CardControllerTest {
 		ArrayList<Card> cards = cC.generateCardStack(players);
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		swc1.getCardController().loadAllCards();
 		assertEquals(swc1.getCardController().generateCardStack(players).size(), 63);
 	}
-	
+
 	/**
 	 * tests three player variant
 	 */
@@ -119,7 +120,7 @@ public class CardControllerTest {
 		Game game = new Game("testgame4");
 		SevenWondersController swc3 = new SevenWondersController();
 		swc3.setGame(game);
-		Player player01 = swc3.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player01 = swc3.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc3.getPlayerController().createPlayer("second", "Babylon");
 		Player player03 = swc3.getPlayerController().createPlayer("third", "Gizah");
 		ArrayList<Player> players = new ArrayList<Player>();
@@ -127,15 +128,15 @@ public class CardControllerTest {
 		players.add(player02);
 		players.add(player03);
 		ArrayList<Card> cards = cC.generateCardStack(players);
-		
+
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		swc3.getCardController().loadAllCards();
-		
+
 		assertEquals(swc3.getCardController().generateCardStack(players).size(), 63);
 	}
-	
+
 	/**
 	 * tests four player variant
 	 */
@@ -144,7 +145,7 @@ public class CardControllerTest {
 		Game game = new Game("testgame4");
 		SevenWondersController swc5 = new SevenWondersController();
 		swc5.setGame(game);
-		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc5.getPlayerController().createPlayer("second", "Babylon");
 		Player player03 = swc5.getPlayerController().createPlayer("third", "Gizah");
 		Player player04 = swc5.getPlayerController().createPlayer("fourth", "Rhodos");
@@ -154,15 +155,15 @@ public class CardControllerTest {
 		players.add(player03);
 		players.add(player04);
 		ArrayList<Card> cards = cC.generateCardStack(players);
-		
+
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		swc5.getCardController().loadAllCards();
-		
+
 		assertEquals(swc5.getCardController().generateCardStack(players).size(), 84);
 	}
-	
+
 	/**
 	 * tests five player variant
 	 */
@@ -171,7 +172,7 @@ public class CardControllerTest {
 		Game game = new Game("testgame5");
 		SevenWondersController swc5 = new SevenWondersController();
 		swc5.setGame(game);
-		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player01 = swc5.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc5.getPlayerController().createPlayer("second", "Babylon");
 		Player player03 = swc5.getPlayerController().createPlayer("third", "Gizah");
 		Player player04 = swc5.getPlayerController().createPlayer("fourth", "Rhodos");
@@ -183,20 +184,20 @@ public class CardControllerTest {
 		players.add(player04);
 		players.add(player05);
 		ArrayList<Card> cards = cC.generateCardStack(players);
-		
+
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		swc5.getCardController().loadAllCards();
 		assertEquals(swc5.getCardController().generateCardStack(players).size(), 105);
 	}
-	
+
 	@Test
 	public void sixPlayersTest() {
 		Game game = new Game("testgame6");
 		SevenWondersController swc6 = new SevenWondersController();
 		swc6.setGame(game);
-		Player player01 = swc6.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player01 = swc6.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc6.getPlayerController().createPlayer("second", "Babylon");
 		Player player03 = swc6.getPlayerController().createPlayer("third", "Gizah");
 		Player player04 = swc6.getPlayerController().createPlayer("fourth", "Rhodos");
@@ -210,28 +211,25 @@ public class CardControllerTest {
 		players.add(player05);
 		players.add(player06);
 		ArrayList<Card> cards = cC.generateCardStack(players);
-		
+
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		swc6.getCardController().loadAllCards();
 		assertEquals(swc6.getCardController().generateCardStack(players).size(), 126);
 	}
-	
 
 	/**
 	 * tests getPreviewImage
 	 */
-	@Test 
-	public void getPreviewImageTest(){
-		
+	@Test
+	public void getPreviewImageTest() {
+
 		Game game = new Game("testgame8");
 		SevenWondersController swc8 = new SevenWondersController();
 		swc8.setGame(game);
-		
-		
-		
-		Player player01 = swc8.getPlayerController().createPlayer("first", "Alexandria");  
+
+		Player player01 = swc8.getPlayerController().createPlayer("first", "Alexandria");
 		Player player02 = swc8.getPlayerController().createPlayer("second", "Babylon");
 		Player player03 = swc8.getPlayerController().createPlayer("third", "Gizah");
 		Player player04 = swc8.getPlayerController().createPlayer("fourth", "Rhodos");
@@ -247,24 +245,25 @@ public class CardControllerTest {
 		players.add(player06);
 		players.add(player07);
 		ArrayList<Card> cards = swc8.getCardController().generateCardStack(players);
+
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
-		
+
 		ArrayList<Card> cardsToCheck = new ArrayList<Card>();
-		
+
 		System.out.println(cards.size());
-		
+
 		Card card1 = cC.getCard(cards, "lumberyard");
 		Card card2 = cC.getCard(cards, "sawmill");
 		Card card3 = cC.getCard(cards, "treefarm");
 		Card card4 = cC.getCard(cards, "loom1");
 		Card card5 = cC.getCard(cards, "altar");
 		Card card6 = cC.getCard(cards, "library");
-		//red
+		// red
 		Card card7 = cC.getCard(cards, "barracks");
 		Card card8 = cC.getCard(cards, "walls");
 		Card card9 = cC.getCard(cards, "circus");
-		//yellow
+		// yellow
 		Card card10 = cC.getCard(cards, "arena");
 		Card card11 = cC.getCard(cards, "chamberofcommerce");
 		Card card12 = cC.getCard(cards, "haven");
@@ -272,12 +271,26 @@ public class CardControllerTest {
 		Card card14 = cC.getCard(cards, "marketplace");
 		Card card15 = cC.getCard(cards, "tavern");
 		Card card16 = cC.getCard(cards, "westtradingpost");
-		//purple
-		Card card17 = cC.getCard(cards, "workersguild");
-		Card card18 = cC.getCard(cards, "scientistsguild");
-		Card card19 = cC.getCard(cards, "shipownersguild");
-		Card card20 = cC.getCard(cards, "strategistsguild");
+		// purple
+		/*
+		 * Card card17 = cC.getCard(cards, "workersguild"); Card card18 =
+		 * cC.getCard(cards, "scientistsguild"); Card card19 = cC.getCard(cards,
+		 * "shipownersguild"); Card card20 = cC.getCard(cards, "strategistsguild");
+		 */
+		// different height
+		Card card21 = cC.getCard(cards, "bazar");
+		Card card22 = cC.getCard(cards, "caravansery");
+		Card card23 = cC.getCard(cards, "easttradingpost");
+		Card card24 = cC.getCard(cards, "forum");
+		Card card25 = cC.getCard(cards, "vineyard");
+
 		
+		assertEquals(56, cC.getPreviewImage(card21).getHeight(), 0);
+		assertEquals(32, cC.getPreviewImage(card22).getHeight(), 0);
+		assertEquals(54, cC.getPreviewImage(card23).getHeight(), 0);
+		assertEquals(43, cC.getPreviewImage(card24).getHeight(), 0);
+		assertEquals(56, cC.getPreviewImage(card25).getHeight(), 0);
+
 		cardsToCheck.add(card1);
 		cardsToCheck.add(card2);
 		cardsToCheck.add(card3);
@@ -294,22 +307,23 @@ public class CardControllerTest {
 		cardsToCheck.add(card14);
 		cardsToCheck.add(card15);
 		cardsToCheck.add(card16);
-		cardsToCheck.add(card17);
-		cardsToCheck.add(card18);
-		cardsToCheck.add(card19);
-		cardsToCheck.add(card20);
+		/*
+		 * cardsToCheck.add(card17); cardsToCheck.add(card18); cardsToCheck.add(card19);
+		 * cardsToCheck.add(card20);
+		 */
 
-		for(Card card: cardsToCheck) {
+		for (Card card : cardsToCheck) {
 			try {
 				BufferedImage full = ImageIO.read(new File(card.getImage()));
-				assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight() ,cC.getPreviewImage(card).getHeight(), 0);
+				assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight(),
+						cC.getPreviewImage(card).getHeight(), 0);
 			} catch (Exception e) {
 				System.out.println("hi");
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/**
 	 * tests if slot card gets placed correctly
 	 */

@@ -2,11 +2,17 @@ package controller;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import application.Main;
+import model.Game;
+import model.GameState;
 import model.card.Card;
+import model.player.Player;
+import model.ranking.Ranking;
 
 /** tests Card Controller */
 public class CardControllerTest {
@@ -62,11 +68,44 @@ public class CardControllerTest {
 	}
 	
 	/**
-	 * tests if cards are getting loaded correctly
+	 * tests if cards are getting created correctly
 	 */
 	@Test
 	public void loadAllCardTest() {
 		assertEquals(cC.loadAllCards().size(), 78);
 	}
+	
+	/**
+	 * tests if cards are getting loaded correctly
+	 */
+	@Test
+	public void generateCardStackTest() {
+		System.out.println(swc.getGame().getCurrentGameState().getPlayers().size());
+		assertEquals(cC.generateCardStack(swc.getGame().getCurrentGameState().getPlayers()).size(), 216);
+	}
+	
+	/**
+	 * tests two player variant
+	 */
+	@Test
+	public void twoPlayersTest() {
+		Game game = new Game("testgame2");
+		SevenWondersController swc1 = new SevenWondersController();
+		swc1.setGame(game);
+		Player player01 = swc1.getPlayerController().createPlayer("first", "Alexandria");  
+		Player player02 = swc1.getPlayerController().createPlayer("second", "Babylon");
+		ArrayList<Player> players = new ArrayList<Player>();
+		players.add(player01);
+		players.add(player02);
+		ArrayList<Card> cards = cC.generateCardStack(players);
+		game.getStates().add(new GameState(1, 1, players, cards));
+		game.setCurrentState(0);
+		
+		swc1.getCardController().loadAllCards();
+		System.out.println(players.size());
+		assertEquals(swc1.getCardController().generateCardStack(players).size(), 136);
+	}
+	
+
 
 }

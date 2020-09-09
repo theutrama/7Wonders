@@ -76,4 +76,11 @@ public class PlayerControllerTest {
 		 
 	}
 	
+	/**
+	 * checks if two Players getting handled correctly
+	 */
+	public void twoPlayersTest() {
+		
+	}
+	
 }

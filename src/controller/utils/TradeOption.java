@@ -6,6 +6,7 @@ import application.Main;
 import application.Utils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -100,6 +101,7 @@ public class TradeOption {
 			}
 			arrowleft.setFitWidth(45);
 			arrowleft.setFitHeight(25);
+			HBox.setMargin(arrowleft, new Insets(0,5.0,0,0));
 			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" für ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(arrowleft,leftTrade.createResourceImages(),label,createCoinsNode(leftCost));
@@ -118,6 +120,7 @@ public class TradeOption {
 			}
 			arrowright.setFitWidth(45);
 			arrowright.setFitHeight(25);
+			HBox.setMargin(arrowright, new Insets(0,0,0,3));
 			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" für ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
@@ -160,7 +163,7 @@ public class TradeOption {
 	 */
 	private HBox createCoinsNode(int coins) {
 		HBox hbox = new HBox();
-		Label label = new Label(""+coins+" ");
+		Label label = new Label(""+coins);
 		label.getStyleClass().addAll("fontstyle","dropshadow");
 		ImageView img = null;
 		try {
@@ -170,6 +173,7 @@ public class TradeOption {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		HBox.setMargin(label, new Insets(0,2,0,0));
 		hbox.getChildren().addAll(label,img);
 		hbox.setAlignment(Pos.CENTER);
 		return hbox;

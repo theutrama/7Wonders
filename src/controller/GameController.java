@@ -227,30 +227,35 @@ public class GameController {
 			int counter = 0;
 			String line = null;
 			line = in.readLine(); // age,card
+			ArrayList<Player> players = new ArrayList<Player>();
 			String wonder1 = in.readLine().split(",")[1]; 
-			String wonder2 = in.readLine().split(",")[1];
-			
-			Player p = p_con.createPlayer("Spieler", Utils.toWonder(wonder1));
-			ArtInt ai = p_con.createAI("AI-Spieler", Utils.toWonder(wonder2), Difficulty.HARDCORE);
+			players.add(p_con.createPlayer("Spieler", Utils.toWonder(wonder1)));
 			
 			Game game = new Game("KI-Turnier");
 			con.setGame(game);
 			ArrayList<Card> cards = new ArrayList<Card>();
-			
-			
 			String[] split;
 			while((line = in.readLine()) != null) {
 				if(line.contains(",")) {
 					split = line.split(",");
 					int age = Integer.valueOf(split[0]);
-					String cardname = Utils.toCard(split[1],age);
-					Card card = card_con.getCard(cardname);
 					
-					if(age != card.getAge()) {
-						throw new CardOutOfAgeException(card,age);
+					if(age == 0) {
+						String wonder = Utils.toCard(split[1],age);
+						ArtInt ai = p_con.createAI("AI-Spieler", Utils.toWonder(wonder), Difficulty.HARDCORE);
+						players.add(ai);
+					} else {
+						String cardname = Utils.toCard(split[1],age);
+						Card card = card_con.getCard(cardname);
+						
+						System.out.println("CARD: "+cardname+" "+age+" "+(card==null));
+						
+						if(age != card.getAge()) {
+							throw new CardOutOfAgeException(card,age);
+						}
+						
+						cards.add(card);
 					}
-					
-					cards.add(card);
 				}else {
 					System.out.println("This thing shouldn't never happen?! LINE:"+line);
 					return false;
@@ -259,7 +264,7 @@ public class GameController {
 			
 			//Reverse Array to get the right order by taking from the TOP
 			Collections.reverse(cards);
-			game_con.nextAge(game, new GameState(0, 1, new ArrayList<Player>(Arrays.asList(p,ai)), cards));
+			game_con.nextAge(game, new GameState(0, 1, players, cards));
 			game.getCurrentGameState().setFirstPlayer(0);
 			game.getCurrentGameState().setCurrentPlayer(0);
 			return true;

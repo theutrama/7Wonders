@@ -12,6 +12,10 @@ public class Utils {
 	
 	public static String toWonder(String w) {
 		if(w.equalsIgnoreCase("ephesus"))return "ephesos";
+		if(w.equalsIgnoreCase("alexandria"))return "alexandria";
+		if(w.equalsIgnoreCase("rhodes"))return "rhodos";
+		if(w.equalsIgnoreCase("halicarnassus"))return "halikarnassus";
+		if(w.equalsIgnoreCase("giza"))return "gizah";
 		return w;
 	}
 

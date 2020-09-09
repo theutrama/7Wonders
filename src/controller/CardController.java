@@ -436,7 +436,7 @@ public class CardController {
 			playersize++;
 		ArrayList<Card> toadd = new ArrayList<Card>();
 		ArrayList<Card> guilds = new ArrayList<Card>();
-		
+
 		for (int i = 0; i < cards.size(); i++) {
 			int[] sizes = countCards.get(cards.get(i).getInternalName());
 
@@ -444,22 +444,23 @@ public class CardController {
 				guilds.add(cards.get(i));
 				continue;
 			}
-			if (sizes[0] <= playersize) 
+			if (sizes[0] <= playersize)
 				toadd.add(cards.get(i));
 			if (sizes[1] == 0)
 				continue;
-			if (sizes[1] <= playersize) 
+			if (sizes[1] <= playersize)
 				toadd.add(new Card(cards.get(i)));
 			if (sizes[2] == 0)
 				continue;
-			if (sizes[2] <= playersize) 
+			if (sizes[2] <= playersize)
 				toadd.add(new Card(cards.get(i)));
 		}
-		
-		//Add Guild Cards
+
+		// Add Guild Cards
 		Collections.shuffle(guilds);
-		for(int i = 0; i < playersize+2; i++) toadd.add(guilds.get(i));
-		
+		for (int i = 0; i < playersize + 2; i++)
+			toadd.add(guilds.get(i));
+
 		cards = toadd;
 
 		// shuffle cards
@@ -786,6 +787,13 @@ public class CardController {
 			}
 		}
 
+		if (card.getRequired() != null) {
+			for (Resource resource : card.getRequired()) {
+				if (resource.getType() == ResourceType.COINS)
+					player.addCoins(-resource.getQuantity());
+			}
+		}
+
 		if (trade != null) {
 			swController.getPlayerController().doTrade(player, trade);
 		}
@@ -809,6 +817,7 @@ public class CardController {
 		player.setChooseCard(null);
 		int slot = player.getBoard().nextSlot();
 		player.getBoard().fill(slot);
+		player.getBoard().setAgeOfSlotCards(slot, card.getAge());
 		switch (slot) {
 		case 0:
 			player.getBoard().slot1();

@@ -104,7 +104,7 @@ public class TradeOption implements Serializable {
 			arrowleft.setFitWidth(45);
 			arrowleft.setFitHeight(25);
 			HBox.setMargin(arrowleft, new Insets(0,5.0,0,0));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" für ");
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" fuer ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(arrowleft,leftTrade.createResourceImages(),label,createCoinsNode(leftCost));
 			if (rightCost != 0) {
@@ -123,7 +123,7 @@ public class TradeOption implements Serializable {
 			arrowright.setFitWidth(45);
 			arrowright.setFitHeight(25);
 			HBox.setMargin(arrowright, new Insets(0,0,0,3));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" für ");
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" fuer ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
 		}

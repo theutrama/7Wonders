@@ -60,5 +60,13 @@ public class CardControllerTest {
 		cC.placeCard(randomCard, pC.getPlayer("erster"), null);
 		assertEquals(pC.getPlayer("erster").getBoard().getResearch().get(countScienceCards), randomCard);
 	}
+	
+	/**
+	 * tests if cards are getting loaded correctly
+	 */
+	@Test
+	public void loadAllCardTest() {
+		assertEquals(cC.loadAllCards().size(), 78);
+	}
 
 }

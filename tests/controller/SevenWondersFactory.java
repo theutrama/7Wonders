@@ -48,6 +48,7 @@ public class SevenWondersFactory {
 		Game game = new Game("testgame1");
 		sevenWondersController.setGame(game);
 		ArrayList<Card> cards = cardController.generateCardStack(players);
+		
 		game.getStates().add(new GameState(1, 1, players, cards));
 		game.setCurrentState(0);
 		sevenWondersController.setRanking(new Ranking());

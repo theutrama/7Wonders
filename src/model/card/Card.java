@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import application.Main;
 
-@SuppressWarnings("PMD.ExcessivePublicCount")
+@SuppressWarnings("PMD")
 
 /** Card in SevenWonders */
 public class Card implements Serializable {

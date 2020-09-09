@@ -2,6 +2,8 @@ package model.player.ai;
 
 import model.card.Card;
 
+@SuppressWarnings("PMD")
+
 public class Move {
 
 	private Card chosen;

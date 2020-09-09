@@ -8,12 +8,15 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
 import controller.CardController;
+import controller.GameController;
 import controller.PlayerController;
 import controller.SevenWondersController;
+import controller.exceptions.CardOutOfAgeException;
 import javafx.scene.image.Image;
 import model.Game;
 import model.GameState;
@@ -29,7 +32,11 @@ public class Utils {
 	
 	
 	public static void main(String[] args) {
-		load("C:"+File.separator+"Users"+File.separator+"obena"+File.separator+"Downloads"+File.separator+"ki-turnier-beispiel.csv");
+		try {
+			load("C:"+File.separator+"Users"+File.separator+"obena"+File.separator+"Downloads"+File.separator+"ki-turnier-beispiel.csv");
+		} catch (CardOutOfAgeException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String toWonder(String w) {
@@ -38,7 +45,7 @@ public class Utils {
 	}
 	
 	public static String toCard(String c,int age) {
-		if(c.equalsIgnoreCase("glassworks"))return "glassworks1";
+		if(c.equalsIgnoreCase("glassworks"))return "glassworks"+age;
 		if(c.equalsIgnoreCase("loom"))return "loom"+age;
 		if(c.equalsIgnoreCase("press"))return "press"+age;
 		if(c.equalsIgnoreCase("craftsmen_guild"))return "craftsmensguild";
@@ -46,9 +53,10 @@ public class Utils {
 		return c;
 	}
 	
-	public static void load(String filepath) {
+	public static void load(String filepath) throws CardOutOfAgeException {
 		File file = new File(filepath);
 		SevenWondersController con = SevenWondersController.getInstance();
+		GameController game_con = con.getGameController();
 		CardController card_con = con.getCardController();
 		PlayerController p_con = con.getPlayerController();
 		
@@ -65,23 +73,31 @@ public class Utils {
 			ArtInt ai = p_con.createAI("AI-Spieler", toWonder(wonder2), Difficulty.HARDCORE);
 			
 			Game game = new Game("KI-Turnier");
+			con.setGame(game);
 			ArrayList<Card> cards = new ArrayList<Card>();
-			GameState state = new GameState(1, 1, new ArrayList<Player>(Arrays.asList(p,ai)), cards);
+			
 			
 			String[] split;
-			HashMap<Integer,ArrayList<Card>> map = new HashMap<Integer,ArrayList<Card>>();
 			while((line = in.readLine()) != null) {
-				if(line.contains("")) {
+				if(line.contains(",")) {
 					split = line.split(",");
-					
 					int age = Integer.valueOf(split[0]);
 					String cardname = toCard(split[1],age);
-
 					Card card = card_con.getCard(cardname);
 					
-					System.out.println("CARD: "+card.getInternalName()+" "+card.getAge()+" == "+age);
-				}
+					if(age != card.getAge()) {
+						throw new CardOutOfAgeException(card,age);
+					}
+					
+					cards.add(card);
+				}else System.out.println("This thing shouldn't never happen?! LINE:"+line);
 			}
+			
+			//Reverse Array to get the right order by taking from the TOP
+			Collections.reverse(cards);
+			game_con.nextAge(game, new GameState(0, 1, new ArrayList<Player>(Arrays.asList(p,ai)), cards));
+			game.getCurrentGameState().setFirstPlayer(0);
+			game.getCurrentGameState().setCurrentPlayer(0);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

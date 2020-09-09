@@ -25,6 +25,14 @@ public class ArtInt extends Player {
 		return this.difficulty;
 	}
 	
+	public Action getAction() {
+		return null;
+	}
+	
+	public int choseCard() {
+		return 0;
+	}
+	
 	public int max(int tiefe,int alpha, int beta) {
 		if(tiefe == 0)return 0;
 		int maxWert = alpha;

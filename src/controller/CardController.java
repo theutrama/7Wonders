@@ -349,7 +349,7 @@ public class CardController {
 				addRArray(new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.WOOD)), new String[] { "apothecary" }, null));
 		cards.add(new Card(2, "Statue", "statue", CardType.BLUE, null, addRArray(new Resource(1, ResourceType.WOOD), new Resource(2, ResourceType.ORE)), new String[] { "theater" },
 				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, controller, twoPlayers) -> { player.addVictoryPoints(4); })), 4));
-		cards.add(new Card(3, "Befestigungsanlage", "stockade", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.WOOD)), null, null));
+		cards.add(new Card(1, "Befestigungsanlage", "stockade", CardType.RED, addRArray(new Resource(1, ResourceType.MILITARY)), addRArray(new Resource(1, ResourceType.WOOD)), null, null));
 		cards.add(new Card(1, "Steinbruch", "stonepit", CardType.BROWN, addRArray(new Resource(1, ResourceType.STONE)), null, null, null));
 		cards.add(new Card(3, "Gilde der Strategen", "strategistsguild", CardType.PURPLE, null,
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)), null,

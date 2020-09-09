@@ -247,4 +247,8 @@ public class Card implements Serializable {
 	public int getvPoints() {
 		return vPoints;
 	}
+	
+	public String toString() {
+		return getInternalName();
+	}
 }

@@ -201,4 +201,8 @@ public class Player implements Serializable {
 	public void setOlympiaUsed(boolean olympiaUsed) {
 		this.olympiaUsed = olympiaUsed;
 	}
+	
+	public String toString() {
+		return getName();
+	}
 }

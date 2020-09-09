@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import application.Main;
 import controller.sound.Sound;
@@ -145,15 +146,17 @@ public class GameController {
 	 * @param game     the game
 	 * @param previous last game state of the last age
 	 */
-	private void nextAge(Game game, GameState previous) {
+	public void nextAge(Game game, GameState previous) {
 		GameState state = previous.deepClone();
 		state.setBeginOfRound(true);
 		state.setAge(previous.getAge() + 1);
 		state.setRound(1);
-		ArrayList<Card> ageCards = new ArrayList<>();
+		Stack<Card> ageCards = new Stack<Card>();
 		for (Card card : state.getCardStack())
-			if (card.getAge() == state.getAge())
-				ageCards.add(card);
+			if (card.getAge() == state.getAge()) {
+				System.out.println("PUSH TO STACK "+card);
+				ageCards.push(card);
+			}
 
 		for (Player player : state.getPlayers()) {
 
@@ -167,13 +170,22 @@ public class GameController {
 			}
 
 			for (int i = 0; i < 7; i++) {
-				int index = randInt(0, ageCards.size());
-
-				player.getHand().add(ageCards.get(index)); // assign card to player hand
-				state.getCardStack().remove(ageCards.get(index)); // delete card from card stack
-				ageCards.remove(index); // remove from help list
+				Card card = ageCards.pop();
+				System.out.println(player+ " POP to HAND "+card);
+				
+				player.getHand().add(card); // assign card to player hand
+				state.getCardStack().remove(card); // delete card from card stack
 			}
 		}
+		
+		int size=ageCards.size();
+		//Add the rest of the cards from this age to the Trash
+		for(int i = 0; i < size; i++) {
+			Card card;
+			state.getTrash().add(card = ageCards.pop());
+			System.out.println(i+" ADD TO TRASH "+card);
+		}
+		
 		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
 		state.setFirstPlayer(startPlayer);
 		state.setCurrentPlayer(startPlayer);

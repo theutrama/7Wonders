@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import application.Main;
+import model.card.Card;
 
 /** tests Card Controller */
 public class CardControllerTest {
@@ -14,6 +15,7 @@ public class CardControllerTest {
 	private GameController gC;
 	private PlayerController pC;
 	private CardController cC;
+	private WonderBoardController wbc;
 	
 	/**
 	 * Setup test methods
@@ -25,6 +27,7 @@ public class CardControllerTest {
 		gC = swc.getGameController();
 		cC = swc.getCardController();
 		pC = swc.getPlayerController();
+		wbc = swc.getWonderBoardController();
 		Main.TEST = true;
 	}
 	
@@ -47,6 +50,15 @@ public class CardControllerTest {
 		
 	}
 	
-	
+	/**
+	 * tests if card gets placed correctly
+	 */
+	@Test
+	public void placeCardTest() {
+		int countScienceCards = pC.getPlayer("erster").getBoard().getResearch().size();
+		Card randomCard = cC.getCard("library");
+		cC.placeCard(randomCard, pC.getPlayer("erster"), null);
+		assertEquals(pC.getPlayer("erster").getBoard().getResearch().get(countScienceCards), randomCard);
+	}
 
 }

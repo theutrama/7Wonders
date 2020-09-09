@@ -38,13 +38,13 @@ public class ArtInt extends Player {
 		int minWert = beta;
 		
 		ArrayList<Move> moves = generateMoves();
-		for(Move m : moves) {
+		for(Move move : moves) {
 			
 		}
 		return minWert;
 	}
 	
-	public int doMove(Move m) {
+	public int doMove(Move move) {
 		
 		
 		return 0;

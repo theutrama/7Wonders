@@ -1,6 +1,7 @@
 package controller;
 
 import org.junit.Before;
+import org.junit.Test;
 
 /** test for WonderBoard Controller */
 public class WonderBoardControllerTest {
@@ -14,9 +15,12 @@ public class WonderBoardControllerTest {
 		wbController = swController.getWonderBoardController();
 	}
 	
-	// what to test on wonderBoard ?
-	// resources created by board correctly set (resources, military, guilds, civil, research) ?
-	// slots filled ?
-	// 
+	/**
+	 * tests if cards are placed correctly on board
+	 */
+	@Test
+	public void WonderBoardTest() {
+		
+	}
 	
 }

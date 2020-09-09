@@ -957,7 +957,7 @@ public class CardController {
 	 * @param height height
 	 * @return subimage with the specified coordinates
 	 */
-	private Image getSubimage(BufferedImage img, Rectangle rect) {
+	public Image getSubimage(BufferedImage img, Rectangle rect) {
 		return SwingFXUtils.toFXImage(img.getSubimage((int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight()), null);
 	}
 

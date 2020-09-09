@@ -2,6 +2,8 @@ package model.player.ai;
 
 import model.card.Card;
 
+@SuppressWarnings("PMD.UnusedLocalVariable")
+
 public class Move {
 
 	private Card chosen;

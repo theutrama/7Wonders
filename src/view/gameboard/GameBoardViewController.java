@@ -45,9 +45,15 @@ import javafx.util.Duration;
 import model.Game;
 import model.GameState;
 import model.card.Card;
+import model.card.Effect;
+import model.card.EffectType;
 import model.player.Player;
+import model.player.ai.ArtInt;
 import view.menu.MainMenuViewController;
 
+/**
+ * this controller controls the game flow
+ */
 public class GameBoardViewController extends VBox {
 
 	@FXML
@@ -143,12 +149,16 @@ public class GameBoardViewController extends VBox {
 		generatePanes();
 		refreshBoards();
 
-		if (getCurrentPlayer().getChosenCard() == null) {
-			action = false;
-			setHandCards();
+		if (game().getChoosingPlayer() == null) {
+			if (getCurrentPlayer().getChosenCard() == null) {
+				action = false;
+				setHandCards();
+			} else {
+				action = true;
+				setActionCard();
+			}
 		} else {
-			action = true;
-			setActionCard();
+			selectCardFromTrash(game().getChoosingPlayer());
 		}
 
 		timer = new Timer(true);
@@ -906,7 +916,70 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
+		if (game().getTrash().isEmpty()) {
+			// TODO ausgeben
+			return;
+		}
+		
+		game().setChoosingPlayer(player);
 
+		hbox_cards.getChildren().clear();
+		HBox hboxTitle = new HBox(50);
+		Label label = new Label("Wähle eine Karte vom Ablagestapel");
+		Button exit = new Button("Keine Karte auswählen");
+		exit.setOnAction(event -> exitHalikarnassus());
+		hboxTitle.getChildren().addAll(label, exit);
+		
+		HBox hboxChooseCard = new HBox(10); 
+
+		for (Card card : game().getTrash()) {
+			Button button = new Button();
+			try {
+				ImageView img = new ImageView(Utils.toImage(card.getImage()));
+				img.setFitWidth(141);
+				img.setFitHeight(215);
+				img.setPickOnBounds(true);
+				img.setPreserveRatio(true);
+				button.setGraphic(img);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			button.setTooltip(noDelay(new Tooltip(card.getDescription())));
+			button.setOnAction(event -> {
+				game().getTrash().remove(card);
+				player.getBoard().addCard(card);
+				Main.getSWController().getSoundController().play(Sound.BUILD);
+				if (card.getEffects() != null) {
+					for (Effect effect : card.getEffects()) {
+						if (effect.getType() == EffectType.WHEN_PLAYED)
+							effect.run(player, Main.getSWController().getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
+					}
+				}
+				exitHalikarnassus();
+			});
+			
+			hboxChooseCard.getChildren().add(button);
+			
+			if (player instanceof ArtInt) {
+				// TODO control AI
+			}
+		}
+		
+		VBox vboxChoose = new VBox(10);
+		vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
+		
+		hbox_cards.getChildren().add(vboxChoose);
+	}
+
+	/**
+	 * continue the game and do all procedures
+	 * @param choosing the player that used the choosing ability
+	 */
+	private void exitHalikarnassus() {
+		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
+		game().setChoosingPlayer(null);
+		refreshBoards();
+		setHandCards();
 	}
 
 	/**

@@ -785,6 +785,11 @@ public class CardController {
 					effect.run(player, swController.getPlayerController(), Main.getSWController().getGame().getCurrentGameState().isTwoPlayers());
 			}
 		}
+		
+		for (Resource resource: card.getRequired()) {
+			if (resource.getType() == ResourceType.COINS)
+				player.addCoins(-resource.getQuantity());
+		}
 
 		if (trade != null) {
 			swController.getPlayerController().doTrade(player, trade);

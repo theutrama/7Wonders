@@ -119,6 +119,7 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
+			Main.getSWController().getGameController().setGbvController(null);
 		});
 
 		btn_undo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -160,6 +161,10 @@ public class GameBoardViewController extends VBox {
 		} else {
 			selectCardFromTrash(game().getChoosingPlayer());
 		}
+
+		System.out.println("active: " + action);
+
+		Main.getSWController().getGameController().setGbvController(this);
 
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -760,8 +765,8 @@ public class GameBoardViewController extends VBox {
 							new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))));
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren()
-								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(),
+								event2 -> { System.out.println("event triggered"); Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
@@ -918,9 +923,11 @@ public class GameBoardViewController extends VBox {
 	public void selectCardFromTrash(Player player) {
 		if (game().getTrash().isEmpty()) {
 			// TODO ausgeben
+			System.out.println("stack is empty");
+			exitHalikarnassus();
 			return;
 		}
-		
+
 		game().setChoosingPlayer(player);
 
 		hbox_cards.getChildren().clear();
@@ -929,8 +936,8 @@ public class GameBoardViewController extends VBox {
 		Button exit = new Button("Keine Karte auswählen");
 		exit.setOnAction(event -> exitHalikarnassus());
 		hboxTitle.getChildren().addAll(label, exit);
-		
-		HBox hboxChooseCard = new HBox(10); 
+
+		HBox hboxChooseCard = new HBox(10);
 
 		for (Card card : game().getTrash()) {
 			Button button = new Button();
@@ -957,22 +964,23 @@ public class GameBoardViewController extends VBox {
 				}
 				exitHalikarnassus();
 			});
-			
+
 			hboxChooseCard.getChildren().add(button);
-			
+
 			if (player instanceof ArtInt) {
 				// TODO control AI
 			}
 		}
-		
+
 		VBox vboxChoose = new VBox(10);
 		vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
-		
+
 		hbox_cards.getChildren().add(vboxChoose);
 	}
 
 	/**
 	 * continue the game and do all procedures
+	 * 
 	 * @param choosing the player that used the choosing ability
 	 */
 	private void exitHalikarnassus() {

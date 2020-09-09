@@ -807,7 +807,8 @@ public class CardController {
 	 * @param trade  the trade that was made or null if the wonder is built with own resources
 	 */
 	public void setSlotCard(Card card, Player player, TradeOption trade) {
-		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins())
+		
+		if (trade != null && trade.getLeftCost() + trade.getRightCost() > player.getCoins())
 			return;
 		if (player.getBoard().isFilled(2))
 			return;

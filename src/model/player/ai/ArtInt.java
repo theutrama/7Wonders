@@ -1,10 +1,13 @@
 package model.player.ai;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import application.Main;
 import controller.PlayerController;
 import controller.utils.BuildCapability;
+import controller.utils.TradeOption;
+import model.GameState;
 import model.board.WonderBoard;
 import model.card.Card;
 import model.card.Effect;
@@ -19,7 +22,7 @@ import model.player.ai.Move.Action;
 public class ArtInt extends Player {
 	/** level of skill */
 	private Difficulty difficulty;
-	private PlayerController pcon;
+	private Move next;
 
 	/**
 	 * creates a new AI using the given board
@@ -39,48 +42,65 @@ public class ArtInt extends Player {
 	public ArtInt(String name, Difficulty difficulty, WonderBoard board) {
 		super(name + " - " + difficulty.toString(), board);
 		this.difficulty = difficulty;
-		this.pcon = Main.getSWController().getPlayerController();
 	}
 	
 	public Difficulty getDifficulty() {
 		return this.difficulty;
 	}
 	
+	public Move getMove() {
+		return next;
+	}
+	
 	public Action getAction() {
-		return null;
+		return next.getAction();
 	}
 	
-	public int choseCard() {
-		return 0;
+	public Card getChosenCard() {
+		return next.getCard();
 	}
 	
-	public int AlphaBeta(int tiefe, int alpha, int beta) {
-		if(tiefe == 0)return 0;
+	public Move findMove() {
 		ArrayList<Move> moves = generateMoves();
 		
-		for(Move move : moves) {
-			doMove(move);
+		int v = 0;
+		int value = doMove(moves.get(0));
+		Move best = moves.get(0);
+		Move move;
+		for(int i = 1; i < moves.size(); i++) {
+			move = moves.get(i);
+			v = doMove(move);
+			
+			if(v > value) {
+				value = v;
+				best = move;
+				System.out.println("FOUND BEST "+v+" "+move.getCard()+":"+move.getAction().name());
+			}
 		}
 		
-		return 0;
+		next = best;
+		return best;
 	}
 	
 	public int doMove(Move move) {
+		PlayerController pcon = Main.getSWController().getPlayerController();
 		Card card = move.getCard();
+		BuildCapability capa;
 		Action action = move.getAction();
+		int v = 0;
 		
 		switch(action) {
 		case BUILD:
-			BuildCapability capa = pcon.canBuild(this, card);
+			capa = pcon.canBuild(this, card);
 			
-			int v = 0;
 			switch(capa) {
 			case FREE:
 				v +=2;
-			case OWN_RESOURCE:
-				v += 1;
 			case TRADE: 
-				
+				//MUSS NOCH GEMACHT WERDEN!
+				ArrayList<TradeOption> trade = pcon.getTradeOptions(this, card.getRequired());
+				move.setTradeOption(trade.get(0));
+			case OWN_RESOURCE:
 				switch(card.getType()) {
 				//CIVIL
 				case BLUE: 
@@ -103,7 +123,10 @@ public class ArtInt extends Player {
 					}
 					break;
 				//SCIENCE
-				case GREEN: break;
+				case GREEN: 
+					
+					
+					break;
 				//GUILD
 				case PURPLE: break;
 				//MILITARY
@@ -121,18 +144,23 @@ public class ArtInt extends Player {
 					break;
 				//TRADING
 				case YELLOW: 
-					
-//					Game copy = (Game) Main.getSWController().getGame().cl
+					GameState copy = Main.getSWController().getGame().getCurrentGameState().deepClone();
 					ArrayList<Effect> effects = card.getEffects();
-					for(Effect effect : effects) {
-						switch(effect.getType()) {
-						case AT_MATCH_END: break;
-						case WHEN_PLAYED: 
-							
-//							effect.run(player, game, twoPlayers);
-							
-							
-							break;
+					if(effects!=null) {
+						for(Effect effect : effects) {
+							switch(effect.getType()) {
+							case AT_MATCH_END: 
+							case WHEN_PLAYED: 
+								Player player = copy.getPlayer();
+								
+								//Do Effect!
+								effect.run(player, copy, copy.isTwoPlayers());
+								
+								//Check changes
+								v += player.getVictoryPoints() - getVictoryPoints();
+								v += player.getCoins() - getCoins();
+								break;
+							}
 						}
 					}
 					
@@ -143,16 +171,36 @@ public class ArtInt extends Player {
 			case NONE: return Integer.MIN_VALUE;
 			}
 			break;
-		case PLACE:
-		
+		case PLACE_SLOT:
+			WonderBoard board = getBoard();
+			int next = board.nextSlot();
+			
+			if(next!=-1) {
+				Resource requirement = board.getSlotResquirement(next);
+				capa = pcon.hasResources(this, new ArrayList<Resource>(Arrays.asList(requirement)));
+				
+				switch(capa) {
+				case FREE: 
+					v+=5;
+				case OWN_RESOURCE:
+					v+=4;
+				case TRADE: 
+					//MUSS NOCH GEMACHT WERDEN!
+					ArrayList<TradeOption> trade = pcon.getTradeOptions(this, card.getRequired());
+					move.setTradeOption(trade.get(0));
+					v+=2;
+					break;
+				case NONE: return Integer.MIN_VALUE;
+				}
+			}
 			break;
 		case SELL: 
-			
+			v+=3;
 			break;
 		}
 		
 		
-		return 0;
+		return v;
 	}
 	
 	public ArrayList<Move> generateMoves() {

@@ -1,17 +1,29 @@
 package model.player.ai;
 
+import java.io.Serializable;
+
+import controller.utils.TradeOption;
 import model.card.Card;
 
 @SuppressWarnings("PMD")
 
-public class Move {
+public class Move implements Serializable {
 
 	private Card chosen;
 	private Action action;
+	private TradeOption tradeOption;
 	
 	public Move(Card chosen, Action action) {
 		this.chosen = chosen;
 		this.action = action;
+	}
+	
+	public void setTradeOption(TradeOption tradeOption) {
+		this.tradeOption = tradeOption;
+	}
+	
+	public TradeOption getTradeOption() {
+		return tradeOption;
 	}
 	
 	public Card getCard() {
@@ -24,7 +36,7 @@ public class Move {
 	
 	public enum Action{
 		BUILD,
-		PLACE,
+		PLACE_SLOT,
 		SELL;
 	}
 }

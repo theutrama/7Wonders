@@ -1,6 +1,7 @@
 package controller.utils;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import application.Main;
@@ -13,7 +14,7 @@ import model.card.Resource;
 import model.player.Player;
 
 /** stores ResourceBundles for all cards */
-public class ResourceBundle {
+public class ResourceBundle implements Serializable {
 	/** counters for resource quantities */
 	private int wood, stone, ore, cloth, glass, brick, papyrus, coins;
 

@@ -340,23 +340,23 @@ public class PlayerController {
 			missing.add(bundle.getMissing(resources));
 
 		ArrayList<TradeOption> result = new ArrayList<>();
-		
+
 		if (Main.getSWController().getGame().getCurrentGameState().isTwoPlayers()) {
-			
+
 			Player neighbour = getRightNeighbour(player);
 			ArrayList<ResourceBundle> trades = new ArrayList<>();
-			
+
 			generateTradeTree(neighbour).getAllCombinationsAsList().forEach(list -> trades.addAll(allSums(list)));
-			
-			for (ResourceBundle missingResources: missing) {
-				for (ResourceBundle trade: trades) {
+
+			for (ResourceBundle missingResources : missing) {
+				for (ResourceBundle trade : trades) {
 					if (trade.getCostForPlayer(player, true) <= player.getCoins() && trade.equals(missingResources))
 						result.add(new TradeOption(trade, null, trade.getCostForPlayer(player, true), 0));
 				}
 			}
-			
+
 		} else {
-			
+
 			Player left = getLeftNeighbour(player);
 			Player right = getRightNeighbour(player);
 

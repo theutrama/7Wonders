@@ -26,6 +26,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -40,6 +41,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -71,7 +73,7 @@ public class GameBoardViewController extends VBox {
 
 	@FXML
 	private Button btn_back;
-	
+
 	@FXML
 	private HBox hbox_cards;
 
@@ -86,6 +88,9 @@ public class GameBoardViewController extends VBox {
 
 	private Timer timer;
 
+	/**
+	 * create new controller
+	 */
 	public GameBoardViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gameboard/GameBoard.fxml"));
 		loader.setRoot(this);
@@ -96,15 +101,12 @@ public class GameBoardViewController extends VBox {
 
 			e.printStackTrace();
 		}
-		
-		Main.primaryStage.setOnCloseRequest(event -> {
-			Main.getSWController().getIOController().save(Main.getSWController().getGame());
-			Main.getSWController().getIOController().saveRanking();
-		});
+
+		Main.primaryStage.setOnCloseRequest(event -> { Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
 
 		scrollpane.setMinSize(1000, 500);
 		hbox_cards.setAlignment(Pos.CENTER);
-		
+
 		btn_back.setOnAction(event -> {
 			exit();
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
@@ -113,8 +115,24 @@ public class GameBoardViewController extends VBox {
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 		});
 
-		btn_undo.setOnMouseClicked(event -> Main.getSWController().getGameController().undo(Main.getSWController().getGame()));
-		btn_redo.setOnMouseClicked(event -> Main.getSWController().getGameController().redo(Main.getSWController().getGame()));
+		btn_undo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			System.out.println("undo");
+			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
+				System.out.println("undo2");
+				refreshBoards();
+				setHandCards();
+			}
+		});
+		btn_undo.setPickOnBounds(true);
+		btn_redo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+			System.out.println("redo");
+			if (Main.getSWController().getGameController().redo(Main.getSWController().getGame())) {
+				System.out.println("redo2");
+				refreshBoards();
+				setHandCards();
+			}
+		});
+		btn_redo.setPickOnBounds(true);
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 
@@ -124,6 +142,14 @@ public class GameBoardViewController extends VBox {
 		boardPanes = new ArrayList<>();
 		generatePanes();
 		refreshBoards();
+
+		if (getCurrentPlayer().getChosenCard() == null) {
+			action = false;
+			setHandCards();
+		} else {
+			action = true;
+			setActionCard();
+		}
 
 		timer = new Timer(true);
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -137,10 +163,16 @@ public class GameBoardViewController extends VBox {
 		}, 1000, 1000);
 	}
 
+	/**
+	 * cancel the timer
+	 */
 	public void exit() {
 		timer.cancel();
 	}
 
+	/**
+	 * fills the borderpane and {@link #boardPanes} list with components to hold wonder boards, depending on the player count
+	 */
 	private void generatePanes() {
 		StackPane pane = new StackPane();
 		boardPanes.add(pane);
@@ -269,6 +301,9 @@ public class GameBoardViewController extends VBox {
 			stpane.setPadding(new Insets(0, 0, 20, 0));
 	}
 
+	/**
+	 * create new Boards and display them
+	 */
 	private void refreshBoards() {
 		int index2 = game().getCurrentPlayer();
 		for (int i = 0; i < game().getPlayers().size(); i++) {
@@ -287,10 +322,11 @@ public class GameBoardViewController extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		setHandCards();
 	}
 
+	/**
+	 * next player
+	 */
 	public void turn() {
 		if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
 			game().setCurrentPlayer(0);
@@ -305,8 +341,14 @@ public class GameBoardViewController extends VBox {
 				Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 				updateAllBoards();
 			}
-		} else
+		} else if (game().isAtBeginOfRound()) {
+			GameState state = game().deepClone();
+			Main.getSWController().getGame().deleteRedoStates();
+			Main.getSWController().getGame().getStates().add(state);
+			Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
+			updateAllBoards();
 			game().setBeginOfRound(false);
+		}
 
 		refreshBoards();
 
@@ -316,20 +358,36 @@ public class GameBoardViewController extends VBox {
 			setHandCards();
 	}
 
+	/**
+	 * shortcut method to get the current game state
+	 * 
+	 * @return current game state
+	 */
 	private static GameState game() {
 		return Main.getSWController().getGame().getCurrentGameState();
 	}
 
+	/**
+	 * shortcut method to get the current player
+	 * 
+	 * @return current player
+	 */
 	private static Player getCurrentPlayer() {
 		return game().getPlayers().get(game().getCurrentPlayer());
 	}
 
+	/**
+	 * calls {@link Board#updatePlayer()} on all boards
+	 */
 	private void updateAllBoards() {
 		for (StackPane pane : boardPanes) {
 			((Board) pane.getChildren().get(0)).updatePlayer();
 		}
 	}
 
+	/**
+	 * inner class that represents a game board
+	 */
 	private static class Board extends VBox {
 		private Player player;
 
@@ -337,6 +395,11 @@ public class GameBoardViewController extends VBox {
 
 		Label labelcoins, labelplayer;
 
+		/**
+		 * create game board
+		 * 
+		 * @param player assigned player
+		 */
 		public Board(Player player) {
 			this.player = player;
 
@@ -451,20 +514,36 @@ public class GameBoardViewController extends VBox {
 			getChildren().add(hboxSlots);
 		}
 
+		/**
+		 * find out whether this board is currently on the top place
+		 * 
+		 * @return true if this board is displayed on top
+		 */
 		private boolean isCurrentBoard() {
 			return player.getName().equals(getCurrentPlayer().getName());
 		}
 
+		/**
+		 * set style of an image view
+		 * 
+		 * @param view image view
+		 */
 		private void adaptSize(ImageView view) {
 			view.setFitWidth(view.getImage().getWidth() * (isCurrentBoard() ? 40 : 30) / view.getImage().getHeight());
 			view.setFitHeight(isCurrentBoard() ? 40 : 30);
 			view.setEffect(new InnerShadow(BlurType.THREE_PASS_BOX, Color.BLACK, 4, 0.5, 0, 0));
 		}
 
+		/**
+		 * update player attribute to the object from the current game state
+		 */
 		private void updatePlayer() {
 			player = Main.getSWController().getPlayerController().getPlayer(player.getName());
 		}
 
+		/**
+		 * update the card views
+		 */
 		private void refresh() {
 			labelplayer.setText(player.getName());
 			labelcoins.setText(String.valueOf(player.getCoins()));
@@ -479,7 +558,7 @@ public class GameBoardViewController extends VBox {
 			for (Card card : player.getBoard().getResources()) {
 				ImageView resicon = new ImageView();
 				resicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(resicon, new Tooltip(card.getDescription()));
+				Tooltip.install(resicon, noDelay(new Tooltip(card.getDescription())));
 				resicon.setStyle("-fx-border-color: black; -fx-border-style: solid; -fx-border-width: 2px;");
 				adaptSize(resicon);
 				hboxresources.getChildren().add(resicon);
@@ -487,35 +566,35 @@ public class GameBoardViewController extends VBox {
 			for (Card card : player.getBoard().getMilitary()) {
 				ImageView milicon = new ImageView();
 				milicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(milicon, new Tooltip(card.getDescription()));
+				Tooltip.install(milicon, noDelay(new Tooltip(card.getDescription())));
 				adaptSize(milicon);
 				hboxmilitary.getChildren().add(milicon);
 			}
 			for (Card card : player.getBoard().getCivil()) {
 				ImageView civilicon = new ImageView();
 				civilicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(civilicon, new Tooltip(card.getDescription()));
+				Tooltip.install(civilicon, noDelay(new Tooltip(card.getDescription())));
 				adaptSize(civilicon);
 				hboxcivil.getChildren().add(0, civilicon);
 			}
 			for (Card card : player.getBoard().getResearch()) {
 				ImageView scicon = new ImageView();
 				scicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(scicon, new Tooltip(card.getDescription()));
+				Tooltip.install(scicon, noDelay(new Tooltip(card.getDescription())));
 				adaptSize(scicon);
 				hboxscience.getChildren().add(0, scicon);
 			}
 			for (Card card : player.getBoard().getTrade()) {
 				ImageView tricon = new ImageView();
 				tricon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(tricon, new Tooltip(card.getDescription()));
+				Tooltip.install(tricon, noDelay(new Tooltip(card.getDescription())));
 				adaptSize(tricon);
 				hboxtrade.getChildren().add(tricon);
 			}
 			for (Card card : player.getBoard().getGuilds()) {
 				ImageView guildicon = new ImageView();
 				guildicon.setImage(Main.getSWController().getCardController().getPreviewImage(card));
-				Tooltip.install(guildicon, new Tooltip(card.getDescription()));
+				Tooltip.install(guildicon, noDelay(new Tooltip(card.getDescription())));
 				adaptSize(guildicon);
 				hboxguild.getChildren().add(0, guildicon);
 			}
@@ -533,6 +612,9 @@ public class GameBoardViewController extends VBox {
 		}
 	}
 
+	/**
+	 * show chosen card view
+	 */
 	public void setActionCard() {
 		if (!action)
 			return;
@@ -558,7 +640,7 @@ public class GameBoardViewController extends VBox {
 				ImageView img2 = new ImageView();
 				img2.setImage(Utils.toImage(Main.TOKENS_PATH + "olympia.png"));
 				img2.setFitWidth(40 * scaleFactor);
-				img2.setFitHeight(40 * scaleFactor);
+				img2.setFitHeight(50 * scaleFactor);
 				hboxOlympia.getChildren().add(img1);
 				hboxOlympia.getChildren().add(img2);
 				hboxOlympia.setAlignment(Pos.CENTER_LEFT);
@@ -576,7 +658,7 @@ public class GameBoardViewController extends VBox {
 					}
 				});
 				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null); getCurrentPlayer().setOlympiaUsed(true); turn(); });
-				btnOlympia.setTooltip(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos"));
+				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
 			}
@@ -715,7 +797,8 @@ public class GameBoardViewController extends VBox {
 			vbox.getChildren().add(btn_wonder);
 			vbox.getChildren().add(btn_sell);
 			vbox.setAlignment(Pos.CENTER);
-			vbox.setSpacing(5);
+			if (getCurrentPlayer().isOlympiaUsed())
+				vbox.setSpacing(5);
 			vbox.setStyle("-fx-background-color: #d9d9d999");
 			outter.getChildren().add(vbox);
 			outter.setBackground(new Background(new BackgroundImage(Utils.toImage(card.getImage()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -729,6 +812,9 @@ public class GameBoardViewController extends VBox {
 		}
 	}
 
+	/**
+	 * show select-card view
+	 */
 	public void setHandCards() {
 		if (action)
 			return;
@@ -774,7 +860,8 @@ public class GameBoardViewController extends VBox {
 			img.setFitHeight(25);
 			img.setFitWidth(25);
 			img.getStyleClass().add("dropshadow");
-			Tooltip.install(img, new Tooltip(tooltip));
+			img.setPickOnBounds(true);
+			Tooltip.install(img, noDelay(new Tooltip(tooltip)));
 			vbox.getChildren().addAll(img, btn);
 			vbox.setAlignment(Pos.CENTER_RIGHT);
 			hbox_cards.getChildren().add(vbox);
@@ -802,7 +889,7 @@ public class GameBoardViewController extends VBox {
 				view.setPreserveRatio(true);
 				btn.setGraphic(view);
 			}
-			btn.setTooltip(new Tooltip(card.getDescription()));
+			btn.setTooltip(noDelay(new Tooltip(card.getDescription())));
 			ImageView img2 = (ImageView) btn.getGraphic();
 			try {
 				img.setImage(Utils.toImage(path + ".png"));
@@ -813,7 +900,24 @@ public class GameBoardViewController extends VBox {
 		}
 	}
 
+	/**
+	 * called to let the mausoleum player choose his free-to-build card
+	 * 
+	 * @param player player
+	 */
 	public void selectCardFromTrash(Player player) {
 
+	}
+
+	/**
+	 * sets show and hide delays of a tooltip to zero
+	 * 
+	 * @param tip tooltip
+	 * @return the same tooltip
+	 */
+	private static Tooltip noDelay(Tooltip tip) {
+		tip.setShowDelay(new Duration(0));
+		tip.setHideDelay(new Duration(0));
+		return tip;
 	}
 }

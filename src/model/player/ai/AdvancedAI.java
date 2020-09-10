@@ -24,4 +24,5 @@ public abstract class AdvancedAI extends ArtInt {
 		return null;
 	}
 
+	
 }

@@ -369,8 +369,18 @@ public class GameBoardViewController extends VBox {
 				action = !action;
 
 				if (!action) { // neue Spielrunde hat begonnen
-					if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+					boolean halikarnassus = false;
+					for (Player player : game().getPlayers()) {
+						if (player.isMausoleum()) {
+							halikarnassus = true;
+							player.setMausoleum(false);
+							selectCardFromTrash(player);
+							break;
+						}
+					}
+					if (halikarnassus)
 						return;
+					Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 					updateAllBoards();
 				}
 			}

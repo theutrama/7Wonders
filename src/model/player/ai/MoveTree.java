@@ -21,19 +21,41 @@ public class MoveTree implements Iterable<Move> {
 	public MoveTree(GameState state) {
 		this(null, state);
 	}
-	
+
 	public void addChild(MoveTree child) {
 		children.add(child);
 	}
-	
+
 	public void clearState() {
 		state = null;
 	}
-	
+
 	public GameState getState() {
 		return state;
 	}
+	
+	public Move getMove() {
+		return move;
+	}
 
+	public ArrayList<MoveTree> getLeaves() {
+		if (children.isEmpty()) {
+			ArrayList<MoveTree> result = new ArrayList<>();
+			result.add(this);
+			return result;
+		} else {
+			ArrayList<MoveTree> result = children.get(0).getLeaves();
+			for (int i = 1; i < children.size(); i++)
+				result.addAll(children.get(i).getLeaves());
+			return result;
+		}
+			
+	}
+
+	public ArrayList<MoveTree> getChildren() {
+		return children;
+	}
+	
 	@Override
 	public Iterator<Move> iterator() {
 		return new Iterator<Move>() {

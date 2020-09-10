@@ -74,25 +74,12 @@ public class GameController {
 	}
 
 	/**
-	 * Creates a new game state and sets it to the current round of the specified game.<br>
-	 * If a player has finished the second stage of the mausoleum {@link Player#isMausoleum() (player attribute)} the method<br>
-	 * {@link GameBoardViewController#selectCardFromTrash(Player)} is called and nothing happens.
+	 * changes the values of the given game state to signal a new round or finishes the game
 	 * 
 	 * @param game  game instance
 	 * @param state the game state
-	 * @return true if a player has finished mausoleum stage two and selectCardFromTrash() was called
 	 */
-	public boolean createNextRound(Game game, GameState state) {
-
-		for (Player player : state.getPlayers()) {
-			if (player.isMausoleum()) {
-
-				player.setMausoleum(false);
-				gbvController.selectCardFromTrash(player);
-
-				return true;
-			}
-		}
+	public void createNextRound(Game game, GameState state) {
 
 		if (state.getRound() == NUM_ROUNDS) {
 			if (state.getAge() == NUM_AGES) {
@@ -105,8 +92,7 @@ public class GameController {
 		} else {
 			nextRound(game, state);
 		}
-
-		return false;
+		
 	}
 
 	/**
@@ -281,7 +267,7 @@ public class GameController {
 	 * @param game  the current game
 	 * @param state the old game state
 	 */
-	private void nextRound(Game game, GameState state) {
+	public void nextRound(Game game, GameState state) {
 		state.setBeginOfRound(true);
 		state.setRound(state.getRound() + 1);
 		if (state.getAge() == SECOND_AGE) {

@@ -89,6 +89,15 @@ public abstract class ArtInt extends Player {
 		return next.getHalikarnassusCard();
 	}
 
+	/**
+	 * get chosen trade
+	 * 
+	 * @return trade
+	 */
+	public TradeOption getTradeOption() {
+		return next.getTradeOption();
+	}
+
 //	
 //	/**
 //	 * finds the best Move for the AI

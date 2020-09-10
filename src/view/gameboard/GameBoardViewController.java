@@ -50,6 +50,7 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
+import model.player.ai.Move.Action;
 import view.menu.MainMenuViewController;
 
 /**
@@ -153,7 +154,7 @@ public class GameBoardViewController extends VBox {
 		boardPanes = new ArrayList<>();
 		generatePanes();
 		refreshBoards();
-		
+
 		System.out.println("choosing player: " + game().getChoosingPlayer());
 		System.out.println("chosen card: " + getCurrentPlayer().getChosenCard());
 		System.out.println("begin of round: " + game().isAtBeginOfRound());
@@ -752,9 +753,9 @@ public class GameBoardViewController extends VBox {
 		try {
 			StackPane outter = new StackPane();
 			VBox vbox = new VBox();
-			// Button Place Card
+
+			Button btnOlympia = new Button();
 			if (!getCurrentPlayer().isOlympiaUsed()) {
-				Button btnOlympia = new Button();
 				HBox hboxOlympia = new HBox();
 				ImageView img1 = new ImageView();
 				img1.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
@@ -829,7 +830,9 @@ public class GameBoardViewController extends VBox {
 					outter.getChildren().remove(vbox);
 
 					if (getCurrentPlayer() instanceof ArtInt) {
-						// TODO control AI
+						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
+						int index = trades.indexOf(option);
+						((Button) tradeNodes.getChildren().get(index)).fire();
 					}
 					break;
 				default:
@@ -884,7 +887,9 @@ public class GameBoardViewController extends VBox {
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 					if (getCurrentPlayer() instanceof ArtInt) {
-						// TODO control AI
+						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
+						int index = trades.indexOf(option);
+						((Button) tradeNodes.getChildren().get(index)).fire();
 					}
 					break;
 				default:
@@ -938,12 +943,26 @@ public class GameBoardViewController extends VBox {
 			outter.setPrefSize(141, 215);
 			hbox_cards.getChildren().add(outter);
 
+			if (getCurrentPlayer() instanceof ArtInt) {
+				Action action = ((ArtInt) getCurrentPlayer()).getAction();
+				switch (action) {
+				case OLYMPIA:
+					btnOlympia.fire();
+					break;
+				case BUILD:
+					btn_place.fire();
+					break;
+				case PLACE_SLOT:
+					btn_wonder.fire();
+					break;
+				case SELL:
+					btn_sell.fire();
+					break;
+				}
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-
-		if (getCurrentPlayer() instanceof ArtInt) {
-			// TODO control AI
 		}
 	}
 
@@ -1006,12 +1025,8 @@ public class GameBoardViewController extends VBox {
 			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					if (!action) {
-						Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
-						getCurrentPlayer().setChooseCard(player.getHand().get(cardIndex));
-					} else {
-						getCurrentPlayer().setChooseCard(null);
-					}
+					Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
+					getCurrentPlayer().setChooseCard(player.getHand().get(cardIndex));
 					turn();
 				}
 			});
@@ -1035,7 +1050,10 @@ public class GameBoardViewController extends VBox {
 		}
 
 		if (player instanceof ArtInt) {
-			// TODO control AI
+			((ArtInt) player).calculateNextMove();
+			Card selected = ((ArtInt) player).getChosenCard();
+			int index = player.getHand().indexOf(selected);
+			((Button) hbox_cards.getChildren().get(index)).fire();
 		}
 	}
 
@@ -1127,7 +1145,9 @@ public class GameBoardViewController extends VBox {
 			updateMouseBlocking();
 
 			if (player instanceof ArtInt) {
-				// TODO control AI
+				Card selected = ((ArtInt) player).getHalikarnassusCard();
+				int index = game().getTrash().indexOf(selected);
+				((Button) hboxChooseCard.getChildren().get(index)).fire();
 			}
 		});
 	}

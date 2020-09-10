@@ -50,7 +50,7 @@ public class NewGameViewController extends StackPane {
 	private VBox vbox_players;
 
 	@FXML
-	private VBox vbox_wonders;
+	protected VBox vbox_wonders;
 
 	@FXML
 	private ImageView img_music;
@@ -62,7 +62,7 @@ public class NewGameViewController extends StackPane {
 	private Label txt_maxplayers;
 
 	@FXML
-	private TextField textfield_gamename;
+	protected TextField textfield_gamename;
 
 	@FXML
 	private Button btn_done;
@@ -73,11 +73,11 @@ public class NewGameViewController extends StackPane {
 	@FXML
 	private Label label_drag;
 
-	private ArrayList<HBox> players;
+	protected ArrayList<HBox> players;
 
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
 
-	private static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
+	protected static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
 
 	public NewGameViewController() {
 
@@ -155,7 +155,7 @@ public class NewGameViewController extends StackPane {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void done() {
+	protected void done() {
 		Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 		if (textfield_gamename.getText().isBlank()) {
 			error("Bitte gib ein Spielnamen an!");
@@ -208,12 +208,12 @@ public class NewGameViewController extends StackPane {
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
 	}
 
-	private void error(String txt) {
+	protected void error(String txt) {
 		txt_maxplayers.setText(txt);
 		txt_maxplayers.setVisible(true);
 	}
 
-	private void addPlayer() {
+	protected void addPlayer() {
 		Main.getSWController().getSoundController().play(Sound.KNOCK);
 		if (textfield_playername.getText().isEmpty() || textfield_playername.getText().isBlank())
 			return;
@@ -233,13 +233,18 @@ public class NewGameViewController extends StackPane {
 
 		txt_maxplayers.setVisible(false);
 
+		addPlayer(textfield_playername.getText());
+		textfield_playername.clear();
+	}
+	
+	protected HBox addPlayer(String playername) {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setSpacing(10);
 
 		Label label_player = new Label();
 		label_player.getStyleClass().add("playerstyle");
-		label_player.setText(textfield_playername.getText());
+		label_player.setText(playername);
 
 		ComboBox<String> type = new ComboBox<>(types);
 		type.getSelectionModel().select(0);
@@ -285,7 +290,6 @@ public class NewGameViewController extends StackPane {
 
 		players.add(hbox);
 
-		textfield_playername.clear();
 
 		btn_minus.setOnAction(event -> {
 			players.remove(hbox);
@@ -296,13 +300,14 @@ public class NewGameViewController extends StackPane {
 		});
 
 		btn_done.setVisible(vbox_players.getChildren().size() > 1);
+		return hbox;
 	}
 
-	private boolean hasWonder(HBox playerBox) {
+	protected boolean hasWonder(HBox playerBox) {
 		return playerBox.getChildren().size() == WONDER_ASSIGNED;
 	}
 
-	private void addWonderToPlayer(HBox playerBox, Label wonder) {
+	protected void addWonderToPlayer(HBox playerBox, Label wonder) {
 		playerBox.getChildren().add(WONDER_INDEX, wonder);
 		wonder.getStyleClass().clear();
 		wonder.getStyleClass().add("wonder-label-selected");

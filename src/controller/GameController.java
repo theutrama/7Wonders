@@ -23,6 +23,7 @@ import model.player.ai.ArtInt;
 import model.player.ai.Difficulty;
 import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
+import view.newgame.NewCSVGameViewController;
 import view.result.ResultViewController;
 
 /**
@@ -212,14 +213,14 @@ public class GameController {
 			int counter = 0;
 			String line = null;
 			line = in.readLine(); // age,card
-			ArrayList<Player> players = new ArrayList<Player>();
+			NewCSVGameViewController view = new NewCSVGameViewController();
 			String wonder1 = in.readLine().split(",")[1];
-			players.add(p_con.createAI("Spieler", Utils.toWonder(wonder1),Difficulty.EASY));
+			view.addPlayer("Spieler", Utils.toWonder(wonder1), true);
 
-			Game game = new Game("KI-Turnier");
-			con.setGame(game);
+			
 			ArrayList<Card> cards = new ArrayList<Card>();
 			String[] split;
+			int ai = 1;
 			while ((line = in.readLine()) != null) {
 				if (line.contains(",")) {
 					split = line.split(",");
@@ -227,8 +228,8 @@ public class GameController {
 
 					if (age == 0) {
 						String wonder = Utils.toCard(split[1], age);
-						ArtInt ai = p_con.createAI("AI-Spieler" + players.size(), Utils.toWonder(wonder), Difficulty.HARDCORE);
-						players.add(ai);
+						view.addPlayer("AI-Spieler"+ai, Utils.toWonder(wonder), true);
+						ai++;
 					} else {
 						String cardname = Utils.toCard(split[1], age);
 						Card card = card_con.getCard(cardname);
@@ -247,11 +248,9 @@ public class GameController {
 
 			// Reverse Array to get the right order by taking from the TOP
 			Collections.reverse(cards);
-			GameState state;
-			game_con.nextAge(game, state = new GameState(0, 1, players, cards));
-			game.getStates().add(state);
-			game.getCurrentGameState().setFirstPlayer(0);
-			game.getCurrentGameState().setCurrentPlayer(0);
+			view.setCardStack(cards);
+
+			Main.primaryStage.getScene().setRoot(view);
 			return true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

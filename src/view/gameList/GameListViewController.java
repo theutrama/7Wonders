@@ -113,9 +113,7 @@ public class GameListViewController extends BorderPane {
 						Main.getSWController().getWonderBoardController().loadBoardClasses();
 						boolean loaded = con.loadCSV(file);
 
-						if (loaded) {
-							Main.primaryStage.getScene().setRoot(new GameBoardViewController());
-						} else {
+						if (!loaded) {
 							System.out.println("Die Datei konnte nicht geladen werden!");
 						}
 					} catch (CardOutOfAgeException e) {

@@ -322,7 +322,7 @@ public class GameController {
 			}
 		}
 		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
-		
+		Main.getSWController().getSoundController().stopAll();
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 		Main.getSWController().getIOController().deleteFile(game.getName());
 	}

@@ -183,8 +183,7 @@ public class EasyAI extends ArtInt{
 						
 						for(Card rs_card : own_producing) {
 							if(rs_card==null) {
-								new NullPointerException("rs_card is NULL!!").printStackTrace();
-								return Double.NEGATIVE_INFINITY;
+								throw new NullPointerException("rs_card is NULL!!");
 							}
 						}
 						
@@ -192,8 +191,7 @@ public class EasyAI extends ArtInt{
 							c=rs_card;
 							ArrayList<Resource> producing = rs_card.getProducing();
 							if(producing == null) {
-								new NullPointerException("producing is NULL!!").printStackTrace();
-								return Double.NEGATIVE_INFINITY;
+								throw new NullPointerException("producing is NULL!! "+c.getName());
 							}
 							
 							for(Resource produce : rs_card.getProducing()) {

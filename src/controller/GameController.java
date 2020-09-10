@@ -261,7 +261,9 @@ public class GameController {
 
 			// Reverse Array to get the right order by taking from the TOP
 			Collections.reverse(cards);
-			game_con.nextAge(game, new GameState(0, 1, players, cards));
+			GameState state;
+			game_con.nextAge(game, state = new GameState(0, 1, players, cards));
+			game.getStates().add(state);
 			game.getCurrentGameState().setFirstPlayer(0);
 			game.getCurrentGameState().setCurrentPlayer(0);
 			return true;

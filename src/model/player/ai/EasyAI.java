@@ -317,23 +317,29 @@ public class EasyAI extends ArtInt{
 					debug("8.1) RATING add 3");
 					break;
 				case TRADE:
-					TradeOption best = getBestTradeOption(card);
-					
-					if(best==null) {
-						debug("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
-						return Double.NEGATIVE_INFINITY;
-					} else {
-						move.setTradeOption(best);
-						int price = best.getLeftCost()+best.getRightCost();
+					if(capa == BuildCapability.TRADE) {
+						if(card.getRequired() == null) {
+							debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
+							break;
+						}
+						TradeOption best = getBestTradeOption(card);
 						
-						double percentage = price/coins;
-						
-						if(percentage < 0.2) {
-							debug("9.1) RATING add -1");
-							rating -= 1;
-						}else if(percentage < 0.4) {
-							rating -= 2;
-							debug("8.2) RATING add -2");
+						if(best==null) {
+							debug("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
+							return Double.NEGATIVE_INFINITY;
+						} else {
+							move.setTradeOption(best);
+							int price = best.getLeftCost()+best.getRightCost();
+							
+							double percentage = price/coins;
+							
+							if(percentage < 0.2) {
+								debug("9.1) RATING add -1");
+								rating -= 1;
+							}else if(percentage < 0.4) {
+								rating -= 2;
+								debug("8.2) RATING add -2");
+							}
 						}
 					}
 					break;

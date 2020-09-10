@@ -50,7 +50,14 @@ public class EasyAI extends ArtInt{
 		Move best = generate.get(0);
 		double rating = doMove1(best);
 		for(int i = 1; i < generate.size(); i++) {
-			double value = doMove1(generate.get(i));
+			double value;
+			try {
+				value = doMove1(generate.get(i));
+			} catch (Exception e) {
+				value = Double.NEGATIVE_INFINITY;
+				System.out.println("Exception: "+generate.get(i).getCard().getName() + " "+generate.get(i).getAction().name());
+				e.printStackTrace();
+			}
 			
 			if(value > rating) {
 				rating = value;

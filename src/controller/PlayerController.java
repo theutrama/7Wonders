@@ -21,6 +21,7 @@ import model.card.ResourceType;
 import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.Difficulty;
+import model.player.ai.EasyAI;
 
 /** Controller for Players */
 public class PlayerController {
@@ -81,7 +82,7 @@ public class PlayerController {
 	 */
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wbc.createWonderBoard(wonderboard);
-		ArtInt artInt = new ArtInt(playername,difficulty, board);
+		ArtInt artInt = new EasyAI(playername, board);
 		board.setPlayer(artInt);
 		return artInt;
 	}

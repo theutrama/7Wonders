@@ -206,7 +206,7 @@ public abstract class ArtInt extends Player {
 
 								// Check changes
 								v += player.getVictoryPoints() - getVictoryPoints();
-								v += player.getCoins() - getCoins();
+								v += (player.getCoins() - getCoins())/3;
 								break;
 							}
 						}
@@ -250,7 +250,7 @@ public abstract class ArtInt extends Player {
 			}
 			break;
 		case SELL:
-			v += 2;
+			v += 1;
 			break;
 		}
 
@@ -273,7 +273,7 @@ public abstract class ArtInt extends Player {
 //		return list;
 //	}
 
-	private Move next;
+	protected Move next;
 
 	public ArtInt(String name, WonderBoard board) {
 		super(name, board);

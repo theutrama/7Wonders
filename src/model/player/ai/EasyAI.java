@@ -113,7 +113,7 @@ public class EasyAI extends ArtInt{
 			
 			switch (capa) {
 			case FREE:
-				rating += 4;
+				rating += 6;
 			case TRADE:
 				if(capa == BuildCapability.TRADE) {
 					if(card.getRequired() == null) {
@@ -190,10 +190,7 @@ public class EasyAI extends ArtInt{
 						for(Card rs_card : own_producing) {
 							c=rs_card;
 							ArrayList<Resource> producing = rs_card.getProducing();
-							if(producing == null) {
-								throw new NullPointerException("producing is NULL!! "+c.getName());
-							}
-							
+							if(producing == null) continue;
 							for(Resource produce : rs_card.getProducing()) {
 								rr = produce;
 								if(list.contains(produce.getType()))list.remove(produce.getType());

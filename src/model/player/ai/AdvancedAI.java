@@ -18,19 +18,28 @@ import model.player.ai.Move.Action;
 public abstract class AdvancedAI extends ArtInt {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * create an advanced AI
+	 * 
+	 * @param name  name
+	 * @param board it's wonder board
+	 */
 	public AdvancedAI(String name, WonderBoard board) {
 		super(name, board);
 	}
 
+	/**
+	 * overrides ArtInt's method {@link ArtInt#calculateNextMove()}
+	 */
 	@Override
 	public void calculateNextMove() {
 		MoveTree tree = generateTree();
 
 		int maxValue = Integer.MIN_VALUE;
 		Move maxMove = null;
-		
+
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
-			for (MoveTree child: tree.getChildren()) {
+			for (MoveTree child : tree.getChildren()) {
 				int value = evaluate(child.getState());
 				if (value > maxValue) {
 					maxMove = child.getMove();
@@ -55,10 +64,15 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 		}
-		
+
 		this.next = maxMove;
 	}
 
+	/**
+	 * generates a tree of possible moves
+	 * 
+	 * @return tree
+	 */
 	private MoveTree generateTree() {
 
 		ArrayList<MoveTree> leaves = new ArrayList<>();
@@ -170,11 +184,31 @@ public abstract class AdvancedAI extends ArtInt {
 		return tree;
 	}
 
+	/**
+	 * the given game state must not be changed! use deepClone() to execute the move on a new game state
+	 * 
+	 * @param move  the move to be executed
+	 * @param state game state
+	 * @return a new game state object
+	 */
 	private GameState doMove(Move move, GameState state) {
 		return null;
 	}
 
+	/**
+	 * calculates the value of a game state, depending on AI's level
+	 * 
+	 * @param state game state
+	 * @return value
+	 */
 	protected abstract int evaluate(GameState state);
 
+	/**
+	 * determine the card a player (and this AI) is probably going to select from the given list of trash cards
+	 * 
+	 * @param player player to choose
+	 * @param trash  trash cards
+	 * @return the chosen card
+	 */
 	protected abstract Card selectCardFromTrash(Player player, ArrayList<Card> trash);
 }

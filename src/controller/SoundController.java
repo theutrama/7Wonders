@@ -57,7 +57,6 @@ public class SoundController {
 		SoundPlayer remove = null;
 		for (SoundPlayer player : players) {
 			if (player.getSound() == sound) {
-
 				player.stop();
 				remove = player;
 				break;

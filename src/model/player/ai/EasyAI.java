@@ -101,6 +101,9 @@ public class EasyAI extends ArtInt{
 		case OLYMPIA: break;
 		case BUILD:
 			capa = pcon.canBuild(this, card);
+			boolean hasCard = Main.getSWController().getCardController().hasCard(this, card.getInternalName());
+			if(hasCard)return Double.NEGATIVE_INFINITY;
+			
 			switch (capa) {
 			case FREE:
 				rating += 4;

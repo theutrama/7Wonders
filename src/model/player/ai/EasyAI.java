@@ -132,7 +132,6 @@ public class EasyAI extends ArtInt{
 		int coins = this.getCoins();
 
 		switch (move.getAction()) {
-		case OLYMPIA: break;
 		case BUILD:
 			capa = pcon.canBuild(this, card);
 			boolean hasCard = Main.getSWController().getCardController().hasCard(this, card.getInternalName());
@@ -167,6 +166,9 @@ public class EasyAI extends ArtInt{
 						}
 					}
 				}
+			case NONE:
+					if(!(getBoard() instanceof OlympiaBoard) || !((OlympiaBoard)getBoard()).isFilled(1) || isOlympiaUsed())
+						return Double.NEGATIVE_INFINITY;
 			case OWN_RESOURCE:
 				switch (card.getType()) {
 				// CIVIL
@@ -360,8 +362,6 @@ public class EasyAI extends ArtInt{
 					break;
 				}
 				break;
-			case NONE:
-				return Double.NEGATIVE_INFINITY;
 			}
 			break;
 		case PLACE_SLOT:

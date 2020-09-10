@@ -290,6 +290,14 @@ public class PlayerController {
 		return canBuild(player, card, Main.getSWController().getGame().getCurrentGameState());
 	}
 
+	/**
+	 * used to find out the way a player can build a card
+	 * 
+	 * @param player player
+	 * @param card   card
+	 * @param state  current game state
+	 * @return the type of ability to build
+	 */
 	public BuildCapability canBuild(Player player, Card card, GameState state) {
 		if (card.getDependencies() != null && card.getDependencies().length > 0) {
 			boolean dependencies = true;
@@ -317,6 +325,14 @@ public class PlayerController {
 		return hasResources(player, resources, Main.getSWController().getGame().getCurrentGameState());
 	}
 
+	/**
+	 * used to find the way a player can collect the specified list of resources
+	 * 
+	 * @param player    player
+	 * @param resources list of resources
+	 * @param state     current game state
+	 * @return the type of ability to collect the resources
+	 */
 	public BuildCapability hasResources(Player player, ArrayList<Resource> resources, GameState state) {
 		if (resources.isEmpty())
 			return BuildCapability.OWN_RESOURCE;
@@ -423,12 +439,20 @@ public class PlayerController {
 	 * 
 	 * @param player    player
 	 * @param resources required resources
+	 * @param state     current game state
 	 * @return list of trade options
 	 */
 	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources, GameState state) {
 		return getTradeOptions(player, new ResourceBundle(resources), state);
 	}
-	
+
+	/**
+	 * find all options to trade with the two neighbours to collect the specified resources
+	 * 
+	 * @param player    player
+	 * @param resources required resources
+	 * @return list of trade options
+	 */
 	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources) {
 		return getTradeOptions(player, new ResourceBundle(resources), Main.getSWController().getGame().getCurrentGameState());
 	}

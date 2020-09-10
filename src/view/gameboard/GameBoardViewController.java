@@ -806,7 +806,7 @@ public class GameBoardViewController extends VBox {
 						new Thread(() -> {
 							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 							int index = trades.indexOf(option);
-							((Button) tradeNodes.getChildren().get(index)).fire();
+							Platform.runLater(() -> {((Button) tradeNodes.getChildren().get(index)).fire();});
 						}).start();
 					}
 					break;
@@ -865,7 +865,7 @@ public class GameBoardViewController extends VBox {
 						new Thread(() -> {
 							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 							int index = trades.indexOf(option);
-							((Button) tradeNodes.getChildren().get(index)).fire();
+							Platform.runLater(() -> {((Button) tradeNodes.getChildren().get(index)).fire();});
 						}).start();
 					}
 					break;
@@ -923,20 +923,22 @@ public class GameBoardViewController extends VBox {
 			if (getCurrentPlayer() instanceof ArtInt) {
 				new Thread(() -> {
 					Action action = ((ArtInt) getCurrentPlayer()).getAction();
-					switch (action) {
-					case OLYMPIA:
-						btnOlympia.fire();
-						break;
-					case BUILD:
-						btn_place.fire();
-						break;
-					case PLACE_SLOT:
-						btn_wonder.fire();
-						break;
-					case SELL:
-						btn_sell.fire();
-						break;
-					}
+					Platform.runLater(() -> {
+						switch (action) {
+						case OLYMPIA:
+							btnOlympia.fire();
+							break;
+						case BUILD:
+							btn_place.fire();
+							break;
+						case PLACE_SLOT:
+							btn_wonder.fire();
+							break;
+						case SELL:
+							btn_sell.fire();
+							break;
+						}
+					});
 				}).start();
 			}
 
@@ -1034,7 +1036,7 @@ public class GameBoardViewController extends VBox {
 				Card selected = ((ArtInt) player).getChosenCard();
 				int index = player.getHand().indexOf(selected);
 				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
-				((Button) vbox.getChildren().get(1)).fire();
+				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });
 			}).start();
 		}
 	}
@@ -1127,9 +1129,11 @@ public class GameBoardViewController extends VBox {
 			updateMouseBlocking();
 
 			if (player instanceof ArtInt) {
-				new Thread(
-						() -> { Card selected = ((ArtInt) player).getHalikarnassusCard(); int index = game().getTrash().indexOf(selected); ((Button) hboxChooseCard.getChildren().get(index)).fire(); })
-								.start();
+				new Thread(() -> {
+					Card selected = ((ArtInt) player).getHalikarnassusCard();
+					int index = game().getTrash().indexOf(selected);
+					Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
+				}).start();
 			}
 		});
 	}

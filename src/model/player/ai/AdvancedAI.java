@@ -8,6 +8,7 @@ import model.GameState;
 import model.board.WonderBoard;
 import model.card.Card;
 import model.player.Player;
+import model.player.ai.Move.Action;
 
 public abstract class AdvancedAI extends ArtInt {
 
@@ -34,6 +35,14 @@ public abstract class AdvancedAI extends ArtInt {
 				
 				for (Card handcard: currentPlayer.getHand()) {
 					BuildCapability capability = Main.getSWController().getPlayerController().canBuild(currentPlayer, handcard, state);
+					switch (capability) {
+					case FREE:
+					case OWN_RESOURCE:
+						Move move = new Move(handcard, Action.BUILD);
+						MoveTree newTree = new MoveTree(move, doMove(move, state));
+						newLeaves.add(newTree);
+						leaf.addChild(newTree);
+					}
 				}
 				
 				leaf.clearState();
@@ -43,5 +52,9 @@ public abstract class AdvancedAI extends ArtInt {
 		return null;
 	}
 
+	
+	private GameState doMove(Move move, GameState state) {
+		return null;
+	}
 	
 }

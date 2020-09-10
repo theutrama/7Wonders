@@ -247,8 +247,6 @@ public class GameController {
 						String cardname = Utils.toCard(split[1], age);
 						Card card = card_con.getCard(cardname);
 
-						System.out.println("CARD: " + cardname + " " + age + " " + (card == null));
-
 						if (age != card.getAge()) {
 							throw new CardOutOfAgeException(card, age);
 						}

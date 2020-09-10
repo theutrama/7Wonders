@@ -57,7 +57,6 @@ public class SoundController {
 		SoundPlayer remove = null;
 		for (SoundPlayer player : players) {
 			if (player.getSound() == sound) {
-
 				player.stop();
 				remove = player;
 				break;
@@ -170,16 +169,17 @@ public class SoundController {
 		}
 
 		public boolean setLoop() {
-			final int ONE = 1;
-			if (filenames.length > ONE)
+			if (filenames.length > 1)
 				player.setOnEndOfMedia(() -> {
 					this.index++;
-					if (this.filenames.length == this.index)
+					if(this.filenames.length <= this.index) 
 						this.index = 0;
+					
 					this.player.stop();
 					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
 					setVolume(volume);
 					this.player.play();
+					setLoop();
 				});
 			else
 				player.setCycleCount(MediaPlayer.INDEFINITE);

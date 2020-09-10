@@ -10,6 +10,7 @@ import controller.PlayerController;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
 import model.GameState;
+import model.board.HalikarnassusBoard;
 import model.board.OlympiaBoard;
 import model.board.WonderBoard;
 import model.card.Card;
@@ -34,6 +35,28 @@ public class EasyAI extends ArtInt{
 		System.out.println(getName() + ": " + msg);
 	}
 	
+	public Card calculateHalikarnassusCard() {
+		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
+			ArrayList<Card> trash = Main.getSWController().getGame().getCurrentGameState().getTrash();
+			if(trash.isEmpty())return null;
+			
+			Card best = trash.get(0);
+			double rating = doMove1(new Move(best, Action.BUILD));
+			double value;
+			for(int i = 1; i < trash.size(); i++) {
+				value = doMove1( new Move(trash.get(i),Action.BUILD) );
+				
+				if(value > rating) {
+					rating = value;
+					best = trash.get(i);
+				}
+			}
+			
+			return (rating == Double.NEGATIVE_INFINITY ? null : best);
+		}
+		return null;
+	}
+	
 	/**
 	 * calculates next move
 	 * Priority age1: 	get resources (max 1 from every resource, max 2 cards in total) prio wonderboard
@@ -49,8 +72,8 @@ public class EasyAI extends ArtInt{
 		
 		Move best = generate.get(0);
 		double rating = doMove1(best);
+		double value;
 		for(int i = 1; i < generate.size(); i++) {
-			double value;
 			try {
 				value = doMove1(generate.get(i));
 			} catch (Exception e) {
@@ -69,6 +92,7 @@ public class EasyAI extends ArtInt{
 		doMove1(best);
 		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
 		debug = false;
+		this.next.setHalikarnassusCard(calculateHalikarnassusCard());
 		this.next = best;
 	}
 	
@@ -157,6 +181,7 @@ public class EasyAI extends ArtInt{
 							ResourceType.BRICK, 
 							ResourceType.STONE, 
 							ResourceType.ORE));
+					list.remove(getBoard().getResource().getType());
 					
 					Player left = pcon.getNeighbour(state, true, this);
 					for(Card rs_card : left.getBoard().getResources()) {
@@ -255,6 +280,8 @@ public class EasyAI extends ArtInt{
 							rating += 1;
 							debug("4.2) RATING add 4");
 						}
+					} else {
+						rating += 1.5;
 					}
 					//Age = 1 && 3 Clockwise
 					ArrayList<Card> nextHand = (age==1 || age == 3 ? pcon.getNeighbour(state, false, this).getHand() : pcon.getNeighbour(state, true, this).getHand());

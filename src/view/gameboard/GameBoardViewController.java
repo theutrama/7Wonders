@@ -1053,7 +1053,8 @@ public class GameBoardViewController extends VBox {
 			((ArtInt) player).calculateNextMove();
 			Card selected = ((ArtInt) player).getChosenCard();
 			int index = player.getHand().indexOf(selected);
-			((Button) hbox_cards.getChildren().get(index)).fire();
+			VBox vbox = (VBox) hbox_cards.getChildren().get(index);
+			((Button) vbox.getChildren().get(1)).fire();
 		}
 	}
 

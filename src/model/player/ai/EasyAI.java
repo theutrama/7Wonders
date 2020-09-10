@@ -181,6 +181,12 @@ public class EasyAI extends ArtInt{
 						getBoard().getResources().forEach( value -> { own_producing.add(value); } );
 						getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
 						
+						for(Card rs_card : own_producing) {
+							if(rs_card==null) {
+								new NullPointerException("rs_card is NULL!!").printStackTrace();
+								return Double.NEGATIVE_INFINITY;
+							}
+						}
 						
 						for(Card rs_card : own_producing) {
 							c=rs_card;

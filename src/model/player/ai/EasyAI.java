@@ -176,14 +176,28 @@ public class EasyAI extends ArtInt{
 						}
 					}
 					
+					Card c = null;
+					Resource rr = null;
 					ArrayList<Card> own_producing = new ArrayList<Card>();
-					getBoard().getResources().forEach( value -> { own_producing.add(value); } );
-					getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
-					
-					for(Card rs_card : own_producing) {
-						for(Resource produce : rs_card.getProducing()) {
-							if(list.contains(produce.getType()))list.remove(produce.getType());
+					try {
+						getBoard().getResources().forEach( value -> { own_producing.add(value); } );
+						getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
+						
+						
+						for(Card rs_card : own_producing) {
+							c=rs_card;
+							for(Resource produce : rs_card.getProducing()) {
+								rr = produce;
+								if(list.contains(produce.getType()))list.remove(produce.getType());
+							}
 						}
+					}catch(Exception e) {
+						System.out.println("PRO - CARD "+(c == null ? "NULL" : card.getName()));
+						System.out.println("PRO - RESOURCE "+(rr == null ? "NULL" : "Q:"+rr.getQuantity()+" Type:"+rr.getType().name()));
+						System.out.println("OWN: "+own_producing.size());
+						
+						e.printStackTrace();
+						return Double.NEGATIVE_INFINITY;
 					}
 					
 					WonderBoard board = getBoard();

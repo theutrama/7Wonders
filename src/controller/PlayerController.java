@@ -35,7 +35,7 @@ public class PlayerController {
 	 * 
 	 * @param swController
 	 */
-	public PlayerController(SevenWondersController swController,WonderBoardController wbc) {
+	public PlayerController(SevenWondersController swController, WonderBoardController wbc) {
 		this.swController = swController;
 		this.wbc = wbc;
 	}
@@ -101,15 +101,15 @@ public class PlayerController {
 	 * fing neighbour
 	 * 
 	 * @param game
-	 * @param left = True -> Left Neighbour or False -> Right Neighbour
+	 * @param left   = True -> Left Neighbour or False -> Right Neighbour
 	 * @param player player
 	 * @return left neighbour
 	 */
-	public Player getNeighbour(GameState state,boolean left, Player player) {
+	public Player getNeighbour(GameState state, boolean left, Player player) {
 		ArrayList<Player> players = state.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getName().equals(player.getName()))
-				return players.get( (left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)) );
+				return players.get((left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)));
 		}
 		return null;
 	}
@@ -287,6 +287,10 @@ public class PlayerController {
 	 * @return the type of ability to build
 	 */
 	public BuildCapability canBuild(Player player, Card card) {
+		return canBuild(player, card, Main.getSWController().getGame().getCurrentGameState());
+	}
+
+	public BuildCapability canBuild(Player player, Card card, GameState state) {
 		if (card.getDependencies() != null && card.getDependencies().length > 0) {
 			boolean dependencies = true;
 			for (String cardname : card.getDependencies()) {
@@ -310,6 +314,10 @@ public class PlayerController {
 	 * @return the type of ability to collect the resources
 	 */
 	public BuildCapability hasResources(Player player, ArrayList<Resource> resources) {
+		return hasResources(player, resources, Main.getSWController().getGame().getCurrentGameState());
+	}
+
+	public BuildCapability hasResources(Player player, ArrayList<Resource> resources, GameState state) {
 		if (resources.isEmpty())
 			return BuildCapability.OWN_RESOURCE;
 
@@ -331,7 +339,7 @@ public class PlayerController {
 				return BuildCapability.OWN_RESOURCE;
 		}
 
-		return getTradeOptions(player, cardRequirement).isEmpty() ? BuildCapability.NONE : BuildCapability.TRADE;
+		return getTradeOptions(player, cardRequirement, state).isEmpty() ? BuildCapability.NONE : BuildCapability.TRADE;
 	}
 
 	/**
@@ -341,7 +349,7 @@ public class PlayerController {
 	 * @param resources required resources
 	 * @return list of trade options
 	 */
-	private ArrayList<TradeOption> getTradeOptions(Player player, ResourceBundle resources) {
+	private ArrayList<TradeOption> getTradeOptions(Player player, ResourceBundle resources, GameState state) {
 		ArrayList<ResourceBundle> combinations = generateResourceTree(player, getStaticResources(player)).getAllCombinations();
 
 		removeGOEDuplicates(combinations);
@@ -352,7 +360,7 @@ public class PlayerController {
 
 		ArrayList<TradeOption> result = new ArrayList<>();
 
-		if (Main.getSWController().getGame().getCurrentGameState().isTwoPlayers()) {
+		if (state.isTwoPlayers()) {
 
 			Player neighbour = getRightNeighbour(player);
 			ArrayList<ResourceBundle> trades = new ArrayList<>();
@@ -368,8 +376,8 @@ public class PlayerController {
 
 		} else {
 
-			Player left = getLeftNeighbour(player);
-			Player right = getRightNeighbour(player);
+			Player left = getNeighbour(state, true, player);
+			Player right = getNeighbour(state, false, player);
 
 			ArrayList<ArrayList<ResourceBundle>> leftTradeLists = generateTradeTree(left).getAllCombinationsAsList();
 			ArrayList<ArrayList<ResourceBundle>> rightTradeLists = generateTradeTree(right).getAllCombinationsAsList();
@@ -417,8 +425,12 @@ public class PlayerController {
 	 * @param resources required resources
 	 * @return list of trade options
 	 */
+	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources, GameState state) {
+		return getTradeOptions(player, new ResourceBundle(resources), state);
+	}
+	
 	public ArrayList<TradeOption> getTradeOptions(Player player, ArrayList<Resource> resources) {
-		return getTradeOptions(player, new ResourceBundle(resources));
+		return getTradeOptions(player, new ResourceBundle(resources), Main.getSWController().getGame().getCurrentGameState());
 	}
 
 	/**

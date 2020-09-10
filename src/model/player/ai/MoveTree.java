@@ -21,11 +21,17 @@ public class MoveTree implements Iterable<Move> {
 	public MoveTree(GameState state) {
 		this(null, state);
 	}
-
-	private void addChildren(ArrayList<Move> moves) {
-		for (Move move : moves) {
-			children.add(new MoveTree(move, state));
-		}
+	
+	public void addChild(MoveTree child) {
+		children.add(child);
+	}
+	
+	public void clearState() {
+		state = null;
+	}
+	
+	public GameState getState() {
+		return state;
 	}
 
 	@Override

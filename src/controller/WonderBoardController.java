@@ -16,7 +16,7 @@ public class WonderBoardController {
 	/** SevenWonder boards */
 	private ArrayList<Class<? extends WonderBoard>> boards = new ArrayList<Class<? extends WonderBoard>>();
 
-	
+	/** loads the board classes */
 	public WonderBoardController() {
 		loadBoardClasses();
 	}
@@ -40,7 +40,8 @@ public class WonderBoardController {
 			loadBoardClasses();
 
 		if (this.boards.contains(clazz)) {
-			this.boards.remove(clazz);
+			//this.boards.remove(clazz);
+			
 			try {
 				Constructor<? extends WonderBoard> con = clazz.getConstructor();
 				return con.newInstance(new Object[] {});

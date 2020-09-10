@@ -173,11 +173,11 @@ public class NewGameViewController extends StackPane {
 		}
 
 		if (players.size() <= 1) {
-			error("Es müssen mindestens 2 Spieler mitspielen!");
+			error("Es muessen mindestens 2 Spieler mitspielen!");
 			return;
 		}
 
-		// Wenn ein Spieler kein Wonder ausgewählt hat wird ihn nun eins zugewiesen
+		// Wenn ein Spieler kein Wonder ausgewaehlt hat wird ihn nun eins zugewiesen
 		ObservableList<Node> last_wonders = vbox_wonders.getChildren();
 		for (HBox player : players) {
 			if (!hasWonder(player) && !last_wonders.isEmpty()) {
@@ -219,7 +219,7 @@ public class NewGameViewController extends StackPane {
 			return;
 
 		if (players.size() == 7) {
-			error("Es können nicht mehr als 7 Spieler hinzugefügt werden.");
+			error("Es koennen nicht mehr als 7 Spieler hinzugefuegt werden.");
 			return;
 		}
 

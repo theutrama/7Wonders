@@ -15,6 +15,7 @@ import model.player.Player;
 
 /** stores ResourceBundles for all cards */
 public class ResourceBundle implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** counters for resource quantities */
 	private int wood, stone, ore, cloth, glass, brick, papyrus, coins;
 

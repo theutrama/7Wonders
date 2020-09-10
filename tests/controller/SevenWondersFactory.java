@@ -30,7 +30,7 @@ public class SevenWondersFactory {
 		Player player2 = playerController.createPlayer("zweiter", "Babylon");
 		Player player3 = playerController.createPlayer("dritter", "Ephesos");
 		Player player4 = playerController.createPlayer("vierter", "Gizah");
-		Player player5 = playerController.createPlayer("fünfter", "Halikarnassus");
+		Player player5 = playerController.createPlayer("fuenfter", "Halikarnassus");
 		Player player6 = playerController.createPlayer("sechster", "Olympia");
 		Player player7 = playerController.createPlayer("siebter", "Rhodos");
 
@@ -70,7 +70,7 @@ public class SevenWondersFactory {
 		  *  				school - tablet
 		  *  				lodge - compass
 		  *  				apothecary - compass
-		  *  				excavation (Ausgrabungsstätte)
+		  *  				excavation (Ausgrabungsstaette)
 		  *  				timberyard (Forstwirtschaft)
 		  *  				brickyard (Ziegelbrennerei)
 		  *  				westtradingpost (Kontor west)
@@ -78,7 +78,7 @@ public class SevenWondersFactory {
 		  *  Player3 Cards: barracks - 1 military points
 		  *  				lodge - compass
 		  *  				study - gear
-		  *  				forestcave (Waldhöhle)
+		  *  				forestcave (Waldhoehle)
 		  * 				mine (Mine)
 		  *  
 		  *  Player4 Cards: stables - 2 military points
@@ -103,7 +103,7 @@ public class SevenWondersFactory {
 		player1 = playerController.getPlayer("zweiter");
 		player1 = playerController.getPlayer("dritter");
 		player1 = playerController.getPlayer("vierter");
-		player1 = playerController.getPlayer("fünfter");
+		player1 = playerController.getPlayer("fuenfter");
 		player1 = playerController.getPlayer("sechster");
 		player1 = playerController.getPlayer("siebter");*/
 		// @formatter:on
@@ -137,7 +137,7 @@ public class SevenWondersFactory {
 		Card card9 = cardController.getCard(cards, "scriptorium"); // tablet
 		
 		
-
+		/*
 		cards.remove(card1);
 		cards.remove(card2);
 		cards.remove(card3);
@@ -159,6 +159,8 @@ public class SevenWondersFactory {
 		cards.remove(card19);
 		cards.remove(card20);
 		cards.remove(card21);
+		*/
+		
 
 		player1.getBoard().addCard(card13);
 		player1.getBoard().addCard(card1);

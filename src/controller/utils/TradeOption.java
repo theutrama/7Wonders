@@ -18,6 +18,7 @@ import model.player.Player;
 
 /** trade options for left and right neighbors */
 public class TradeOption implements Serializable {
+	private static final long serialVersionUID = 1L;
 	/** the traded resources to each side */
 	private ResourceBundle leftTrade, rightTrade;
 	/** cost for each trade */
@@ -103,7 +104,7 @@ public class TradeOption implements Serializable {
 			arrowleft.setFitWidth(45);
 			arrowleft.setFitHeight(25);
 			HBox.setMargin(arrowleft, new Insets(0,5.0,0,0));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" für ");
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" fuer ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(arrowleft,leftTrade.createResourceImages(),label,createCoinsNode(leftCost));
 			if (rightCost != 0) {
@@ -122,11 +123,11 @@ public class TradeOption implements Serializable {
 			arrowright.setFitWidth(45);
 			arrowright.setFitHeight(25);
 			HBox.setMargin(arrowright, new Insets(0,0,0,3));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" für ");
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" fuer ");
 			label.getStyleClass().addAll("fontstyle","dropshadow");
 			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
 		}
-		Label labelbuy = new Label(" handeln");
+		Label labelbuy = new Label(" kaufen");
 		hbox.getChildren().add(labelbuy);
 		if(rightCost != 0) hbox.getChildren().add(arrowright);
 		labelbuy.getStyleClass().addAll("fontstyle", "dropshadow");
@@ -139,11 +140,13 @@ public class TradeOption implements Serializable {
 		btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
 			try {
 				if (newValue) {
+					btn.setStyle("-fx-background-color: #D5D5D560");
 					if(arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhoverleft.png"));
 					if(arrowright != null)
 						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
 				} else {
+					btn.setStyle("-fx-background-color: transparent");
 					if(arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
 					if(arrowright != null)
@@ -153,6 +156,7 @@ public class TradeOption implements Serializable {
 				e.printStackTrace();
 			}
 		});
+		hbox.setStyle("-fx-background-radius: 5px");
 		return btn;
 	}
 

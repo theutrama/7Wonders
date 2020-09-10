@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import application.Main;
 
+/** suppresses warning for PMD */
 @SuppressWarnings("PMD")
 
 /** Card in SevenWonders */
@@ -250,6 +251,7 @@ public class Card implements Serializable {
 		return vPoints;
 	}
 	
+	/** to String method */
 	public String toString() {
 		return getInternalName();
 	}

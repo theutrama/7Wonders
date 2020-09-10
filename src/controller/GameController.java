@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -68,6 +67,7 @@ public class GameController {
 	public void createGameFirstRound(ArrayList<Player> players, Game game) {
 		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
 		GameState state = new GameState(0, 1, players, cardStack);
+		game.getStates().add(state);
 		nextAge(game, state);
 		game.getCurrentGameState().setFirstPlayer(0);
 		game.getCurrentGameState().setCurrentPlayer(0);
@@ -75,36 +75,38 @@ public class GameController {
 
 	/**
 	 * Creates a new game state and sets it to the current round of the specified game.<br>
-	 * If a player has finished the second stage of the mausoleum {@link Player#isMausoleum() (player attribute)} the method {@link GameBoardViewController#selectCardFromTrash(Player)}
-	 * is called<br>
-	 * and nothing happens.
+	 * If a player has finished the second stage of the mausoleum {@link Player#isMausoleum() (player attribute)} the method<br>
+	 * {@link GameBoardViewController#selectCardFromTrash(Player)} is called and nothing happens.
 	 * 
-	 * @param game     game instance
-	 * @param previous the old game state
+	 * @param game  game instance
+	 * @param state the game state
+	 * @return true if a player has finished mausoleum stage two and selectCardFromTrash() was called
 	 */
-	public void createNextRound(Game game, GameState previous) {
+	public boolean createNextRound(Game game, GameState state) {
 
-		for (Player player : previous.getPlayers()) {
+		for (Player player : state.getPlayers()) {
 			if (player.isMausoleum()) {
 
 				player.setMausoleum(false);
 				gbvController.selectCardFromTrash(player);
 
-				return;
+				return true;
 			}
 		}
 
-		if (previous.getRound() == NUM_ROUNDS) {
-			if (previous.getAge() == NUM_AGES) {
-				doConflicts(previous);
-				endGame(game, previous);
+		if (state.getRound() == NUM_ROUNDS) {
+			if (state.getAge() == NUM_AGES) {
+				doConflicts(state);
+				endGame(game, state);
 			} else {
-				doConflicts(previous);
-				nextAge(game, previous);
+				doConflicts(state);
+				nextAge(game, state);
 			}
 		} else {
-			nextRound(game, previous);
+			nextRound(game, state);
 		}
+
+		return false;
 	}
 
 	/**
@@ -153,13 +155,12 @@ public class GameController {
 	/**
 	 * clones the specified game state and creates a new state of the next age
 	 * 
-	 * @param game     the game
-	 * @param previous last game state of the last age
+	 * @param game  the game
+	 * @param state last game state of the last age
 	 */
-	public void nextAge(Game game, GameState previous) {
-		GameState state = previous.deepClone();
+	public void nextAge(Game game, GameState state) {
 		state.setBeginOfRound(true);
-		state.setAge(previous.getAge() + 1);
+		state.setAge(state.getAge() + 1);
 		state.setRound(1);
 		Stack<Card> ageCards = new Stack<Card>();
 		for (Card card : state.getCardStack())
@@ -174,93 +175,93 @@ public class GameController {
 				player.getHand().clear();
 			}
 
-			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1)) { // TODO use static value
+			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1)) {
 				player.setOlympiaUsed(false);
 			}
 
-			System.out.println("ageCards: "+ageCards.size()+" "+player.getName());
+			System.out.println("ageCards: " + ageCards.size() + " " + player.getName());
 			for (int i = 0; i < 7; i++) {
 				Card card = ageCards.pop();
-				
+
 				player.getHand().add(card); // assign card to player hand
 				state.getCardStack().remove(card); // delete card from card stack
 			}
 		}
-		
-		int size=ageCards.size();
-		//Add the rest of the cards from this age to the Trash
-		for(int i = 0; i < size; i++) {
+
+		int size = ageCards.size();
+		// Add the rest of the cards from this age to the Trash
+		for (int i = 0; i < size; i++) {
 			Card card = ageCards.pop();
 			state.getTrash().add(card);
 			state.getCardStack().remove(card);
 		}
-		
-		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
+
+		int startPlayer = (state.getFirstPlayer() + 1) % state.getPlayers().size();
 		state.setFirstPlayer(startPlayer);
 		state.setCurrentPlayer(startPlayer);
 
 		game.deleteRedoStates();
-		game.getStates().add(state);
-		game.setCurrentState(game.getStates().size() - 1);
 	}
-	
+
 	/**
 	 * To Load a Game for Two Player!
+	 * 
 	 * @param filepath Filepath of the csv file
 	 * @return boolean weather all is fine...
 	 * @throws CardOutOfAgeException If the Card age from the table doesn't suit with age of the loaded card
 	 */
 	public boolean loadCSV(File file) throws CardOutOfAgeException {
 		// Wrong File Type
-		if(!file.getName().endsWith(".csv"))return false;
-		
+		if (!file.getName().endsWith(".csv"))
+			return false;
+
 		SevenWondersController con = SevenWondersController.getInstance();
 		GameController game_con = con.getGameController();
 		CardController card_con = con.getCardController();
 		PlayerController p_con = con.getPlayerController();
-		
+
 		try {
 			DataInputStream in = new DataInputStream(new FileInputStream(file));
-			
+
 			int counter = 0;
 			String line = null;
 			line = in.readLine(); // age,card
 			ArrayList<Player> players = new ArrayList<Player>();
-			String wonder1 = in.readLine().split(",")[1]; 
+			String wonder1 = in.readLine().split(",")[1];
 			players.add(p_con.createPlayer("Spieler", Utils.toWonder(wonder1)));
-			
+
 			Game game = new Game("KI-Turnier");
 			con.setGame(game);
 			ArrayList<Card> cards = new ArrayList<Card>();
 			String[] split;
-			while((line = in.readLine()) != null) {
-				if(line.contains(",")) {
+			while ((line = in.readLine()) != null) {
+				if (line.contains(",")) {
 					split = line.split(",");
 					int age = Integer.valueOf(split[0]);
-					
-					if(age == 0) {
-						String wonder = Utils.toCard(split[1],age);
-						ArtInt ai = p_con.createAI("AI-Spieler"+players.size(), Utils.toWonder(wonder), Difficulty.HARDCORE);
+
+					if (age == 0) {
+						String wonder = Utils.toCard(split[1], age);
+						ArtInt ai = p_con.createAI("AI-Spieler" + players.size(), Utils.toWonder(wonder), Difficulty.HARDCORE);
 						players.add(ai);
 					} else {
-						String cardname = Utils.toCard(split[1],age);
+						String cardname = Utils.toCard(split[1], age);
 						Card card = card_con.getCard(cardname);
-						
-						System.out.println("CARD: "+cardname+" "+age+" "+(card==null));
-						
-						if(age != card.getAge()) {
-							throw new CardOutOfAgeException(card,age);
+
+						System.out.println("CARD: " + cardname + " " + age + " " + (card == null));
+
+						if (age != card.getAge()) {
+							throw new CardOutOfAgeException(card, age);
 						}
-						
+
 						cards.add(card);
 					}
-				}else {
-					System.out.println("This thing shouldn't never happen?! LINE:"+line);
+				} else {
+					System.out.println("This thing shouldn't never happen?! LINE:" + line);
 					return false;
 				}
 			}
-			
-			//Reverse Array to get the right order by taking from the TOP
+
+			// Reverse Array to get the right order by taking from the TOP
 			Collections.reverse(cards);
 			game_con.nextAge(game, new GameState(0, 1, players, cards));
 			game.getCurrentGameState().setFirstPlayer(0);
@@ -277,11 +278,10 @@ public class GameController {
 	/**
 	 * sets the current game state to a new game state instance
 	 * 
-	 * @param game     the current game
-	 * @param previous the old game state
+	 * @param game  the current game
+	 * @param state the old game state
 	 */
-	private void nextRound(Game game, GameState previous) {
-		GameState state = previous.deepClone();
+	private void nextRound(Game game, GameState state) {
 		state.setBeginOfRound(true);
 		state.setRound(state.getRound() + 1);
 		if (state.getAge() == SECOND_AGE) {
@@ -295,13 +295,9 @@ public class GameController {
 				state.getPlayers().get(i).setHand(state.getPlayers().get(i - 1).getHand());
 			state.getPlayers().get(0).setHand(lastPlayerHand);
 		}
-		state.setCurrentPlayer(0);
-
 		game.deleteRedoStates();
-		game.getStates().add(state);
-		game.setCurrentState(game.getStates().size() - 1);
 
-		int startPlayer = (previous.getFirstPlayer() + 1) % previous.getPlayers().size();
+		int startPlayer = (state.getFirstPlayer() + 1) % state.getPlayers().size();
 		state.setFirstPlayer(startPlayer);
 		state.setCurrentPlayer(startPlayer);
 	}
@@ -369,6 +365,8 @@ public class GameController {
 				doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
 			}
 		}
+
+		gbvController.showConflicts();
 	}
 
 	/**
@@ -396,15 +394,6 @@ public class GameController {
 	 */
 	private static int getMilitaryForAge(int age) {
 		return 2 * age - 1;
-	}
-
-	/**
-	 * @param low  lower border
-	 * @param high upper border
-	 * @return random integer between low and high, but maximum value is (high - 1)
-	 */
-	private static int randInt(int low, int high) {
-		return (int) (Math.random() * (high - low)) + low;
 	}
 
 }

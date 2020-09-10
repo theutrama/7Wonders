@@ -16,12 +16,14 @@ import model.card.ResourceType;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
+/** suppresses PMD warning for unused local variable */
 @SuppressWarnings("PMD.UnusedLocalVariable")
 
 /** Artificial Intelligence for SevenWonders */
 public class ArtInt extends Player {
 	/** level of skill */
 	private Difficulty difficulty;
+	/** next Move */
 	private Move next;
 
 	/**
@@ -44,22 +46,42 @@ public class ArtInt extends Player {
 		this.difficulty = difficulty;
 	}
 	
+	/**
+	 * getter for {@link #difficulty}
+	 * @return difficulty
+	 */
 	public Difficulty getDifficulty() {
 		return this.difficulty;
 	}
 	
+	/**
+	 * getter for {@link #next}
+	 * @return next
+	 */
 	public Move getMove() {
 		return next;
 	}
 	
+	/**
+	 * getter for action of next
+	 * @return next.getAction()
+	 */
 	public Action getAction() {
 		return next.getAction();
 	}
 	
+	/**
+	 * getter for chosen Card of next
+	 * @return next.getCard()
+	 */
 	public Card getChosenCard() {
 		return next.getCard();
 	}
 	
+	/**
+	 * finds the best Move for the AI
+	 * @return best 	best Move for AI
+	 */
 	public Move findMove() {
 		ArrayList<Move> moves = generateMoves();
 		
@@ -82,6 +104,11 @@ public class ArtInt extends Player {
 		return best;
 	}
 	
+	/**
+	 * plays give Move for AI
+	 * @param move		Move to play for the AI
+	 * @return v		Victory points
+	 */
 	public int doMove(Move move) {
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		Card card = move.getCard();
@@ -217,6 +244,10 @@ public class ArtInt extends Player {
 		return v;
 	}
 	
+	/**
+	 * generates list with all possible Moves for the AI for one round
+	 * @return list 	contains all possible Moves for the AI for one round
+	 */
 	public ArrayList<Move> generateMoves() {
 		ArrayList<Move> list = new ArrayList<Move>();
 		

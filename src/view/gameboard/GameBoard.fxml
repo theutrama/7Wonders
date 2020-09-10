@@ -28,18 +28,18 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false">
+                  <Button fx:id="btn_undo" mnemonicParsing="false">
                      <graphic>
-                        <ImageView fx:id="btn_undo" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/undo.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button mnemonicParsing="false">
+                  <Button fx:id="btn_redo" mnemonicParsing="false">
                      <graphic>
-                        <ImageView fx:id="btn_redo" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/redo.png" />
                            </image>

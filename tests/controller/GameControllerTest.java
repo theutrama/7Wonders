@@ -22,7 +22,7 @@ public class GameControllerTest {
 	 */
 	@Before
 	public void setUp() {
-		// hier lag unser fehler... wir hatten vor swc in der n�chsten zeile noch
+		// hier lag unser fehler... wir hatten vor swc in der naechsten zeile noch
 		// SevenWondersController stehen
 		// und haben uns damit ein neues objekt erzeugt... logisch, dass es dann null
 		// ist :D
@@ -106,10 +106,16 @@ public class GameControllerTest {
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+			GameState round6age1 = swc.getGame().getCurrentGameState();
+			assertEquals(round6age1.getAge(), 1);
+			assertEquals(round6age1.getRound(), 6);
+			
+			
 			gC.createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
 			GameState round1age2 = swc.getGame().getCurrentGameState();
 			assertEquals(round1age2.getAge(), 2);
 			assertEquals(round1age2.getRound(), 1);
+			
 		
 
 	}

@@ -22,6 +22,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
@@ -49,7 +50,6 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
-import model.player.ai.Move.Action;
 import view.menu.MainMenuViewController;
 
 /**
@@ -64,10 +64,10 @@ public class GameBoardViewController extends VBox {
 	private ImageView img_music;
 
 	@FXML
-	private ImageView btn_undo;
+	private Button btn_undo;
 
 	@FXML
-	private ImageView btn_redo;
+	private Button btn_redo;
 
 	@FXML
 	private Label label_gametime;
@@ -95,6 +95,8 @@ public class GameBoardViewController extends VBox {
 
 	private Timer timer;
 
+	private EventHandler<MouseEvent> inputBlocker = MouseEvent::consume;
+
 	/**
 	 * create new controller
 	 */
@@ -117,42 +119,47 @@ public class GameBoardViewController extends VBox {
 		btn_back.setOnAction(event -> {
 			exit();
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
+			Main.getSWController().getSoundController().stopAll();
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 			Main.getSWController().getGameController().setGbvController(null);
 		});
 
-		btn_undo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("undo");
+		btn_undo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
-				System.out.println("undo2");
+				action = false;
 				refreshBoards();
 				setHandCards();
+				updateMouseBlocking();
 			}
 		});
 		btn_undo.setPickOnBounds(true);
-		btn_redo.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-			System.out.println("redo");
+		btn_redo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().redo(Main.getSWController().getGame())) {
-				System.out.println("redo2");
+				action = false;
 				refreshBoards();
 				setHandCards();
+				updateMouseBlocking();
 			}
 		});
 		btn_redo.setPickOnBounds(true);
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 
-		Main.getSWController().getSoundController().stop(Sound.BACKGROUND_MENU);
+		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME, true);
 
 		boardPanes = new ArrayList<>();
 		generatePanes();
 		refreshBoards();
+		
+		System.out.println("choosing player: " + game().getChoosingPlayer());
+		System.out.println("chosen card: " + getCurrentPlayer().getChosenCard());
+		System.out.println("begin of round: " + game().isAtBeginOfRound());
 
 		if (game().getChoosingPlayer() == null) {
-			if (getCurrentPlayer().getChosenCard() == null) {
+			if (game().isAtBeginOfRound() || getCurrentPlayer().getChosenCard() == null) {
 				action = false;
 				setHandCards();
 			} else {
@@ -162,8 +169,7 @@ public class GameBoardViewController extends VBox {
 		} else {
 			selectCardFromTrash(game().getChoosingPlayer());
 		}
-
-		System.out.println("active: " + action);
+		updateMouseBlocking();
 
 		Main.getSWController().getGameController().setGbvController(this);
 
@@ -344,59 +350,98 @@ public class GameBoardViewController extends VBox {
 	 * next player
 	 */
 	public void turn() {
-		if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
-			game().setCurrentPlayer(0);
-		} else {
-			game().setCurrentPlayer(game().getCurrentPlayer() + 1);
-		}
 
-		if (game().getCurrentPlayer() == game().getFirstPlayer()) {
-			action = !action;
+		Thread thread = new Thread(() -> {
 
-			if (!action) { // neue Spielrunde hat begonnen
-				Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
+			if (game().isAtBeginOfRound()) {
+				GameState state = game().deepClone();
+				Main.getSWController().getGame().deleteRedoStates();
+				Main.getSWController().getGame().getStates().add(state);
+				Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
 				updateAllBoards();
+				game().setBeginOfRound(false);
 			}
-		} else if (game().isAtBeginOfRound()) {
-			GameState state = game().deepClone();
-			Main.getSWController().getGame().deleteRedoStates();
-			Main.getSWController().getGame().getStates().add(state);
-			Main.getSWController().getGame().setCurrentState(Main.getSWController().getGame().getStates().size() - 1);
-			updateAllBoards();
-			game().setBeginOfRound(false);
-		}
 
-		if(game().getPlayer() instanceof ArtInt) {
-			ArtInt ai = (ArtInt) game().getPlayer();
-			if(action) {
-				Action action = ai.getAction();
-				
-				switch(action) {
-				case BUILD:
-					Main.getSWController().getCardController().placeCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
-					break;
-				case PLACE_SLOT: 
-					Main.getSWController().getCardController().setSlotCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
-					break;
-				case SELL: 
-					Main.getSWController().getCardController().sellCard(ai.getChosenCard(), ai); 
-					break;
-				}
+			if (game().getCurrentPlayer() == game().getPlayers().size() - 1) {
+				game().setCurrentPlayer(0);
 			} else {
-				System.out.println("AI findMove "+action);
-				ai.findMove();
-				Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
-				getCurrentPlayer().setChooseCard(ai.getChosenCard());
+				game().setCurrentPlayer(game().getCurrentPlayer() + 1);
 			}
-			turn();
+
+			if (game().getCurrentPlayer() == game().getFirstPlayer()) {
+				action = !action;
+
+				if (!action) { // neue Spielrunde hat begonnen
+					if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+						return;
+					updateAllBoards();
+				}
+			}
+
+			Platform.runLater(() -> {
+				refreshBoards();
+				updateMouseBlocking();
+
+				if (action)
+					setActionCard();
+				else
+					setHandCards();
+			});
+
+		});
+		thread.setDaemon(true);
+		thread.setName("turn thread");
+		thread.start();
+
+		// new TurnThread().run();
+
+//		if(game().getPlayer() instanceof ArtInt) {
+//			ArtInt ai = (ArtInt) game().getPlayer();
+//			if(action) {
+//				Action action = ai.getAction();
+//				
+//				switch(action) {
+//				case BUILD:
+//					Main.getSWController().getCardController().placeCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
+//					break;
+//				case PLACE_SLOT: 
+//					Main.getSWController().getCardController().setSlotCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
+//					break;
+//				case SELL: 
+//					Main.getSWController().getCardController().sellCard(ai.getChosenCard(), ai); 
+//					break;
+//				}
+//			} else {
+//				System.out.println("AI findMove "+action);
+//				ai.findMove();
+//				Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
+//				getCurrentPlayer().setChooseCard(ai.getChosenCard());
+//			}
+//			turn();
+//		}
+	}
+
+	/**
+	 * show conflict points on all boards
+	 */
+	public void showConflicts() {
+		setMouseBlocked(true);
+		Platform.runLater(() -> {
+			for (StackPane pane : boardPanes) {
+				((Board) pane.getChildren().get(0)).showConflict();
+			}
+		});
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		
-		refreshBoards();
-		
-		if (action)
-			setActionCard();
-		else
-			setHandCards();
+		Platform.runLater(() -> {
+			for (StackPane pane : boardPanes) {
+				((Board) pane.getChildren().get(0)).hideConflict();
+			}
+		});
+		setMouseBlocked(false);
 	}
 
 	/**
@@ -432,7 +477,8 @@ public class GameBoardViewController extends VBox {
 	private static class Board extends VBox {
 		private Player player;
 
-		HBox hboxmilitary, hboxtrade, hboxscience, hboxguild, hboxcivil, hboxresources, hboxSlots;
+		private HBox hboxmilitary, hboxtrade, hboxscience, hboxguild, hboxcivil, hboxresources, hboxSlots;
+		private StackPane stackpane;
 
 		Label labelcoins, labelplayer;
 
@@ -443,6 +489,8 @@ public class GameBoardViewController extends VBox {
 		 */
 		public Board(Player player) {
 			this.player = player;
+
+			VBox mainBox = new VBox();
 
 			BorderPane playerstats = new BorderPane();
 			labelplayer = new Label();
@@ -460,11 +508,11 @@ public class GameBoardViewController extends VBox {
 			hboxcoins.getChildren().addAll(labelcoins, imgcoin);
 			playerstats.setLeft(labelplayer);
 			playerstats.setRight(hboxcoins);
-			this.getChildren().add(playerstats);
+			mainBox.getChildren().add(playerstats);
 
 			hboxresources = new HBox();
 			hboxresources.setMaxHeight(35.0);
-			this.getChildren().add(hboxresources);
+			mainBox.getChildren().add(hboxresources);
 
 			GridPane grid = new GridPane();
 			RowConstraints rconstraint1 = new RowConstraints();
@@ -550,9 +598,12 @@ public class GameBoardViewController extends VBox {
 				hboxSlots.setMaxSize(450, 60);
 				this.setMaxWidth(450);
 			}
-			this.getChildren().add(grid);
+			mainBox.getChildren().add(grid);
+			stackpane = new StackPane(mainBox);
 
-			getChildren().add(hboxSlots);
+			this.getChildren().add(stackpane);
+
+			this.getChildren().add(hboxSlots);
 		}
 
 		/**
@@ -651,6 +702,36 @@ public class GameBoardViewController extends VBox {
 				}
 			}
 		}
+
+		/**
+		 * shows the conflict points
+		 */
+		private void showConflict() {
+			HBox hbox = new HBox(20);
+			hbox.setAlignment(Pos.CENTER);
+			Label points = new Label(String.valueOf(player.getConflictPoints() - player.getLosePoints()));
+			points.getStyleClass().addAll("fontstyle", "dropshadow");
+			points.setStyle("-fx-text-fill: black");
+			hbox.getChildren().add(points);
+			try {
+				ImageView img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "conflictPoints.png"));
+				img.setFitWidth(60);
+				img.setFitHeight(60);
+				hbox.getChildren().add(img);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			BorderPane borderpane = new BorderPane(hbox);
+			borderpane.setStyle("-fx-background-color: #FFFFFF80; -fx-background-radius: 10px");
+			stackpane.getChildren().add(borderpane);
+		}
+
+		/**
+		 * hide conflict points
+		 */
+		private void hideConflict() {
+			stackpane.getChildren().remove(1);
+		}
 	}
 
 	/**
@@ -662,6 +743,7 @@ public class GameBoardViewController extends VBox {
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
 
+		System.out.println("current player: " + getCurrentPlayer());
 		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
 		int arrowWidth = 45, arrowHeight = 25;
@@ -698,8 +780,8 @@ public class GameBoardViewController extends VBox {
 						e.printStackTrace();
 					}
 				});
-				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null); getCurrentPlayer().setOlympiaUsed(true); turn(); });
-				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Fähigkeit:\nBaue diese Karte kostenlos")));
+				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, true); getCurrentPlayer().setOlympiaUsed(true); turn(); });
+				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Faehigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
 			}
@@ -733,17 +815,22 @@ public class GameBoardViewController extends VBox {
 				switch (Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card)) {
 				case FREE:
 				case OWN_RESOURCE:
-					Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null);
+					Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, false);
 					turn();
 					break;
 				case TRADE:
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(getCurrentPlayer(), card.getRequired());
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren()
+								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option, false); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
+
+					if (getCurrentPlayer() instanceof ArtInt) {
+						// TODO control AI
+					}
 					break;
 				default:
 					break;
@@ -791,11 +878,14 @@ public class GameBoardViewController extends VBox {
 							new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))));
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(getCurrentPlayer(),
-								event2 -> { System.out.println("event triggered"); Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
+						tradeNodes.getChildren()
+								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
+					if (getCurrentPlayer() instanceof ArtInt) {
+						// TODO control AI
+					}
 					break;
 				default:
 					break;
@@ -851,6 +941,10 @@ public class GameBoardViewController extends VBox {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		if (getCurrentPlayer() instanceof ArtInt) {
+			// TODO control AI
+		}
 	}
 
 	/**
@@ -886,7 +980,7 @@ public class GameBoardViewController extends VBox {
 					break;
 				case TRADE:
 					path += "checkyellow";
-					tooltip = "Du kannst die erforderlichen Resourcen von Nachbarstädten kaufen";
+					tooltip = "Du kannst die erforderlichen Resourcen von Nachbarstaedten kaufen";
 					break;
 				case NONE:
 					path += "cross";
@@ -939,6 +1033,10 @@ public class GameBoardViewController extends VBox {
 				e.printStackTrace();
 			}
 		}
+
+		if (player instanceof ArtInt) {
+			// TODO control AI
+		}
 	}
 
 	/**
@@ -947,20 +1045,42 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
+
 		if (game().getTrash().isEmpty()) {
-			// TODO ausgeben
+			Platform.runLater(() -> {
+				hbox_cards.getChildren().clear();
+				Label label = new Label(player.getName() + " kann keine Karte waehlen, da der Ablagestapel leer ist!");
+				label.getStyleClass().addAll("fontstyle", "dropshadow");
+				hbox_cards.getChildren().add(label);
+			});
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Platform.runLater(() -> { hbox_cards.getChildren().clear(); });
 			exitHalikarnassus();
 			return;
 		}
+
 		game().setChoosingPlayer(player);
 
 		Platform.runLater(() -> {
 			hbox_cards.getChildren().clear();
 			HBox hboxTitle = new HBox(50);
-			Label label = new Label("Wähle eine Karte vom Ablagestapel");
-			Button exit = new Button("Keine Karte auswählen");
+			Label label = new Label("Waehle eine Karte vom Ablagestapel");
+			label.getStyleClass().addAll("fontstyle", "dropshadow");
+			label.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
+			Label labelBtn = new Label("Keine Karte auswaehlen");
+			labelBtn.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelBtn.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
+			Button exit = new Button();
+			exit.setStyle("-fx-border-width: 3px; -fx-border-color: #11111188;");
+			exit.getStyleClass().add("buttonback");
+			exit.setGraphic(labelBtn);
 			exit.setOnAction(event -> exitHalikarnassus());
 			hboxTitle.getChildren().addAll(label, exit);
+			hboxTitle.setAlignment(Pos.CENTER);
 
 			HBox hboxChooseCard = new HBox(10);
 
@@ -993,11 +1113,18 @@ public class GameBoardViewController extends VBox {
 				hboxChooseCard.getChildren().add(button);
 			}
 
+			ScrollPane scrollpane = new ScrollPane(hboxChooseCard);
+			scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+			scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+			scrollpane.setMinViewportHeight(240);
+
 			VBox vboxChoose = new VBox(10);
-			vboxChoose.getChildren().addAll(hboxTitle, hboxChooseCard);
+			vboxChoose.getChildren().addAll(hboxTitle, scrollpane);
 			vboxChoose.setPadding(new Insets(0, 10, 0, 20));
 
 			hbox_cards.getChildren().add(vboxChoose);
+
+			updateMouseBlocking();
 
 			if (player instanceof ArtInt) {
 				// TODO control AI
@@ -1011,10 +1138,32 @@ public class GameBoardViewController extends VBox {
 	 * @param choosing the player that used the choosing ability
 	 */
 	private void exitHalikarnassus() {
-		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 		game().setChoosingPlayer(null);
+		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
 		refreshBoards();
 		setHandCards();
+	}
+
+	/**
+	 * sets the mouse blocking property depending on the current player
+	 */
+	private void updateMouseBlocking() {
+		setMouseBlocked(getCurrentPlayer() instanceof ArtInt || (game().getChoosingPlayer() != null && game().getChoosingPlayer() instanceof ArtInt));
+	}
+
+	/**
+	 * sets the mouse blocking property
+	 * 
+	 * @param blocked blocked
+	 */
+	public void setMouseBlocked(boolean blocked) {
+		if (blocked) {
+			hbox_cards.addEventFilter(MouseEvent.ANY, inputBlocker);
+			scrollpane.addEventFilter(MouseEvent.ANY, inputBlocker);
+		} else {
+			hbox_cards.removeEventFilter(MouseEvent.ANY, inputBlocker);
+			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
+		}
 	}
 
 	/**

@@ -21,11 +21,17 @@ import model.player.ai.Move.Action;
 
 public class EasyAI extends ArtInt{
 
+	private boolean debug = false;
 	
 	public EasyAI(String name, WonderBoard board) {
 		super(name, board);
 		
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void debug(String msg) {
+		if(debug)
+		System.out.println(getName() + ": " + msg);
 	}
 	
 	/**
@@ -38,13 +44,13 @@ public class EasyAI extends ArtInt{
 	public void calculateNextMove() {
 		ArrayList<Move> generate = generateMoves();
 		
-		for(Card c : getHand())System.out.println("HANDCARD ->    "+c+"   "+c.getName());
+		for(Card c : getHand())debug("HANDCARD ->    "+c+"   "+c.getName());
 		
 		
 		Move best = generate.get(0);
-		double rating = doMove1(best,false);
+		double rating = doMove1(best);
 		for(int i = 1; i < generate.size(); i++) {
-			double value = doMove1(generate.get(i),false);
+			double value = doMove1(generate.get(i));
 			
 			if(value > rating) {
 				rating = value;
@@ -52,8 +58,10 @@ public class EasyAI extends ArtInt{
 			}
 		}
 
-		doMove1(best,true);
-		System.out.println("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
+		debug = true;
+		doMove1(best);
+		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
+		debug = false;
 		this.next = best;
 	}
 	
@@ -79,7 +87,7 @@ public class EasyAI extends ArtInt{
 	 * @param move Move to play for the AI
 	 * @return v Victory points
 	 */
-	public double doMove1(Move move, boolean debug) {
+	public double doMove1(Move move) {
 		GameState state = Main.getSWController().getGame().getCurrentGameState();
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		Card card = move.getCard();
@@ -99,7 +107,7 @@ public class EasyAI extends ArtInt{
 			case TRADE:
 				if(capa == BuildCapability.TRADE) {
 					if(card.getRequired() == null) {
-						if(debug)System.out.println("CAPA:"+capa.name()+" card.getRequired() == NULL ");
+						debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
 						break;
 					}
 					
@@ -107,7 +115,7 @@ public class EasyAI extends ArtInt{
 					TradeOption best = getBestTradeOption(card);
 					
 					if(best==null) {
-						if(debug)System.out.println("CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
+						debug("CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
 						return Double.NEGATIVE_INFINITY;
 					} else {
 						move.setTradeOption(best);
@@ -117,10 +125,10 @@ public class EasyAI extends ArtInt{
 						
 						if(percentage < 0.3) {
 							rating -= 0.5;
-							if(debug)System.out.println("1.1) RATING add -0.5");
+							debug("1.1) RATING add -0.5");
 						}else if(percentage < 0.6) {
 							rating -= 1;
-							if(debug)System.out.println("1.2) RATING add -1");
+							debug("1.2) RATING add -1");
 						}
 					}
 				}
@@ -129,7 +137,7 @@ public class EasyAI extends ArtInt{
 				// CIVIL
 				case BLUE:
 					rating += card.getvPoints();
-					if(debug)System.out.println("2.1) RATING add "+card.getvPoints());
+					debug("2.1) RATING add "+card.getvPoints());
 					break;
 				// RESOURCE
 				case BROWN:
@@ -183,14 +191,14 @@ public class EasyAI extends ArtInt{
 							
 							if(add && list.contains(rs.getType())) {
 								rating += 2.6;
-								if(debug)System.out.println("3.1) RATING add 2.6");
+								debug("3.1) RATING add 2.6");
 							}
 						}
 					}
 					
 					if(list.size() > 2)
 						rating += (list.size() > 5 ? 3 : 1.5);
-					if(debug)System.out.println("3.2) RATING add "+(list.size() > 5 ? 3 : 1.5));
+					debug("3.2) RATING add "+(list.size() > 5 ? 3 : 1.5));
 					break;
 				// SCIENCE
 				case GREEN:
@@ -211,10 +219,10 @@ public class EasyAI extends ArtInt{
 						
 						if(amount >= 2) {
 							rating += 4;
-							if(debug)System.out.println("4.1) RATING add 4");
+							debug("4.1) RATING add 4");
 						}else{
 							rating += 1;
-							if(debug)System.out.println("4.2) RATING add 4");
+							debug("4.2) RATING add 4");
 						}
 					}
 					//Age = 1 && 3 Clockwise
@@ -223,7 +231,7 @@ public class EasyAI extends ArtInt{
 					for(Card scard : nextHand) {
 						if(scard.getInternalName().equalsIgnoreCase(card.getInternalName())) {
 							rating += 2.5;
-							if(debug)System.out.println("4.3) RATING add 2.5");
+							debug("4.3) RATING add 2.5");
 							break;
 						}
 					}
@@ -242,19 +250,19 @@ public class EasyAI extends ArtInt{
 						
 						if(right_mili < new_military && (new_military-right_mili) < 3) {
 							rating += 3;
-							if(debug)System.out.println("5.1) RATING add 3");
+							debug("5.1) RATING add 3");
 						}else {
 							rating += 0.5;
-							if(debug)System.out.println("5.2) RATING add 0.5");
+							debug("5.2) RATING add 0.5");
 						}
 					}
 					
 					if(left_mili < new_military && (new_military-left_mili) < 3) {
 						rating += 3;
-						if(debug)System.out.println("5.3) RATING add 3");
+						debug("5.3) RATING add 3");
 					}else {
 						rating += 0.5;
-						if(debug)System.out.println("5.4) RATING add 0.5");
+						debug("5.4) RATING add 0.5");
 					}
 					break;
 					// GUILD
@@ -269,7 +277,7 @@ public class EasyAI extends ArtInt{
 							case AT_MATCH_END:
 							case WHEN_PLAYED:
 								Player player = copy.getPlayer();
-								if(debug)System.out.println("RIGHT PLAYER "+player.getName()+" == "+getName());
+								debug("RIGHT PLAYER "+player.getName()+" == "+getName());
 
 								// Do Effect!
 								effect.run(player, copy, copy.isTwoPlayers());
@@ -277,8 +285,8 @@ public class EasyAI extends ArtInt{
 								// Check changes
 								rating += player.getVictoryPoints() - getVictoryPoints();
 								rating += (player.getCoins() - getCoins())/3;
-								if(debug)System.out.println("6.1) RATING add "+(player.getVictoryPoints() - getVictoryPoints()));
-								if(debug)System.out.println("6.2) RATING add "+((player.getCoins() - getCoins())/3));
+								debug("6.1) RATING add "+(player.getVictoryPoints() - getVictoryPoints()));
+								debug("6.2) RATING add "+((player.getCoins() - getCoins())/3));
 								break;
 							}
 						}
@@ -302,17 +310,17 @@ public class EasyAI extends ArtInt{
 				switch (capa) {
 				case FREE:
 					rating += 5;
-					if(debug)System.out.println("7.1) RATING add 5");
+					debug("7.1) RATING add 5");
 					break;
 				case OWN_RESOURCE:
 					rating += 3;
-					if(debug)System.out.println("8.1) RATING add 3");
+					debug("8.1) RATING add 3");
 					break;
 				case TRADE:
 					TradeOption best = getBestTradeOption(card);
 					
 					if(best==null) {
-						if(debug)System.out.println("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
+						debug("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
 						return Double.NEGATIVE_INFINITY;
 					} else {
 						move.setTradeOption(best);
@@ -321,11 +329,11 @@ public class EasyAI extends ArtInt{
 						double percentage = price/coins;
 						
 						if(percentage < 0.2) {
-							if(debug)System.out.println("9.1) RATING add -1");
+							debug("9.1) RATING add -1");
 							rating -= 1;
 						}else if(percentage < 0.4) {
 							rating -= 2;
-							if(debug)System.out.println("8.2) RATING add -2");
+							debug("8.2) RATING add -2");
 						}
 					}
 					break;
@@ -337,10 +345,10 @@ public class EasyAI extends ArtInt{
 		case SELL:
 			if(coins < 4) {
 				rating += 2.5;
-				if(debug)System.out.println("9.1) RATING add 2.5");
+				debug("9.1) RATING add 2.5");
 			}else if(coins < 10) {
 				rating += 1.5;
-				if(debug)System.out.println("9.2) RATING add 1.5");
+				debug("9.2) RATING add 1.5");
 			}
 			break;
 		}

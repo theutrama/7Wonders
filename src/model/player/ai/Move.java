@@ -10,7 +10,7 @@ import model.card.Card;
 
 /** calculates next move for AI */
 public class Move implements Serializable {
-
+	private static final long serialVersionUID = 1L;
 	/** chosen Card of AI */
 	private Card chosen;
 	/** calculated action for AI */

@@ -1,43 +1,70 @@
 package model.player.ai;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import model.GameState;
 
-public class MoveTree implements Iterable<Move> {
+public class MoveTree {
 
 	private GameState state;
 	private Move move;
 
 	private ArrayList<MoveTree> children;
 
+	/**
+	 * create an inner move tree
+	 * @param move move
+	 * @param state game state
+	 */
 	public MoveTree(Move move, GameState state) {
 		children = new ArrayList<>();
 		this.move = move;
 		this.state = state;
 	}
 
+	/**
+	 * create root tree
+	 * @param state game state
+	 */
 	public MoveTree(GameState state) {
 		this(null, state);
 	}
 
+	/**
+	 * adds the given tree to {@link #children}
+	 * @param child new child of this tree
+	 */
 	public void addChild(MoveTree child) {
 		children.add(child);
 	}
 
+	/**
+	 * sets {@link #state} to null
+	 */
 	public void clearState() {
 		state = null;
 	}
 
+	/**
+	 * getter for {@link #state}
+	 * @return game state
+	 */
 	public GameState getState() {
 		return state;
 	}
 	
+	/**
+	 * getter for {@link #move}
+	 * @return move
+	 */
 	public Move getMove() {
 		return move;
 	}
 
+	/**
+	 * get list of all leaves of this (sub-)tree
+	 * @return list of leaves
+	 */
 	public ArrayList<MoveTree> getLeaves() {
 		if (children.isEmpty()) {
 			ArrayList<MoveTree> result = new ArrayList<>();
@@ -52,23 +79,11 @@ public class MoveTree implements Iterable<Move> {
 			
 	}
 
+	/**
+	 * getter for {@link #children}
+	 * @return list of child trees
+	 */
 	public ArrayList<MoveTree> getChildren() {
 		return children;
 	}
-	
-	@Override
-	public Iterator<Move> iterator() {
-		return new Iterator<Move>() {
-			@Override
-			public Move next() {
-				return null;
-			}
-
-			@Override
-			public boolean hasNext() {
-				return false;
-			}
-		};
-	}
-
 }

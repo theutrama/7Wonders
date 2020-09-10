@@ -9,7 +9,6 @@ import controller.utils.BuildCapability;
 import controller.utils.ResourceBundle;
 import controller.utils.ResourceTree;
 import controller.utils.TradeOption;
-import model.Game;
 import model.GameState;
 import model.board.AlexandriaBoard;
 import model.board.BabylonBoard;

@@ -92,7 +92,10 @@ public class EasyAI extends ArtInt{
 		doMove1(best);
 		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
 		debug = false;
-		this.next.setHalikarnassusCard(calculateHalikarnassusCard());
+		
+		Card halikarnassusCard = calculateHalikarnassusCard();
+		if(halikarnassusCard!=null)this.next.setHalikarnassusCard(halikarnassusCard);
+		
 		this.next = best;
 	}
 	

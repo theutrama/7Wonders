@@ -214,7 +214,7 @@ public class GameController {
 			line = in.readLine(); // age,card
 			ArrayList<Player> players = new ArrayList<Player>();
 			String wonder1 = in.readLine().split(",")[1];
-			players.add(p_con.createPlayer("Spieler", Utils.toWonder(wonder1)));
+			players.add(p_con.createAI("Spieler", Utils.toWonder(wonder1),Difficulty.EASY));
 
 			Game game = new Game("KI-Turnier");
 			con.setGame(game);
@@ -295,7 +295,12 @@ public class GameController {
 	 * @param state current game state
 	 */
 	private void endGame(Game game, GameState state) {
-
+		if(Main.primaryStage.getScene().getRoot() instanceof ResultViewController) {
+			System.out.println("GameController.endGame ResultViewController is already OPEN!!!");
+			return;
+		}
+		
+		
 		for (Player player : state.getPlayers()) {
 			runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
 			runEffects(player, player.getBoard().getGuilds(), state.isTwoPlayers());
@@ -317,6 +322,7 @@ public class GameController {
 			}
 		}
 		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
+		
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 		Main.getSWController().getIOController().deleteFile(game.getName());
 	}

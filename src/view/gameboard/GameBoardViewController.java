@@ -393,33 +393,6 @@ public class GameBoardViewController extends VBox {
 		thread.setDaemon(true);
 		thread.setName("turn thread");
 		thread.start();
-
-		// new TurnThread().run();
-
-//		if(game().getPlayer() instanceof ArtInt) {
-//			ArtInt ai = (ArtInt) game().getPlayer();
-//			if(action) {
-//				Action action = ai.getAction();
-//				
-//				switch(action) {
-//				case BUILD:
-//					Main.getSWController().getCardController().placeCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
-//					break;
-//				case PLACE_SLOT: 
-//					Main.getSWController().getCardController().setSlotCard(ai.getChosenCard(), getCurrentPlayer(), ai.getMove().getTradeOption());
-//					break;
-//				case SELL: 
-//					Main.getSWController().getCardController().sellCard(ai.getChosenCard(), ai); 
-//					break;
-//				}
-//			} else {
-//				System.out.println("AI findMove "+action);
-//				ai.findMove();
-//				Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
-//				getCurrentPlayer().setChooseCard(ai.getChosenCard());
-//			}
-//			turn();
-//		}
 	}
 
 	/**
@@ -830,9 +803,11 @@ public class GameBoardViewController extends VBox {
 					outter.getChildren().remove(vbox);
 
 					if (getCurrentPlayer() instanceof ArtInt) {
-						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
-						int index = trades.indexOf(option);
-						((Button) tradeNodes.getChildren().get(index)).fire();
+						new Thread(() -> {
+							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
+							int index = trades.indexOf(option);
+							((Button) tradeNodes.getChildren().get(index)).fire();
+						}).start();
 					}
 					break;
 				default:
@@ -887,9 +862,11 @@ public class GameBoardViewController extends VBox {
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 					if (getCurrentPlayer() instanceof ArtInt) {
-						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
-						int index = trades.indexOf(option);
-						((Button) tradeNodes.getChildren().get(index)).fire();
+						new Thread(() -> {
+							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
+							int index = trades.indexOf(option);
+							((Button) tradeNodes.getChildren().get(index)).fire();
+						}).start();
 					}
 					break;
 				default:
@@ -944,21 +921,23 @@ public class GameBoardViewController extends VBox {
 			hbox_cards.getChildren().add(outter);
 
 			if (getCurrentPlayer() instanceof ArtInt) {
-				Action action = ((ArtInt) getCurrentPlayer()).getAction();
-				switch (action) {
-				case OLYMPIA:
-					btnOlympia.fire();
-					break;
-				case BUILD:
-					btn_place.fire();
-					break;
-				case PLACE_SLOT:
-					btn_wonder.fire();
-					break;
-				case SELL:
-					btn_sell.fire();
-					break;
-				}
+				new Thread(() -> {
+					Action action = ((ArtInt) getCurrentPlayer()).getAction();
+					switch (action) {
+					case OLYMPIA:
+						btnOlympia.fire();
+						break;
+					case BUILD:
+						btn_place.fire();
+						break;
+					case PLACE_SLOT:
+						btn_wonder.fire();
+						break;
+					case SELL:
+						btn_sell.fire();
+						break;
+					}
+				}).start();
 			}
 
 		} catch (IOException e) {
@@ -1050,11 +1029,13 @@ public class GameBoardViewController extends VBox {
 		}
 
 		if (player instanceof ArtInt) {
-			((ArtInt) player).calculateNextMove();
-			Card selected = ((ArtInt) player).getChosenCard();
-			int index = player.getHand().indexOf(selected);
-			VBox vbox = (VBox) hbox_cards.getChildren().get(index);
-			((Button) vbox.getChildren().get(1)).fire();
+			new Thread(() -> {
+				((ArtInt) player).calculateNextMove();
+				Card selected = ((ArtInt) player).getChosenCard();
+				int index = player.getHand().indexOf(selected);
+				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
+				((Button) vbox.getChildren().get(1)).fire();
+			}).start();
 		}
 	}
 
@@ -1146,9 +1127,9 @@ public class GameBoardViewController extends VBox {
 			updateMouseBlocking();
 
 			if (player instanceof ArtInt) {
-				Card selected = ((ArtInt) player).getHalikarnassusCard();
-				int index = game().getTrash().indexOf(selected);
-				((Button) hboxChooseCard.getChildren().get(index)).fire();
+				new Thread(
+						() -> { Card selected = ((ArtInt) player).getHalikarnassusCard(); int index = game().getTrash().indexOf(selected); ((Button) hboxChooseCard.getChildren().get(index)).fire(); })
+								.start();
 			}
 		});
 	}

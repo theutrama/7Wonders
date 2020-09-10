@@ -155,10 +155,6 @@ public class GameBoardViewController extends VBox {
 		generatePanes();
 		refreshBoards();
 
-		System.out.println("choosing player: " + game().getChoosingPlayer());
-		System.out.println("chosen card: " + getCurrentPlayer().getChosenCard());
-		System.out.println("begin of round: " + game().isAtBeginOfRound());
-
 		if (game().getChoosingPlayer() == null) {
 			if (game().isAtBeginOfRound() || getCurrentPlayer().getChosenCard() == null) {
 				action = false;
@@ -1033,7 +1029,7 @@ public class GameBoardViewController extends VBox {
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
 				((ArtInt) player).calculateNextMove();
-				Card selected = ((ArtInt) player).getChosenCard();
+				Card selected = ((ArtInt) player).getSelectedCard();
 				int index = player.getHand().indexOf(selected);
 				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
 				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });

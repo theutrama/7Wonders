@@ -76,7 +76,7 @@ public abstract class ArtInt extends Player {
 	 * 
 	 * @return next.getCard()
 	 */
-	public Card getChosenCard() {
+	public Card getSelectedCard() {
 		return next.getCard();
 	}
 
@@ -215,7 +215,7 @@ public abstract class ArtInt extends Player {
 
 								// Check changes
 								v += player.getVictoryPoints() - getVictoryPoints();
-								v += (player.getCoins() - getCoins())/3;
+								v += (player.getCoins() - getCoins()) / 3;
 								break;
 							}
 						}

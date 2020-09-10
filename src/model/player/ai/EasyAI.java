@@ -120,8 +120,6 @@ public class EasyAI extends ArtInt{
 						debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
 						break;
 					}
-					
-					
 					TradeOption best = getBestTradeOption(card);
 					
 					if(best==null) {
@@ -186,6 +184,12 @@ public class EasyAI extends ArtInt{
 						
 						for(Card rs_card : own_producing) {
 							c=rs_card;
+							ArrayList<Resource> producing = rs_card.getProducing();
+							if(producing == null) {
+								new NullPointerException("producing is NULL!!").printStackTrace();
+								return Double.NEGATIVE_INFINITY;
+							}
+							
 							for(Resource produce : rs_card.getProducing()) {
 								rr = produce;
 								if(list.contains(produce.getType()))list.remove(produce.getType());
@@ -194,7 +198,9 @@ public class EasyAI extends ArtInt{
 					}catch(Exception e) {
 						System.out.println("PRO - CARD "+(c == null ? "NULL" : card.getName()));
 						System.out.println("PRO - RESOURCE "+(rr == null ? "NULL" : "Q:"+rr.getQuantity()+" Type:"+rr.getType().name()));
-						System.out.println("OWN: "+own_producing.size());
+						System.out.println("OWN: "+(own_producing == null ? "NULL" : own_producing.size()));
+						System.out.println("LIST: "+(list == null ? "NULL" : list.size()));
+						System.out.println("getProducing: "+(c.getProducing() == null ? "NULL" : c.getProducing().size()));
 						
 						e.printStackTrace();
 						return Double.NEGATIVE_INFINITY;
@@ -280,6 +286,10 @@ public class EasyAI extends ArtInt{
 							debug("5.2) RATING add 0.5");
 						}
 					}
+					
+					/**
+					 * falls militar zu sehr abgehängt nicht weiter mit halten!
+					 */
 					
 					if(left_mili < new_military && (new_military-left_mili) < 3) {
 						rating += 3;

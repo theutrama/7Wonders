@@ -151,11 +151,17 @@ public class SoundController {
 			if(filenames.length > ONE)
 				player.setOnEndOfMedia(() -> {
 					this.index++;
-					if(this.filenames.length == this.index)this.index = 0;
+					System.out.println("SOUND NEW INDEX "+index);
+					if(this.filenames.length <= this.index) {
+						this.index = 0;
+						System.out.println("RESET "+this.filenames.length+" new Index "+this.index);
+					}
+					System.out.println("FILE:"+this.filenames[this.index]);
 					this.player.stop();
 					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
 					setVolume(volume);
 					this.player.play();
+					setLoop();
 				});
 			else 
 				player.setCycleCount(MediaPlayer.INDEFINITE);

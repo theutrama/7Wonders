@@ -52,7 +52,7 @@ public class EasyAI extends ArtInt{
 	 * halikarnassus case
 	 * @return halikarnassus card
 	 */
-	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
+	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
 		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
 			if(trash.isEmpty())return null;
 			

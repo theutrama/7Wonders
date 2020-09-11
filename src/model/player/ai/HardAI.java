@@ -16,10 +16,19 @@ import model.player.Player;
 public class HardAI extends AdvancedAI {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * create a hard AI
+	 * 
+	 * @param name  name
+	 * @param board assigned wonder board
+	 */
 	public HardAI(String name, WonderBoard board) {
 		super(name, board);
 	}
 
+	/**
+	 * get the value for a specific game state
+	 */
 	@Override
 	protected int evaluate(GameState state) {
 		Player thisPlayer = Main.getSWController().getPlayerController().getPlayer(this.getName(), state);
@@ -47,7 +56,7 @@ public class HardAI extends AdvancedAI {
 				if (capas[2] == BuildCapability.TRADE)
 					value -= getTradeValue(asList(thisPlayer.getBoard().getSlotResquirement(2)), thisPlayer, state) / (thisPlayer.getCoins() / 4 + 1);
 			}
-			
+
 			value += thisPlayer.getBoard().nextSlot() == -1 ? 1 : thisPlayer.getBoard().nextSlot();
 
 			// Science //////////////////////////////////////////////////////////////
@@ -89,7 +98,7 @@ public class HardAI extends AdvancedAI {
 		case 2:
 
 			// Resources //////////////////////////////////////////////
-			
+
 			if (thisPlayer.getBoard().nextSlot() != -1) {
 				switch (Main.getSWController().getPlayerController().hasResources(thisPlayer, asList(thisPlayer.getBoard().getNextSlotRequirement()), state)) {
 				case OWN_RESOURCE:
@@ -101,7 +110,7 @@ public class HardAI extends AdvancedAI {
 				default:
 					break;
 				}
-				
+
 				value += thisPlayer.getBoard().nextSlot() * 2;
 			} else
 				value += 6;
@@ -132,7 +141,7 @@ public class HardAI extends AdvancedAI {
 					if (card.getScienceType() == BabylonBoard.types[i])
 						amount[i]++;
 			value += Math.min(Math.min(amount[0], amount[1]), amount[2]);
-			
+
 			amount = new int[] { 0, 0, 0 };
 			for (int i = 0; i < BabylonBoard.types.length; i++)
 				for (Card card : Main.getSWController().getPlayerController().getNeighbour(state, false, thisPlayer).getBoard().getResearch())
@@ -148,7 +157,7 @@ public class HardAI extends AdvancedAI {
 
 			break;
 		case 3: // Age 3 ////////////////////////////////////////////////
-			
+
 			int ownPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(thisPlayer);
 			int leftPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, thisPlayer));
 			int rightPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, thisPlayer));
@@ -158,9 +167,9 @@ public class HardAI extends AdvancedAI {
 				value += 2;
 			else if (maxDiff2 <= 3)
 				value -= 5;
-			
+
 			// Victory points //////////////////////////////////////////
-			
+
 			Main.getSWController().getGameController().runEffects(thisPlayer, thisPlayer.getBoard().getTrade(), state.isTwoPlayers());
 			Main.getSWController().getGameController().runEffects(thisPlayer, thisPlayer.getBoard().getGuilds(), state.isTwoPlayers());
 			Main.getSWController().getGameController().runEffects(thisPlayer, thisPlayer.getBoard().getCivil(), state.isTwoPlayers());
@@ -171,9 +180,9 @@ public class HardAI extends AdvancedAI {
 			thisPlayer.addVictoryPoints(thisPlayer.getCoins() / 3);
 			// science
 			thisPlayer.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(thisPlayer));
-			
+
 			value += thisPlayer.getVictoryPoints() * (state.isTwoPlayers() ? 1 : 3 / 4);
-			
+
 			break;
 		}
 		return value;
@@ -194,6 +203,12 @@ public class HardAI extends AdvancedAI {
 		return trades.get(0).getLeftCost() + trades.get(0).getRightCost();
 	}
 
+	/**
+	 * calculates the sum of all built civil points
+	 * 
+	 * @param player player
+	 * @return sum of civil points
+	 */
 	private int getCivilPoints(Player player) {
 		int sum = 0;
 		for (Card card : player.getBoard().getCivil())
@@ -201,12 +216,29 @@ public class HardAI extends AdvancedAI {
 		return sum;
 	}
 
+	/**
+	 * select Halikarnassus card
+	 */
 	@Override
-	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
-		// TODO Auto-generated method stub
-		return null;
+	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
+		if (trash.isEmpty())
+			return null;
+		int maxValue = Integer.MIN_VALUE, maxIndex = 0;
+		for (int i = 0; i < trash.size(); i++) {
+			GameState newState = state.deepClone();
+			Main.getSWController().getPlayerController().getPlayer(this.getName(), newState).getBoard().addCard(trash.get(i));
+			if (evaluate(newState) > maxValue)
+				maxIndex = i;
+		}
+		return trash.get(maxIndex);
 	}
 
+	/**
+	 * creates Arraylist from vararg
+	 * 
+	 * @param bundles
+	 * @return
+	 */
 	private static ArrayList<Resource> asList(Resource... bundles) {
 		return new ArrayList<>(Arrays.asList(bundles));
 	}

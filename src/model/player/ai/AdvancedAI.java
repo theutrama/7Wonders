@@ -156,7 +156,7 @@ public abstract class AdvancedAI extends ArtInt {
 			for (MoveTree newLeaf : newLeaves) {
 				for (Player player : newLeaf.getState().getPlayers()) {
 					if (player.isMausoleum()) {
-						Card card = getHalikarnassusCard(player, newLeaf.getState().getTrash());
+						Card card = getHalikarnassusCard(player, newLeaf.getState().getTrash(), newLeaf.getState());
 						newLeaf.getState().getTrash().remove(card);
 						player.getBoard().addCard(card);
 						if (card.getEffects() != null)

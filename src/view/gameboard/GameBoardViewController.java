@@ -1134,7 +1134,7 @@ public class GameBoardViewController extends VBox {
 
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
-				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash());
+				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
 				int index = indexOf(game().getTrash(), selected);
 				if (selected == null || index == -1)
 					Platform.runLater(() -> exit.fire());
@@ -1180,6 +1180,12 @@ public class GameBoardViewController extends VBox {
 		}
 	}
 
+	/**
+	 * index of given card in a list
+	 * @param list list of cards
+	 * @param card card
+	 * @return index of first occurance in list or -1
+	 */
 	private int indexOf(ArrayList<Card> list, Card card) {
 		if (card == null)
 			return -1;

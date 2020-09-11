@@ -21,7 +21,7 @@ public class MediumAI extends AdvancedAI {
 	}
 
 	@Override
-	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
+	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
 		// TODO Auto-generated method stub
 		return null;
 	}

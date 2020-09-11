@@ -3,6 +3,7 @@ package model.player.ai;
 import java.util.ArrayList;
 
 import controller.utils.TradeOption;
+import model.GameState;
 import model.board.WonderBoard;
 import model.card.Card;
 import model.player.Player;
@@ -49,9 +50,10 @@ public abstract class ArtInt extends Player {
 	 * 
 	 * @param player player to choose
 	 * @param trash  trash cards
+	 * @param state game state
 	 * @return the chosen card
 	 */
-	public abstract Card getHalikarnassusCard(Player player, ArrayList<Card> trash);
+	public abstract Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state);
 
 	/**
 	 * get chosen trade

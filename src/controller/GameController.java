@@ -11,7 +11,6 @@ import java.util.Stack;
 
 import application.Main;
 import application.Utils;
-import controller.exceptions.CardOutOfAgeException;
 import controller.sound.Sound;
 import model.Game;
 import model.GameState;
@@ -201,7 +200,7 @@ public class GameController {
 	 * @return boolean weather all is fine...
 	 * @throws CardOutOfAgeException If the Card age from the table doesn't suit with age of the loaded card
 	 */
-	public boolean loadCSV(File file) throws CardOutOfAgeException {
+	public boolean loadCSV(File file) throws NullPointerException {
 		// Wrong File Type
 		if (!file.getName().endsWith(".csv"))
 			return false;
@@ -234,7 +233,7 @@ public class GameController {
 						Card card = controller.getCardController().getCard(cardname);
 
 						if (age != card.getAge()) {
-							throw new CardOutOfAgeException(card, age);
+							throw new NullPointerException("Card "+card+" "+card.getAge()+" != "+age);
 						}
 
 						cards.add(card);

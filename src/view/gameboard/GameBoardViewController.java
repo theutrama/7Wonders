@@ -97,6 +97,8 @@ public class GameBoardViewController extends VBox {
 	private Timer timer;
 
 	private EventHandler<MouseEvent> inputBlocker = MouseEvent::consume;
+	
+	private TurnThread turnThread;
 
 	/**
 	 * create new controller
@@ -347,9 +349,15 @@ public class GameBoardViewController extends VBox {
 	 * next player
 	 */
 	public void turn() {
-
-		Thread thread = new Thread(() -> {
-
+		turnThread = new TurnThread();
+		turnThread.setDaemon(true);
+		turnThread.setName("turn thread");
+		turnThread.start();
+	}
+	
+	private class TurnThread extends Thread {
+		@Override
+		public void run() {
 			if (game().isAtBeginOfRound()) {
 				GameState state = game().deepClone();
 				Main.getSWController().getGame().deleteRedoStates();
@@ -380,7 +388,7 @@ public class GameBoardViewController extends VBox {
 					}
 					if (halikarnassus)
 						return;
-					Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
+					Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game(), this);
 					updateAllBoards();
 				}
 			}
@@ -394,11 +402,9 @@ public class GameBoardViewController extends VBox {
 				else
 					setHandCards();
 			});
-
-		});
-		thread.setDaemon(true);
-		thread.setName("turn thread");
-		thread.start();
+			
+			turnThread = null;
+		}
 	}
 
 	/**
@@ -1151,7 +1157,7 @@ public class GameBoardViewController extends VBox {
 	 */
 	private void exitHalikarnassus() {
 		game().setChoosingPlayer(null);
-		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game());
+		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game(), turnThread);
 		refreshBoards();
 		setHandCards();
 	}

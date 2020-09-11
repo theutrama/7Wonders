@@ -26,28 +26,28 @@ public class Move implements Serializable {
 			int length = in.readInt();
 			byte[] ar = new byte[length];
 			in.read(ar, 0, length);
-			
+
 			byteIn = new ByteArrayInputStream(ar);
 			objIn = new ObjectInputStream(byteIn);
 			Move copy = (Move) objIn.readObject();
-			
+
 			return copy;
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-		}finally{
-			if(byteIn!=null)
+		} finally {
+			if (byteIn != null)
 				try {
 					byteIn.close();
 				} catch (IOException e1) {}
-			if(objIn!=null)
+			if (objIn != null)
 				try {
 					objIn.close();
 				} catch (IOException e) {}
 		}
-		
+
 		return null;
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 	/** chosen Card of AI */
 	private Card chosen;
@@ -82,7 +82,7 @@ public class Move implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/** setter for {@link #tradeOption} */
 	public void setTradeOption(TradeOption tradeOption) {
 		this.tradeOption = tradeOption;

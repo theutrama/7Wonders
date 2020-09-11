@@ -79,12 +79,15 @@ public class GameController {
 	 * 
 	 * @param game  game instance
 	 * @param state the game state
+	 * @param turnThread the turn thread from {@link GameBoardViewController}, must be cancelled if endGame is executed
 	 */
-	public void createNextRound(Game game, GameState state) {
+	public void createNextRound(Game game, GameState state, Thread turnThread) {
 
 		if (state.getRound() == NUM_ROUNDS) {
 			if (state.getAge() == NUM_AGES) {
 				doConflicts(state);
+				if (turnThread != null && turnThread.isAlive())
+					turnThread.interrupt();
 				endGame(game, state);
 			} else {
 				doConflicts(state);

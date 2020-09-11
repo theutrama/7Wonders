@@ -26,6 +26,7 @@ import model.player.ai.Move.Action;
  * @author jonas,felix
  * easyAI class
  */
+@SuppressWarnings("PMD")
 public class EasyAI extends ArtInt{
 	private static final long serialVersionUID = -7836481968924654117L;
 	private boolean debug = false;

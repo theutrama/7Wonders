@@ -28,11 +28,18 @@ public class EasyAI extends ArtInt{
 		super(name, board);
 	}
 	
+	/**
+	 * debug message
+	 * @param msg debug message
+	 */
 	public void debug(String msg) {
 		if(debug)
 		System.out.println(getName() + ": " + msg);
 	}
 	
+	/**
+	 * halikarnassus case
+	 */
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
 		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
 			if(trash.isEmpty())return null;
@@ -94,6 +101,11 @@ public class EasyAI extends ArtInt{
 	}
 	
 
+	/**
+	 * checks for best trade option
+	 * @param card give card
+	 * @return best trade option
+	 */
 	public TradeOption getBestTradeOption(Card card) {
 		ArrayList<TradeOption> trade = Main.getSWController().getPlayerController().getTradeOptions(this, card.getRequired());
 

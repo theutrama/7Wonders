@@ -23,7 +23,7 @@ import model.player.ai.Move.Action;
 
 /**
  * easyAI class
- * @author jonas
+ * @author jonas,felix
  * easyAI class
  */
 public class EasyAI extends ArtInt{

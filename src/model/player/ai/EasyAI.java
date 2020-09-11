@@ -222,17 +222,17 @@ public class EasyAI extends ArtInt{
 					WonderBoard board = getBoard();
 					for(int slot = 0; slot < 3; slot++) {
 						if(!board.isFilled(slot)) {
-							Resource rs = board.getSlotResquirement(slot);
+							Resource resource = board.getSlotResquirement(slot);
 							
 							boolean add = false;
-							for(Resource r : card.getProducing()) {
-								if(r.getType() == rs.getType()) {
+							for(Resource rs : card.getProducing()) {
+								if(rs.getType() == resource.getType()) {
 									add=true;
 									break;
 								}
 							}
 							
-							if(add && list.contains(rs.getType())) {
+							if(add && list.contains(resource.getType())) {
 								rating += 2.6;
 								debug("3.1) RATING add 2.6");
 							}
@@ -286,14 +286,14 @@ public class EasyAI extends ArtInt{
 				case RED:
 					int military = pcon.getMilitaryPoints(this);
 					Player leftN = pcon.getLeftNeighbour(this);
-					int left_mili = pcon.getMilitaryPoints(leftN);
-					int new_military = military + card.getProducing().get(0).getQuantity();
+					int lmili = pcon.getMilitaryPoints(leftN);
+					int militarynew = military + card.getProducing().get(0).getQuantity();
 					
 					if(!twoPlayer) {
 						Player rightN = pcon.getRightNeighbour(this);
-						int right_mili = pcon.getMilitaryPoints(rightN);
+						int rmili = pcon.getMilitaryPoints(rightN);
 						
-						if(right_mili < new_military && (new_military-right_mili) < 3) {
+						if(rmili < militarynew && (militarynew-rmili) < 3) {
 							rating += 3;
 							debug("5.1) RATING add 3");
 						}else {
@@ -306,7 +306,7 @@ public class EasyAI extends ArtInt{
 					 * falls militar zu sehr abgehängt nicht weiter mit halten!
 					 */
 					
-					if(left_mili < new_military && (new_military-left_mili) < 3) {
+					if(lmili < militarynew && (militarynew-lmili) < 3) {
 						rating += 3;
 						debug("5.3) RATING add 3");
 					}else {

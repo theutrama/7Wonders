@@ -47,7 +47,10 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 		} else {
+
 			for (MoveTree child : tree.getChildren()) {
+
+				// WORST CASE
 				ArrayList<MoveTree> leaves = child.getLeaves();
 				MoveTree worst = null;
 				int worstValue = Integer.MAX_VALUE;
@@ -63,10 +66,68 @@ public abstract class AdvancedAI extends ArtInt {
 					maxValue = worstValue;
 				}
 			}
+
+			// AVERAGE /*int sum = 0, count = 0;; for (MoveTree leaf: child.getLeaves()) { sum += evaluate(leaf.getState()); count++; } if (sum / count > maxValue) { maxMove =
+			// child.getMove(); maxValue = sum / count; } }
+
+			// MINIMAX
+
+//			MoveTree movetree = minimax(tree).tree;
+//			while (movetree.getParent().getParent() != null)
+//				movetree = movetree.getParent();
+//			maxMove = movetree.getMove();
 		}
 
 		this.next = maxMove;
+
+		System.out.println("Advanced AI: action: " + next.getAction() + "  card: " + next.getCard());
 	}
+
+	/**
+	 * minimax algorithm
+	 * 
+	 * @param tree root
+	 * @return result bundle
+	 */
+//	private MinimaxResult minimax(MoveTree tree) {
+//		if (tree.getChildren().isEmpty())
+//			return new MinimaxResult(tree, evaluate(tree.getState()));
+//		if (tree.getChildren().get(0).getState().getPlayer().getName().equals(this.getName())) { // this layer is max layer
+//			MinimaxResult maxValue = null;
+//			for (MoveTree child : tree.getChildren()) {
+//				MinimaxResult value = minimax(child);
+//				if (maxValue == null || value.value > maxValue.value)
+//					maxValue = value;
+//			}
+//			return maxValue;
+//		} else { // this layer is min layer
+//			MinimaxResult minValue = null;
+//			for (MoveTree child : tree.getChildren()) {
+//				MinimaxResult value = minimax(child);
+//				if (minValue == null || value.value < minValue.value)
+//					minValue = value;
+//			}
+//			return minValue;
+//		}
+//	}
+
+	/** inner class to save the resulting values of minimax algorithm */
+//	private static class MinimaxResult {
+//		private MoveTree tree;
+//		private int value;
+//
+//		/**
+//		 * create result
+//		 * 
+//		 * @param tree  sets {@link #tree}
+//		 * @param value sets {@link #value}
+//		 */
+//		public MinimaxResult(MoveTree tree, int value) {
+//			super();
+//			this.tree = tree;
+//			this.value = value;
+//		}
+//	}
 
 	/**
 	 * generates a tree of possible moves
@@ -80,10 +141,12 @@ public abstract class AdvancedAI extends ArtInt {
 		MoveTree tree = new MoveTree(Main.getSWController().getGame().getCurrentGameState());
 		leaves.add(tree);
 
-		final int numNodes = 1000000;
-		final int numMoves = 3;// (int) (Math.log(numNodes) / Math.log(21));
+		// final int numNodes = 20000;
+		// final int numMoves = (int) (Math.log(numNodes) / Math.log(3 * getHand().size()));
 
-		for (int i = 0; i < numMoves; i++) {
+		long starttime = System.currentTimeMillis();
+
+		while (true) {
 			ArrayList<MoveTree> newLeaves = new ArrayList<>();
 			for (MoveTree leaf : leaves) {
 				GameState state = leaf.getState();
@@ -148,7 +211,7 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 
-				leaf.clearState();
+				// leaf.clearState();
 			}
 
 			boolean breakAfterwards = false;
@@ -177,10 +240,10 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 
-			if (breakAfterwards)
-				break;
-
 			leaves = newLeaves;
+
+			if (breakAfterwards || System.currentTimeMillis() - starttime > 2000)
+				break;
 		}
 
 		return tree;

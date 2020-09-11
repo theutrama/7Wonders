@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import model.Game;
 import model.ranking.Ranking;
@@ -101,10 +103,12 @@ public class IOController {
 	 * @return true if and only if the game file was deleted
 	 */
 	public boolean deleteFile(String filename) {
-		File file = new File(getExecutionPath() + File.separator + GAME_FOLDER + File.separator + filename);
-		if (!file.exists())
+		try {
+			Files.delete(Paths.get(new File(getExecutionPath() + File.separator + GAME_FOLDER + File.separator + filename).toURI()));
+			return true;
+		} catch (IOException e) {
 			return false;
-		return file.delete();
+		}
 	}
 
 	/**

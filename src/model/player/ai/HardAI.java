@@ -57,7 +57,7 @@ public class HardAI extends AdvancedAI {
 					value -= getTradeValue(asList(thisPlayer.getBoard().getSlotResquirement(2)), thisPlayer, state) / (thisPlayer.getCoins() / 4 + 1);
 			}
 
-			value += thisPlayer.getBoard().nextSlot() == -1 ? 1 : thisPlayer.getBoard().nextSlot();
+			value += thisPlayer.getBoard().nextSlot() == -1 ? 10 : thisPlayer.getBoard().nextSlot() * 4;
 
 			// Science //////////////////////////////////////////////////////////////
 
@@ -111,9 +111,9 @@ public class HardAI extends AdvancedAI {
 					break;
 				}
 
-				value += thisPlayer.getBoard().nextSlot() * 2;
+				value += thisPlayer.getBoard().nextSlot() * 4;
 			} else
-				value += 6;
+				value += 12;
 
 			// Civil ////////////////////////////////////////////////////
 

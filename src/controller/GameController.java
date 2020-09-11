@@ -327,6 +327,7 @@ public class GameController {
 		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
 		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getIOController().deleteFile(game.getName());
+		Main.primaryStage.setOnCloseRequest(event -> Main.getSWController().getIOController().saveRanking());
 		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
 	}
 

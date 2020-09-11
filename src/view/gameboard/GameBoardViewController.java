@@ -166,7 +166,6 @@ public class GameBoardViewController extends VBox {
 		} else {
 			selectCardFromTrash(game().getChoosingPlayer());
 		}
-		updateMouseBlocking();
 
 		Main.getSWController().getGameController().setGbvController(this);
 
@@ -402,6 +401,7 @@ public class GameBoardViewController extends VBox {
 	public void showConflicts() {
 		setMouseBlocked(true);
 		Platform.runLater(() -> {
+			hbox_cards.getChildren().clear();
 			for (StackPane pane : boardPanes) {
 				((Board) pane.getChildren().get(0)).showConflict();
 			}
@@ -1130,8 +1130,6 @@ public class GameBoardViewController extends VBox {
 
 		hbox_cards.getChildren().add(vboxChoose);
 
-		updateMouseBlocking();
-
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
 				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
@@ -1162,7 +1160,7 @@ public class GameBoardViewController extends VBox {
 	 * sets the mouse blocking property depending on the current player
 	 */
 	private void updateMouseBlocking() {
-		setMouseBlocked(getCurrentPlayer() instanceof ArtInt || (game().getChoosingPlayer() != null && game().getChoosingPlayer() instanceof ArtInt));
+		setMouseBlocked((game().getChoosingPlayer() == null && getCurrentPlayer() instanceof ArtInt) || (game().getChoosingPlayer() != null && game().getChoosingPlayer() instanceof ArtInt));
 	}
 
 	/**
@@ -1178,6 +1176,8 @@ public class GameBoardViewController extends VBox {
 			hbox_cards.removeEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
 		}
+		btn_undo.setDisable(blocked);
+		btn_redo.setDisable(blocked);
 	}
 
 	/**

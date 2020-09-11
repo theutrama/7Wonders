@@ -50,7 +50,7 @@ public abstract class ArtInt extends Player {
 	 * 
 	 * @param player player to choose
 	 * @param trash  trash cards
-	 * @param state game state
+	 * @param state  game state
 	 * @return the chosen card
 	 */
 	public abstract Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state);

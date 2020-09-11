@@ -195,29 +195,29 @@ public class EasyAI extends ArtInt{
 					list.remove(getBoard().getResource().getType());
 					
 					Player left = pcon.getNeighbour(state, true, this);
-					for(Card rs_card : left.getBoard().getResources()) {
-						for(Resource produce : rs_card.getProducing()) {
+					for(Card rscard : left.getBoard().getResources()) {
+						for(Resource produce : rscard.getProducing()) {
 							if(list.contains(produce.getType()))list.remove(produce.getType());
 						}
 					}
 					
 					if(!twoPlayer) {
 						Player right = pcon.getNeighbour(state, true, this);
-						for(Card rs_card : right.getBoard().getResources()) {
-							for(Resource produce : rs_card.getProducing()) {
+						for(Card rscard : right.getBoard().getResources()) {
+							for(Resource produce : rscard.getProducing()) {
 								if(list.contains(produce.getType()))list.remove(produce.getType());
 							}
 						}
 					}
 					
-					ArrayList<Card> own_producing = new ArrayList<Card>();
-					getBoard().getResources().forEach( value -> { own_producing.add(value); } );
-					getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
+					ArrayList<Card> ownproducing = new ArrayList<Card>();
+					getBoard().getResources().forEach( value -> { ownproducing.add(value); } );
+					getBoard().getTrade().forEach( value -> { ownproducing.add(value); } );
 					
-					for(Card rs_card : own_producing) {
-						ArrayList<Resource> producing = rs_card.getProducing();
+					for(Card rscard : ownproducing) {
+						ArrayList<Resource> producing = rscard.getProducing();
 						if(producing == null) continue;
-						for(Resource produce : rs_card.getProducing()) {
+						for(Resource produce : rscard.getProducing()) {
 							if(list.contains(produce.getType()))list.remove(produce.getType());
 						}
 					}

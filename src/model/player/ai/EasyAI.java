@@ -35,9 +35,11 @@ public class EasyAI extends ArtInt{
 		System.out.println(getName() + ": " + msg);
 	}
 	
-	public Card calculateHalikarnassusCard() {
+
+
+	@Override
+	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
 		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
-			ArrayList<Card> trash = Main.getSWController().getGame().getCurrentGameState().getTrash();
 			if(trash.isEmpty())return null;
 			
 			Card best = trash.get(0);
@@ -92,9 +94,6 @@ public class EasyAI extends ArtInt{
 		doMove1(best);
 		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
 		debug = false;
-		
-		Card halikarnassusCard = calculateHalikarnassusCard();
-		if(halikarnassusCard!=null)this.next.setHalikarnassusCard(halikarnassusCard);
 		
 		this.next = best;
 	}

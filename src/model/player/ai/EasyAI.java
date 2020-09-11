@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import application.Main;
+import application.Utils;
 import controller.PlayerController;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
@@ -163,10 +164,10 @@ public class EasyAI extends ArtInt{
 						
 						double percentage = price/coins;
 						
-						if(percentage < 0.3) {
+						if(percentage < Utils.getValue(0.3)) {
 							rating -= 0.5;
 							debug("1.1) RATING add -0.5");
-						}else if(percentage < 0.6) {
+						}else if(percentage < Utils.getValue(0.6)) {
 							rating -= 1;
 							debug("1.2) RATING add -1");
 						}
@@ -242,7 +243,7 @@ public class EasyAI extends ArtInt{
 						}
 					}
 					
-					if(list.size() > 2)
+					if(list.size() > Utils.getValue(2))
 						rating += (list.size() > 5 ? 3 : 1.5);
 					debug("3.2) RATING add "+(list.size() > 5 ? 3 : 1.5));
 					break;
@@ -263,7 +264,7 @@ public class EasyAI extends ArtInt{
 					if(science.containsKey(card.getInternalName())) {
 						int amount = science.get(card.getInternalName());
 						
-						if(amount >= 2) {
+						if(amount >= Utils.getValue(2)) {
 							rating += 4;
 							debug("4.1) RATING add 4");
 						}else{
@@ -296,7 +297,7 @@ public class EasyAI extends ArtInt{
 						Player rightN = pcon.getRightNeighbour(this);
 						int rmili = pcon.getMilitaryPoints(rightN);
 						
-						if(rmili < militarynew && (militarynew-rmili) < 3) {
+						if(rmili < militarynew && (militarynew-rmili) < Utils.getValue(3)) {
 							rating += 3;
 							debug("5.1) RATING add 3");
 						}else {
@@ -309,7 +310,7 @@ public class EasyAI extends ArtInt{
 					 * falls militar zu sehr abgehängt nicht weiter mit halten!
 					 */
 					
-					if(lmili < militarynew && (militarynew-lmili) < 3) {
+					if(lmili < militarynew && (militarynew-lmili) < Utils.getValue(3)) {
 						rating += 3;
 						debug("5.3) RATING add 3");
 					}else {
@@ -383,10 +384,10 @@ public class EasyAI extends ArtInt{
 							
 							double percentage = price/coins;
 							
-							if(percentage < 0.2) {
+							if(percentage < Utils.getValue(0.2)) {
 								debug("9.1) RATING add -1");
 								rating -= 1;
-							}else if(percentage < 0.4) {
+							}else if(percentage < Utils.getValue(0.4)) {
 								rating -= 2;
 								debug("8.2) RATING add -2");
 							}
@@ -399,10 +400,10 @@ public class EasyAI extends ArtInt{
 			}
 			break;
 		case SELL:
-			if(coins < 4) {
+			if(coins < Utils.getValue(4)) {
 				rating += 2.5;
 				debug("9.1) RATING add 2.5");
-			}else if(coins < 10) {
+			}else if(coins < Utils.getValue(10)) {
 				rating += 1.5;
 				debug("9.2) RATING add 1.5");
 			}

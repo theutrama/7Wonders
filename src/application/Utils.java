@@ -23,6 +23,10 @@ public class Utils {
 			return "gizah";
 		return w;
 	}
+	
+	public static <T> T getValue(T v) {
+		return v;
+	}
 
 	/**
 	 * returns max value of an integer array

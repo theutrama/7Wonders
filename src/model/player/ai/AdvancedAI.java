@@ -39,7 +39,6 @@ public abstract class AdvancedAI extends ArtInt {
 		Move maxMove = null;
 
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
-			System.out.println("case 1");
 			for (MoveTree child : tree.getChildren()) {
 				int value = evaluate(child.getState());
 				if (value > maxValue) {
@@ -48,7 +47,6 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 		} else {
-			System.out.println("case 2");
 			for (MoveTree child : tree.getChildren()) {
 				ArrayList<MoveTree> leaves = child.getLeaves();
 				MoveTree worst = null;
@@ -68,11 +66,6 @@ public abstract class AdvancedAI extends ArtInt {
 		}
 
 		this.next = maxMove;
-		System.out.println("next move: " + next);
-		System.out.println("action: " + next.getAction());
-		System.out.println("card: " + next.getCard());
-		System.out.println("trade: " + next.getTradeOption());
-		System.out.println(this.getHand().toString());
 	}
 
 	/**

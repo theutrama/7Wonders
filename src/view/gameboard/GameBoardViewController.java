@@ -387,7 +387,7 @@ public class GameBoardViewController extends VBox {
 				return;
 			}
 		}
-		
+
 		refreshBoards();
 		updateMouseBlocking();
 
@@ -730,6 +730,7 @@ public class GameBoardViewController extends VBox {
 			VBox vbox = new VBox();
 
 			Button btnOlympia = new Button();
+			Button btn_sell = new Button();
 			if (!getCurrentPlayer().isOlympiaUsed()) {
 				HBox hboxOlympia = new HBox();
 				ImageView img1 = new ImageView();
@@ -807,7 +808,12 @@ public class GameBoardViewController extends VBox {
 					if (getCurrentPlayer() instanceof ArtInt) {
 						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 						int index = trades.indexOf(option);
-						Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
+						if (index == -1) {
+							System.err.println(getCurrentPlayer().getName() + " has chosen an invalid trade option:");
+							System.err.println("action: " + ((ArtInt) getCurrentPlayer()).getAction());
+							Platform.runLater(() -> btn_sell.fire());
+						} else
+							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 					}
 					break;
 				default:
@@ -864,7 +870,12 @@ public class GameBoardViewController extends VBox {
 					if (getCurrentPlayer() instanceof ArtInt) {
 						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 						int index = trades.indexOf(option);
-						Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
+						if (index == -1) {
+							System.err.println(getCurrentPlayer().getName() + " has chosen an invalid trade option:");
+							System.err.println("action: " + ((ArtInt) getCurrentPlayer()).getAction());
+							Platform.runLater(() -> btn_sell.fire());
+						} else
+							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 					}
 					break;
 				default:
@@ -875,7 +886,6 @@ public class GameBoardViewController extends VBox {
 					new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot())))) == BuildCapability.NONE);
 
 			// Button card sell
-			Button btn_sell = new Button();
 			HBox hbox_sell = new HBox();
 			ImageView img5 = new ImageView();
 			img5.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
@@ -1035,7 +1045,7 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
-		
+
 		updateMouseBlocking();
 
 		if (game().getTrash().isEmpty()) {

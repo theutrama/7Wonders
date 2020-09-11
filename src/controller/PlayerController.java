@@ -23,7 +23,6 @@ import model.player.ai.Difficulty;
 import model.player.ai.EasyAI;
 
 /** Controller for Players */
-@SuppressWarnings("PMD")
 public class PlayerController {
 	/** main controller */
 	private SevenWondersController swController;

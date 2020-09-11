@@ -207,7 +207,6 @@ public class GameController {
 			return false;
 
 		SevenWondersController controller = SevenWondersController.getInstance();
-		CardController card_controller = controller.getCardController();
 		DataInputStream in = null;
 		try {
 			in = new DataInputStream(new FileInputStream(file));
@@ -232,7 +231,7 @@ public class GameController {
 						ai++;
 					} else {
 						String cardname = Utils.toCard(split[1], age);
-						Card card = card_controller.getCard(cardname);
+						Card card = controller.getCardController().getCard(cardname);
 
 						if (age != card.getAge()) {
 							throw new CardOutOfAgeException(card, age);

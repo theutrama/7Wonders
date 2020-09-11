@@ -24,8 +24,14 @@ public class Utils {
 		return w;
 	}
 	
-	public static <T> T getValue(T v) {
-		return v;
+	/**
+	 * Returns the Value ;)
+	 * @param <T> 
+	 * @param value
+	 * @return value
+	 */
+	public static <T> T getValue(T value) {
+		return value;
 	}
 
 	/**

@@ -243,41 +243,41 @@ public class GameBoardViewController extends VBox {
 			right = new VBox();
 			pane = new StackPane();
 
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			right.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			right.getChildren().add(pane);
 
 			borderpane.setRight(right);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setBottom(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			left.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			left.getChildren().add(0, pane);
 
 			borderpane.setLeft(left);
 			break;
 		case 5:
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setRight(pane);
 
 			bottom = new HBox();
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			bottom.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			bottom.getChildren().add(0, pane);
 
 			bottom.setSpacing(75);
@@ -285,20 +285,20 @@ public class GameBoardViewController extends VBox {
 			borderpane.setBottom(bottom);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setLeft(pane);
 			break;
 		case 4:
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setRight(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setBottom(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setLeft(pane);
 			break;
 		case 3:
@@ -920,20 +920,14 @@ public class GameBoardViewController extends VBox {
 
 			if (getCurrentPlayer() instanceof ArtInt) {
 				Action action = ((ArtInt) getCurrentPlayer()).getAction();
-				switch (action) {
-				case OLYMPIA:
+				if (action == Action.OLYMPIA && btnOlympia != null)
 					btnOlympia.fire();
-					break;
-				case BUILD:
+				else if (action == Action.BUILD && !btn_place.isDisabled())
 					btn_place.fire();
-					break;
-				case PLACE_SLOT:
+				else if (action == Action.PLACE_SLOT && !btn_wonder.isDisabled())
 					btn_wonder.fire();
-					break;
-				case SELL:
+				else
 					btn_sell.fire();
-					break;
-				}
 			}
 
 		} catch (IOException e) {

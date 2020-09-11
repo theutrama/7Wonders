@@ -775,8 +775,10 @@ public class CardController {
 	 * @param freeBuild true if the player uses olympia ability to build this card
 	 */
 	public void placeCard(Card card, Player player, TradeOption trade, boolean freeBuild) {
-		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins())
+		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins()) {
+			System.err.println("place card cancelled");
 			return;
+		}
 
 		swController.getSoundController().play(Sound.BUILD);
 		player.getHand().remove(card);

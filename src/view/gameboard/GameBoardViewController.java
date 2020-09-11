@@ -389,7 +389,6 @@ public class GameBoardViewController extends VBox {
 		}
 
 		refreshBoards();
-		updateMouseBlocking();
 
 		if (action)
 			setActionCard();
@@ -716,10 +715,12 @@ public class GameBoardViewController extends VBox {
 	public void setActionCard() {
 		if (!action)
 			return;
+		
+		updateMouseBlocking();
+		
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
 
-		System.out.println("current player: " + getCurrentPlayer());
 		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
 		int arrowWidth = 45, arrowHeight = 25;
@@ -951,6 +952,9 @@ public class GameBoardViewController extends VBox {
 	public void setHandCards() {
 		if (action)
 			return;
+		
+		updateMouseBlocking();
+		
 		Player player = getCurrentPlayer();
 		ArrayList<Card> hand = player.getHand();
 
@@ -1134,8 +1138,8 @@ public class GameBoardViewController extends VBox {
 				int index = indexOf(game().getTrash(), selected);
 				if (selected == null || index == -1)
 					Platform.runLater(() -> exit.fire());
-
-				Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
+				else
+					Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
 			}).start();
 		}
 	}

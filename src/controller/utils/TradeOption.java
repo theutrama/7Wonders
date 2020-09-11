@@ -140,7 +140,7 @@ public class TradeOption implements Serializable {
 		btn.hoverProperty().addListener((obs, oldVal, newValue) -> {
 			try {
 				if (newValue) {
-					btn.setStyle("-fx-background-color: #D5D5D560");
+					btn.setStyle("-fx-background-color: #D5D5D580");
 					if(arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhoverleft.png"));
 					if(arrowright != null)

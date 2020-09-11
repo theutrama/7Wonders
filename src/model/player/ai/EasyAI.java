@@ -21,10 +21,20 @@ import model.card.ResourceType;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
+/**
+ * easyAI class
+ * @author jonas
+ * easyAI class
+ */
 public class EasyAI extends ArtInt{
 	private static final long serialVersionUID = -7836481968924654117L;
 	private boolean debug = false;
 	
+	/**
+	 * constructor easyAI
+	 * @param name name
+	 * @param board board
+	 */
 	public EasyAI(String name, WonderBoard board) {
 		super(name, board);
 	}
@@ -40,6 +50,7 @@ public class EasyAI extends ArtInt{
 	
 	/**
 	 * halikarnassus case
+	 * @return halikarnassus card
 	 */
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
 		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {

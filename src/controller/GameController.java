@@ -361,7 +361,8 @@ public class GameController {
 			}
 		}
 
-		gbvController.showConflicts();
+		if(gbvController != null)
+			gbvController.showConflicts();
 	}
 
 	/**

@@ -21,6 +21,7 @@ public class SevenWondersFactory {
 		PlayerController playerController = sevenWondersController.getPlayerController();
 		CardController cardController = sevenWondersController.getCardController();
 		GameController gameController = sevenWondersController.getGameController();
+		Main.setSwController(sevenWondersController);
 		/*
 		 * GameController gameController = sevenWondersController.getGameController(); WonderBoardController wwonderBoardController = sevenWondersController.getWonderBoardController();
 		 * IOController ioController = sevenWondersController.getIOController(); SoundController soundController = sevenWondersController.getSoundController();

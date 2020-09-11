@@ -107,8 +107,10 @@ public class PlayerController {
 	public Player getNeighbour(GameState state, boolean left, Player player) {
 		ArrayList<Player> players = state.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getName().equals(player.getName()))
+			if (players.get(i).getName().equals(player.getName())) {
 				return players.get((left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)));
+			}
+				
 		}
 		return null;
 	}
@@ -267,6 +269,7 @@ public class PlayerController {
 	 */
 	private ResourceTree generateTradeTree(Player player) {
 		final int ONE = 1;
+		
 		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
 		for (Card card : player.getBoard().getResources()) {
 			if (card.getProducing().size() == ONE)
@@ -337,6 +340,7 @@ public class PlayerController {
 			return BuildCapability.OWN_RESOURCE;
 
 		ResourceBundle cardRequirement = new ResourceBundle(resources);
+		
 		if (cardRequirement.getCoins() > player.getCoins())
 			return BuildCapability.NONE;
 

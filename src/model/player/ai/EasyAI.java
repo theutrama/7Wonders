@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import application.Main;
+import application.Utils;
 import controller.PlayerController;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
@@ -20,37 +21,46 @@ import model.card.ResourceType;
 import model.player.Player;
 import model.player.ai.Move.Action;
 
+/**
+ * easyAI class
+ * @author jonas,felix
+ * easyAI class
+ */
 public class EasyAI extends ArtInt{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7836481968924654117L;
 	private boolean debug = false;
 	
+	/**
+	 * constructor easyAI
+	 * @param name name
+	 * @param board board
+	 */
 	public EasyAI(String name, WonderBoard board) {
 		super(name, board);
-		
-		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * debug message
+	 * @param msg debug message
+	 */
 	public void debug(String msg) {
 		if(debug)
 		System.out.println(getName() + ": " + msg);
 	}
 	
-
-
-	@Override
+	/**
+	 * halikarnassus case
+	 * @return halikarnassus card
+	 */
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash) {
 		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
 			if(trash.isEmpty())return null;
 			
 			Card best = trash.get(0);
-			double rating = doMove1(new Move(best, Action.BUILD));
+			double rating = doMove(new Move(best, Action.BUILD));
 			double value;
 			for(int i = 1; i < trash.size(); i++) {
-				value = doMove1( new Move(trash.get(i),Action.BUILD) );
+				value = doMove( new Move(trash.get(i),Action.BUILD) );
 				
 				if(value > rating) {
 					rating = value;
@@ -77,11 +87,11 @@ public class EasyAI extends ArtInt{
 		
 		
 		Move best = generate.get(0);
-		double rating = doMove1(best);
+		double rating = doMove(best);
 		double value;
 		for(int i = 1; i < generate.size(); i++) {
 			try {
-				value = doMove1(generate.get(i));
+				value = doMove(generate.get(i));
 			} catch (Exception e) {
 				value = Double.NEGATIVE_INFINITY;
 				System.out.println("Exception: "+generate.get(i).getCard().getName() + " "+generate.get(i).getAction().name());
@@ -95,7 +105,7 @@ public class EasyAI extends ArtInt{
 		}
 
 		debug = true;
-		doMove1(best);
+		doMove(best);
 		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
 		debug = false;
 		
@@ -103,6 +113,11 @@ public class EasyAI extends ArtInt{
 	}
 	
 
+	/**
+	 * checks for best trade option
+	 * @param card give card
+	 * @return best trade option
+	 */
 	public TradeOption getBestTradeOption(Card card) {
 		ArrayList<TradeOption> trade = Main.getSWController().getPlayerController().getTradeOptions(this, card.getRequired());
 
@@ -124,7 +139,7 @@ public class EasyAI extends ArtInt{
 	 * @param move Move to play for the AI
 	 * @return v Victory points
 	 */
-	public double doMove1(Move move) {
+	public double doMove(Move move) {
 		GameState state = Main.getSWController().getGame().getCurrentGameState();
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		Card card = move.getCard();
@@ -160,10 +175,10 @@ public class EasyAI extends ArtInt{
 						
 						double percentage = price/coins;
 						
-						if(percentage < 0.3) {
+						if(percentage < Utils.getValue(0.3)) {
 							rating -= 0.5;
 							debug("1.1) RATING add -0.5");
-						}else if(percentage < 0.6) {
+						}else if(percentage < Utils.getValue(0.6)) {
 							rating -= 1;
 							debug("1.2) RATING add -1");
 						}
@@ -192,75 +207,54 @@ public class EasyAI extends ArtInt{
 					list.remove(getBoard().getResource().getType());
 					
 					Player left = pcon.getNeighbour(state, true, this);
-					for(Card rs_card : left.getBoard().getResources()) {
-						for(Resource produce : rs_card.getProducing()) {
+					for(Card rscard : left.getBoard().getResources()) {
+						for(Resource produce : rscard.getProducing()) {
 							if(list.contains(produce.getType()))list.remove(produce.getType());
 						}
 					}
 					
 					if(!twoPlayer) {
 						Player right = pcon.getNeighbour(state, true, this);
-						for(Card rs_card : right.getBoard().getResources()) {
-							for(Resource produce : rs_card.getProducing()) {
+						for(Card rscard : right.getBoard().getResources()) {
+							for(Resource produce : rscard.getProducing()) {
 								if(list.contains(produce.getType()))list.remove(produce.getType());
 							}
 						}
 					}
 					
-					Card c = null;
-					Resource rr = null;
-					ArrayList<Card> own_producing = new ArrayList<Card>();
-					try {
-						getBoard().getResources().forEach( value -> { own_producing.add(value); } );
-						getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
-						
-						for(Card rs_card : own_producing) {
-							if(rs_card==null) {
-								throw new NullPointerException("rs_card is NULL!!");
-							}
+					ArrayList<Card> ownproducing = new ArrayList<Card>();
+					getBoard().getResources().forEach( value -> { ownproducing.add(value); } );
+					getBoard().getTrade().forEach( value -> { ownproducing.add(value); } );
+					
+					for(Card rscard : ownproducing) {
+						ArrayList<Resource> producing = rscard.getProducing();
+						if(producing == null) continue;
+						for(Resource produce : rscard.getProducing()) {
+							if(list.contains(produce.getType()))list.remove(produce.getType());
 						}
-						
-						for(Card rs_card : own_producing) {
-							c=rs_card;
-							ArrayList<Resource> producing = rs_card.getProducing();
-							if(producing == null) continue;
-							for(Resource produce : rs_card.getProducing()) {
-								rr = produce;
-								if(list.contains(produce.getType()))list.remove(produce.getType());
-							}
-						}
-					}catch(Exception e) {
-						System.out.println("PRO - CARD "+(c == null ? "NULL" : card.getName()));
-						System.out.println("PRO - RESOURCE "+(rr == null ? "NULL" : "Q:"+rr.getQuantity()+" Type:"+rr.getType().name()));
-						System.out.println("OWN: "+(own_producing == null ? "NULL" : own_producing.size()));
-						System.out.println("LIST: "+(list == null ? "NULL" : list.size()));
-						System.out.println("getProducing: "+(c.getProducing() == null ? "NULL" : c.getProducing().size()));
-						
-						e.printStackTrace();
-						return Double.NEGATIVE_INFINITY;
 					}
 					
 					WonderBoard board = getBoard();
 					for(int slot = 0; slot < 3; slot++) {
 						if(!board.isFilled(slot)) {
-							Resource rs = board.getSlotResquirement(slot);
+							Resource resource = board.getSlotResquirement(slot);
 							
 							boolean add = false;
-							for(Resource r : card.getProducing()) {
-								if(r.getType() == rs.getType()) {
+							for(Resource rs : card.getProducing()) {
+								if(rs.getType() == resource.getType()) {
 									add=true;
 									break;
 								}
 							}
 							
-							if(add && list.contains(rs.getType())) {
+							if(add && list.contains(resource.getType())) {
 								rating += 2.6;
 								debug("3.1) RATING add 2.6");
 							}
 						}
 					}
 					
-					if(list.size() > 2)
+					if(list.size() > Utils.getValue(2))
 						rating += (list.size() > 5 ? 3 : 1.5);
 					debug("3.2) RATING add "+(list.size() > 5 ? 3 : 1.5));
 					break;
@@ -281,7 +275,7 @@ public class EasyAI extends ArtInt{
 					if(science.containsKey(card.getInternalName())) {
 						int amount = science.get(card.getInternalName());
 						
-						if(amount >= 2) {
+						if(amount >= Utils.getValue(2)) {
 							rating += 4;
 							debug("4.1) RATING add 4");
 						}else{
@@ -307,14 +301,14 @@ public class EasyAI extends ArtInt{
 				case RED:
 					int military = pcon.getMilitaryPoints(this);
 					Player leftN = pcon.getLeftNeighbour(this);
-					int left_mili = pcon.getMilitaryPoints(leftN);
-					int new_military = military + card.getProducing().get(0).getQuantity();
+					int lmili = pcon.getMilitaryPoints(leftN);
+					int militarynew = military + card.getProducing().get(0).getQuantity();
 					
 					if(!twoPlayer) {
 						Player rightN = pcon.getRightNeighbour(this);
-						int right_mili = pcon.getMilitaryPoints(rightN);
+						int rmili = pcon.getMilitaryPoints(rightN);
 						
-						if(right_mili < new_military && (new_military-right_mili) < 3) {
+						if(rmili < militarynew && (militarynew-rmili) < Utils.getValue(3)) {
 							rating += 3;
 							debug("5.1) RATING add 3");
 						}else {
@@ -327,7 +321,7 @@ public class EasyAI extends ArtInt{
 					 * falls militar zu sehr abgehängt nicht weiter mit halten!
 					 */
 					
-					if(left_mili < new_military && (new_military-left_mili) < 3) {
+					if(lmili < militarynew && (militarynew-lmili) < Utils.getValue(3)) {
 						rating += 3;
 						debug("5.3) RATING add 3");
 					}else {
@@ -401,10 +395,10 @@ public class EasyAI extends ArtInt{
 							
 							double percentage = price/coins;
 							
-							if(percentage < 0.2) {
+							if(percentage < Utils.getValue(0.2)) {
 								debug("9.1) RATING add -1");
 								rating -= 1;
-							}else if(percentage < 0.4) {
+							}else if(percentage < Utils.getValue(0.4)) {
 								rating -= 2;
 								debug("8.2) RATING add -2");
 							}
@@ -417,10 +411,10 @@ public class EasyAI extends ArtInt{
 			}
 			break;
 		case SELL:
-			if(coins < 4) {
+			if(coins < Utils.getValue(4)) {
 				rating += 2.5;
 				debug("9.1) RATING add 2.5");
-			}else if(coins < 10) {
+			}else if(coins < Utils.getValue(10)) {
 				rating += 1.5;
 				debug("9.2) RATING add 1.5");
 			}

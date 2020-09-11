@@ -7,7 +7,6 @@ import application.Main;
 import application.Utils;
 import controller.GameController;
 import controller.SoundController;
-import controller.exceptions.CardOutOfAgeException;
 import controller.sound.Sound;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -116,7 +115,7 @@ public class GameListViewController extends BorderPane {
 						if (!loaded) {
 							System.out.println("Die Datei konnte nicht geladen werden!");
 						}
-					} catch (CardOutOfAgeException e) {
+					} catch (NullPointerException e) {
 						e.printStackTrace();
 					}
 				}

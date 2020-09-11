@@ -22,7 +22,7 @@ public class HardAI extends AdvancedAI {
 
 	@Override
 	protected int evaluate(GameState state) {
-		Player thisPlayer = Main.getSWController().getPlayerController().getPlayer(this.getName());
+		Player thisPlayer = Main.getSWController().getPlayerController().getPlayer(this.getName(), state);
 		int value = 0;
 		switch (state.getAge()) {
 		case 1:

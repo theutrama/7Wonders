@@ -21,6 +21,7 @@ import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.Difficulty;
 import model.player.ai.EasyAI;
+import model.player.ai.HardAI;
 
 /** Controller for Players */
 public class PlayerController {
@@ -72,6 +73,20 @@ public class PlayerController {
 	}
 
 	/**
+	 * get player by name for a given gamestate
+	 * 
+	 * @param playername player name
+	 * @param state      game state
+	 * @return player instance or null
+	 */
+	public Player getPlayer(String playername, GameState state) {
+		for (Player player : state.getPlayers())
+			if (player.getName().equals(playername))
+				return player;
+		return null;
+	}
+
+	/**
 	 * create an AI
 	 * 
 	 * @param playername  name of the AI
@@ -81,7 +96,7 @@ public class PlayerController {
 	 */
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wbc.createWonderBoard(wonderboard);
-		ArtInt artInt = new EasyAI(playername, board);
+		ArtInt artInt = difficulty == Difficulty.EASY ? new EasyAI(playername, board) : (new HardAI(playername, board));
 		board.setPlayer(artInt);
 		return artInt;
 	}
@@ -267,6 +282,7 @@ public class PlayerController {
 	 */
 	private ResourceTree generateTradeTree(Player player) {
 		final int ONE = 1;
+
 		ResourceTree tree = new ResourceTree(new ResourceBundle(player.getBoard().getResource()));
 		for (Card card : player.getBoard().getResources()) {
 			if (card.getProducing().size() == ONE)
@@ -337,6 +353,7 @@ public class PlayerController {
 			return BuildCapability.OWN_RESOURCE;
 
 		ResourceBundle cardRequirement = new ResourceBundle(resources);
+
 		if (cardRequirement.getCoins() > player.getCoins())
 			return BuildCapability.NONE;
 
@@ -469,6 +486,24 @@ public class PlayerController {
 		}
 		if (trade.getRightCost() > 0) {
 			getRightNeighbour(player).addCoins(trade.getRightCost());
+			player.addCoins(-trade.getRightCost());
+		}
+	}
+
+	/**
+	 * executes a trade by adding/removing coins
+	 * 
+	 * @param player player that trades
+	 * @param trade  the trade
+	 * @param state  game state
+	 */
+	public void doTrade(Player player, TradeOption trade, GameState state) {
+		if (trade.getLeftCost() > 0) {
+			getNeighbour(state, true, player).addCoins(trade.getLeftCost());
+			player.addCoins(-trade.getLeftCost());
+		}
+		if (trade.getRightCost() > 0) {
+			getNeighbour(state, false, player).addCoins(trade.getLeftCost());
 			player.addCoins(-trade.getRightCost());
 		}
 	}

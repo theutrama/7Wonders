@@ -29,7 +29,8 @@ public class TradingSystemTest {
 		Player player1 = controller.getPlayerController().createPlayer("player 1", "Alexandria"), player2 = controller.getPlayerController().createPlayer("player 2", "Olympia"),
 				player3 = controller.getPlayerController().createPlayer("player 3", "Rhodos");
 		controller.setGame(controller.getGameController().createGame("game 1", createList(player1, player2, player3)));
-
+		
+		
 		player1 = controller.getPlayerController().getPlayer("player 1");
 		player2 = controller.getPlayerController().getPlayer("player 2");
 		player3 = controller.getPlayerController().getPlayer("player 3");
@@ -91,7 +92,7 @@ public class TradingSystemTest {
 	public void testTrading2() {
 		SevenWondersController controller = SevenWondersFactory.create();
 		Player player1 = controller.getPlayerController().getPlayer("erster"), player2 = controller.getPlayerController().getPlayer("zweiter");
-		// Player player3 = controller.getPlayerController().getPlayer("dritter");
+		
 		assertEquals(BuildCapability.OWN_RESOURCE, controller.getPlayerController().hasResources(player1, createList(new Resource(2, ResourceType.BRICK))));
 		assertEquals(BuildCapability.OWN_RESOURCE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.STONE))));

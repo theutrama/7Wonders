@@ -10,18 +10,33 @@ import javafx.scene.image.Image;
 public class Utils {
 	private static Random rand = new Random();
 
-	public static String toWonder(String w) {
-		if (w.equalsIgnoreCase("ephesus"))
+	/**
+	 * Fix Wondername If its another language
+	 * @param wondername
+	 * @return correct Wondername
+	 */
+	public static String toWonder(String wondername) {
+		if (wondername.equalsIgnoreCase("ephesus"))
 			return "ephesos";
-		if (w.equalsIgnoreCase("alexandria"))
+		if (wondername.equalsIgnoreCase("alexandria"))
 			return "alexandria";
-		if (w.equalsIgnoreCase("rhodes"))
+		if (wondername.equalsIgnoreCase("rhodes"))
 			return "rhodos";
-		if (w.equalsIgnoreCase("halicarnassus"))
+		if (wondername.equalsIgnoreCase("halicarnassus"))
 			return "halikarnassus";
-		if (w.equalsIgnoreCase("giza"))
+		if (wondername.equalsIgnoreCase("giza"))
 			return "gizah";
-		return w;
+		return wondername;
+	}
+	
+	/**
+	 * Returns the Value ;)
+	 * @param <T> 
+	 * @param value
+	 * @return value
+	 */
+	public static <T> T getValue(T value) {
+		return value;
 	}
 
 	/**
@@ -42,42 +57,78 @@ public class Utils {
 		return index;
 	}
 
-	public static String toCard(String c, int age) {
-		if (c.equalsIgnoreCase("glassworks"))
+	/**
+	 * Returns the correct Name of the Card
+	 * @param card 
+	 * @param age
+	 * @return Cardname
+	 */
+	public static String toCard(String card, int age) {
+		if (card.equalsIgnoreCase("glassworks"))
 			return "glassworks" + age;
-		if (c.equalsIgnoreCase("loom"))
+		if (card.equalsIgnoreCase("loom"))
 			return "loom" + age;
-		if (c.equalsIgnoreCase("press"))
+		if (card.equalsIgnoreCase("press"))
 			return "press" + age;
-		if (c.equalsIgnoreCase("craftsmen_guild"))
+		if (card.equalsIgnoreCase("craftsmen_guild"))
 			return "craftsmensguild";
-		if (c.contains("_"))
-			return c.replaceAll("_", "");
-		return c;
+		if (card.contains("_"))
+			return card.replaceAll("_", "");
+		return card;
 	}
 
+	/**
+	 * Returns the Max Int
+	 * @param ints
+	 * @return int
+	 */
 	public static int max(int[] ints) {
 		if (ints.length == 0)
 			return 0;
 		return max(ints, 0);
 	}
 
+	/**
+	 * Recursive function for max
+	 * @param ints
+	 * @param index
+	 * @return
+	 */
 	private static int max(int[] ints, int index) {
 		if (ints.length == index)
 			return Integer.MIN_VALUE;
 		return Math.max(ints[index], max(ints, index + 1));
 	}
-
-	public static int[] addToIndex(int add, int index, int[] amount) {
-		amount[index] += add;
-		return amount;
+	
+	/**
+	 * Adds an Value to a specific index of the array
+	 * @param add
+	 * @param index
+	 * @param array
+	 * @return array
+	 */
+	public static int[] addToIndex(int add, int index, int[] array) {
+		array[index] += add;
+		return array;
 	}
 
+	/**
+	 * Random Integer function
+	 * @param min
+	 * @param max
+	 * @return int
+	 */
 	public static int randInt(int min, int max) {
 		int randomNum = rand.nextInt((max - min) + 1) + min;
 		return randomNum;
 	}
 
+	/**
+	 * Open Image from Filepath
+	 * @param path
+	 * @return Image
+	 * @throws IOException
+	 */
 	public static Image toImage(String path) throws IOException {
 		FileInputStream fileIn = new FileInputStream(path);
 		Image img = new Image(fileIn);
@@ -85,6 +136,13 @@ public class Utils {
 		return img;
 	}
 
+	/**
+	 * Returns per reflection an Variable
+	 * @param <T>
+	 * @param obj
+	 * @param name
+	 * @return
+	 */
 	public static <T> T getValue(Object obj, String name) {
 		try {
 			Field field = obj.getClass().getField(name);

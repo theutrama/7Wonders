@@ -39,6 +39,7 @@ public abstract class AdvancedAI extends ArtInt {
 		Move maxMove = null;
 
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
+			System.out.println("case 1");
 			for (MoveTree child : tree.getChildren()) {
 				int value = evaluate(child.getState());
 				if (value > maxValue) {
@@ -47,6 +48,7 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 		} else {
+			System.out.println("case 2");
 			for (MoveTree child : tree.getChildren()) {
 				ArrayList<MoveTree> leaves = child.getLeaves();
 				MoveTree worst = null;
@@ -59,13 +61,18 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 				if (worst != null && worstValue > maxValue) {
-					maxMove = worst.getMove();
+					maxMove = child.getMove();
 					maxValue = worstValue;
 				}
 			}
 		}
 
 		this.next = maxMove;
+		System.out.println("next move: " + next);
+		System.out.println("action: " + next.getAction());
+		System.out.println("card: " + next.getCard());
+		System.out.println("trade: " + next.getTradeOption());
+		System.out.println(this.getHand().toString());
 	}
 
 	/**
@@ -81,7 +88,7 @@ public abstract class AdvancedAI extends ArtInt {
 		leaves.add(tree);
 
 		final int numNodes = 1000000;
-		final int numMoves = (int) (Math.log(numNodes) / Math.log(21));
+		final int numMoves = 2;//(int) (Math.log(numNodes) / Math.log(21));
 
 		for (int i = 0; i < numMoves; i++) {
 			ArrayList<MoveTree> newLeaves = new ArrayList<>();
@@ -192,7 +199,35 @@ public abstract class AdvancedAI extends ArtInt {
 	 * @return a new game state object
 	 */
 	private GameState doMove(Move move, GameState state) {
-		return null;
+		GameState newState = state.deepClone();
+		Player thisPlayer = Main.getSWController().getPlayerController().getPlayer(this.getName(), newState);
+		switch (move.getAction()) {
+		case OLYMPIA:
+		case BUILD:
+			thisPlayer.getHand().remove(move.getCard());
+			thisPlayer.getBoard().addCard(move.getCard());
+			thisPlayer.setChooseCard(null);
+			if (move.getCard().getEffects() != null)
+				for (Effect effect : move.getCard().getEffects())
+					if (effect.getType() == EffectType.WHEN_PLAYED)
+						effect.run(thisPlayer, newState, newState.isTwoPlayers());
+			if (move.getTradeOption() != null)
+				Main.getSWController().getPlayerController().doTrade(thisPlayer, move.getTradeOption(), newState);
+			break;
+		case PLACE_SLOT:
+			thisPlayer.getHand().remove(move.getCard());
+			thisPlayer.getBoard().fill(thisPlayer.getBoard().nextSlot());
+			thisPlayer.setChooseCard(null);
+			if (move.getTradeOption() != null)
+				Main.getSWController().getPlayerController().doTrade(thisPlayer, move.getTradeOption(), newState);
+			break;
+		case SELL:
+			thisPlayer.getHand().remove(move.getCard());
+			thisPlayer.addCoins(3);
+			thisPlayer.setChooseCard(null);
+		}
+
+		return newState;
 	}
 
 	/**

@@ -33,7 +33,7 @@ import model.player.Player;
  * The Card-Controller controls the ingame cards.
  */
 public class CardController {
-	private ArrayList<Card> loaded_cards = new ArrayList<Card>();
+	private ArrayList<Card> loadedCards = new ArrayList<Card>();
 	/** HashMap for frequency of cards */
 	private Map<String, int[]> countCards = new HashMap<>();
 	/** SevenWonders Controller */
@@ -141,9 +141,9 @@ public class CardController {
 	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Card> loadAllCards() {
-		if (!loaded_cards.isEmpty())
-			return (ArrayList<Card>) loaded_cards.clone();
-		ArrayList<Card> cards = loaded_cards;
+		if (!loadedCards.isEmpty())
+			return (ArrayList<Card>) loadedCards.clone();
+		ArrayList<Card> cards = loadedCards;
 
 		cards.add(new Card(ResourceType.COMPASS, 3, "Akademie", "academy", CardType.GREEN, null, addRArray(new Resource(3, ResourceType.STONE), new Resource(1, ResourceType.GLASS)),
 				new String[] { "school" }, null));
@@ -302,9 +302,9 @@ public class CardController {
 				addRArray(new Resource(3, ResourceType.BRICK), new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS)), null,
 				addEArray(new Effect(EffectType.AT_MATCH_END, (player, state, twoPlayers) -> {
 					Player left = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
-					int left_v = left.getBoard().getResearch().size();
-					int right_v = twoPlayers ? 0 :  Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getResearch().size();
-					player.addVictoryPoints(left_v + right_v);
+					int leftV = left.getBoard().getResearch().size();
+					int rightV = twoPlayers ? 0 :  Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getResearch().size();
+					player.addVictoryPoints(leftV + rightV);
 				}))));
 		cards.add(new Card(1, "Presse", "press1", CardType.GRAY, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null, null));
 		cards.add(new Card(2, "Presse", "press2", CardType.GRAY, addRArray(new Resource(1, ResourceType.PAPYRUS)), null, null, null));
@@ -354,9 +354,9 @@ public class CardController {
 				addEArray(new Effect(EffectType.AT_MATCH_END, (player, state, twoPlayers) -> {
 					Player left = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
 					
-					int left_v = left.getBoard().getMilitary().size();
-					int right_v = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getMilitary().size();
-					player.addVictoryPoints(left_v + right_v);
+					int leftV = left.getBoard().getMilitary().size();
+					int rightV = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getMilitary().size();
+					player.addVictoryPoints(leftV + rightV);
 				}))));
 		cards.add(new Card(2, "Staelle", "stables", CardType.RED, addRArray(new Resource(2, ResourceType.MILITARY)),
 				addRArray(new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.WOOD)), new String[] { "apothecary" }, null));
@@ -369,9 +369,9 @@ public class CardController {
 				addEArray(new Effect(EffectType.AT_MATCH_END,
 						(player, state, twoPlayers) -> {
 							Player left = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
-							int left_v = left.getLosePoints();
-							int right_v = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getLosePoints();
-							player.addVictoryPoints(left_v + right_v);
+							int leftV = left.getLosePoints();
+							int rightV = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getLosePoints();
+							player.addVictoryPoints(leftV + rightV);
 						}))));
 		cards.add(new Card(ResourceType.GEAR, 3, "Studierzimmer", "study", CardType.GREEN, null,
 				addRArray(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.CLOTH)), new String[] { "school" }, null));
@@ -388,9 +388,9 @@ public class CardController {
 				addRArray(new Resource(1, ResourceType.CLOTH), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.GLASS)), null,
 				addEArray(new Effect(EffectType.AT_MATCH_END, (player, state, twoPlayers) -> {
 					Player left = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
-					int left_v = left.getBoard().getTrade().size();
-					int right_v = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getTrade().size();
-					player.addVictoryPoints(left_v + right_v);
+					int leftV = left.getBoard().getTrade().size();
+					int rightV = twoPlayers ? 0 : Main.getSWController().getPlayerController().getNeighbour(state, false, player).getBoard().getTrade().size();
+					player.addVictoryPoints(leftV + rightV);
 				}))));
 		cards.add(new Card(2, "Trainingsgelaende", "trainingground", CardType.RED, addRArray(new Resource(2, ResourceType.MILITARY)),
 				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.WOOD)), null, null));
@@ -845,7 +845,7 @@ public class CardController {
 	 * @return Card object with the given name or null if no such card was found
 	 */
 	public Card getCard(String cardname) {
-		return getCard(loaded_cards, cardname);
+		return getCard(loadedCards, cardname);
 	}
 
 	/**

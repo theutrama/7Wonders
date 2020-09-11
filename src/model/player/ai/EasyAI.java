@@ -440,7 +440,8 @@ public class EasyAI extends ArtInt{
 		for(int i = 0; i < this.getHand().size(); i++) {
 			for(Action action : Move.Action.values()) {
 				if(action == Action.OLYMPIA) 
-					if(!(getBoard() instanceof OlympiaBoard) || !getBoard().isFilled(1))continue;
+					if(!(getBoard() instanceof OlympiaBoard) || !getBoard().isFilled(1))
+						continue;
 				list.add(new Move(this.getHand().get(i), action));
 			}
 		}

@@ -55,8 +55,6 @@ public class Move implements Serializable {
 	private Action action;
 	/** calculated trade option for AI */
 	private TradeOption tradeOption;
-	/** selected mausoleum card */
-	private Card halikarnassusCard;
 
 	/** create new move */
 	public Move(Card chosen, Action action) {
@@ -97,24 +95,6 @@ public class Move implements Serializable {
 	 */
 	public TradeOption getTradeOption() {
 		return tradeOption;
-	}
-
-	/**
-	 * setter for {@link #halikarnassusCard}
-	 * 
-	 * @param halikarnassusCard chosen card
-	 */
-	public void setHalikarnassusCard(Card halikarnassusCard) {
-		this.halikarnassusCard = halikarnassusCard;
-	}
-
-	/**
-	 * getter for {@link #halikarnassusCard}
-	 * 
-	 * @return chosen card
-	 */
-	public Card getHalikarnassusCard() {
-		return halikarnassusCard;
 	}
 
 	/**

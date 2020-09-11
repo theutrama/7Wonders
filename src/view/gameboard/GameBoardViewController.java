@@ -1136,7 +1136,7 @@ public class GameBoardViewController extends VBox {
 
 			if (player instanceof ArtInt) {
 				new Thread(() -> {
-					Card selected = ((ArtInt) player).getHalikarnassusCard();
+					Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash());
 					int index = game().getTrash().indexOf(selected);
 					Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
 				}).start();

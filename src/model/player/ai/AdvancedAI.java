@@ -88,7 +88,7 @@ public abstract class AdvancedAI extends ArtInt {
 		leaves.add(tree);
 
 		final int numNodes = 1000000;
-		final int numMoves = 2;//(int) (Math.log(numNodes) / Math.log(21));
+		final int numMoves = 3;// (int) (Math.log(numNodes) / Math.log(21));
 
 		for (int i = 0; i < numMoves; i++) {
 			ArrayList<MoveTree> newLeaves = new ArrayList<>();
@@ -102,7 +102,7 @@ public abstract class AdvancedAI extends ArtInt {
 					case FREE:
 					case OWN_RESOURCE:
 						Move move = new Move(handcard, Action.BUILD);
-						MoveTree newTree = new MoveTree(move, doMove(move, state));
+						MoveTree newTree = new MoveTree(move, doMove(move, currentPlayer, state));
 						newLeaves.add(newTree);
 						leaf.addChild(newTree);
 						break;
@@ -110,7 +110,7 @@ public abstract class AdvancedAI extends ArtInt {
 						TradeOption trade = Main.getSWController().getPlayerController().getTradeOptions(currentPlayer, handcard.getRequired(), state).get(0);
 						Move tradeMove = new Move(handcard, Action.BUILD);
 						tradeMove.setTradeOption(trade);
-						MoveTree newTree2 = new MoveTree(tradeMove, doMove(tradeMove, state));
+						MoveTree newTree2 = new MoveTree(tradeMove, doMove(tradeMove, currentPlayer, state));
 						newLeaves.add(newTree2);
 						leaf.addChild(newTree2);
 						break;
@@ -118,36 +118,38 @@ public abstract class AdvancedAI extends ArtInt {
 						break;
 					}
 
-					ArrayList<Resource> slotRequirements = new ArrayList<>(Arrays.asList(currentPlayer.getBoard().getNextSlotRequirement()));
-					capability = Main.getSWController().getPlayerController().hasResources(currentPlayer, slotRequirements, state);
-					switch (capability) {
-					case FREE:
-					case OWN_RESOURCE:
-						Move move = new Move(handcard, Action.PLACE_SLOT);
-						MoveTree newTree = new MoveTree(move, doMove(move, state));
-						newLeaves.add(newTree);
-						leaf.addChild(newTree);
-						break;
-					case TRADE:
-						TradeOption trade = Main.getSWController().getPlayerController().getTradeOptions(currentPlayer, slotRequirements, state).get(0);
-						Move tradeMove = new Move(handcard, Action.PLACE_SLOT);
-						tradeMove.setTradeOption(trade);
-						MoveTree newTree2 = new MoveTree(tradeMove, doMove(tradeMove, state));
-						newLeaves.add(newTree2);
-						leaf.addChild(newTree2);
-						break;
-					default:
-						break;
+					if (currentPlayer.getBoard().nextSlot() != -1) {
+						ArrayList<Resource> slotRequirements = new ArrayList<>(Arrays.asList(currentPlayer.getBoard().getNextSlotRequirement()));
+						capability = Main.getSWController().getPlayerController().hasResources(currentPlayer, slotRequirements, state);
+						switch (capability) {
+						case FREE:
+						case OWN_RESOURCE:
+							Move move = new Move(handcard, Action.PLACE_SLOT);
+							MoveTree newTree = new MoveTree(move, doMove(move, currentPlayer, state));
+							newLeaves.add(newTree);
+							leaf.addChild(newTree);
+							break;
+						case TRADE:
+							TradeOption trade = Main.getSWController().getPlayerController().getTradeOptions(currentPlayer, slotRequirements, state).get(0);
+							Move tradeMove = new Move(handcard, Action.PLACE_SLOT);
+							tradeMove.setTradeOption(trade);
+							MoveTree newTree2 = new MoveTree(tradeMove, doMove(tradeMove, currentPlayer, state));
+							newLeaves.add(newTree2);
+							leaf.addChild(newTree2);
+							break;
+						default:
+							break;
+						}
 					}
 
 					Move sellmove = new Move(handcard, Action.SELL);
-					MoveTree selltree = new MoveTree(sellmove, doMove(sellmove, state));
+					MoveTree selltree = new MoveTree(sellmove, doMove(sellmove, currentPlayer, state));
 					newLeaves.add(selltree);
 					leaf.addChild(selltree);
 
 					if (!this.isOlympiaUsed()) {
 						Move olympiamove = new Move(handcard, Action.OLYMPIA);
-						MoveTree olympiatree = new MoveTree(olympiamove, doMove(olympiamove, state));
+						MoveTree olympiatree = new MoveTree(olympiamove, doMove(olympiamove, currentPlayer, state));
 						newLeaves.add(olympiatree);
 						leaf.addChild(olympiatree);
 					}
@@ -198,33 +200,33 @@ public abstract class AdvancedAI extends ArtInt {
 	 * @param state game state
 	 * @return a new game state object
 	 */
-	private GameState doMove(Move move, GameState state) {
+	private GameState doMove(Move move, Player player, GameState state) {
 		GameState newState = state.deepClone();
-		Player thisPlayer = Main.getSWController().getPlayerController().getPlayer(this.getName(), newState);
+		player = Main.getSWController().getPlayerController().getPlayer(player.getName(), newState);
 		switch (move.getAction()) {
 		case OLYMPIA:
 		case BUILD:
-			thisPlayer.getHand().remove(move.getCard());
-			thisPlayer.getBoard().addCard(move.getCard());
-			thisPlayer.setChooseCard(null);
+			player.getHand().remove(move.getCard());
+			player.getBoard().addCard(move.getCard());
+			player.setChooseCard(null);
 			if (move.getCard().getEffects() != null)
 				for (Effect effect : move.getCard().getEffects())
 					if (effect.getType() == EffectType.WHEN_PLAYED)
-						effect.run(thisPlayer, newState, newState.isTwoPlayers());
+						effect.run(player, newState, newState.isTwoPlayers());
 			if (move.getTradeOption() != null)
-				Main.getSWController().getPlayerController().doTrade(thisPlayer, move.getTradeOption(), newState);
+				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
 			break;
 		case PLACE_SLOT:
-			thisPlayer.getHand().remove(move.getCard());
-			thisPlayer.getBoard().fill(thisPlayer.getBoard().nextSlot());
-			thisPlayer.setChooseCard(null);
+			player.getHand().remove(move.getCard());
+			player.getBoard().fill(player.getBoard().nextSlot());
+			player.setChooseCard(null);
 			if (move.getTradeOption() != null)
-				Main.getSWController().getPlayerController().doTrade(thisPlayer, move.getTradeOption(), newState);
+				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
 			break;
 		case SELL:
-			thisPlayer.getHand().remove(move.getCard());
-			thisPlayer.addCoins(3);
-			thisPlayer.setChooseCard(null);
+			player.getHand().remove(move.getCard());
+			player.addCoins(3);
+			player.setChooseCard(null);
 		}
 
 		return newState;

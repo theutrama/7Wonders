@@ -12,7 +12,7 @@ public enum Difficulty {
 	 * @return the associated difficulty constant
 	 */
 	public static Difficulty fromString(String string) {
-		switch (string.toLowerCase()) {
+		switch (string) {
 		case "Einfach":
 			return EASY;
 		case "Mittel":

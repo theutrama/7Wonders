@@ -378,13 +378,16 @@ public class GameBoardViewController extends VBox {
 				if (halikarnassus) {
 					return;
 				}
-				if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game())) {
-					return;
-				}
-				updateAllBoards();
+				refreshBoards();
+				new Thread(() -> {
+					if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+						return;
+					Platform.runLater(() -> { refreshBoards(); setHandCards(); });
+				}).start();
+				return;
 			}
 		}
-
+		
 		refreshBoards();
 		updateMouseBlocking();
 
@@ -1038,6 +1041,8 @@ public class GameBoardViewController extends VBox {
 	 * @param player player
 	 */
 	public void selectCardFromTrash(Player player) {
+		
+		updateMouseBlocking();
 
 		if (game().getTrash().isEmpty()) {
 			new Thread(() -> {
@@ -1138,10 +1143,11 @@ public class GameBoardViewController extends VBox {
 	 */
 	private void exitHalikarnassus() {
 		game().setChoosingPlayer(null);
-		if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
-			return;
-		refreshBoards();
-		setHandCards();
+		new Thread(() -> {
+			if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+				return;
+			Platform.runLater(() -> { refreshBoards(); setHandCards(); });
+		}).start();
 	}
 
 	/**

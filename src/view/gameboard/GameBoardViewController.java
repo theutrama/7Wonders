@@ -97,7 +97,7 @@ public class GameBoardViewController extends VBox {
 	private Timer timer;
 
 	private EventHandler<MouseEvent> inputBlocker = MouseEvent::consume;
-	
+
 	private TurnThread turnThread;
 
 	/**
@@ -349,12 +349,16 @@ public class GameBoardViewController extends VBox {
 	 * next player
 	 */
 	public void turn() {
+		try {
+			if (turnThread != null)
+				turnThread.join();
+		} catch (InterruptedException e) {}
 		turnThread = new TurnThread();
 		turnThread.setDaemon(true);
 		turnThread.setName("turn thread");
 		turnThread.start();
 	}
-	
+
 	private class TurnThread extends Thread {
 		@Override
 		public void run() {
@@ -386,9 +390,14 @@ public class GameBoardViewController extends VBox {
 							break;
 						}
 					}
-					if (halikarnassus)
+					if (halikarnassus) {
+						this.interrupt();
 						return;
-					Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game(), this);
+					}
+					if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game())) {
+						this.interrupt();
+						return;
+					}
 					updateAllBoards();
 				}
 			}
@@ -402,7 +411,7 @@ public class GameBoardViewController extends VBox {
 				else
 					setHandCards();
 			});
-			
+
 			turnThread = null;
 		}
 	}
@@ -818,7 +827,7 @@ public class GameBoardViewController extends VBox {
 						new Thread(() -> {
 							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 							int index = trades.indexOf(option);
-							Platform.runLater(() -> {((Button) tradeNodes.getChildren().get(index)).fire();});
+							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 						}).start();
 					}
 					break;
@@ -877,7 +886,7 @@ public class GameBoardViewController extends VBox {
 						new Thread(() -> {
 							TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
 							int index = trades.indexOf(option);
-							Platform.runLater(() -> {((Button) tradeNodes.getChildren().get(index)).fire();});
+							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 						}).start();
 					}
 					break;
@@ -1157,7 +1166,8 @@ public class GameBoardViewController extends VBox {
 	 */
 	private void exitHalikarnassus() {
 		game().setChoosingPlayer(null);
-		Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game(), turnThread);
+		if (Main.getSWController().getGameController().createNextRound(Main.getSWController().getGame(), game()))
+			return;
 		refreshBoards();
 		setHandCards();
 	}

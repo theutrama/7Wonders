@@ -206,15 +206,12 @@ public class GameController {
 		if (!file.getName().endsWith(".csv"))
 			return false;
 
-		SevenWondersController con = SevenWondersController.getInstance();
-		GameController game_con = con.getGameController();
-		CardController card_con = con.getCardController();
-		PlayerController p_con = con.getPlayerController();
-
+		SevenWondersController controller = SevenWondersController.getInstance();
+		CardController card_controller = controller.getCardController();
+		DataInputStream in = null;
 		try {
-			DataInputStream in = new DataInputStream(new FileInputStream(file));
+			in = new DataInputStream(new FileInputStream(file));
 
-			int counter = 0;
 			String line = null;
 			line = in.readLine(); // age,card
 			NewCSVGameViewController view = new NewCSVGameViewController();
@@ -236,7 +233,7 @@ public class GameController {
 						ai++;
 					} else {
 						String cardname = Utils.toCard(split[1], age);
-						Card card = card_con.getCard(cardname);
+						Card card = card_controller.getCard(cardname);
 
 						if (age != card.getAge()) {
 							throw new CardOutOfAgeException(card, age);
@@ -260,6 +257,13 @@ public class GameController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+			if(in!=null)
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 		return false;
 	}

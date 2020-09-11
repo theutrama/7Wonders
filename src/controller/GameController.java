@@ -338,7 +338,7 @@ public class GameController {
 	 * @param player player
 	 * @param cards  list of cards from the player's game board
 	 */
-	private void runEffects(Player player, ArrayList<Card> cards, boolean twoPlayers) {
+	public void runEffects(Player player, ArrayList<Card> cards, boolean twoPlayers) {
 		for (Card card : cards) {
 			if (card.getEffects() == null)
 				continue;

@@ -208,22 +208,22 @@ public class GameBoardViewController extends VBox {
 			right = new VBox();
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			right.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			right.getChildren().add(pane);
 
 			borderpane.setRight(right);
 
 			bottom = new HBox();
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			bottom.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			bottom.getChildren().add(0, pane);
 
 			bottom.setSpacing(75);
@@ -231,11 +231,11 @@ public class GameBoardViewController extends VBox {
 			borderpane.setBottom(bottom);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			left.getChildren().add(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			left.getChildren().add(0, pane);
 
 			borderpane.setLeft(left);
@@ -305,11 +305,11 @@ public class GameBoardViewController extends VBox {
 			break;
 		case 3:
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setRight(pane);
 
 			pane = new StackPane();
-			boardPanes.add(pane);
+			boardPanes.add(1, pane);
 			borderpane.setLeft(pane);
 			break;
 		case 2:
@@ -339,7 +339,7 @@ public class GameBoardViewController extends VBox {
 
 		try {
 			img_age.setImage(Utils.toImage(Main.TOKENS_PATH + "age" + game().getAge() + ".png"));
-			img_direction.setImage(Utils.toImage(Main.DEFAULT_PATH + (game().getAge() == 2 ? "a" : "") + "clockwise.png"));
+			img_direction.setImage(Utils.toImage(Main.DEFAULT_PATH + (game().getAge() == 2 ? "" : "a") + "clockwise.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -108,7 +108,7 @@ public class PlayerController {
 		ArrayList<Player> players = state.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getName().equals(player.getName()))
-				return players.get((left ? (i == 0 ? players.size() - 1 : i - 1) : (i == players.size() - 1 ? 0 : i + 1)));
+				return players.get((left ? (i == players.size() - 1 ? 0 : i + 1) : (i == 0 ? players.size() - 1 : i - 1)));
 		}
 		return null;
 	}
@@ -159,7 +159,7 @@ public class PlayerController {
 	 * @param amount array that has one quantity per science symbol
 	 * @return points as specified in the game rule
 	 */
-	private int getSciencePoints(int[] amount) {
+	public int getSciencePoints(int[] amount) {
 		int victoryPoints = 0;
 		for (int i = 0; i < amount.length; i++) {
 			victoryPoints += amount[i] * amount[i];
@@ -222,7 +222,7 @@ public class PlayerController {
 	 * @param player player
 	 * @return sum of static resources
 	 */
-	private ResourceBundle getStaticResources(Player player) {
+	public ResourceBundle getStaticResources(Player player) {
 		ResourceBundle result = new ResourceBundle();
 
 		result.add(player.getBoard().getResource());
@@ -242,7 +242,7 @@ public class PlayerController {
 	 * @param staticResources the static amount of non-selective resources
 	 * @return a resource tree
 	 */
-	private ResourceTree generateResourceTree(Player player, ResourceBundle staticResources) {
+	public ResourceTree generateResourceTree(Player player, ResourceBundle staticResources) {
 		ResourceTree tree = new ResourceTree(staticResources);
 		for (Card card : player.getBoard().getResources()) {
 			if (card.getProducing() != null && card.getProducing().size() > 1)

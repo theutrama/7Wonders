@@ -87,7 +87,7 @@ public class GameListViewController extends BorderPane {
 				e1.printStackTrace();
 			}
 			delete.setOnAction(event -> {
-				Alert alert = new Alert(AlertType.CONFIRMATION, "Möchtest du das Spiel \"" + game + "\" wirklich löschen?", ButtonType.YES, ButtonType.NO);
+				Alert alert = new Alert(AlertType.CONFIRMATION, "MÃ¶chtest du das Spiel \"" + game + "\" wirklich lÃ¶schen?", ButtonType.YES, ButtonType.NO);
 				alert.showAndWait();
 				if (alert.getResult() == ButtonType.YES) {
 					Main.getSWController().getIOController().deleteFile(game);

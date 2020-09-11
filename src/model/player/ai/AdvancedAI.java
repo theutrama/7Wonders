@@ -202,13 +202,4 @@ public abstract class AdvancedAI extends ArtInt {
 	 * @return value
 	 */
 	protected abstract int evaluate(GameState state);
-
-	/**
-	 * determine the card a player (and this AI) is probably going to select from the given list of trash cards
-	 * 
-	 * @param player player to choose
-	 * @param trash  trash cards
-	 * @return the chosen card
-	 */
-	protected abstract Card selectCardFromTrash(Player player, ArrayList<Card> trash);
 }

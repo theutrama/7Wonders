@@ -9,13 +9,14 @@ import model.player.ai.Move.Action;
 /** Artificial Intelligence for SevenWonders */
 public abstract class ArtInt extends Player {
 	private static final long serialVersionUID = 1L;
-	
+
 	/** set by {@link #calculateNextMove()}, contains the next generated move to be executed */
 	protected Move next;
 
 	/**
 	 * create AI
-	 * @param name name of this player
+	 * 
+	 * @param name  name of this player
 	 * @param board assigned board
 	 */
 	public ArtInt(String name, WonderBoard board) {
@@ -42,13 +43,13 @@ public abstract class ArtInt extends Player {
 	}
 
 	/**
-	 * get chosen Card
+	 * determine the card a player (and this AI) is probably going to select from the given list of trash cards
 	 * 
-	 * @return chosen card
+	 * @param player player to choose
+	 * @param trash  trash cards
+	 * @return the chosen card
 	 */
-	public Card getHalikarnassusCard() {
-		return next.getHalikarnassusCard();
-	}
+	public abstract Card getHalikarnassusCard();
 
 	/**
 	 * get chosen trade

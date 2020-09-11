@@ -324,7 +324,7 @@ public class EasyAI extends ArtInt{
 					}
 					
 					/**
-					 * falls militar zu sehr abgehängt nicht weiter mit halten!
+					 * falls militar zu sehr abgehÃ¤ngt nicht weiter mit halten!
 					 */
 					
 					if(left_mili < new_military && (new_military-left_mili) < 3) {

@@ -30,7 +30,7 @@ public class NewCSVGameViewController extends NewGameViewController {
 	}
 	
 	public void addPlayer() {
-		error("Du kannst keine neuen Spieler hinzufügen!");
+		error("Du kannst keine neuen Spieler hinzufÃ¼gen!");
 	}
 	
 	@SuppressWarnings("unchecked")

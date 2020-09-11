@@ -20,7 +20,6 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
-import model.player.ai.Difficulty;
 import model.ranking.PlayerStats;
 import view.gameboard.GameBoardViewController;
 import view.newgame.NewCSVGameViewController;
@@ -80,15 +79,15 @@ public class GameController {
 	 * @param game  game instance
 	 * @param state the game state
 	 * @param turnThread the turn thread from {@link GameBoardViewController}, must be cancelled if endGame is executed
+	 * @return true if endGame was called
 	 */
-	public void createNextRound(Game game, GameState state, Thread turnThread) {
+	public boolean createNextRound(Game game, GameState state) {
 
 		if (state.getRound() == NUM_ROUNDS) {
 			if (state.getAge() == NUM_AGES) {
 				doConflicts(state);
-				if (turnThread != null && turnThread.isAlive())
-					turnThread.interrupt();
 				endGame(game, state);
+				return true;
 			} else {
 				doConflicts(state);
 				nextAge(game, state);
@@ -96,6 +95,8 @@ public class GameController {
 		} else {
 			nextRound(game, state);
 		}
+		
+		return false;
 		
 	}
 

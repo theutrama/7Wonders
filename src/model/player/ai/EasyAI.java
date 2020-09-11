@@ -47,10 +47,10 @@ public class EasyAI extends ArtInt{
 			if(trash.isEmpty())return null;
 			
 			Card best = trash.get(0);
-			double rating = doMove1(new Move(best, Action.BUILD));
+			double rating = doMove(new Move(best, Action.BUILD));
 			double value;
 			for(int i = 1; i < trash.size(); i++) {
-				value = doMove1( new Move(trash.get(i),Action.BUILD) );
+				value = doMove( new Move(trash.get(i),Action.BUILD) );
 				
 				if(value > rating) {
 					rating = value;
@@ -77,11 +77,11 @@ public class EasyAI extends ArtInt{
 		
 		
 		Move best = generate.get(0);
-		double rating = doMove1(best);
+		double rating = doMove(best);
 		double value;
 		for(int i = 1; i < generate.size(); i++) {
 			try {
-				value = doMove1(generate.get(i));
+				value = doMove(generate.get(i));
 			} catch (Exception e) {
 				value = Double.NEGATIVE_INFINITY;
 				System.out.println("Exception: "+generate.get(i).getCard().getName() + " "+generate.get(i).getAction().name());
@@ -95,7 +95,7 @@ public class EasyAI extends ArtInt{
 		}
 
 		debug = true;
-		doMove1(best);
+		doMove(best);
 		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
 		debug = false;
 		
@@ -124,7 +124,7 @@ public class EasyAI extends ArtInt{
 	 * @param move Move to play for the AI
 	 * @return v Victory points
 	 */
-	public double doMove1(Move move) {
+	public double doMove(Move move) {
 		GameState state = Main.getSWController().getGame().getCurrentGameState();
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		Card card = move.getCard();
@@ -207,37 +207,16 @@ public class EasyAI extends ArtInt{
 						}
 					}
 					
-					Card c = null;
-					Resource rr = null;
 					ArrayList<Card> own_producing = new ArrayList<Card>();
-					try {
-						getBoard().getResources().forEach( value -> { own_producing.add(value); } );
-						getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
-						
-						for(Card rs_card : own_producing) {
-							if(rs_card==null) {
-								throw new NullPointerException("rs_card is NULL!!");
-							}
+					getBoard().getResources().forEach( value -> { own_producing.add(value); } );
+					getBoard().getTrade().forEach( value -> { own_producing.add(value); } );
+					
+					for(Card rs_card : own_producing) {
+						ArrayList<Resource> producing = rs_card.getProducing();
+						if(producing == null) continue;
+						for(Resource produce : rs_card.getProducing()) {
+							if(list.contains(produce.getType()))list.remove(produce.getType());
 						}
-						
-						for(Card rs_card : own_producing) {
-							c=rs_card;
-							ArrayList<Resource> producing = rs_card.getProducing();
-							if(producing == null) continue;
-							for(Resource produce : rs_card.getProducing()) {
-								rr = produce;
-								if(list.contains(produce.getType()))list.remove(produce.getType());
-							}
-						}
-					}catch(Exception e) {
-						System.out.println("PRO - CARD "+(c == null ? "NULL" : card.getName()));
-						System.out.println("PRO - RESOURCE "+(rr == null ? "NULL" : "Q:"+rr.getQuantity()+" Type:"+rr.getType().name()));
-						System.out.println("OWN: "+(own_producing == null ? "NULL" : own_producing.size()));
-						System.out.println("LIST: "+(list == null ? "NULL" : list.size()));
-						System.out.println("getProducing: "+(c.getProducing() == null ? "NULL" : c.getProducing().size()));
-						
-						e.printStackTrace();
-						return Double.NEGATIVE_INFINITY;
 					}
 					
 					WonderBoard board = getBoard();

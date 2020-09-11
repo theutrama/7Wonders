@@ -22,6 +22,10 @@ import model.player.ai.Move.Action;
 
 public class EasyAI extends ArtInt{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7836481968924654117L;
 	private boolean debug = false;
 	
 	public EasyAI(String name, WonderBoard board) {

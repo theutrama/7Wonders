@@ -76,8 +76,8 @@ public class GameController {
 	/**
 	 * changes the values of the given game state to signal a new round or finishes the game
 	 * 
-	 * @param game  game instance
-	 * @param state the game state
+	 * @param game       game instance
+	 * @param state      the game state
 	 * @param turnThread the turn thread from {@link GameBoardViewController}, must be cancelled if endGame is executed
 	 * @return true if endGame was called
 	 */
@@ -95,9 +95,9 @@ public class GameController {
 		} else {
 			nextRound(game, state);
 		}
-		
+
 		return false;
-		
+
 	}
 
 	/**
@@ -218,7 +218,6 @@ public class GameController {
 			String wonder1 = in.readLine().split(",")[1];
 			view.addPlayer("Spieler", Utils.toWonder(wonder1), true);
 
-			
 			ArrayList<Card> cards = new ArrayList<Card>();
 			String[] split;
 			int ai = 1;
@@ -229,7 +228,7 @@ public class GameController {
 
 					if (age == 0) {
 						String wonder = Utils.toCard(split[1], age);
-						view.addPlayer("AI-Spieler"+ai, Utils.toWonder(wonder), true);
+						view.addPlayer("AI-Spieler" + ai, Utils.toWonder(wonder), true);
 						ai++;
 					} else {
 						String cardname = Utils.toCard(split[1], age);
@@ -257,8 +256,8 @@ public class GameController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-			if(in!=null)
+		} finally {
+			if (in != null)
 				try {
 					in.close();
 				} catch (IOException e) {
@@ -302,12 +301,11 @@ public class GameController {
 	 * @param state current game state
 	 */
 	private void endGame(Game game, GameState state) {
-		if(Main.primaryStage.getScene().getRoot() instanceof ResultViewController) {
+		if (Main.primaryStage.getScene().getRoot() instanceof ResultViewController) {
 			System.out.println("GameController.endGame ResultViewController is already OPEN!!!");
 			return;
 		}
-		
-		
+
 		for (Player player : state.getPlayers()) {
 			runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
 			runEffects(player, player.getBoard().getGuilds(), state.isTwoPlayers());

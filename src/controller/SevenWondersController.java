@@ -22,6 +22,8 @@ public class SevenWondersController {
 	private Ranking ranking;
 	/** Sound Controller */
 	private SoundController soundController;
+	/** Multiplayer Controller */
+	private MultiplayerController multiplayerController;
 	/** instance of SevenWonders Controller */
 	private static SevenWondersController instance;
 	/**
@@ -38,6 +40,7 @@ public class SevenWondersController {
 	 */
 	protected SevenWondersController() {
 		this.wonderBoardController = new WonderBoardController();
+		this.multiplayerController = new MultiplayerController();
 		this.gameController = new GameController(this);
 		this.playerController = new PlayerController(this,this.wonderBoardController);
 		this.cardController = new CardController(this);
@@ -51,6 +54,12 @@ public class SevenWondersController {
 	 */
 	public GameController getGameController() {
 		return gameController;
+	}
+	/**
+	 * @return Multiplayer Controller
+	 */
+	public MultiplayerController getMultiplayerController() {
+		return multiplayerController;
 	}
 	/**
 	 * @return WonderBoard Controller

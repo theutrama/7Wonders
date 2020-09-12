@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import view.gameList.GameListViewController;
+import view.multiplayer.list.MultiplayerListViewController;
 import view.newgame.NewGameViewController;
 import view.ranking.RankingViewController;
 
@@ -31,6 +32,9 @@ public class MainMenuViewController extends BorderPane {
     
     @FXML
     private Button btn_mute;
+    
+    @FXML
+    private Button btn_multiplayer;
 
 	public MainMenuViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu/MainMenu.fxml"));
@@ -42,7 +46,7 @@ public class MainMenuViewController extends BorderPane {
 			
 			e.printStackTrace();
 		}
-		
+		btn_multiplayer.setOnAction(event -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MultiplayerListViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);
 
 		btn_newgame.setOnAction(event -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);

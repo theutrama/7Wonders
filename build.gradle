@@ -19,10 +19,17 @@ repositories {
     mavenCentral() 
 }
 
+allprojects {
+		repositories {
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
 dependencies {
     testImplementation 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/org.reflections/reflections
 	compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+	implementation 'com.github.kingingo:BroadcastServer:ALPHA1'
     // JavaFX for all (targeted) platforms
     //implementation "org.openjfx:javafx-base:11:win"
     //implementation "org.openjfx:javafx-graphics:11:win"
@@ -130,4 +137,10 @@ jacocoLogTestCoverage {
 
 
 mainClassName = 'application.Runner'
+
+allprojects {
+		repositories {
+			maven { url 'https://jitpack.io' }
+		}
+	}
 

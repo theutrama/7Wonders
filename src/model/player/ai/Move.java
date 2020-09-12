@@ -19,6 +19,11 @@ import model.card.Card;
 
 /** calculates next move for AI */
 public class Move implements Serializable {
+	/** 
+	 * parses Move from InputStream
+	 * @param in 		DataInputStream
+	 * @return	copy 	copy
+	 */
 	public static Move parseFromInput(DataInputStream in) {
 		ByteArrayInputStream byteIn = null;
 		ObjectInputStream objIn = null;

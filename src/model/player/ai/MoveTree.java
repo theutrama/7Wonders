@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.GameState;
 
+/** builds tree containing move operations */
 public class MoveTree {
 
 	private GameState state;

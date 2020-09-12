@@ -13,15 +13,22 @@ import main.client.PlayerClient;
 import main.lobby.packets.client.PongPacket;
 import main.lobby.packets.server.PingPacket;
 
+/** Controller for Multiplayer */
 public class MultiplayerController implements EventListener{
+	/** client of player */
 	private PlayerClient client;
 	
+	/** create new Multiplayer Controller */
 	public MultiplayerController() {
 		Packet.loadPackets();
 		
 		EventManager.register(this);
 	}
 
+	/**
+	 * handling received Package
+	 * @param ev	Event for received package
+	 */
 	@EventHandler
 	public void rec(PacketReceiveEvent ev) {
 		if(ev.getPacket() instanceof PingPacket) {
@@ -29,15 +36,24 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/** 
+	 * getter for {@link #client}
+	 * @return	client
+	 */
 	public PlayerClient getClient() {
 		return this.client;
 	}
 	
-	public void connect(String name, String adress) {
+	/**
+	 * connects to given host and address
+	 * @param name		name of host
+	 * @param address	address of host
+	 */
+	public void connect(String name, String address) {
 		String host = "";
 		int port = 6000;
-		if(adress.contains(":")) {
-			String[] split = adress.split(":");
+		if(address.contains(":")) {
+			String[] split = address.split(":");
 			host = split[0];
 			
 			try {
@@ -45,11 +61,17 @@ public class MultiplayerController implements EventListener{
 			}catch(Exception e) {
 				port = 6000;
 			}
-		}else host = adress;
+		}else host = address;
 		
 		connect(name, host, port);
 	}
 	
+	/**
+	 * connects PlayerClient to host
+	 * @param name		name of client
+	 * @param host		host for connection
+	 * @param port		port for connection
+	 */
 	public void connect(String name, String host, int port) {
 		try {
 			this.client = new PlayerClient(name, host, port);
@@ -64,6 +86,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/**
+	 * checks if client is connected
+	 * @return this.client.isConnected() 	true if client is connected
+	 */
 	public boolean isConnected() {
 		return this.client != null && this.client.isConnected();
 	}

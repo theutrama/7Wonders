@@ -13,6 +13,7 @@ import model.card.Card;
 import model.card.Resource;
 import model.player.Player;
 
+/** Hard Artificial Intelligence */
 public class HardAI extends AdvancedAI {
 	private static final long serialVersionUID = 1L;
 

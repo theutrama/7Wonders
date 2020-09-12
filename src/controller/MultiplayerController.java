@@ -2,35 +2,30 @@ package controller;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 
+import application.Main;
 import main.api.events.EventHandler;
 import main.api.events.EventListener;
 import main.api.events.EventManager;
 import main.api.events.events.PacketReceiveEvent;
+import main.api.packet.Packet;
 import main.client.PlayerClient;
-import main.lobby.packets.server.LobbyListPacket;
+import main.lobby.packets.client.PongPacket;
+import main.lobby.packets.server.PingPacket;
 
 public class MultiplayerController implements EventListener{
 	private PlayerClient client;
 	
 	public MultiplayerController() {
+		Packet.loadPackets();
+		
 		EventManager.register(this);
 	}
 
 	@EventHandler
 	public void rec(PacketReceiveEvent ev) {
-		System.out.println("REC PACKET ");
-		if(ev.getPacket() instanceof LobbyListPacket) {
-			LobbyListPacket packet = (LobbyListPacket) ev.getPacket();
-			HashMap<String,Integer> list = packet.getLobbys();
-			
-			System.out.println("Lobby List: "+list.size());
-			for(String name : list.keySet()) {
-				int v = list.get(name);
-				
-				System.out.println("LOBBY: "+name+" "+v);
-			}
+		if(ev.getPacket() instanceof PingPacket) {
+			this.client.write(new PongPacket());
 		}
 	}
 	
@@ -58,6 +53,10 @@ public class MultiplayerController implements EventListener{
 	public void connect(String name, String host, int port) {
 		try {
 			this.client = new PlayerClient(name, host, port);
+			Main.primaryStage.setOnCloseRequest( s -> {
+				this.client.close();
+				Main.getSWController().getIOController().saveRanking();
+			});
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

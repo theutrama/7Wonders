@@ -18,6 +18,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import main.api.events.EventManager;
+import view.menu.MainMenuViewController;
 import view.multiplayer.lobby.LobbyViewController;
 import view.ranking.RankingViewController;
 
@@ -49,7 +51,6 @@ public class MultiplayerListViewController extends StackPane {
 	protected ArrayList<HBox> hosts = new ArrayList<HBox>();
     
     public MultiplayerListViewController() {
-
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/multiplayer/list/MultiplayerList.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -61,6 +62,7 @@ public class MultiplayerListViewController extends StackPane {
 
 		addHost("localhost:6001");
 		btn_add.setOnAction(event -> addHost());
+		btn_back.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
     
@@ -136,11 +138,9 @@ public class MultiplayerListViewController extends StackPane {
 			}
 			
 			String playername = textfield_playername.getText().replaceAll(" ", "");
-//			LobbyViewController lobbies = new LobbyViewController();
-			
-			
+			LobbyViewController lobbies = new LobbyViewController();
 			Main.getSWController().getMultiplayerController().connect(playername,adress);
-//			Main.primaryStage.getScene().setRoot(lobbies);
+			Main.primaryStage.getScene().setRoot(lobbies);
 		});
 
 		return hbox;

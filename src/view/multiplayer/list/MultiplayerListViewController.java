@@ -40,6 +40,9 @@ public class MultiplayerListViewController extends StackPane {
     private TextField textfield_host;
 
     @FXML
+    private TextField textfield_playername;
+
+    @FXML
     private ImageView img_music;
 	protected ArrayList<HBox> hosts = new ArrayList<HBox>();
     
@@ -125,7 +128,14 @@ public class MultiplayerListViewController extends StackPane {
 		});
 		
 		btn_connect.setOnAction(event -> {
-			Main.getSWController().getMultiplayerController().connect("",adress);
+			if(textfield_playername.getText().isEmpty() || textfield_playername.getText().isBlank()) {
+				error("Du musst einen Spielernamen angeben!");
+				return;
+			}
+			
+			String playername = textfield_playername.getText().replaceAll(" ", "");
+			Main.getSWController().getMultiplayerController().connect(playername,adress);
+			//
 		});
 
 		return hbox;

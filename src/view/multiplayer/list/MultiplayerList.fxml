@@ -41,9 +41,18 @@
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </Label>
+                  <TextField fx:id="textfield_playername" maxHeight="47.2" maxWidth="326.8" promptText="Spielername">
+                     <styleClass>
+                        <String fx:value="textfield" />
+                        <String fx:value="dropshadow" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" right="68.0" />
+                     </VBox.margin>
+                  </TextField>
                   <HBox alignment="CENTER">
                      <children>
-                        <TextField fx:id="textfield_host" promptText="host:port">
+                        <TextField fx:id="textfield_host" promptText="localhost:port">
                            <styleClass>
                               <String fx:value="textfield" />
                               <String fx:value="dropshadow" />

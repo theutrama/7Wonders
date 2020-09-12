@@ -28,6 +28,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	public PlayerClient getClient() {
+		return this.client;
+	}
+	
 	public void connect(String name, String adress) {
 		String host = "";
 		int port = 6000;

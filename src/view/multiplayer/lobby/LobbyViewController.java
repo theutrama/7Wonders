@@ -2,10 +2,12 @@ package view.multiplayer.lobby;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import application.Main;
 import application.Utils;
 import controller.GameController;
+import controller.MultiplayerController;
 import controller.SoundController;
 import controller.sound.Sound;
 import javafx.event.ActionEvent;
@@ -24,10 +26,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import main.api.events.EventListener;
+import main.api.events.EventManager;
+import main.api.events.events.PacketReceiveEvent;
+import main.api.packet.Packet;
+import main.client.PlayerClient;
+import main.client.connector.Callback;
+import main.lobby.packets.client.LobbyCreatePacket;
+import main.lobby.packets.server.LobbyErrorPacket;
+import main.lobby.packets.server.LobbyListPacket;
 import view.gameboard.GameBoardViewController;
 import view.menu.MainMenuViewController;
 
-public class LobbyViewController extends BorderPane {
+public class LobbyViewController extends BorderPane implements EventListener{
 
 	@FXML
 	private ImageView img_music;
@@ -56,7 +67,8 @@ public class LobbyViewController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+//		EventManager.unregister(arg0)
+		EventManager.register(this);
 		btn_back.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 
 		String[] games = Main.getSWController().getIOController().listGameFiles();
@@ -122,5 +134,24 @@ public class LobbyViewController extends BorderPane {
 			}
 		});
 	}
-
+	
+	public void createLobby(String lobbyname) {
+		MultiplayerController con = Main.getSWController().getMultiplayerController();
+		LobbyCreatePacket packet = new LobbyCreatePacket(lobbyname);
+		PlayerClient client = con.getClient();
+		client.write(packet);
+	}
+	
+	@main.api.events.EventHandler
+	public void rec(PacketReceiveEvent ev) {
+		if(ev.getPacket() instanceof LobbyListPacket) {
+			LobbyListPacket packet = (LobbyListPacket) ev.getPacket();
+			
+			//NAME, CLIENT AMOUNT
+			HashMap<String, Integer> map = packet.getLobbys();
+			
+		}else if(ev.getPacket() instanceof LobbyErrorPacket) {
+			
+		}
+	}
 }

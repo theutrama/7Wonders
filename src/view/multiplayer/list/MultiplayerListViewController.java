@@ -18,6 +18,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import view.multiplayer.lobby.LobbyViewController;
+import view.ranking.RankingViewController;
 
 public class MultiplayerListViewController extends StackPane {
 
@@ -57,7 +59,7 @@ public class MultiplayerListViewController extends StackPane {
 			e.printStackTrace();
 		}
 
-		addHost("localhost:6000");
+		addHost("localhost:6001");
 		btn_add.setOnAction(event -> addHost());
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
@@ -134,8 +136,11 @@ public class MultiplayerListViewController extends StackPane {
 			}
 			
 			String playername = textfield_playername.getText().replaceAll(" ", "");
+//			LobbyViewController lobbies = new LobbyViewController();
+			
+			
 			Main.getSWController().getMultiplayerController().connect(playername,adress);
-			//
+//			Main.primaryStage.getScene().setRoot(lobbies);
 		});
 
 		return hbox;

@@ -20,11 +20,17 @@ public class MultiplayerController implements EventListener{
 
 	@EventHandler
 	public void rec(PacketReceiveEvent ev) {
+		System.out.println("REC PACKET ");
 		if(ev.getPacket() instanceof LobbyListPacket) {
 			LobbyListPacket packet = (LobbyListPacket) ev.getPacket();
 			HashMap<String,Integer> list = packet.getLobbys();
 			
-			//DO SOMETHING
+			System.out.println("Lobby List: "+list.size());
+			for(String name : list.keySet()) {
+				int v = list.get(name);
+				
+				System.out.println("LOBBY: "+name+" "+v);
+			}
 		}
 	}
 	

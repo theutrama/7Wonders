@@ -2,6 +2,8 @@ package model.player.ai;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import application.Main;
 import controller.utils.BuildCapability;
@@ -17,7 +19,7 @@ import model.player.ai.Move.Action;
 
 /** abstract class of easy, medium and hard AI */
 public abstract class AdvancedAI extends ArtInt {
-	/** UID of serial version*/
+	/** UID of serial version */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -51,9 +53,9 @@ public abstract class AdvancedAI extends ArtInt {
 		} else {
 
 			for (MoveTree child : tree.getChildren()) {
-
-				// WORST CASE
 				ArrayList<MoveTree> leaves = child.getLeaves();
+				
+				// WORST CASE
 				MoveTree worst = null;
 				int worstValue = Integer.MAX_VALUE;
 				for (MoveTree leaf : leaves) {
@@ -67,10 +69,33 @@ public abstract class AdvancedAI extends ArtInt {
 					maxMove = child.getMove();
 					maxValue = worstValue;
 				}
-			}
 
-			// AVERAGE /*int sum = 0, count = 0;; for (MoveTree leaf: child.getLeaves()) { sum += evaluate(leaf.getState()); count++; } if (sum / count > maxValue) { maxMove =
-			// child.getMove(); maxValue = sum / count; } }
+				// BEST CASE
+//				int bestValue = Integer.MIN_VALUE;
+//				MoveTree best = null;
+//				for (MoveTree leaf : leaves) {
+//					int value = evaluate(leaf.getState());
+//					if (value > bestValue) {
+//						best = leaf;
+//						bestValue = value;
+//					}
+//				}
+//				if (best != null && bestValue > maxValue) {
+//					maxMove = child.getMove();
+//					maxValue = bestValue;
+//				}
+
+				// AVERAGE
+//				int sum = 0, count = 0;
+//				for (MoveTree leaf : child.getLeaves()) {
+//					sum += evaluate(leaf.getState());
+//					count++;
+//				}
+//				if (sum / count > maxValue) {
+//					maxMove = child.getMove();
+//					maxValue = sum / count;
+//				}
+			}
 
 			// MINIMAX
 
@@ -82,7 +107,8 @@ public abstract class AdvancedAI extends ArtInt {
 
 		this.next = maxMove;
 
-		System.out.println("Advanced AI: action: " + next.getAction() + "  card: " + next.getCard());
+		System.out.println("[Advanced AI] action: " + next.getAction() + "  card: " + next.getCard());
+
 	}
 
 	/**
@@ -146,7 +172,18 @@ public abstract class AdvancedAI extends ArtInt {
 		// final int numNodes = 20000;
 		// final int numMoves = (int) (Math.log(numNodes) / Math.log(3 * getHand().size()));
 
-		long starttime = System.currentTimeMillis();
+		// long starttime = System.currentTimeMillis();
+
+		Flag flag = new Flag(), finished = new Flag();
+
+		Timer timer = new Timer(true);
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				if (!finished.value)
+					flag.value = true;
+			}
+		}, 9850);
 
 		while (true) {
 			ArrayList<MoveTree> newLeaves = new ArrayList<>();
@@ -214,6 +251,12 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 
 				// leaf.clearState();
+
+				if (flag.value) {
+					for (MoveTree child : leaves)
+						child.getChildren().clear();
+					return tree;
+				}
 			}
 
 			boolean breakAfterwards = false;
@@ -242,13 +285,21 @@ public abstract class AdvancedAI extends ArtInt {
 				}
 			}
 
-			leaves = newLeaves;
+			leaves.clear();
+			leaves.addAll(newLeaves);
 
-			if (breakAfterwards || System.currentTimeMillis() - starttime > 2000)
+			if (breakAfterwards) // || System.currentTimeMillis() - starttime > 2000)
 				break;
 		}
 
+		finished.value = true;
+
 		return tree;
+	}
+
+	/** inner class to allow the timer to change a variable */
+	private static class Flag {
+		private boolean value = false;
 	}
 
 	/**

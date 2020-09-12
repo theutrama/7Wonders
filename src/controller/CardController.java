@@ -286,7 +286,7 @@ public class CardController {
 		cards.add(new Card(1, "Mine", "mine", CardType.BROWN, addRArray(new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)), null,
 				null));
 		cards.add(new Card(ResourceType.GEAR, 3, "Observatorium", "observatory", CardType.GREEN, null,
-				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.PAPYRUS), new Resource(1, ResourceType.GLASS)), new String[] { "laboratory" }, null));
+				addRArray(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.GLASS), new Resource(1, ResourceType.CLOTH)), new String[] { "laboratory" }, null));
 		cards.add(new Card(1, "Erzbergwerk", "orevein", CardType.BROWN, addRArray(new Resource(1, ResourceType.ORE)), null, null, null));
 		cards.add(new Card(3, "Palast", "palace", CardType.BLUE, null,
 				addRArray(new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK),
@@ -775,8 +775,11 @@ public class CardController {
 	 * @param freeBuild true if the player uses olympia ability to build this card
 	 */
 	public void placeCard(Card card, Player player, TradeOption trade, boolean freeBuild) {
-		if (trade != null && trade.getLeftCost() + trade.getRightCost() >= player.getCoins()) {
-			System.err.println("place card cancelled");
+		if (trade != null && trade.getLeftCost() + trade.getRightCost() > player.getCoins()) {
+			System.err.println("[Card Controller] place card cancelled");
+			System.err.println("[Card Controller] card: " + card.getName());
+			System.err.println("[Card Controller] player: " + player.getName());
+			System.err.println("[Card Controller] trade: " + trade.toString());
 			return;
 		}
 

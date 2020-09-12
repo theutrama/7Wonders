@@ -715,9 +715,9 @@ public class GameBoardViewController extends VBox {
 	public void setActionCard() {
 		if (!action)
 			return;
-		
+
 		updateMouseBlocking();
-		
+
 		Card card = getCurrentPlayer().getChosenCard();
 		hbox_cards.getChildren().clear();
 
@@ -726,13 +726,15 @@ public class GameBoardViewController extends VBox {
 		int arrowWidth = 45, arrowHeight = 25;
 		double scaleFactor = 1.2;
 
+		Player player = getCurrentPlayer();
+
 		try {
 			StackPane outter = new StackPane();
 			VBox vbox = new VBox();
 
 			Button btnOlympia = new Button();
 			Button btn_sell = new Button();
-			if (!getCurrentPlayer().isOlympiaUsed()) {
+			if (!player.isOlympiaUsed()) {
 				HBox hboxOlympia = new HBox();
 				ImageView img1 = new ImageView();
 				img1.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
@@ -758,7 +760,7 @@ public class GameBoardViewController extends VBox {
 						e.printStackTrace();
 					}
 				});
-				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, true); getCurrentPlayer().setOlympiaUsed(true); turn(); });
+				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, player, null, true); player.setOlympiaUsed(true); turn(); });
 				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Faehigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
@@ -789,29 +791,30 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
+			BuildCapability placeCapability = Main.getSWController().getPlayerController().canBuild(player, card);
 			btn_place.setOnAction(event -> {
-				switch (Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card)) {
+				switch (placeCapability) {
 				case FREE:
 				case OWN_RESOURCE:
-					Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), null, false);
+					Main.getSWController().getCardController().placeCard(card, player, null, false);
 					turn();
 					break;
 				case TRADE:
-					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(getCurrentPlayer(), card.getRequired());
+					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player, card.getRequired());
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren()
-								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().placeCard(card, getCurrentPlayer(), option, false); turn(); }));
+						tradeNodes.getChildren().add(option.getNode(player,
+								event2 -> {Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 
-					if (getCurrentPlayer() instanceof ArtInt) {
-						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
+					if (player instanceof ArtInt) {
+						TradeOption option = ((ArtInt) player).getTradeOption();
 						int index = trades.indexOf(option);
 						if (index == -1) {
-							System.err.println(getCurrentPlayer().getName() + " has chosen an invalid trade option:");
-							System.err.println("action: " + ((ArtInt) getCurrentPlayer()).getAction());
+							System.err.println(player.getName() + " has chosen an invalid trade option:");
+							System.err.println("action: " + ((ArtInt) player).getAction());
 							Platform.runLater(() -> btn_sell.fire());
 						} else
 							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
@@ -821,7 +824,7 @@ public class GameBoardViewController extends VBox {
 					break;
 				}
 			});
-			btn_place.setDisable(hasCard || Main.getSWController().getPlayerController().canBuild(getCurrentPlayer(), card) == BuildCapability.NONE);
+			btn_place.setDisable(hasCard || placeCapability == BuildCapability.NONE);
 
 			// Button place card on WonderBoard
 			Button btn_wonder = new Button();
@@ -831,7 +834,7 @@ public class GameBoardViewController extends VBox {
 			img3.setFitWidth(arrowWidth);
 			img3.setFitHeight(arrowHeight);
 			ImageView img4 = new ImageView();
-			img4.setImage(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (getCurrentPlayer().getBoard().nextSlot() + 1) + ".png"));
+			img4.setImage(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (player.getBoard().nextSlot() + 1) + ".png"));
 			img4.setFitWidth(45 * scaleFactor);
 			img4.setFitHeight(35 * scaleFactor);
 			hbox_wonder.getChildren().add(img3);
@@ -850,41 +853,42 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			btn_wonder.setOnAction(event -> {
-				switch (Main.getSWController().getPlayerController().hasResources(getCurrentPlayer(),
-						new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))))) {
-				case FREE:
-				case OWN_RESOURCE:
-					Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), null);
-					turn();
-					break;
-				case TRADE:
-					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(getCurrentPlayer(),
-							new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot()))));
-					VBox tradeNodes = new VBox();
-					for (TradeOption option : trades) {
-						tradeNodes.getChildren()
-								.add(option.getNode(getCurrentPlayer(), event2 -> { Main.getSWController().getCardController().setSlotCard(card, getCurrentPlayer(), option); turn(); }));
+			BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player,
+					new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
+			if (!player.getBoard().isFilled(2)) {
+				btn_wonder.setOnAction(event -> {
+					switch (wonderCapability) {
+					case FREE:
+					case OWN_RESOURCE:
+						Main.getSWController().getCardController().setSlotCard(card, player, null);
+						turn();
+						break;
+					case TRADE:
+						ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player,
+								new ArrayList<>(Arrays.asList(player.getBoard().getSlotResquirement(player.getBoard().nextSlot()))));
+						VBox tradeNodes = new VBox();
+						for (TradeOption option : trades) {
+							tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); }));
+						}
+						hbox_cards.getChildren().add(tradeNodes);
+						outter.getChildren().remove(vbox);
+						if (player instanceof ArtInt) {
+							TradeOption option = ((ArtInt) player).getTradeOption();
+							int index = trades.indexOf(option);
+							if (index == -1) {
+								System.err.println(player.getName() + " has chosen an invalid trade option:");
+								System.err.println("action: " + ((ArtInt) player).getAction());
+								Platform.runLater(() -> btn_sell.fire());
+							} else
+								Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
+						}
+						break;
+					default:
+						break;
 					}
-					hbox_cards.getChildren().add(tradeNodes);
-					outter.getChildren().remove(vbox);
-					if (getCurrentPlayer() instanceof ArtInt) {
-						TradeOption option = ((ArtInt) getCurrentPlayer()).getTradeOption();
-						int index = trades.indexOf(option);
-						if (index == -1) {
-							System.err.println(getCurrentPlayer().getName() + " has chosen an invalid trade option:");
-							System.err.println("action: " + ((ArtInt) getCurrentPlayer()).getAction());
-							Platform.runLater(() -> btn_sell.fire());
-						} else
-							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
-					}
-					break;
-				default:
-					break;
-				}
-			});
-			btn_wonder.setDisable(getCurrentPlayer().getBoard().isFilled(2) || Main.getSWController().getPlayerController().hasResources(getCurrentPlayer(),
-					new ArrayList<>(Arrays.asList(getCurrentPlayer().getBoard().getSlotResquirement(getCurrentPlayer().getBoard().nextSlot())))) == BuildCapability.NONE);
+				});
+			}
+			btn_wonder.setDisable(player.getBoard().isFilled(2) || wonderCapability == BuildCapability.NONE);
 
 			// Button card sell
 			HBox hbox_sell = new HBox();
@@ -913,13 +917,13 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			btn_sell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, getCurrentPlayer()); turn(); });
+			btn_sell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, player); turn(); });
 
 			vbox.getChildren().add(btn_place);
 			vbox.getChildren().add(btn_wonder);
 			vbox.getChildren().add(btn_sell);
 			vbox.setAlignment(Pos.CENTER);
-			if (getCurrentPlayer().isOlympiaUsed())
+			if (player.isOlympiaUsed())
 				vbox.setSpacing(5);
 			vbox.setStyle("-fx-background-color: #d9d9d999");
 			outter.getChildren().add(vbox);
@@ -929,8 +933,8 @@ public class GameBoardViewController extends VBox {
 			outter.setPrefSize(141, 215);
 			hbox_cards.getChildren().add(outter);
 
-			if (getCurrentPlayer() instanceof ArtInt) {
-				Action action = ((ArtInt) getCurrentPlayer()).getAction();
+			if (player instanceof ArtInt) {
+				Action action = ((ArtInt) player).getAction();
 				if (action == Action.OLYMPIA && btnOlympia != null)
 					btnOlympia.fire();
 				else if (action == Action.BUILD && !btn_place.isDisabled())
@@ -952,9 +956,9 @@ public class GameBoardViewController extends VBox {
 	public void setHandCards() {
 		if (action)
 			return;
-		
+
 		updateMouseBlocking();
-		
+
 		Player player = getCurrentPlayer();
 		ArrayList<Card> hand = player.getHand();
 
@@ -1034,7 +1038,9 @@ public class GameBoardViewController extends VBox {
 
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
+				long t1 = System.currentTimeMillis();
 				((ArtInt) player).calculateNextMove();
+				System.out.println("time: " + (System.currentTimeMillis() - t1));
 				Card selected = ((ArtInt) player).getSelectedCard();
 				int index = indexOf(player.getHand(), selected);
 				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
@@ -1074,7 +1080,7 @@ public class GameBoardViewController extends VBox {
 
 		hbox_cards.getChildren().clear();
 		HBox hboxTitle = new HBox(50);
-		Label label = new Label("Waehle eine Karte vom Ablagestapel");
+		Label label = new Label(player.getName() + " darf eine Karte von Ablagestapel waehlen");
 		label.getStyleClass().addAll("fontstyle", "dropshadow");
 		label.setStyle("-fx-text-fill: #F5F5F5; -fx-font-size: 20;");
 		Label labelBtn = new Label("Keine Karte auswaehlen");
@@ -1182,6 +1188,7 @@ public class GameBoardViewController extends VBox {
 
 	/**
 	 * index of given card in a list
+	 * 
 	 * @param list list of cards
 	 * @param card card
 	 * @return index of first occurance in list or -1

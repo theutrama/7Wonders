@@ -12,6 +12,7 @@ import java.util.Stack;
 import application.Main;
 import application.Utils;
 import controller.sound.Sound;
+import javafx.application.Platform;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -328,7 +329,7 @@ public class GameController {
 		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getIOController().deleteFile(game.getName());
 		Main.primaryStage.setOnCloseRequest(event -> Main.getSWController().getIOController().saveRanking());
-		Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers()));
+		Platform.runLater(() -> Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers())));
 	}
 
 	/**

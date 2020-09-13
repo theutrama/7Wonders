@@ -23,7 +23,7 @@ import view.menu.MainMenuViewController;
 import view.multiplayer.lobby.LobbyViewController;
 import view.ranking.RankingViewController;
 
-@SuppressWarnings({"javadoc", "all", "PMD"})
+@SuppressWarnings("all")
 public class MultiplayerListViewController extends StackPane {
 
     @FXML

@@ -38,7 +38,7 @@ import view.menu.MainMenuViewController;
 import view.multiplayer.gamelobby.GameLobbyViewController;
 import view.multiplayer.list.MultiplayerListViewController;
 
-@SuppressWarnings({"javadoc", "all", "PMD"})
+@SuppressWarnings("all")
 public class LobbyViewController extends StackPane implements PacketListener{
 
     @FXML

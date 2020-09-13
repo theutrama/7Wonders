@@ -12,7 +12,7 @@ import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.client.packets.PingPacket;
 
-@SuppressWarnings({"javadoc", "all", "PMD"})
+@SuppressWarnings("all")
 /** Controller for Multiplayer */
 public class MultiplayerController implements EventListener{
 	/** client of player */

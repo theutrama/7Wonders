@@ -86,6 +86,8 @@ test {
 javadoc {
     exclude 'application/**'
     exclude 'view/**'
+    exclude 'controller/MultiplayerController.class'
+    exclude 'model/player/multiplayer/**'
 }
 
 task testJavadoc(type: Javadoc) {
@@ -115,6 +117,7 @@ checkstyleTest {
     source = sourceSets.test.allJava
 }
 
+
 jacocoTestReport {
     dependsOn test
     reports {
@@ -124,7 +127,7 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['application/**','view/**'])
+            fileTree(dir: it, exclude: ['application/**','view/**','controller/MultiplayerController.class*','model/player/multiplayer/**'])
         }))
     }
 }

@@ -53,7 +53,7 @@ import model.player.ai.Difficulty;
 import view.multiplayer.list.MultiplayerListViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
-@SuppressWarnings({"javadoc", "all", "PMD"})
+@SuppressWarnings("all")
 public class GameLobbyViewController extends StackPane implements PacketListener{
 
 	private boolean owner = false;

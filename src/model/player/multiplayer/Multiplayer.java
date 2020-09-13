@@ -11,7 +11,7 @@ import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.Move.Action;
 
-@SuppressWarnings({"javadoc", "all", "PMD"})
+@SuppressWarnings("all")
 
 
 /** class for Multiplayer */

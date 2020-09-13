@@ -21,7 +21,7 @@ public class MediumAI extends AdvancedAI {
 	}
 
 	@Override
-	protected int evaluate(GameState state) {
+	protected int evaluate(GameState state, String playername) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

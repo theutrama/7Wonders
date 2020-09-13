@@ -44,7 +44,7 @@ public abstract class AdvancedAI extends ArtInt {
 
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
 			for (MoveTree child : tree.getChildren()) {
-				int value = evaluate(child.getState());
+				int value = evaluate(child.getState(), this.getName());
 				if (value > maxValue) {
 					maxMove = child.getMove();
 					maxValue = value;
@@ -54,12 +54,12 @@ public abstract class AdvancedAI extends ArtInt {
 
 			for (MoveTree child : tree.getChildren()) {
 				ArrayList<MoveTree> leaves = child.getLeaves();
-				
+
 				// WORST CASE
 				MoveTree worst = null;
 				int worstValue = Integer.MAX_VALUE;
 				for (MoveTree leaf : leaves) {
-					int value = evaluate(leaf.getState());
+					int value = evaluate(leaf.getState(), this.getName());
 					if (value < worstValue) {
 						worst = leaf;
 						worstValue = value;
@@ -344,8 +344,9 @@ public abstract class AdvancedAI extends ArtInt {
 	/**
 	 * calculates the value of a game state, depending on AI's level
 	 * 
-	 * @param state game state
+	 * @param state  game state
+	 * @param playername player name
 	 * @return value
 	 */
-	protected abstract int evaluate(GameState state);
+	protected abstract int evaluate(GameState state, String playername);
 }

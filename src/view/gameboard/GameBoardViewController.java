@@ -26,6 +26,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -50,6 +51,7 @@ import model.card.Effect;
 import model.card.EffectType;
 import model.player.Player;
 import model.player.ai.ArtInt;
+import model.player.ai.HardAI;
 import model.player.ai.Move.Action;
 import view.menu.MainMenuViewController;
 
@@ -93,7 +95,7 @@ public class GameBoardViewController extends VBox {
 
 	@FXML
 	private Button btn_hint;
-	
+
 	private ArrayList<StackPane> boardPanes;
 	private boolean action;
 
@@ -148,6 +150,8 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		btn_redo.setPickOnBounds(true);
+		
+		btn_hint.setTooltip(noDelay(new Tooltip("Tipp anzeigen")));
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 
@@ -719,6 +723,9 @@ public class GameBoardViewController extends VBox {
 		if (!action)
 			return;
 
+		btn_hint.setVisible(false);
+		btn_hint.setOnAction(null);
+
 		updateMouseBlocking();
 
 		Card card = getCurrentPlayer().getChosenCard();
@@ -806,8 +813,7 @@ public class GameBoardViewController extends VBox {
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player, card.getRequired());
 					VBox tradeNodes = new VBox();
 					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(player,
-								event2 -> {Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
+						tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
 					}
 					hbox_cards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
@@ -856,9 +862,9 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player,
-					new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
+			
 			if (!player.getBoard().isFilled(2)) {
+				BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player, new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
 				btn_wonder.setOnAction(event -> {
 					switch (wonderCapability) {
 					case FREE:
@@ -890,8 +896,9 @@ public class GameBoardViewController extends VBox {
 						break;
 					}
 				});
-			}
-			btn_wonder.setDisable(player.getBoard().isFilled(2) || wonderCapability == BuildCapability.NONE);
+				btn_wonder.setDisable(wonderCapability == BuildCapability.NONE);
+			} else
+				btn_wonder.setDisable(true);
 
 			// Button card sell
 			HBox hbox_sell = new HBox();
@@ -1039,6 +1046,8 @@ public class GameBoardViewController extends VBox {
 			}
 		}
 
+		btn_hint.setVisible(!(player instanceof ArtInt));
+
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
 				long t1 = System.currentTimeMillis();
@@ -1049,6 +1058,55 @@ public class GameBoardViewController extends VBox {
 				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
 				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });
 			}).start();
+		} else {
+			btn_hint.setOnAction(event -> {
+				btn_hint.setVisible(false);
+				Main.getSWController().getGame().disableHighscore();
+				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
+				HardAI artint = new HardAI(player.getName(), player.getBoard());
+				artint.calculateNextMove();
+				int index = indexOf(player.getHand(), artint.getSelectedCard());
+				if (index == -1)
+					return;
+				Button btn = (Button) ((VBox) hbox_cards.getChildren().get(index)).getChildren().get(1);
+				ImageView img = (ImageView) btn.getGraphic();
+				ImageView icon = null;
+				try {
+					switch (artint.getAction()) {
+					case BUILD:
+						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "place.png"));
+						icon.setFitWidth(90);
+						icon.setFitHeight(60);
+						break;
+					case OLYMPIA:
+						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "olympia.png"));
+						icon.setFitWidth(52.5);
+						icon.setFitHeight(60);
+						break;
+					case PLACE_SLOT:
+						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (player.getBoard().nextSlot() + 1) + ".png"));
+						icon.setFitWidth(77);
+						icon.setFitHeight(60);
+						break;
+					case SELL:
+						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin3.png"));
+						icon.setFitWidth(65);
+						icon.setFitHeight(61.5);
+						break;
+					default:
+						break;
+					}
+				} catch (IOException exception) {
+					exception.printStackTrace();
+				}
+				BorderPane bpane = new BorderPane(icon);
+				bpane.setPadding(new Insets(10, 10, 10, 10));
+				bpane.setStyle("-fx-background-color: #D0D0D090");
+				StackPane stackpane = new StackPane(img, bpane);
+				stackpane.setAlignment(Pos.CENTER);
+				stackpane.setStyle("-fx-border-color: white; -fx-border-width: 4px; -fx-border-radius: 3px;");
+				btn.setGraphic(stackpane);
+			});
 		}
 	}
 
@@ -1140,6 +1198,7 @@ public class GameBoardViewController extends VBox {
 		hbox_cards.getChildren().add(vboxChoose);
 
 		if (player instanceof ArtInt) {
+			btn_hint.setVisible(false);
 			new Thread(() -> {
 				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
 				int index = indexOf(game().getTrash(), selected);
@@ -1148,6 +1207,23 @@ public class GameBoardViewController extends VBox {
 				else
 					Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
 			}).start();
+		} else {
+			btn_hint.setVisible(true);
+			btn_hint.setOnAction(event -> {
+				btn_hint.setVisible(false);
+				Main.getSWController().getGame().disableHighscore();
+				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
+				Card card = new HardAI(player.getName(), player.getBoard()).getHalikarnassusCard(player, game().getTrash(), game());
+				int index = indexOf(game().getTrash(), card);
+				if (index == -1) {
+					System.err.println("mausoleum card invalid: " + card.getName());
+					return;
+				}
+				ImageView img = (ImageView) ((Button) hboxChooseCard.getChildren().get(index)).getGraphic();
+				img.setStyle("-fx-border-color: white; -fx-border-width: 4px; -fx-border-radius: 3px;");
+				StackPane spane = new StackPane(img);
+				((Button) hboxChooseCard.getChildren().get(index)).setGraphic(spane);
+			});
 		}
 	}
 

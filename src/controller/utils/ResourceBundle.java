@@ -28,13 +28,13 @@ public class ResourceBundle implements Serializable {
 		add(resource);
 	}
 
-	/** create a bundle and add all given resources using {@link #add(Resource)} */
+	/**
+	 * create a bundle and add all given resources using {@link #add(Resource)}
+	 * 
+	 * @param resources resource list
+	 */
 	public ResourceBundle(ArrayList<Resource> resources) {
-		resources.forEach(resource -> {
-			if(resource==null) {
-				System.out.println("BUNDLE RS == NULL!!!!!");
-			}else add(resource);
-		});
+		resources.forEach(resource -> add(resource));
 	}
 
 	/** default constructor, all values are 0 */

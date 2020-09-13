@@ -271,7 +271,7 @@ public class CardController {
 				new String[] { "workshop" }, null));
 		cards.add(new Card(ResourceType.TABLET, 2, "Bibliothek", "library", CardType.GREEN, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(1, ResourceType.CLOTH)),
 				new String[] { "scriptorium" }, null));
-		cards.add(new Card(3, "Leuchtturm", "lighthouse", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.BRICK)), new String[] { "caravansery" },
+		cards.add(new Card(3, "Leuchtturm", "lighthouse", CardType.YELLOW, null, addRArray(new Resource(1, ResourceType.STONE), new Resource(2, ResourceType.GLASS)), new String[] { "caravansery" },
 				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, state, twoPlayers) -> { player.addCoins(player.getBoard().getTrade().size()); }),
 						new Effect(EffectType.AT_MATCH_END, (player, state, twoPlayers) -> { player.addVictoryPoints(player.getBoard().getTrade().size()); }))));
 		cards.add(new Card(ResourceType.COMPASS, 3, "Loge", "lodge", CardType.GREEN, null,

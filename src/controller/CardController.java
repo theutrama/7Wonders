@@ -438,7 +438,7 @@ public class CardController {
 
 		return cards;
 	}
-
+	
 	/**
 	 * generates CardStack for given number of players
 	 * 
@@ -446,10 +446,19 @@ public class CardController {
 	 * @return cards list of all necessary cards for players
 	 */
 	public ArrayList<Card> generateCardStack(ArrayList<Player> players) {
+		return generateCardStack(players.size());
+	}
+
+	/**
+	 * generates CardStack for given number of players
+	 * 
+	 * @param playersize players amount
+	 * @return cards list of all necessary cards for players
+	 */
+	public ArrayList<Card> generateCardStack(int playersize) {
 		ArrayList<Card> cards = loadAllCards();
 
 		// Clone cards depending on player number
-		int playersize = players.size();
 		final int TWO = 2;
 		if (playersize == TWO)
 			playersize++;

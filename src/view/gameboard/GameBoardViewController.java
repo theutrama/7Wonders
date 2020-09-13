@@ -91,6 +91,9 @@ public class GameBoardViewController extends VBox {
 	@FXML
 	private ScrollPane scrollpane;
 
+	@FXML
+	private Button btn_hint;
+	
 	private ArrayList<StackPane> boardPanes;
 	private boolean action;
 
@@ -145,6 +148,10 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		btn_redo.setPickOnBounds(true);
+		
+		btn_hint.setOnAction(event -> {
+			
+		});
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 

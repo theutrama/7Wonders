@@ -48,7 +48,7 @@
                   <Font name="Bookman Old Style Bold" size="28.0" />
                </font>
             </Label>
-            <ScrollPane fx:id="scrollpane" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" VBox.vgrow="SOMETIMES">
+            <ScrollPane fx:id="scrollpane" hbarPolicy="NEVER" maxHeight="280.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" VBox.vgrow="SOMETIMES">
                <content>
                   <VBox fx:id="vbox_gameList" spacing="20.0" />
                </content>

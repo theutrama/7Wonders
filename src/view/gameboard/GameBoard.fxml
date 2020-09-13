@@ -128,6 +128,19 @@
                               </Label>
                            </graphic>
                         </Button>
+                        <Button fx:id="btn_hint" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
+                           <graphic>
+                              <Label text="Tipp">
+                                 <styleClass>
+                                    <String fx:value="fontstyle" />
+                                    <String fx:value="dropshadow" />
+                                 </styleClass>
+                              </Label>
+                           </graphic>
+                           <StackPane.margin>
+                              <Insets right="200.0" top="10.0" />
+                           </StackPane.margin>
+                        </Button>
                      </children>
                   </StackPane>
                </children>

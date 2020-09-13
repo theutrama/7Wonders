@@ -29,7 +29,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/org.reflections/reflections
 	compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
-	implementation 'com.github.kingingo:BroadcastServer:master-SNAPSHOT'
+	//implementation 'com.github.kingingo:BroadcastServer:master-SNAPSHOT'
     // JavaFX for all (targeted) platforms
     //implementation "org.openjfx:javafx-base:11:win"
     //implementation "org.openjfx:javafx-graphics:11:win"

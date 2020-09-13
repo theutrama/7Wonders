@@ -11,6 +11,9 @@ import main.api.packet.Packet;
 import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.client.packets.PingPacket;
+import model.board.WonderBoard;
+import model.player.Player;
+import model.player.multiplayer.Multiplayer;
 
 @SuppressWarnings("all")
 /** Controller for Multiplayer */
@@ -22,6 +25,20 @@ public class MultiplayerController implements EventListener{
 	public MultiplayerController() {
 		Packet.loadPackets();
 		EventManager.register(this);
+	}
+
+	/**
+	 * add a player and assign wonder board
+	 * 
+	 * @param playername  player's name
+	 * @param wonderboard player's board
+	 * @return Player object
+	 */
+	public Player createPlayer(String playername, String wonderboard) {
+		WonderBoard board = Main.getSWController().getWonderBoardController().createWonderBoard(wonderboard);
+		Player player = new Multiplayer(playername, board);
+		board.setPlayer(player);
+		return player;
 	}
 
 	/**

@@ -8,7 +8,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
 import application.Main;
 import application.Utils;
@@ -50,6 +54,7 @@ import model.Game;
 import model.card.Card;
 import model.player.Player;
 import model.player.ai.Difficulty;
+import view.gameboard.GameBoardViewController;
 import view.multiplayer.list.MultiplayerListViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
@@ -146,7 +151,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     }
     
     public void done(){
-    	if(isOwner()) {
+    	if(!isOwner() && !this.settings.hasGameStarted()) {
     		error("Du musst der Owner der Lobby sein um dies tun zukönnen!");
 			return;
     	}
@@ -154,31 +159,55 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			error("Es muessen mindestens 2 Spieler mitspielen!");
 			return;
 		}
-
+    	
+    	String wondername = "";
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		GameController gcon = Main.getSWController().getGameController();
 		ArrayList<Player> game_players = new ArrayList<Player>();
-		HBox[] list = (HBox[]) this.players.values().toArray();
-		for (HBox player : list) {
+		
+		Stack<String> stack = null;
+		if(isOwner()) {
+			List<String> wonders = Arrays.asList(Main.getSWController().getWonderBoardController().getWonderBoardNames());
+			stack = new Stack<String>();
+			stack.addAll(wonders);
+			Collections.shuffle(stack);
+		}
+		
+		
+		for (String playername : this.players.keySet()) {
+			HBox player = this.players.get(playername);
 			Label nameLabel = (Label) player.getChildren().get(0);
-			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
+//			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
+			if(isOwner()) {
+				wondername = stack.pop();
+				this.settings.getSettings(nameLabel.getText()).wondername=wondername;
+			}else {
+				wondername = this.settings.getSettings(nameLabel.getText()).wondername;
+			}
 			String type = ((ComboBox<String>) player.getChildren().get(1)).getSelectionModel().getSelectedItem();
 
 			if (type.contains("KI")) {
 				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
-				game_players.add(pcon.createAI(nameLabel.getText(), wonderLabel.getText(), diff));
+				game_players.add(pcon.createAI(nameLabel.getText(), wondername, diff));
 			} else {
-				game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
+				if(getOwnName().equalsIgnoreCase(nameLabel.getText())) {
+					game_players.add(Main.getSWController().getMultiplayerController().createPlayer(nameLabel.getText(), wondername));
+				}	else {
+					game_players.add(pcon.createPlayer(nameLabel.getText(), wondername));
+				}
 			}
 		}
-		
-		
-		ArrayList<Card> cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
+		ArrayList<Card> cardStack = null;
+		if(isOwner()) {
+			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
+			this.settings.setStack(cardStack);
+			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
+		}else {
+			cardStack = this.settings.getStack();
+		}
 		Game game = gcon.createGame(label_lobbyname.getText(),cardStack, game_players);
-		
-		this.settings.setStack(game.getCurrentGameState().getCardStack());
-		
 		Main.getSWController().setGame(game);
+		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
     }
 
 	protected void error(String txt) {
@@ -212,7 +241,12 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 	    				type.getSelectionModel().select(psettings.type);
 		    		}
 		    		
-		    		btn_done.setVisible(vbox_players.getChildren().size() > 1);
+		    		if(settings.hasGameStarted()) {
+		    			done();
+		    			System.out.println("GAME START!!!!");
+		    		}
+		    		
+		    		if(isOwner())btn_done.setVisible(vbox_players.getChildren().size() > 1);
 				}
 			});
     		
@@ -324,6 +358,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			
 			public String playername = "";
 			public int type = 0;
+			public String wondername = "";
 		}
 		
     	private String owner;
@@ -333,6 +368,10 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	public Settings(String owner) {
     		this.owner = owner;
     		addPlayer(owner);
+    	}
+    	
+    	public boolean hasGameStarted() {
+    		return this.cardStack != null;
     	}
     	
     	public void setStack(ArrayList<Card> cardStack) {

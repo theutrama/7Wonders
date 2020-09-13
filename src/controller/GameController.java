@@ -78,11 +78,7 @@ public class GameController {
 	 * @param players player list
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, ArrayList<Card> cardStack, Game game) {
-		if(cardStack == null) {
-			cardStack = swController.getCardController().generateCardStack(players.size());
-		}
-		
-		GameState state = new GameState(0, 1, players, cardStack);
+		GameState state = new GameState(0, 1, players, (cardStack==null ? swController.getCardController().generateCardStack(players.size()) : cardStack));
 		game.getStates().add(state);
 		nextAge(game, state);
 		game.getCurrentGameState().setFirstPlayer(0);

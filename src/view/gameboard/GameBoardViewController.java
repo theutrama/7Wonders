@@ -1054,6 +1054,7 @@ public class GameBoardViewController extends VBox {
 				System.out.println("time: " + (System.currentTimeMillis() - t1));
 				Card selected = ((ArtInt) player).getSelectedCard();
 				int index = indexOf(player.getHand(), selected);
+				
 				VBox vbox = (VBox) hboxCards.getChildren().get(index);
 				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });
 			}).start();
@@ -1272,14 +1273,15 @@ public class GameBoardViewController extends VBox {
 	 * @return index of first occurance in list or -1
 	 */
 	private int indexOf(ArrayList<Card> list, Card card) {
-		if (card == null)
-			return -1;
+		if (card == null) throw new NullPointerException("card is null?");
+			
 		int index = -1;
 		for (int i = 0; i < list.size(); i++)
 			if (card.getInternalName().equals(list.get(i).getInternalName())) {
 				index = i;
 				break;
 			}
+			
 		return index;
 	}
 

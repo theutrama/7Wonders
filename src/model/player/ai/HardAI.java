@@ -1,13 +1,11 @@
 package model.player.ai;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import application.Main;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
 import model.GameState;
-import model.board.BabylonBoard;
 import model.board.WonderBoard;
 import model.card.Card;
 import model.card.Resource;
@@ -34,8 +32,6 @@ public class HardAI extends AdvancedAI {
 	@Override
 	protected int evaluate(GameState state, String playername) {
 		Player player = Main.getSWController().getPlayerController().getPlayer(playername, state);
-		if (player != player.getBoard().getPlayer())
-			System.err.println("player board error");
 		int value = 0;
 		switch (state.getAge()) {
 		case 1:
@@ -45,7 +41,7 @@ public class HardAI extends AdvancedAI {
 			for (int i = 0; i < 3; i++) {
 				capas[i] = Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state);
 			}
-			
+
 //			if (!getBoard().isFilled(0) && capas[0] != BuildCapability.NONE) {
 //				value += 9;
 //				if (capas[0] == BuildCapability.TRADE)
@@ -62,43 +58,50 @@ public class HardAI extends AdvancedAI {
 //					value -= getTradeValue(asList(player.getBoard().getSlotResquirement(2)), player, state) / (player.getCoins() / 4 + 1);
 //			}
 			// value += player.getBoard().nextSlot() == -1 ? 10 : player.getBoard().nextSlot() * 4;
-			
-			if (player.getBoard().isFilled(0)) {
-				value += 10;
-				if (player.getBoard().isFilled(1)) {
-					value += 10;
-					if (player.getBoard().isFilled(2)) {
-						value += 10;
-					} else if (capas[2] != BuildCapability.NONE) {
-						value += 7;
-					}
-				} else if (capas[1] != BuildCapability.NONE) {
-					value += 7;
-				}
-			} else if (capas[0] != BuildCapability.NONE) {
-				value += 7;
-			}
-			
-			if (!player.getBoard().isFilled(2)) {
-				if (capas[2] != BuildCapability.NONE) {
-					value += 2;
-				}
-				if (!player.getBoard().isFilled(1)) {
-					if (capas[1] != BuildCapability.NONE) {
-						value += 2;
-					}
-					if (!player.getBoard().isFilled(0) && capas[0] != BuildCapability.NONE)
-						value += 2;
-				}
-			}
-			
-			for (Card card: player.getBoard().getResources()) {
+
+//			if (player.getBoard().isFilled(0)) {
+//				value += 10;
+//				if (player.getBoard().isFilled(1)) {
+//					value += 10;
+//					if (player.getBoard().isFilled(2)) {
+//						value += 10;
+//					} else if (capas[2] != BuildCapability.NONE) {
+//						value += 7;
+//					}
+//				} else if (capas[1] != BuildCapability.NONE) {
+//					value += 7;
+//				}
+//			} else if (capas[0] != BuildCapability.NONE) {
+//				value += 7;
+//			}
+//
+//			if (!player.getBoard().isFilled(2)) {
+//				if (capas[2] != BuildCapability.NONE) {
+//					value += 2;
+//				}
+//				if (!player.getBoard().isFilled(1)) {
+//					if (capas[1] != BuildCapability.NONE) {
+//						value += 2;
+//					}
+//					if (!player.getBoard().isFilled(0) && capas[0] != BuildCapability.NONE)
+//						value += 2;
+//				}
+//			}
+//
+			for (Card card : player.getBoard().getResources()) {
 				if (card.getProducing().size() == 1) {
 					ResourceType type = card.getProducing().get(0).getType();
-					if (type != player.getBoard().getSlotResquirement(0).getType() && type != player.getBoard().getSlotResquirement(1).getType() && type != player.getBoard().getSlotResquirement(2).getType())
-						value -= 2;
+					if (type != player.getBoard().getSlotResquirement(0).getType() && type != player.getBoard().getSlotResquirement(1).getType()
+							&& type != player.getBoard().getSlotResquirement(2).getType())
+						value -= 1;
 				}
 			}
+			
+			for (BuildCapability capacity: capas)
+				if (capacity != BuildCapability.NONE)
+					value += 10;
+			
+			value -= player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 
 			// Research /////////////////////////////////////////////////////////////
 
@@ -106,7 +109,7 @@ public class HardAI extends AdvancedAI {
 
 			// Civil ////////////////////////////////////////////////////////////////
 
-			// value -= getCivilPoints(player) / 2;
+			value += getCivilPoints(player) / 2;
 
 			// Military /////////////////////////////////////////////////////////////
 
@@ -133,8 +136,8 @@ public class HardAI extends AdvancedAI {
 //					break;
 //				}
 //			}
-			
-			for (Card card: player.getHand()) {
+
+			for (Card card : player.getHand()) {
 				if (Main.getSWController().getPlayerController().canBuild(player, card, state) != BuildCapability.NONE)
 					value += 2;
 			}
@@ -145,52 +148,59 @@ public class HardAI extends AdvancedAI {
 		case 2:
 
 			// Resources //////////////////////////////////////////////
-			
+
 			BuildCapability[] capas2 = new BuildCapability[3];
 			for (int i = 0; i < 3; i++) {
 				capas2[i] = Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state);
 			}
 
-			if (player.getBoard().isFilled(0)) {
-				value += 8;
-				if (player.getBoard().isFilled(1)) {
-					value += 8;
-					if (player.getBoard().isFilled(2)) {
-						value += 8;
-					} else if (capas2[2] != BuildCapability.NONE) {
-						value += 7;
-					}
-				} else if (capas2[1] != BuildCapability.NONE) {
-					value += 7;
-				}
-			} else if (capas2[0] != BuildCapability.NONE) {
-				value += 7;
-			}
+//			if (player.getBoard().isFilled(0)) {
+//				value += 8;
+//				if (player.getBoard().isFilled(1)) {
+//					value += 8;
+//					if (player.getBoard().isFilled(2)) {
+//						value += 8;
+//					} else if (capas2[2] != BuildCapability.NONE) {
+//						value += 7;
+//					}
+//				} else if (capas2[1] != BuildCapability.NONE) {
+//					value += 7;
+//				}
+//			} else if (capas2[0] != BuildCapability.NONE) {
+//				value += 7;
+//			}
+
+//			if (!player.getBoard().isFilled(2)) {
+//				if (capas2[2] != BuildCapability.NONE) {
+//					value += 2;
+//				}
+//				if (!player.getBoard().isFilled(1)) {
+//					if (capas2[1] != BuildCapability.NONE) {
+//						value += 2;
+//					}
+//					if (!player.getBoard().isFilled(0) && capas2[0] != BuildCapability.NONE)
+//						value += 2;
+//				}
+//			}
 			
-			if (!player.getBoard().isFilled(2)) {
-				if (capas2[2] != BuildCapability.NONE) {
-					value += 2;
-				}
-				if (!player.getBoard().isFilled(1)) {
-					if (capas2[1] != BuildCapability.NONE) {
-						value += 2;
-					}
-					if (!player.getBoard().isFilled(0) && capas2[0] != BuildCapability.NONE)
-						value += 2;
-				}
-			}
+			for (BuildCapability capacity: capas2)
+				if (capacity != BuildCapability.NONE)
+					value += 10;
 			
-			for (Card card: player.getBoard().getResources()) {
-				if (card.getProducing().size() == 1) {
-					ResourceType type = card.getProducing().get(0).getType();
-					if (type != player.getBoard().getSlotResquirement(0).getType() && type != player.getBoard().getSlotResquirement(1).getType() && type != player.getBoard().getSlotResquirement(2).getType())
-						value -= 5;
-				}
-			}
+			value -= player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot();
+
+//			for (Card card : player.getBoard().getResources()) {
+//				if (card.getProducing().size() == 1) {
+//					ResourceType type = card.getProducing().get(0).getType();
+//					if (type != player.getBoard().getSlotResquirement(0).getType() && type != player.getBoard().getSlotResquirement(1).getType()
+//							&& type != player.getBoard().getSlotResquirement(2).getType())
+//						value -= 5;
+//				}
+//			}
 
 			// Civil ////////////////////////////////////////////////////
 
-			value += getCivilPoints(player) * 3 / 2;
+			value += getCivilPoints(player);
 
 			// Military /////////////////////////////////////////////////
 
@@ -221,16 +231,19 @@ public class HardAI extends AdvancedAI {
 //					if (card.getScienceType() == BabylonBoard.types[i])
 //						amount[i]++;
 //			value -= Math.min(Math.min(amount[0], amount[1]), amount[2]) * 5;
-			
+
 			value -= player.getBoard().getResearch().size() * 3;
 
 			// Coins ////////////////////////////////////////////////////
 
-			if (player.getCoins() > 6)
-				value -= player.getCoins() / 2;
+//			if (player.getCoins() > 6)
+//				value -= player.getCoins() / 2;
+			value += player.getCoins() / 4;
 
 			break;
 		case 3: // Age 3 ////////////////////////////////////////////////
+			
+			value += player.getBoard().isFilled(2) ? 2 : (player.getBoard().isFilled(1) ? 5 : (player.getBoard().isFilled(0) ? 2 : 0));
 
 			int ownPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(player);
 			int leftPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
@@ -239,8 +252,10 @@ public class HardAI extends AdvancedAI {
 
 			if (maxDiff2 < 0 && maxDiff2 >= -3)
 				value += 5;
-			else if (maxDiff2 <= 3)
-				value -= 5;
+//			else if (maxDiff2 <= 3)
+//				value -= 5;
+			else
+				value -= 7;
 
 			// Victory points //////////////////////////////////////////
 
@@ -265,9 +280,9 @@ public class HardAI extends AdvancedAI {
 	/**
 	 * higher is worse
 	 * 
-	 * @param resources  list of resources
-	 * @param player this
-	 * @param state      game state
+	 * @param resources list of resources
+	 * @param player    this
+	 * @param state     game state
 	 * @return cost for the required trade
 	 */
 	private int getTradeValue(ArrayList<Resource> resources, Player player, GameState state) {

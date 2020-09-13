@@ -148,10 +148,6 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		btn_redo.setPickOnBounds(true);
-		
-		btn_hint.setOnAction(event -> {
-			
-		});
 
 		SoundController.addMuteFunction(btn_mute, img_music);
 

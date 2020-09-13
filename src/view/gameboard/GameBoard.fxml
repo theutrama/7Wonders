@@ -19,16 +19,16 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Button fx:id="btn_mute" mnemonicParsing="false">
+                  <Button fx:id="btnMute" mnemonicParsing="false">
                      <graphic>
-                        <ImageView fx:id="img_music" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgMusic" fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/music.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btn_undo" mnemonicParsing="false">
+                  <Button fx:id="btnUndo" mnemonicParsing="false">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -37,7 +37,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="btn_redo" mnemonicParsing="false">
+                  <Button fx:id="btnRedo" mnemonicParsing="false">
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -58,7 +58,7 @@
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
-                  <Label fx:id="label_gametime" text="00:00:00" textFill="#d4d4d4">
+                  <Label fx:id="labelGametime" text="00:00:00" textFill="#d4d4d4">
                      <font>
                         <Font name="Book Antiqua Bold" size="22.0" />
                      </font>
@@ -85,7 +85,7 @@
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
-                  <ImageView fx:id="img_age" fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
+                  <ImageView fx:id="imgAge" fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
                      <image>
                         <Image url="@../../../../../Desktop/src/image/icons/age1.png" />
                      </image>
@@ -105,7 +105,7 @@
                         <String fx:value="fontstyle" />
                      </styleClass>
                   </Label>
-                  <ImageView fx:id="img_direction" fitHeight="21.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
+                  <ImageView fx:id="imgDirection" fitHeight="21.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" styleClass="dropshadow">
                      <image>
                         <Image url="@../images/clockwise.png" />
                      </image>
@@ -115,7 +115,7 @@
                   </ImageView>
                   <StackPane HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="btn_back" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
+                        <Button fx:id="btnBack" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
                            <StackPane.margin>
                               <Insets right="20.0" top="10.0" />
                            </StackPane.margin>
@@ -128,7 +128,7 @@
                               </Label>
                            </graphic>
                         </Button>
-                        <Button fx:id="btn_hint" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
+                        <Button fx:id="btnHint" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
                            <graphic>
                               <Label text="Tipp">
                                  <styleClass>
@@ -148,7 +148,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox fx:id="hbox_cards" alignment="CENTER">
+            <HBox fx:id="hboxCards" alignment="CENTER">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin>

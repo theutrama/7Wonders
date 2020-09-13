@@ -22,6 +22,7 @@ import model.player.ai.ArtInt;
 import model.player.ai.Difficulty;
 import model.player.ai.EasyAI;
 import model.player.ai.HardAI;
+import model.player.ai.MediumAI;
 
 /** Controller for Players */
 public class PlayerController {
@@ -97,7 +98,7 @@ public class PlayerController {
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wbc.createWonderBoard(wonderboard);
 		System.out.println(difficulty);
-		ArtInt artInt = difficulty == Difficulty.EASY ? new EasyAI(playername, board) : (new HardAI(playername, board));
+		ArtInt artInt = difficulty == Difficulty.EASY ? new EasyAI(playername, board) : (difficulty == Difficulty.MEDIUM ? new MediumAI(playername, board) : new HardAI(playername, board));
 		board.setPlayer(artInt);
 		return artInt;
 	}
@@ -113,18 +114,18 @@ public class PlayerController {
 	}
 
 	/**
-	 * fing neighbour
+	 * find neighbour
 	 * 
-	 * @param game
+	 * @param state game state
 	 * @param left   = True -> Left Neighbour or False -> Right Neighbour
 	 * @param player player
-	 * @return left neighbour
+	 * @return neighbour
 	 */
 	public Player getNeighbour(GameState state, boolean left, Player player) {
 		ArrayList<Player> players = state.getPlayers();
 		for (int i = 0; i < players.size(); i++) {
 			if (players.get(i).getName().equals(player.getName()))
-				return players.get((left ? (i == players.size() - 1 ? 0 : i + 1) : (i == 0 ? players.size() - 1 : i - 1)));
+				return players.get(left ? (i == players.size() - 1 ? 0 : i + 1) : (i == 0 ? players.size() - 1 : i - 1));
 		}
 		return null;
 	}
@@ -135,8 +136,8 @@ public class PlayerController {
 	 * @param player player
 	 * @return left neighbour
 	 */
-	public Player getLeftNeighbour(Player player) {
-		return getNeighbour(swController.getGame().getCurrentGameState(), true, player);
+	public Player getLeftNeighbour(GameState state, Player player) {
+		return getNeighbour(state, true, player);
 	}
 
 	/**
@@ -145,8 +146,8 @@ public class PlayerController {
 	 * @param player player
 	 * @return right neighbour
 	 */
-	public Player getRightNeighbour(Player player) {
-		return getNeighbour(swController.getGame().getCurrentGameState(), false, player);
+	public Player getRightNeighbour(GameState state, Player player) {
+		return getNeighbour(state, false, player);
 	}
 
 	/**
@@ -395,7 +396,7 @@ public class PlayerController {
 
 		if (state.isTwoPlayers()) {
 
-			Player neighbour = getRightNeighbour(player);
+			Player neighbour = getNeighbour(state, false, player);
 			ArrayList<ResourceBundle> trades = new ArrayList<>();
 
 			generateTradeTree(neighbour).getAllCombinationsAsList().forEach(list -> trades.addAll(allSums(list)));
@@ -477,16 +478,17 @@ public class PlayerController {
 	/**
 	 * executes a trade by adding/removing coins
 	 * 
+	 * @param state  game state
 	 * @param player player that trades
 	 * @param trade  the trade
 	 */
-	public void doTrade(Player player, TradeOption trade) {
+	public void doTrade(GameState state, Player player, TradeOption trade) {
 		if (trade.getLeftCost() > 0) {
-			getLeftNeighbour(player).addCoins(trade.getLeftCost());
+			getNeighbour(state, true, player).addCoins(trade.getLeftCost());
 			player.addCoins(-trade.getLeftCost());
 		}
 		if (trade.getRightCost() > 0) {
-			getRightNeighbour(player).addCoins(trade.getRightCost());
+			getNeighbour(state, false, player).addCoins(trade.getRightCost());
 			player.addCoins(-trade.getRightCost());
 		}
 	}

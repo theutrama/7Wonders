@@ -43,6 +43,7 @@ public abstract class AdvancedAI extends ArtInt {
 		Move maxMove = null;
 
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
+			System.err.println("[Advanced AI] case 1");
 			for (MoveTree child : tree.getChildren()) {
 				int value = evaluate(child.getState(), this.getName());
 				if (value > maxValue) {
@@ -74,7 +75,7 @@ public abstract class AdvancedAI extends ArtInt {
 //				int bestValue = Integer.MIN_VALUE;
 //				MoveTree best = null;
 //				for (MoveTree leaf : leaves) {
-//					int value = evaluate(leaf.getState());
+//					int value = evaluate(leaf.getState(), this.getName());
 //					if (value > bestValue) {
 //						best = leaf;
 //						bestValue = value;
@@ -88,7 +89,7 @@ public abstract class AdvancedAI extends ArtInt {
 				// AVERAGE
 //				int sum = 0, count = 0;
 //				for (MoveTree leaf : child.getLeaves()) {
-//					sum += evaluate(leaf.getState());
+//					sum += evaluate(leaf.getState(), this.getName());
 //					count++;
 //				}
 //				if (sum / count > maxValue) {
@@ -107,7 +108,7 @@ public abstract class AdvancedAI extends ArtInt {
 
 		this.next = maxMove;
 
-		System.out.println("[Advanced AI] action: " + next.getAction() + "  card: " + next.getCard());
+		System.out.println("[" + getClass().getName() + "] action: " + next.getAction() + "  card: " + next.getCard());
 
 	}
 
@@ -119,8 +120,8 @@ public abstract class AdvancedAI extends ArtInt {
 	 */
 //	private MinimaxResult minimax(MoveTree tree) {
 //		if (tree.getChildren().isEmpty())
-//			return new MinimaxResult(tree, evaluate(tree.getState()));
-//		if (tree.getChildren().get(0).getState().getPlayer().getName().equals(this.getName())) { // this layer is max layer
+//			return new MinimaxResult(tree, evaluate(tree.getState(), this.getName()));
+//		if (tree.getState().getPlayer().getName().equals(this.getName())) { // this layer is max layer
 //			MinimaxResult maxValue = null;
 //			for (MoveTree child : tree.getChildren()) {
 //				MinimaxResult value = minimax(child);
@@ -151,7 +152,6 @@ public abstract class AdvancedAI extends ArtInt {
 //		 * @param value sets {@link #value}
 //		 */
 //		public MinimaxResult(MoveTree tree, int value) {
-//			super();
 //			this.tree = tree;
 //			this.value = value;
 //		}
@@ -280,7 +280,7 @@ public abstract class AdvancedAI extends ArtInt {
 				if (newLeaf.getState().getCurrentPlayer() == newLeaf.getState().getFirstPlayer()) {
 					if (newLeaf.getState().getRound() < 6)
 						Main.getSWController().getGameController().nextRound(Main.getSWController().getGame(), newLeaf.getState());
-					else // stop look-ahead at the end of a round
+					else // stop look-ahead at the end of age
 						breakAfterwards = true;
 				}
 			}
@@ -288,7 +288,7 @@ public abstract class AdvancedAI extends ArtInt {
 			leaves.clear();
 			leaves.addAll(newLeaves);
 
-			if (breakAfterwards) // || System.currentTimeMillis() - starttime > 2000)
+			if (breakAfterwards)
 				break;
 		}
 
@@ -327,6 +327,17 @@ public abstract class AdvancedAI extends ArtInt {
 			break;
 		case PLACE_SLOT:
 			player.getHand().remove(move.getCard());
+			switch (player.getBoard().nextSlot()) {
+			case 0:
+				player.getBoard().slot1();
+				break;
+			case 1:
+				player.getBoard().slot2();
+				break;
+			case 2:
+				player.getBoard().slot3();
+				break;
+			}
 			player.getBoard().fill(player.getBoard().nextSlot());
 			player.setChooseCard(null);
 			if (move.getTradeOption() != null)
@@ -344,9 +355,32 @@ public abstract class AdvancedAI extends ArtInt {
 	/**
 	 * calculates the value of a game state, depending on AI's level
 	 * 
-	 * @param state  game state
+	 * @param state      game state
 	 * @param playername player name
 	 * @return value
 	 */
 	protected abstract int evaluate(GameState state, String playername);
+
+	/**
+	 * calculates the sum of all built civil points
+	 * 
+	 * @param player player
+	 * @return sum of civil points
+	 */
+	protected int getCivilPoints(Player player) {
+		int sum = 0;
+		for (Card card : player.getBoard().getCivil())
+			sum += card.getvPoints();
+		return sum;
+	}
+
+	/**
+	 * creates Arraylist from vararg
+	 * 
+	 * @param bundles
+	 * @return
+	 */
+	protected static ArrayList<Resource> asList(Resource... bundles) {
+		return new ArrayList<>(Arrays.asList(bundles));
+	}
 }

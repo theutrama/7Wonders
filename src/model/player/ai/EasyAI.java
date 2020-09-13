@@ -300,12 +300,12 @@ public class EasyAI extends ArtInt{
 				// MILITARY
 				case RED:
 					int military = pcon.getMilitaryPoints(this);
-					Player leftN = pcon.getLeftNeighbour(this);
+					Player leftN = pcon.getLeftNeighbour(state, this);
 					int lmili = pcon.getMilitaryPoints(leftN);
 					int militarynew = military + card.getProducing().get(0).getQuantity();
 					
 					if(!twoPlayer) {
-						Player rightN = pcon.getRightNeighbour(this);
+						Player rightN = pcon.getRightNeighbour(state, this);
 						int rmili = pcon.getMilitaryPoints(rightN);
 						
 						if(rmili < militarynew && (militarynew-rmili) < Utils.getValue(3)) {

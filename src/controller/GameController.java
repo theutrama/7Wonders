@@ -234,7 +234,7 @@ public class GameController {
 						Card card = controller.getCardController().getCard(cardname);
 
 						if (age != card.getAge()) {
-							throw new NullPointerException("Card "+card+" "+card.getAge()+" != "+age);
+							throw new NullPointerException("Card " + card + " " + card.getAge() + " != " + age);
 						}
 
 						cards.add(card);
@@ -300,10 +300,6 @@ public class GameController {
 	 * @param state current game state
 	 */
 	private void endGame(Game game, GameState state) {
-		if (Main.primaryStage.getScene().getRoot() instanceof ResultViewController) {
-			System.out.println("GameController.endGame ResultViewController is already OPEN!!!");
-			return;
-		}
 
 		for (Player player : state.getPlayers()) {
 			runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
@@ -316,6 +312,12 @@ public class GameController {
 			player.addVictoryPoints(player.getCoins() / 3);
 			// science
 			player.addVictoryPoints(swController.getPlayerController().getSciencePoints(player));
+			
+			System.out.println(player.getName() + " points: ---------");
+			int sum = 0;
+			for (Card card : player.getBoard().getCivil())
+				sum += card.getvPoints();
+			System.out.println("coins: " + player.getCoins() + "  civil: " + sum + "  conflict: " + (player.getConflictPoints() - player.getLosePoints()));
 		}
 
 		// update highscore list
@@ -359,11 +361,11 @@ public class GameController {
 			doConflict(state.getPlayers().get(0), state.getPlayers().get(1), state.getAge());
 		else {
 			for (Player player : state.getPlayers()) {
-				doConflict(player, swController.getPlayerController().getRightNeighbour(player), state.getAge());
+				doConflict(player, swController.getPlayerController().getRightNeighbour(state, player), state.getAge());
 			}
 		}
 
-		if(gbvController != null)
+		if (gbvController != null)
 			gbvController.showConflicts();
 	}
 

@@ -26,7 +26,6 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -61,31 +60,31 @@ import view.menu.MainMenuViewController;
 public class GameBoardViewController extends VBox {
 
 	@FXML
-	private Button btn_mute;
+	private Button btnMute;
 
 	@FXML
-	private ImageView img_music;
+	private ImageView imgMusic;
 
 	@FXML
-	private Button btn_undo;
+	private Button btnUndo;
 
 	@FXML
-	private Button btn_redo;
+	private Button btnRedo;
 
 	@FXML
-	private Label label_gametime;
+	private Label labelGametime;
 
 	@FXML
-	private ImageView img_age;
+	private ImageView imgAge;
 
 	@FXML
-	private ImageView img_direction;
+	private ImageView imgDirection;
 
 	@FXML
-	private Button btn_back;
+	private Button btnBack;
 
 	@FXML
-	private HBox hbox_cards;
+	private HBox hboxCards;
 
 	@FXML
 	private BorderPane borderpane;
@@ -94,7 +93,7 @@ public class GameBoardViewController extends VBox {
 	private ScrollPane scrollpane;
 
 	@FXML
-	private Button btn_hint;
+	private Button btnHint;
 
 	private ArrayList<StackPane> boardPanes;
 	private boolean action;
@@ -120,9 +119,9 @@ public class GameBoardViewController extends VBox {
 		Main.primaryStage.setOnCloseRequest(event -> { Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
 
 		scrollpane.setMinSize(1000, 500);
-		hbox_cards.setAlignment(Pos.CENTER);
+		hboxCards.setAlignment(Pos.CENTER);
 
-		btn_back.setOnAction(event -> {
+		btnBack.setOnAction(event -> {
 			exit();
 			Main.getSWController().getIOController().save(Main.getSWController().getGame());
 			Main.getSWController().getSoundController().stopAll();
@@ -132,7 +131,7 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().getGameController().setGbvController(null);
 		});
 
-		btn_undo.setOnAction(event -> {
+		btnUndo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
 				action = false;
 				refreshBoards();
@@ -140,8 +139,8 @@ public class GameBoardViewController extends VBox {
 				updateMouseBlocking();
 			}
 		});
-		btn_undo.setPickOnBounds(true);
-		btn_redo.setOnAction(event -> {
+		btnUndo.setPickOnBounds(true);
+		btnRedo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().redo(Main.getSWController().getGame())) {
 				action = false;
 				refreshBoards();
@@ -149,11 +148,11 @@ public class GameBoardViewController extends VBox {
 				updateMouseBlocking();
 			}
 		});
-		btn_redo.setPickOnBounds(true);
+		btnRedo.setPickOnBounds(true);
 		
-		btn_hint.setTooltip(noDelay(new Tooltip("Tipp anzeigen")));
+		btnHint.setTooltip(noDelay(new Tooltip("Tipp anzeigen")));
 
-		SoundController.addMuteFunction(btn_mute, img_music);
+		SoundController.addMuteFunction(btnMute, imgMusic);
 
 		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_GAME, true);
@@ -182,7 +181,7 @@ public class GameBoardViewController extends VBox {
 			public void run() {
 				Game game = Main.getSWController().getGame();
 				game.nextSecond();
-				Platform.runLater(() -> label_gametime
+				Platform.runLater(() -> labelGametime
 						.setText(String.format("%02d", game.getSeconds() / 3600) + ":" + String.format("%02d", (game.getSeconds() / 60) % 60) + ":" + String.format("%02d", game.getSeconds() % 60)));
 			}
 		}, 1000, 1000);
@@ -342,8 +341,8 @@ public class GameBoardViewController extends VBox {
 		}
 
 		try {
-			img_age.setImage(Utils.toImage(Main.TOKENS_PATH + "age" + game().getAge() + ".png"));
-			img_direction.setImage(Utils.toImage(Main.DEFAULT_PATH + (game().getAge() == 2 ? "" : "a") + "clockwise.png"));
+			imgAge.setImage(Utils.toImage(Main.TOKENS_PATH + "age" + game().getAge() + ".png"));
+			imgDirection.setImage(Utils.toImage(Main.DEFAULT_PATH + (game().getAge() == 2 ? "" : "a") + "clockwise.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -408,7 +407,7 @@ public class GameBoardViewController extends VBox {
 	public void showConflicts() {
 		setMouseBlocked(true);
 		Platform.runLater(() -> {
-			hbox_cards.getChildren().clear();
+			hboxCards.getChildren().clear();
 			for (StackPane pane : boardPanes) {
 				((Board) pane.getChildren().get(0)).showConflict();
 			}
@@ -723,13 +722,13 @@ public class GameBoardViewController extends VBox {
 		if (!action)
 			return;
 
-		btn_hint.setVisible(false);
-		btn_hint.setOnAction(null);
+		btnHint.setVisible(false);
+		btnHint.setOnAction(null);
 
 		updateMouseBlocking();
 
 		Card card = getCurrentPlayer().getChosenCard();
-		hbox_cards.getChildren().clear();
+		hboxCards.getChildren().clear();
 
 		boolean hasCard = Main.getSWController().getCardController().hasCard(getCurrentPlayer(), getCurrentPlayer().getChosenCard().getInternalName());
 
@@ -743,7 +742,7 @@ public class GameBoardViewController extends VBox {
 			VBox vbox = new VBox();
 
 			Button btnOlympia = new Button();
-			Button btn_sell = new Button();
+			Button btnSell = new Button();
 			if (!player.isOlympiaUsed()) {
 				HBox hboxOlympia = new HBox();
 				ImageView img1 = new ImageView();
@@ -775,7 +774,7 @@ public class GameBoardViewController extends VBox {
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
 			}
-			Button btn_place = new Button();
+			Button btnPlace = new Button();
 			HBox hbox_place = new HBox();
 			ImageView img1 = new ImageView();
 			img1.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
@@ -789,8 +788,8 @@ public class GameBoardViewController extends VBox {
 			hbox_place.getChildren().add(img2);
 			hbox_place.setAlignment(Pos.CENTER_LEFT);
 			hbox_place.setSpacing(5);
-			btn_place.setGraphic(hbox_place);
-			btn_place.hoverProperty().addListener((obs, oldVal, newValue) -> {
+			btnPlace.setGraphic(hbox_place);
+			btnPlace.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 					if (newValue) {
 						img1.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
@@ -802,7 +801,7 @@ public class GameBoardViewController extends VBox {
 				}
 			});
 			BuildCapability placeCapability = Main.getSWController().getPlayerController().canBuild(player, card);
-			btn_place.setOnAction(event -> {
+			btnPlace.setOnAction(event -> {
 				switch (placeCapability) {
 				case FREE:
 				case OWN_RESOURCE:
@@ -815,7 +814,7 @@ public class GameBoardViewController extends VBox {
 					for (TradeOption option : trades) {
 						tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
 					}
-					hbox_cards.getChildren().add(tradeNodes);
+					hboxCards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 
 					if (player instanceof ArtInt) {
@@ -824,7 +823,7 @@ public class GameBoardViewController extends VBox {
 						if (index == -1) {
 							System.err.println(player.getName() + " has chosen an invalid trade option:");
 							System.err.println("action: " + ((ArtInt) player).getAction());
-							Platform.runLater(() -> btn_sell.fire());
+							Platform.runLater(() -> btnSell.fire());
 						} else
 							Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 					}
@@ -833,10 +832,10 @@ public class GameBoardViewController extends VBox {
 					break;
 				}
 			});
-			btn_place.setDisable(hasCard || placeCapability == BuildCapability.NONE);
+			btnPlace.setDisable(hasCard || placeCapability == BuildCapability.NONE);
 
 			// Button place card on WonderBoard
-			Button btn_wonder = new Button();
+			Button btnWonder = new Button();
 			HBox hbox_wonder = new HBox();
 			ImageView img3 = new ImageView();
 			img3.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
@@ -850,8 +849,8 @@ public class GameBoardViewController extends VBox {
 			hbox_wonder.getChildren().add(img4);
 			hbox_wonder.setAlignment(Pos.CENTER_LEFT);
 			hbox_wonder.setSpacing(5);
-			btn_wonder.setGraphic(hbox_wonder);
-			btn_wonder.hoverProperty().addListener((obs, oldVal, newValue) -> {
+			btnWonder.setGraphic(hbox_wonder);
+			btnWonder.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 					if (newValue) {
 						img3.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
@@ -865,7 +864,7 @@ public class GameBoardViewController extends VBox {
 			
 			if (!player.getBoard().isFilled(2)) {
 				BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player, new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
-				btn_wonder.setOnAction(event -> {
+				btnWonder.setOnAction(event -> {
 					switch (wonderCapability) {
 					case FREE:
 					case OWN_RESOURCE:
@@ -879,7 +878,7 @@ public class GameBoardViewController extends VBox {
 						for (TradeOption option : trades) {
 							tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); }));
 						}
-						hbox_cards.getChildren().add(tradeNodes);
+						hboxCards.getChildren().add(tradeNodes);
 						outter.getChildren().remove(vbox);
 						if (player instanceof ArtInt) {
 							TradeOption option = ((ArtInt) player).getTradeOption();
@@ -887,7 +886,7 @@ public class GameBoardViewController extends VBox {
 							if (index == -1) {
 								System.err.println(player.getName() + " has chosen an invalid trade option:");
 								System.err.println("action: " + ((ArtInt) player).getAction());
-								Platform.runLater(() -> btn_sell.fire());
+								Platform.runLater(() -> btnSell.fire());
 							} else
 								Platform.runLater(() -> { ((Button) tradeNodes.getChildren().get(index)).fire(); });
 						}
@@ -896,9 +895,9 @@ public class GameBoardViewController extends VBox {
 						break;
 					}
 				});
-				btn_wonder.setDisable(wonderCapability == BuildCapability.NONE);
+				btnWonder.setDisable(wonderCapability == BuildCapability.NONE);
 			} else
-				btn_wonder.setDisable(true);
+				btnWonder.setDisable(true);
 
 			// Button card sell
 			HBox hbox_sell = new HBox();
@@ -915,8 +914,8 @@ public class GameBoardViewController extends VBox {
 			hbox_sell.getChildren().add(img6);
 			hbox_sell.setAlignment(Pos.CENTER_LEFT);
 			hbox_sell.setSpacing(14);
-			btn_sell.setGraphic(hbox_sell);
-			btn_sell.hoverProperty().addListener((obs, oldVal, newValue) -> {
+			btnSell.setGraphic(hbox_sell);
+			btnSell.hoverProperty().addListener((obs, oldVal, newValue) -> {
 				try {
 					if (newValue) {
 						img5.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
@@ -927,11 +926,11 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			btn_sell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, player); turn(); });
+			btnSell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, player); turn(); });
 
-			vbox.getChildren().add(btn_place);
-			vbox.getChildren().add(btn_wonder);
-			vbox.getChildren().add(btn_sell);
+			vbox.getChildren().add(btnPlace);
+			vbox.getChildren().add(btnWonder);
+			vbox.getChildren().add(btnSell);
 			vbox.setAlignment(Pos.CENTER);
 			if (player.isOlympiaUsed())
 				vbox.setSpacing(5);
@@ -941,18 +940,18 @@ public class GameBoardViewController extends VBox {
 					new BackgroundSize(1, 1, false, false, true, false))));
 			outter.setMinSize(141, 215);
 			outter.setPrefSize(141, 215);
-			hbox_cards.getChildren().add(outter);
+			hboxCards.getChildren().add(outter);
 
 			if (player instanceof ArtInt) {
 				Action action = ((ArtInt) player).getAction();
 				if (action == Action.OLYMPIA && btnOlympia != null)
 					btnOlympia.fire();
-				else if (action == Action.BUILD && !btn_place.isDisabled())
-					btn_place.fire();
-				else if (action == Action.PLACE_SLOT && !btn_wonder.isDisabled())
-					btn_wonder.fire();
+				else if (action == Action.BUILD && !btnPlace.isDisabled())
+					btnPlace.fire();
+				else if (action == Action.PLACE_SLOT && !btnWonder.isDisabled())
+					btnWonder.fire();
 				else
-					btn_sell.fire();
+					btnSell.fire();
 			}
 
 		} catch (IOException e) {
@@ -972,8 +971,8 @@ public class GameBoardViewController extends VBox {
 		Player player = getCurrentPlayer();
 		ArrayList<Card> hand = player.getHand();
 
-		hbox_cards.getChildren().clear();
-		hbox_cards.setSpacing(10);
+		hboxCards.getChildren().clear();
+		hboxCards.setSpacing(10);
 
 		Card card;
 		for (int i = 0; i < hand.size(); i++) {
@@ -1015,7 +1014,7 @@ public class GameBoardViewController extends VBox {
 			Tooltip.install(img, noDelay(new Tooltip(tooltip)));
 			vbox.getChildren().addAll(img, btn);
 			vbox.setAlignment(Pos.CENTER_RIGHT);
-			hbox_cards.getChildren().add(vbox);
+			hboxCards.getChildren().add(vbox);
 
 			int cardIndex = i;
 
@@ -1046,7 +1045,7 @@ public class GameBoardViewController extends VBox {
 			}
 		}
 
-		btn_hint.setVisible(!(player instanceof ArtInt));
+		btnHint.setVisible(!(player instanceof ArtInt));
 
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
@@ -1055,12 +1054,12 @@ public class GameBoardViewController extends VBox {
 				System.out.println("time: " + (System.currentTimeMillis() - t1));
 				Card selected = ((ArtInt) player).getSelectedCard();
 				int index = indexOf(player.getHand(), selected);
-				VBox vbox = (VBox) hbox_cards.getChildren().get(index);
+				VBox vbox = (VBox) hboxCards.getChildren().get(index);
 				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });
 			}).start();
 		} else {
-			btn_hint.setOnAction(event -> {
-				btn_hint.setVisible(false);
+			btnHint.setOnAction(event -> {
+				btnHint.setVisible(false);
 				Main.getSWController().getGame().disableHighscore();
 				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 				HardAI artint = new HardAI(player.getName(), player.getBoard());
@@ -1068,7 +1067,7 @@ public class GameBoardViewController extends VBox {
 				int index = indexOf(player.getHand(), artint.getSelectedCard());
 				if (index == -1)
 					return;
-				Button btn = (Button) ((VBox) hbox_cards.getChildren().get(index)).getChildren().get(1);
+				Button btn = (Button) ((VBox) hboxCards.getChildren().get(index)).getChildren().get(1);
 				ImageView img = (ImageView) btn.getGraphic();
 				ImageView icon = null;
 				try {
@@ -1122,24 +1121,24 @@ public class GameBoardViewController extends VBox {
 		if (game().getTrash().isEmpty()) {
 			new Thread(() -> {
 				Platform.runLater(() -> {
-					hbox_cards.getChildren().clear();
+					hboxCards.getChildren().clear();
 					Label label = new Label(player.getName() + " kann keine Karte waehlen, da der Ablagestapel leer ist!");
 					label.getStyleClass().addAll("fontstyle", "dropshadow");
-					hbox_cards.getChildren().add(label);
+					hboxCards.getChildren().add(label);
 				});
 				try {
 					Thread.sleep(4000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				Platform.runLater(() -> { hbox_cards.getChildren().clear(); exitHalikarnassus(); });
+				Platform.runLater(() -> { hboxCards.getChildren().clear(); exitHalikarnassus(); });
 			}).start();
 			return;
 		}
 
 		game().setChoosingPlayer(player);
 
-		hbox_cards.getChildren().clear();
+		hboxCards.getChildren().clear();
 		HBox hboxTitle = new HBox(50);
 		Label label = new Label(player.getName() + " darf eine Karte von Ablagestapel waehlen");
 		label.getStyleClass().addAll("fontstyle", "dropshadow");
@@ -1195,10 +1194,10 @@ public class GameBoardViewController extends VBox {
 		vboxChoose.getChildren().addAll(hboxTitle, scrollpane);
 		vboxChoose.setPadding(new Insets(0, 10, 0, 20));
 
-		hbox_cards.getChildren().add(vboxChoose);
+		hboxCards.getChildren().add(vboxChoose);
 
 		if (player instanceof ArtInt) {
-			btn_hint.setVisible(false);
+			btnHint.setVisible(false);
 			new Thread(() -> {
 				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
 				int index = indexOf(game().getTrash(), selected);
@@ -1208,9 +1207,9 @@ public class GameBoardViewController extends VBox {
 					Platform.runLater(() -> { ((Button) hboxChooseCard.getChildren().get(index)).fire(); });
 			}).start();
 		} else {
-			btn_hint.setVisible(true);
-			btn_hint.setOnAction(event -> {
-				btn_hint.setVisible(false);
+			btnHint.setVisible(true);
+			btnHint.setOnAction(event -> {
+				btnHint.setVisible(false);
 				Main.getSWController().getGame().disableHighscore();
 				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 				Card card = new HardAI(player.getName(), player.getBoard()).getHalikarnassusCard(player, game().getTrash(), game());
@@ -1255,14 +1254,14 @@ public class GameBoardViewController extends VBox {
 	 */
 	public void setMouseBlocked(boolean blocked) {
 		if (blocked) {
-			hbox_cards.addEventFilter(MouseEvent.ANY, inputBlocker);
+			hboxCards.addEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.addEventFilter(MouseEvent.ANY, inputBlocker);
 		} else {
-			hbox_cards.removeEventFilter(MouseEvent.ANY, inputBlocker);
+			hboxCards.removeEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
 		}
-		btn_undo.setDisable(blocked);
-		btn_redo.setDisable(blocked);
+		btnUndo.setDisable(blocked);
+		btnRedo.setDisable(blocked);
 	}
 
 	/**

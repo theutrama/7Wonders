@@ -103,16 +103,16 @@ public class TradeOption implements Serializable {
 			}
 			arrowleft.setFitWidth(45);
 			arrowleft.setFitHeight(25);
-			HBox.setMargin(arrowleft, new Insets(0,5.0,0,0));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(player).getName()+" fuer ");
-			label.getStyleClass().addAll("fontstyle","dropshadow");
-			hbox.getChildren().addAll(arrowleft,leftTrade.createResourceImages(),label,createCoinsNode(leftCost));
+			HBox.setMargin(arrowleft, new Insets(0, 5.0, 0, 0));
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
+			label.getStyleClass().addAll("fontstyle", "dropshadow");
+			hbox.getChildren().addAll(arrowleft, leftTrade.createResourceImages(), label, createCoinsNode(leftCost));
 			if (rightCost != 0) {
 				Label label2 = new Label(" und ");
 				label2.getStyleClass().addAll("fontstyle", "dropshadow");
 				hbox.getChildren().add(label2);
 			}
-			
+
 		}
 		if (rightCost != 0) {
 			try {
@@ -122,14 +122,15 @@ public class TradeOption implements Serializable {
 			}
 			arrowright.setFitWidth(45);
 			arrowright.setFitHeight(25);
-			HBox.setMargin(arrowright, new Insets(0,0,0,3));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(player).getName()+" fuer ");
-			label.getStyleClass().addAll("fontstyle","dropshadow");
-			hbox.getChildren().addAll(rightTrade.createResourceImages(),label,createCoinsNode(rightCost));
+			HBox.setMargin(arrowright, new Insets(0, 0, 0, 3));
+			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
+			label.getStyleClass().addAll("fontstyle", "dropshadow");
+			hbox.getChildren().addAll(rightTrade.createResourceImages(), label, createCoinsNode(rightCost));
 		}
 		Label labelbuy = new Label(" kaufen");
 		hbox.getChildren().add(labelbuy);
-		if(rightCost != 0) hbox.getChildren().add(arrowright);
+		if (rightCost != 0)
+			hbox.getChildren().add(arrowright);
 		labelbuy.getStyleClass().addAll("fontstyle", "dropshadow");
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setStyle("-fx-background-color: white");
@@ -141,15 +142,15 @@ public class TradeOption implements Serializable {
 			try {
 				if (newValue) {
 					btn.setStyle("-fx-background-color: #30303080");
-					if(arrowleft != null)
+					if (arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhoverleft.png"));
-					if(arrowright != null)
+					if (arrowright != null)
 						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowhover.png"));
 				} else {
 					btn.setStyle("-fx-background-color: transparent");
-					if(arrowleft != null)
+					if (arrowleft != null)
 						arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
-					if(arrowright != null)
+					if (arrowright != null)
 						arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
 				}
 			} catch (IOException e) {
@@ -168,8 +169,8 @@ public class TradeOption implements Serializable {
 	 */
 	private HBox createCoinsNode(int coins) {
 		HBox hbox = new HBox();
-		Label label = new Label(""+coins);
-		label.getStyleClass().addAll("fontstyle","dropshadow");
+		Label label = new Label("" + coins);
+		label.getStyleClass().addAll("fontstyle", "dropshadow");
 		ImageView img = null;
 		try {
 			img = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin.png"));
@@ -178,14 +179,14 @@ public class TradeOption implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		HBox.setMargin(label, new Insets(0,2,0,0));
-		hbox.getChildren().addAll(label,img);
+		HBox.setMargin(label, new Insets(0, 2, 0, 0));
+		hbox.getChildren().addAll(label, img);
 		hbox.setAlignment(Pos.CENTER);
 		return hbox;
 	}
 
 	/**
-	 * checks if the resources 
+	 * checks if the resources
 	 */
 	@Override
 	public boolean equals(Object obj) {

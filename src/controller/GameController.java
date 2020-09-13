@@ -53,9 +53,22 @@ public class GameController {
 	 * @return a new game instance
 	 */
 	public Game createGame(String name, ArrayList<Player> players) {
+		return createGame(name, null, players);
+	}
+	
+	
+	/**
+	 * creates a new game with the specified list of players
+	 * 
+	 * @param name    the game's name
+	 * @param cardStack the list of the cardStack
+	 * @param players the list of players
+	 * @return a new game instance
+	 */
+	public Game createGame(String name, ArrayList<Card> cardStack, ArrayList<Player> players) {
 		Game game = new Game(name);
 		this.swController.setGame(game);
-		createGameFirstRound(players, game);
+		createGameFirstRound(players,cardStack, game);
 		return game;
 	}
 
@@ -64,8 +77,11 @@ public class GameController {
 	 * 
 	 * @param players player list
 	 */
-	public void createGameFirstRound(ArrayList<Player> players, Game game) {
-		ArrayList<Card> cardStack = swController.getCardController().generateCardStack(players);
+	public void createGameFirstRound(ArrayList<Player> players, ArrayList<Card> cardStack, Game game) {
+		if(cardStack == null) {
+			cardStack = swController.getCardController().generateCardStack(players.size());
+		}
+		
 		GameState state = new GameState(0, 1, players, cardStack);
 		game.getStates().add(state);
 		nextAge(game, state);

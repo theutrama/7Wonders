@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import application.Main;
-import main.api.events.EventHandler;
 import main.api.events.EventListener;
 import main.api.events.EventManager;
 import main.api.events.events.PacketReceiveEvent;
 import main.api.packet.Packet;
 import main.client.PlayerClient;
-import main.lobby.packets.client.PongPacket;
-import main.lobby.packets.server.PingPacket;
+import main.client.connector.PacketListener;
+import main.client.packets.PingPacket;
 
+@SuppressWarnings({"javadoc", "all", "PMD"})
 /** Controller for Multiplayer */
 public class MultiplayerController implements EventListener{
 	/** client of player */
@@ -21,7 +21,6 @@ public class MultiplayerController implements EventListener{
 	/** create new Multiplayer Controller */
 	public MultiplayerController() {
 		Packet.loadPackets();
-		
 		EventManager.register(this);
 	}
 
@@ -29,10 +28,14 @@ public class MultiplayerController implements EventListener{
 	 * handling received Package
 	 * @param ev	Event for received package
 	 */
-	@EventHandler
+	@main.api.events.EventHandler
 	public void rec(PacketReceiveEvent ev) {
-		if(ev.getPacket() instanceof PingPacket) {
-			this.client.write(new PongPacket());
+		if(ev.getPacket() instanceof PingPacket)return;
+		
+		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {
+			System.out.println("RECEIVED PAKCET FOR PACKETLISTENER "+ev.getPacket().getPacketName());
+			PacketListener view = (PacketListener)Main.primaryStage.getScene().getRoot();
+			view.handle(ev.getPacket());
 		}
 	}
 	

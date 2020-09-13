@@ -2,6 +2,7 @@ package model.player.multiplayer;
 
 import java.util.ArrayList;
 
+
 import controller.utils.TradeOption;
 import model.GameState;
 import model.board.WonderBoard;
@@ -9,6 +10,9 @@ import model.card.Card;
 import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.Move.Action;
+
+@SuppressWarnings({"javadoc", "all", "PMD"})
+
 
 /** class for Multiplayer */
 public class Multiplayer extends ArtInt{

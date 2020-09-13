@@ -176,11 +176,14 @@ public class EasyAI extends ArtInt{
 						double percentage = price/coins;
 						
 						if(percentage < Utils.getValue(0.3)) {
-							rating -= 0.5;
-							debug("1.1) RATING add -0.5");
+							rating += 1.5;
+							debug("1.1) RATING add +1.5");
 						}else if(percentage < Utils.getValue(0.6)) {
-							rating -= 1;
-							debug("1.2) RATING add -1");
+							rating += 0.5;
+							debug("1.2) RATING add +0.5");
+						}else {
+							rating -= 0.5;
+							debug("1.3) RATING add -0.5");
 						}
 					}
 				}
@@ -396,11 +399,14 @@ public class EasyAI extends ArtInt{
 							double percentage = price/coins;
 							
 							if(percentage < Utils.getValue(0.2)) {
-								debug("9.1) RATING add -1");
-								rating -= 1;
+								debug("9.1) RATING add +2");
+								rating += 2;
 							}else if(percentage < Utils.getValue(0.4)) {
-								rating -= 2;
-								debug("8.2) RATING add -2");
+								rating += 0.5;
+								debug("8.2) RATING add +0.5");
+							}else {
+								rating -= 0.5;
+								debug("8.9) RATING add -0.5");
 							}
 						}
 					}

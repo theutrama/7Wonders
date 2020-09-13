@@ -14,6 +14,10 @@ import main.client.packets.PingPacket;
 import model.board.WonderBoard;
 import model.player.Player;
 import model.player.multiplayer.Multiplayer;
+import model.player.multiplayer.packets.PlayerActionPacket;
+import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
+import model.player.multiplayer.packets.PlayerSelectedCardPacket;
+import model.player.multiplayer.packets.PlayerTradeOptionPacket;
 
 @SuppressWarnings("all")
 /** Controller for Multiplayer */
@@ -24,6 +28,7 @@ public class MultiplayerController implements EventListener{
 	/** create new Multiplayer Controller */
 	public MultiplayerController() {
 		Packet.loadPackets();
+		Packet.loadPackets("model.player.multiplayer.packets");
 		EventManager.register(this);
 	}
 
@@ -95,6 +100,10 @@ public class MultiplayerController implements EventListener{
 	public void connect(String name, String host, int port) {
 		try {
 			this.client = new PlayerClient(name, host, port);
+			this.client.addToQueue(PlayerActionPacket.class);
+			this.client.addToQueue(PlayerSelectedCardPacket.class);
+			this.client.addToQueue(PlayerHalikarnassusPacket.class);
+			this.client.addToQueue(PlayerTradeOptionPacket.class);
 			Main.primaryStage.setOnCloseRequest( s -> {
 				this.client.close();
 				Main.getSWController().getIOController().saveRanking();

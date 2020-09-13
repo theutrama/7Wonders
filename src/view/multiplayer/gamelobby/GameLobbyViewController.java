@@ -190,7 +190,9 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
 				game_players.add(pcon.createAI(nameLabel.getText(), wondername, diff));
 			} else {
-				if(getOwnName().equalsIgnoreCase(nameLabel.getText())) {
+				
+				
+				if(!getOwnName().equalsIgnoreCase(nameLabel.getText())) {
 					game_players.add(Main.getSWController().getMultiplayerController().createPlayer(nameLabel.getText(), wondername));
 				}	else {
 					game_players.add(pcon.createPlayer(nameLabel.getText(), wondername));

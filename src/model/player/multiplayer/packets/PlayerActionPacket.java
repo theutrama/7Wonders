@@ -7,6 +7,7 @@ import java.io.IOException;
 import main.api.packet.Packet;
 import model.player.ai.Move.Action;
 
+@SuppressWarnings("all")
 public class PlayerActionPacket extends Packet{
 
 	private Action action;

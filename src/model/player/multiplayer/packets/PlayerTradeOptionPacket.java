@@ -9,6 +9,7 @@ import main.api.packet.Packet;
 import model.card.Card;
 import model.player.ai.Move.Action;
 
+@SuppressWarnings("all")
 public class PlayerTradeOptionPacket extends Packet{
 
 	private int optonIndex;

@@ -42,9 +42,9 @@ public class Move implements Serializable {
 			objOut.close();
 			byteOut.close();
 
-			byte[] ar = byteOut.toByteArray();
-			out.writeInt(ar.length);
-			out.write(ar);
+			byte[] array = byteOut.toByteArray();
+			out.writeInt(array.length);
+			out.write(array);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -90,16 +90,16 @@ public class Move implements Serializable {
 	/**
 	 * parses Move from InputStream
 	 * 
-	 * @param in DataInputStream
+	 * @param input DataInputStream
 	 * @return copy copy
 	 */
-	public static Move parseFromInput(DataInputStream in) {
+	public static Move parseFromInput(DataInputStream input) {
 		ByteArrayInputStream byteIn = null;
 		ObjectInputStream objIn = null;
 		try {
-			int length = in.readInt();
+			int length = input.readInt();
 			byte[] ar = new byte[length];
-			in.read(ar, 0, length);
+			input.read(ar, 0, length);
 
 			byteIn = new ByteArrayInputStream(ar);
 			objIn = new ObjectInputStream(byteIn);

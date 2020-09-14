@@ -19,6 +19,7 @@ import model.player.Player;
 import model.player.ai.Move.Action;
 
 /** abstract class of easy, medium and hard AI */
+@SuppressWarnings("PMD")
 public abstract class AdvancedAI extends ArtInt {
 	/** UID of serial version */
 	private static final long serialVersionUID = 1L;

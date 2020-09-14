@@ -25,6 +25,7 @@ import model.player.ai.HardAI;
 import model.player.ai.MediumAI;
 
 /** Controller for Players */
+@SuppressWarnings("PMD")
 public class PlayerController {
 	/** main controller */
 	private SevenWondersController swController;

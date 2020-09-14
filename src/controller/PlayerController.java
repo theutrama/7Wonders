@@ -316,16 +316,14 @@ public class PlayerController {
 	 * @return the type of ability to build
 	 */
 	public BuildCapability canBuild(Player player, Card card, GameState state) {
+		if (swController.getCardController().hasCard(player, card.getInternalName()))
+			return BuildCapability.NONE;
 		if (card.getDependencies() != null && card.getDependencies().length > 0) {
-			boolean dependencies = true;
 			for (String cardname : card.getDependencies()) {
-				if (!swController.getCardController().hasCard(player, cardname)) {
-					dependencies = false;
-					break;
+				if (swController.getCardController().hasCard(player, cardname)) {
+					return BuildCapability.FREE;
 				}
 			}
-			if (dependencies)
-				return BuildCapability.FREE;
 		}
 
 		return (card.getRequired() == null || card.getRequired().isEmpty()) ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());

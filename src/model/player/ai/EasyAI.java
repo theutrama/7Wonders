@@ -112,14 +112,17 @@ public class EasyAI extends ArtInt{
 		this.next = best;
 	}
 	
+	public TradeOption getBestTradeOption(Card card) {
+		return getBestTradeOption(card.getRequired());
+	}
 
 	/**
 	 * checks for best trade option
 	 * @param card give card
 	 * @return best trade option
 	 */
-	public TradeOption getBestTradeOption(Card card) {
-		ArrayList<TradeOption> trade = Main.getSWController().getPlayerController().getTradeOptions(this, card.getRequired());
+	public TradeOption getBestTradeOption(ArrayList<Resource> required) {
+		ArrayList<TradeOption> trade = Main.getSWController().getPlayerController().getTradeOptions(this, required);
 
 		if (trade.isEmpty()) {
 			return null;
@@ -387,7 +390,7 @@ public class EasyAI extends ArtInt{
 							debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
 							break;
 						}
-						TradeOption best = getBestTradeOption(card);
+						TradeOption best = getBestTradeOption(new ArrayList<Resource>(Arrays.asList(requirement)));
 						
 						if(best==null) {
 							debug("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");

@@ -820,9 +820,12 @@ public class GameBoardViewController extends VBox {
 
 					if (player instanceof ArtInt) {
 						TradeOption option = ((ArtInt) player).getTradeOption();
+						
 						int index = trades.indexOf(option);
 						if (index == -1) {
 							System.err.println(player.getName() + " has chosen an invalid trade option:");
+							System.err.println("Trades: "+trades.size());
+							System.err.println("TradeOption: "+option);
 							System.err.println("action: " + ((ArtInt) player).getAction());
 							Platform.runLater(() -> btnSell.fire());
 						} else
@@ -886,6 +889,8 @@ public class GameBoardViewController extends VBox {
 							int index = trades.indexOf(option);
 							if (index == -1) {
 								System.err.println(player.getName() + " has chosen an invalid trade option:");
+								System.err.println("Trades: "+trades.size());
+								System.err.println("TradeOption: "+option);
 								System.err.println("action: " + ((ArtInt) player).getAction());
 								Platform.runLater(() -> btnSell.fire());
 							} else

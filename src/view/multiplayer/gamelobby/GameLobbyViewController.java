@@ -187,18 +187,18 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			}
 			String type = ((ComboBox<String>) player.getChildren().get(1)).getSelectionModel().getSelectedItem();
 
-			if (type.contains("KI")) {
+			if (isOwner() && type.contains("KI")) {
 				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
 				game_players.add(pcon.createAI(nameLabel.getText(), wondername, diff));
-			} else {
-				
-				
+			}else {
 				if(!getOwnName().equalsIgnoreCase(nameLabel.getText())) {
 					game_players.add(Main.getSWController().getMultiplayerController().createPlayer(nameLabel.getText(), wondername));
 				}	else {
 					game_players.add(pcon.createPlayer(nameLabel.getText(), wondername));
 				}
 			}
+			
+			
 		}
 		ArrayList<Card> cardStack = null;
 		if(isOwner()) {

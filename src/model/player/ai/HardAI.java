@@ -13,8 +13,9 @@ import model.player.Player;
 /** Hard Artificial Intelligence */
 public class HardAI extends AdvancedAI {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final String TRADINGPOST = "tradingpost", ALEXANDRIA = "Alexandria", EPHESOS = "Ephesos", HALIKARNASSUS = "Halikarnassus", MARKETPLACE = "marketplace";
+	private static final int ONE = 1, TWO = 2, FOURTY = 40;
 
 	/**
 	 * create a hard AI
@@ -43,7 +44,7 @@ public class HardAI extends AdvancedAI {
 			}
 
 			for (Card card : player.getBoard().getResources()) {
-				if (card.getProducing().size() == 1) {
+				if (card.getProducing().size() == ONE) {
 					ResourceType type = card.getProducing().get(0).getType();
 					if (type == player.getBoard().getSlotResquirement(0).getType() || type == player.getBoard().getSlotResquirement(1).getType()
 							|| type == player.getBoard().getSlotResquirement(2).getType())
@@ -57,16 +58,16 @@ public class HardAI extends AdvancedAI {
 					if (type2 == player.getBoard().getSlotResquirement(0).getType() || type2 == player.getBoard().getSlotResquirement(1).getType()
 							|| type2 == player.getBoard().getSlotResquirement(2).getType())
 						sum += 20;
-					if (sum == 40)
+					if (sum == FOURTY)
 						sum -= 10;
 					value += sum;
 				}
 			}
-			
+
 //			if (value >= 10) {
 //				value -= player.getBoard().nextSlot() == -1 ? 15 : player.getBoard().nextSlot() * 5;
 //			}
-			
+
 			value += player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 
 			for (int i = 0; i < 3; i++)
@@ -78,24 +79,24 @@ public class HardAI extends AdvancedAI {
 			value -= player.getBoard().getResearch().size() * 30;
 
 			// Trade ////////////////////////////////////////////////////////////////
-			
+
 			if (state.isTwoPlayers()) {
-				for (Card card: player.getBoard().getTrade()) {
+				for (Card card : player.getBoard().getTrade()) {
 					if (card.getInternalName().contains(TRADINGPOST)) {
 						value += 10;
 						break;
 					}
 				}
 			} else {
-				for (Card card: player.getBoard().getTrade()) {
+				for (Card card : player.getBoard().getTrade()) {
 					if (card.getInternalName().contains(TRADINGPOST)) {
 						value += 10;
 					}
 				}
 			}
-			
+
 			if (player.getBoard().getBoardName().equals(ALEXANDRIA) || player.getBoard().getBoardName().equals(EPHESOS) || player.getBoard().getBoardName().equals(HALIKARNASSUS)) {
-				for (Card card: player.getBoard().getTrade()) {
+				for (Card card : player.getBoard().getTrade()) {
 					if (card.getInternalName().contains(MARKETPLACE)) {
 						value += 5;
 						break;
@@ -106,10 +107,10 @@ public class HardAI extends AdvancedAI {
 			// Military /////////////////////////////////////////////////////////////
 
 			value -= player.getBoard().getMilitary().size() * 10;
-			
+
 			// Coins ////////////////////////////////////////////////////////////////
-			
-			if (player.getCoins() > 2)
+
+			if (player.getCoins() > TWO)
 				value -= (player.getCoins() - 2) * 4;
 
 			break;
@@ -151,9 +152,9 @@ public class HardAI extends AdvancedAI {
 
 			if (maxDiff < 0)
 				value += 4;
-			else if (maxDiff == 1)
+			else if (maxDiff == ONE)
 				value -= 4;
-			else if (maxDiff >= 2)
+			else if (maxDiff >= TWO)
 				value -= 2;
 
 			// Research /////////////////////////////////////////////////
@@ -192,10 +193,10 @@ public class HardAI extends AdvancedAI {
 			player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(player));
 
 			value += player.getVictoryPoints();
-			
+
 			// Neighbour //////////////////////////////////////////////
 			Player neighbour = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
-			
+
 			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getTrade(), state.isTwoPlayers());
 			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getGuilds(), state.isTwoPlayers());
 			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getCivil(), state.isTwoPlayers());

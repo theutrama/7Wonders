@@ -28,6 +28,7 @@ import model.player.multiplayer.packets.PlayerActionPacket;
 import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
 import model.player.multiplayer.packets.PlayerSelectedCardPacket;
 import model.player.multiplayer.packets.PlayerTradeOptionPacket;
+import view.gameboard.GameBoardViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
 @SuppressWarnings("all")
@@ -129,6 +130,8 @@ public class MultiplayerController implements EventListener{
 			Main.getSWController().setGame(null);
 		}else if(isInGame() && ev.getPacket() instanceof LobbyPlayersPacket) {
 			LobbyViewController view = null;
+			if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
+				((GameBoardViewController)Main.primaryStage.getScene().getRoot()).exit();
 			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
 			view.error("Jemand hat das Spiel verlassen...");
 			Main.getSWController().setGame(null);

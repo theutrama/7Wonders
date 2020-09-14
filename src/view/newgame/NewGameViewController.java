@@ -233,11 +233,15 @@ public class NewGameViewController extends StackPane {
 
 		txt_maxplayers.setVisible(false);
 
-		addPlayer(textfield_playername.getText());
+		try {
+			addPlayer(textfield_playername.getText());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		textfield_playername.clear();
 	}
 	
-	protected HBox addPlayer(String playername) {
+	protected HBox addPlayer(String playername) throws IOException {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setSpacing(10);
@@ -250,7 +254,7 @@ public class NewGameViewController extends StackPane {
 		type.getSelectionModel().select(0);
 
 		Button btn_minus = new Button();
-		ImageView view = new ImageView(getClass().getResource("../images/minus.png").toExternalForm());
+		ImageView view = new ImageView(Utils.toImage(Main.DEFAULT_PATH+"minus.png"));
 		view.setFitHeight(20.0);
 		view.setFitWidth(20.0);
 

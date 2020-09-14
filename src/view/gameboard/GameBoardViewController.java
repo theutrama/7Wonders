@@ -1,5 +1,6 @@
 package view.gameboard;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +44,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import main.api.events.EventManager;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -52,6 +54,10 @@ import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.HardAI;
 import model.player.ai.Move.Action;
+import model.player.multiplayer.Multiplayer;
+import model.player.multiplayer.events.PlayerActionEvent;
+import model.player.multiplayer.events.PlayerSelectedCardEvent;
+import model.player.multiplayer.events.PlayerTradeOptionEvent;
 import view.menu.MainMenuViewController;
 
 /**
@@ -413,7 +419,7 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -802,6 +808,10 @@ public class GameBoardViewController extends VBox {
 			});
 			BuildCapability placeCapability = Main.getSWController().getPlayerController().canBuild(player, card);
 			btnPlace.setOnAction(event -> {
+				if(!(player instanceof ArtInt)) 
+					EventManager.callEvent(new PlayerActionEvent(player, Action.BUILD));
+				
+				
 				switch (placeCapability) {
 				case FREE:
 				case OWN_RESOURCE:
@@ -811,17 +821,26 @@ public class GameBoardViewController extends VBox {
 				case TRADE:
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player, card.getRequired());
 					VBox tradeNodes = new VBox();
-					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
+					for (int index = 0; index < trades.size(); index++) {
+						TradeOption option = trades.get(index);
+						final int optionIndex = index;
+						tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
+							if(!(player instanceof ArtInt)) 
+								EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
+							Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); 
+						}));
 					}
 					hboxCards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 
 					if (player instanceof ArtInt) {
 						TradeOption option = ((ArtInt) player).getTradeOption();
+						
 						int index = trades.indexOf(option);
 						if (index == -1) {
 							System.err.println(player.getName() + " has chosen an invalid trade option:");
+							System.err.println("Trades: "+trades.size());
+							System.err.println("TradeOption: "+option);
 							System.err.println("action: " + ((ArtInt) player).getAction());
 							Platform.runLater(() -> btnSell.fire());
 						} else
@@ -865,6 +884,9 @@ public class GameBoardViewController extends VBox {
 			if (!player.getBoard().isFilled(2)) {
 				BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player, new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
 				btnWonder.setOnAction(event -> {
+					if(!(player instanceof ArtInt))
+						EventManager.callEvent(new PlayerActionEvent(player, Action.PLACE_SLOT));
+					
 					switch (wonderCapability) {
 					case FREE:
 					case OWN_RESOURCE:
@@ -875,8 +897,15 @@ public class GameBoardViewController extends VBox {
 						ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player,
 								new ArrayList<>(Arrays.asList(player.getBoard().getSlotResquirement(player.getBoard().nextSlot()))));
 						VBox tradeNodes = new VBox();
-						for (TradeOption option : trades) {
-							tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); }));
+						for (int index = 0; index<trades.size(); index++) {
+							TradeOption option = trades.get(index);
+							final int optionIndex = index;
+							tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
+								if(!(player instanceof ArtInt))
+									EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
+								
+								Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); 
+							}));
 						}
 						hboxCards.getChildren().add(tradeNodes);
 						outter.getChildren().remove(vbox);
@@ -885,6 +914,8 @@ public class GameBoardViewController extends VBox {
 							int index = trades.indexOf(option);
 							if (index == -1) {
 								System.err.println(player.getName() + " has chosen an invalid trade option:");
+								System.err.println("Trades: "+trades.size());
+								System.err.println("TradeOption: "+option);
 								System.err.println("action: " + ((ArtInt) player).getAction());
 								Platform.runLater(() -> btnSell.fire());
 							} else
@@ -926,7 +957,13 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			btnSell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, player); turn(); });
+			btnSell.setOnAction(e -> { 
+
+				if(!(player instanceof ArtInt))
+					EventManager.callEvent(new PlayerActionEvent(player, Action.SELL));
+				
+				Main.getSWController().getCardController().sellCard(card, player); turn(); 
+			});
 
 			vbox.getChildren().add(btnPlace);
 			vbox.getChildren().add(btnWonder);
@@ -1021,6 +1058,10 @@ public class GameBoardViewController extends VBox {
 			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
+
+					if(!(player instanceof ArtInt))
+						EventManager.callEvent(new PlayerSelectedCardEvent(player, player.getHand().get(cardIndex)));
+					
 					Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
 					getCurrentPlayer().setChooseCard(player.getHand().get(cardIndex));
 					turn();

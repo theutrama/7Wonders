@@ -2,6 +2,7 @@ package application;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Random;
 
@@ -130,7 +131,7 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public static Image toImage(String path) throws IOException {
-		FileInputStream fileIn = new FileInputStream(path);
+		InputStream fileIn = Main.cldr.getResourceAsStream(path);
 		Image img = new Image(fileIn);
 		fileIn.close();
 		return img;

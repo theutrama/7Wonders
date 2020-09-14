@@ -909,7 +909,8 @@ public class CardController {
 		BufferedImage full = null;
 		final int ONE = 1;
 		try {
-			full = ImageIO.read(new File(card.getImage()));
+			
+			full = ImageIO.read(Main.cldr.getResourceAsStream(card.getImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

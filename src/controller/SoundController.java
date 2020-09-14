@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import application.Main;
 import application.Utils;
@@ -140,9 +142,9 @@ public class SoundController {
 	 */
 	public static void updateMuteIcon(ImageView imgv) {
 		if (Main.getSWController().getSoundController().isMuted())
-			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/musicoff.png")));
+			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH+"musicoff.png")));
 		else
-			imgv.setImage(new Image(SoundController.class.getResourceAsStream("../view/images/music.png")));
+			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH+"music.png")));
 	}
 
 	private class SoundPlayer {
@@ -155,7 +157,10 @@ public class SoundController {
 			this.sound = sound;
 			this.filenames = sound.getSoundFilenames();
 			this.index = Utils.randInt(0, this.filenames.length - 1);
-			this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+			
+
+			String mediaURL = this.getClass().getClassLoader().getResource(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toExternalForm();
+			this.player = new MediaPlayer(new Media(mediaURL));
 			setVolume(volume);
 		}
 

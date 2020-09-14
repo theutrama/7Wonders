@@ -31,11 +31,13 @@ import model.player.multiplayer.packets.PlayerTradeOptionPacket;
 import view.gameboard.GameBoardViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
+/** suppresses all warnings */
 @SuppressWarnings("all")
 /** Controller for Multiplayer */
 public class MultiplayerController implements EventListener{
 	/** client of player */
 	private PlayerClient client;
+	/** boolean for ingame */
 	private boolean ingame = false;
 	
 	/** create new Multiplayer Controller */
@@ -45,10 +47,15 @@ public class MultiplayerController implements EventListener{
 		EventManager.register(this);
 	}
 	
+	/** true if client is in game */
 	public boolean isInGame() {
 		return this.ingame;
 	}
 	
+	/**
+	 * setter for {@link #ingame}
+	 * @param ingame	the boolean for ingame
+	 */
 	public void setInGame(boolean ingame) {
 		this.ingame = ingame;
 	}
@@ -67,6 +74,13 @@ public class MultiplayerController implements EventListener{
 		return player;
 	}
 	
+	/**
+	 * finds the index of a certain element of a list
+	 * @param <E> 		element
+	 * @param list		the list
+	 * @param seek		the element whose index is being searched
+	 * @return	index of given element
+	 */
 	public <E> int indexOf(ArrayList<E> list, E seek) {
 		if(list== null && list.isEmpty())throw new NullPointerException("list is null or empty!");
 		
@@ -75,6 +89,10 @@ public class MultiplayerController implements EventListener{
 		return -1;
 	}
 
+	/**
+	 * writes the TradeOption for client
+	 * @param ev	TradeOptionEvent for Player
+	 */
 	@EventHandler
 	public void trade(PlayerTradeOptionEvent ev) {
 		if(isConnected()) {
@@ -83,6 +101,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 
+	/**
+	 * writes the HalikarnassusEvent for client
+	 * @param ev HalikarnassusEvent for Player
+	 */
 	@EventHandler
 	public void hali(PlayerHalikarnassusEvent ev) {
 		if(isConnected()) {
@@ -92,6 +114,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/**
+	 * writes the SelectedCardEvent for client
+	 * @param ev SelectedCardEvent for Player
+	 */
 	@EventHandler
 	public void select(PlayerSelectedCardEvent ev) {
 		if(isConnected()) {
@@ -102,6 +128,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 
+	/**
+	 * writes the PlayerActionEvent for client
+	 * @param ev ActionEvent for Player
+	 */
 	@EventHandler
 	public void action(PlayerActionEvent ev) {
 		if(isConnected()) {
@@ -194,12 +224,14 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/** closes connection to client */
 	public void close(){
 		if(this.client != null) {
 			this.client.close();
 			this.client = null;
 		}
 	}	
+	
 	/**
 	 * checks if client is connected
 	 * @return this.client.isConnected() 	true if client is connected

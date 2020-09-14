@@ -112,6 +112,11 @@ public class EasyAI extends ArtInt{
 		this.next = best;
 	}
 	
+	/**
+	 * gets the best trading option for a card
+	 * @param card		the card for trading
+	 * @return the best trade option for a card
+	 */
 	public TradeOption getBestTradeOption(Card card) {
 		return getBestTradeOption(card.getRequired());
 	}

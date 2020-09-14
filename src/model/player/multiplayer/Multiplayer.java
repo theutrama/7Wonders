@@ -21,6 +21,7 @@ import model.player.multiplayer.packets.PlayerTradeOptionPacket;
 import view.gameboard.GameBoardViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
+/** Suppresses all warnings */
 @SuppressWarnings("all")
 
 
@@ -39,6 +40,7 @@ public class Multiplayer extends ArtInt{
 		super(name, board);
 	}
 	
+	/** stops the Multiplayer game if one player doesn't play for a certain time */
 	public void stop() {
 		Main.getSWController().setGame(null);
 		LobbyViewController view = null;

@@ -246,7 +246,7 @@ public class Card implements Serializable {
 	 * check if a card equals another
 	 * 
 	 * @param card other card
-	 * @return true if ther names are equal
+	 * @return true if their names are equal
 	 */
 	public boolean equals(Card card) {
 		return getInternalName().equalsIgnoreCase(card.getInternalName());

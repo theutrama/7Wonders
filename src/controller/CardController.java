@@ -198,7 +198,7 @@ public class CardController {
 				}))));
 		cards.add(new Card(2, "Karawanserei", "caravansery", CardType.YELLOW,
 				addRArray(new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.STONE), new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.WOOD)),
-				addRArray(new Resource(2, ResourceType.WOOD)), new String[] { "market" }, null));
+				addRArray(new Resource(2, ResourceType.WOOD)), new String[] { "marketplace" }, null));
 		cards.add(new Card(3, "Handelskammer", "chamberofcommerce", CardType.YELLOW, null, addRArray(new Resource(2, ResourceType.BRICK)), null,
 				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, state, twoPlayers) -> {
 					int count = 0;

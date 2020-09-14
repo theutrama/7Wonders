@@ -241,7 +241,13 @@ public class Card implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	/**
+	 * check if a card equals another
+	 * 
+	 * @param card other card
+	 * @return true if ther names are equal
+	 */
 	public boolean equals(Card card) {
 		return getInternalName().equalsIgnoreCase(card.getInternalName());
 	}
@@ -254,7 +260,7 @@ public class Card implements Serializable {
 	public int getvPoints() {
 		return vPoints;
 	}
-	
+
 	/** to String method */
 	public String toString() {
 		return getInternalName();

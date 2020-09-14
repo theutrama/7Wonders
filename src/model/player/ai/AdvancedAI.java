@@ -57,19 +57,19 @@ public abstract class AdvancedAI extends ArtInt {
 				ArrayList<MoveTree> leaves = child.getLeaves();
 
 				// WORST CASE
-				MoveTree worst = null;
-				int worstValue = Integer.MAX_VALUE;
-				for (MoveTree leaf : leaves) {
-					int value = evaluate(leaf.getState(), this.getName());
-					if (value < worstValue) {
-						worst = leaf;
-						worstValue = value;
-					}
-				}
-				if (worst != null && worstValue > maxValue) {
-					maxMove = child.getMove();
-					maxValue = worstValue;
-				}
+//				MoveTree worst = null;
+//				int worstValue = Integer.MAX_VALUE;
+//				for (MoveTree leaf : leaves) {
+//					int value = evaluate(leaf.getState(), this.getName());
+//					if (value < worstValue) {
+//						worst = leaf;
+//						worstValue = value;
+//					}
+//				}
+//				if (worst != null && worstValue > maxValue) {
+//					maxMove = child.getMove();
+//					maxValue = worstValue;
+//				}
 
 				// BEST CASE
 //				int bestValue = Integer.MIN_VALUE;
@@ -100,10 +100,11 @@ public abstract class AdvancedAI extends ArtInt {
 
 			// MINIMAX
 
-//			MoveTree movetree = minimax(tree).tree;
-//			while (movetree.getParent().getParent() != null)
-//				movetree = movetree.getParent();
-//			maxMove = movetree.getMove();
+			MoveTree movetree = minimax(tree).tree;
+			while (movetree.getParent().getParent() != null) {
+				movetree = movetree.getParent();
+			}
+			maxMove = movetree.getMove();
 		}
 
 		this.next = maxMove;
@@ -118,44 +119,44 @@ public abstract class AdvancedAI extends ArtInt {
 	 * @param tree root
 	 * @return result bundle
 	 */
-//	private MinimaxResult minimax(MoveTree tree) {
-//		if (tree.getChildren().isEmpty())
-//			return new MinimaxResult(tree, evaluate(tree.getState(), this.getName()));
-//		if (tree.getState().getPlayer().getName().equals(this.getName())) { // this layer is max layer
-//			MinimaxResult maxValue = null;
-//			for (MoveTree child : tree.getChildren()) {
-//				MinimaxResult value = minimax(child);
-//				if (maxValue == null || value.value > maxValue.value)
-//					maxValue = value;
-//			}
-//			return maxValue;
-//		} else { // this layer is min layer
-//			MinimaxResult minValue = null;
-//			for (MoveTree child : tree.getChildren()) {
-//				MinimaxResult value = minimax(child);
-//				if (minValue == null || value.value < minValue.value)
-//					minValue = value;
-//			}
-//			return minValue;
-//		}
-//	}
+	private MinimaxResult minimax(MoveTree tree) {
+		if (tree.getChildren().isEmpty())
+			return new MinimaxResult(tree, evaluate(tree.getState(), this.getName()));
+		if (tree.getState().getPlayer().getName().equals(this.getName())) { // this layer is max layer
+			MinimaxResult maxValue = null;
+			for (MoveTree child : tree.getChildren()) {
+				MinimaxResult value = minimax(child);
+				if (maxValue == null || value.value > maxValue.value)
+					maxValue = value;
+			}
+			return maxValue;
+		} else { // this layer is min layer
+			MinimaxResult minValue = null;
+			for (MoveTree child : tree.getChildren()) {
+				MinimaxResult value = minimax(child);
+				if (minValue == null || value.value < minValue.value)
+					minValue = value;
+			}
+			return minValue;
+		}
+	}
 
 	/** inner class to save the resulting values of minimax algorithm */
-//	private static class MinimaxResult {
-//		private MoveTree tree;
-//		private int value;
-//
-//		/**
-//		 * create result
-//		 * 
-//		 * @param tree  sets {@link #tree}
-//		 * @param value sets {@link #value}
-//		 */
-//		public MinimaxResult(MoveTree tree, int value) {
-//			this.tree = tree;
-//			this.value = value;
-//		}
-//	}
+	private static class MinimaxResult {
+		private MoveTree tree;
+		private int value;
+
+		/**
+		 * create result
+		 * 
+		 * @param tree  sets {@link #tree}
+		 * @param value sets {@link #value}
+		 */
+		public MinimaxResult(MoveTree tree, int value) {
+			this.tree = tree;
+			this.value = value;
+		}
+	}
 
 	/**
 	 * generates a tree of possible moves

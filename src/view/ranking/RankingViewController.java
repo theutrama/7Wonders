@@ -95,7 +95,7 @@ public class RankingViewController extends BorderPane {
 			list.add(new Stats(stats, rank));
 			rank++;
 		}
-		
+		table_ranking.setSelectionModel(null);
 		table_ranking.setItems(FXCollections.observableArrayList(list));
 		col_rank.setSortType(SortType.ASCENDING);
 	}

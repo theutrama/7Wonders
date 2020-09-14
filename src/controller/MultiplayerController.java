@@ -38,7 +38,7 @@ public class MultiplayerController implements EventListener{
 		Packet.loadPackets("model.player.multiplayer.packets");
 		EventManager.register(this);
 	}
-
+	
 	/**
 	 * add a player and assign wonder board
 	 * 
@@ -63,29 +63,37 @@ public class MultiplayerController implements EventListener{
 
 	@EventHandler
 	public void trade(PlayerTradeOptionEvent ev) {
-		PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(ev.getOptionIndex());
-		getClient().write(packet);
+		if(isConnected()) {
+			PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(ev.getOptionIndex());
+			getClient().write(packet);
+		}
 	}
 
 	@EventHandler
 	public void hali(PlayerHalikarnassusEvent ev) {
-		Card selected = ev.getCard();
-		PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
-		getClient().write(packet);
+		if(isConnected()) {
+			Card selected = ev.getCard();
+			PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
+			getClient().write(packet);
+		}
 	}
 	
 	@EventHandler
 	public void select(PlayerSelectedCardEvent ev) {
-		Card selected = ev.getCard();
-		Player player = ev.getPlayer();
-		PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
-		getClient().write(packet);
+		if(isConnected()) {
+			Card selected = ev.getCard();
+			Player player = ev.getPlayer();
+			PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
+			getClient().write(packet);
+		}
 	}
 
 	@EventHandler
 	public void action(PlayerActionEvent ev) {
-		PlayerActionPacket packet = new PlayerActionPacket(ev.getAction());
-		getClient().write(packet);
+		if(isConnected()) {
+			PlayerActionPacket packet = new PlayerActionPacket(ev.getAction());
+			getClient().write(packet);
+		}
 	}
 	
 	/**
@@ -94,6 +102,7 @@ public class MultiplayerController implements EventListener{
 	 */
 	@EventHandler
 	public void rec(PacketReceiveEvent ev) {
+		if(!isConnected())return;
 		if(ev.getPacket() instanceof PingPacket)return;
 		
 		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {

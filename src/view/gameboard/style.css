@@ -67,3 +67,8 @@
 .hide-thumb .scroll-bar:vertical .thumb {
 	-fx-background-color: transparent;
 }
+.lightwoodstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+	-fx-text-fill: #353535;
+}

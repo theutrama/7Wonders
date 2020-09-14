@@ -1,6 +1,10 @@
 package application;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import controller.SevenWondersController;
 import controller.SoundController;
@@ -14,19 +18,21 @@ import view.menu.MainMenuViewController;
 public class Main extends Application {
 	public static boolean TEST = false;
 
+	public static ClassLoader cldr;
 	public static Stage primaryStage;
 	private static SevenWondersController swController;
 	private static SoundController soundController;
 	
-	public static final String DEFAULT_PATH = "src"+File.separator + "view" + File.separator + "images" + File.separator;
-	public static final String TOKENS_PATH = DEFAULT_PATH + "tokens" + File.separator;
-	public static final String BOARD_PATH = DEFAULT_PATH + "boards" + File.separator;
-	public static final String CARDS_PATH = DEFAULT_PATH + "cards" + File.separator;
-	public static final String SOUNDS_PATH = "src" + File.separator + "controller" + File.separator + "sound" + File.separator + "sounds" + File.separator;
+	public static final String DEFAULT_PATH = "view/images/";
+	public static final String TOKENS_PATH = DEFAULT_PATH + "tokens/";
+	public static final String BOARD_PATH = DEFAULT_PATH + "boards/";
+	public static final String CARDS_PATH = DEFAULT_PATH + "cards/";
+	public static final String SOUNDS_PATH = "controller/sound/sounds/";
 	
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/images/7wonders_small.png")));
+		cldr = this.getClass().getClassLoader();
+		primaryStage.getIcons().add(new Image(cldr.getResourceAsStream(DEFAULT_PATH+"7wonders_small.png")));
 
 		Main.primaryStage = primaryStage;
 		swController = SevenWondersController.getInstance();

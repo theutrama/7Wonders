@@ -43,6 +43,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import main.api.events.EventManager;
 import model.Game;
 import model.GameState;
 import model.card.Card;
@@ -52,6 +53,11 @@ import model.player.Player;
 import model.player.ai.ArtInt;
 import model.player.ai.HardAI;
 import model.player.ai.Move.Action;
+import model.player.multiplayer.Multiplayer;
+import model.player.multiplayer.events.PlayerActionEvent;
+import model.player.multiplayer.events.PlayerHalikarnassusEvent;
+import model.player.multiplayer.events.PlayerSelectedCardEvent;
+import model.player.multiplayer.events.PlayerTradeOptionEvent;
 import view.menu.MainMenuViewController;
 
 /**
@@ -413,7 +419,7 @@ public class GameBoardViewController extends VBox {
 			}
 		});
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -475,11 +481,11 @@ public class GameBoardViewController extends VBox {
 
 			BorderPane playerstats = new BorderPane();
 			labelplayer = new Label();
-			labelplayer.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelplayer.getStyleClass().addAll("lightwoodstyle", "dropshadow");
 
 			HBox hboxcoins = new HBox();
 			labelcoins = new Label();
-			labelcoins.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelcoins.getStyleClass().addAll("lightwoodstyle", "dropshadow");
 			ImageView imgcoin = new ImageView();
 			try {
 				imgcoin.setImage(Utils.toImage(Main.TOKENS_PATH + "coin.png"));
@@ -769,7 +775,13 @@ public class GameBoardViewController extends VBox {
 						e.printStackTrace();
 					}
 				});
-				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, player, null, true); player.setOlympiaUsed(true); turn(); });
+				btnOlympia.setOnAction(event -> { 
+					if(!(player instanceof Multiplayer)) {
+						EventManager.callEvent(new PlayerActionEvent(player, Action.OLYMPIA));
+						EventManager.callEvent(new PlayerSelectedCardEvent(player, card));
+					}
+					Main.getSWController().getCardController().placeCard(card, player, null, true); player.setOlympiaUsed(true); turn(); 
+				});
 				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Faehigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
@@ -802,6 +814,10 @@ public class GameBoardViewController extends VBox {
 			});
 			BuildCapability placeCapability = Main.getSWController().getPlayerController().canBuild(player, card);
 			btnPlace.setOnAction(event -> {
+				if(!(player instanceof Multiplayer)) 
+					EventManager.callEvent(new PlayerActionEvent(player, Action.BUILD));
+				
+				
 				switch (placeCapability) {
 				case FREE:
 				case OWN_RESOURCE:
@@ -811,17 +827,26 @@ public class GameBoardViewController extends VBox {
 				case TRADE:
 					ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player, card.getRequired());
 					VBox tradeNodes = new VBox();
-					for (TradeOption option : trades) {
-						tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); }));
+					for (int index = 0; index < trades.size(); index++) {
+						TradeOption option = trades.get(index);
+						final int optionIndex = index;
+						tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
+							if(!(player instanceof Multiplayer)) 
+								EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
+							Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); 
+						}));
 					}
 					hboxCards.getChildren().add(tradeNodes);
 					outter.getChildren().remove(vbox);
 
 					if (player instanceof ArtInt) {
 						TradeOption option = ((ArtInt) player).getTradeOption();
+						
 						int index = trades.indexOf(option);
 						if (index == -1) {
 							System.err.println(player.getName() + " has chosen an invalid trade option:");
+							System.err.println("Trades: "+trades.size());
+							System.err.println("TradeOption: "+option);
 							System.err.println("action: " + ((ArtInt) player).getAction());
 							Platform.runLater(() -> btnSell.fire());
 						} else
@@ -865,6 +890,9 @@ public class GameBoardViewController extends VBox {
 			if (!player.getBoard().isFilled(2)) {
 				BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player, new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
 				btnWonder.setOnAction(event -> {
+					if(!(player instanceof Multiplayer))
+						EventManager.callEvent(new PlayerActionEvent(player, Action.PLACE_SLOT));
+					
 					switch (wonderCapability) {
 					case FREE:
 					case OWN_RESOURCE:
@@ -875,16 +903,28 @@ public class GameBoardViewController extends VBox {
 						ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player,
 								new ArrayList<>(Arrays.asList(player.getBoard().getSlotResquirement(player.getBoard().nextSlot()))));
 						VBox tradeNodes = new VBox();
-						for (TradeOption option : trades) {
-							tradeNodes.getChildren().add(option.getNode(player, event2 -> { Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); }));
+						for (int index = 0; index<trades.size(); index++) {
+							TradeOption option = trades.get(index);
+							final int optionIndex = index;
+							tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
+								if(!(player instanceof Multiplayer))
+									EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
+								
+								Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); 
+							}));
 						}
 						hboxCards.getChildren().add(tradeNodes);
 						outter.getChildren().remove(vbox);
 						if (player instanceof ArtInt) {
 							TradeOption option = ((ArtInt) player).getTradeOption();
 							int index = trades.indexOf(option);
+							
+							
+							
 							if (index == -1) {
 								System.err.println(player.getName() + " has chosen an invalid trade option:");
+								System.err.println("Trades: "+trades.size());
+								System.err.println("TradeOption: "+option);
 								System.err.println("action: " + ((ArtInt) player).getAction());
 								Platform.runLater(() -> btnSell.fire());
 							} else
@@ -926,7 +966,13 @@ public class GameBoardViewController extends VBox {
 					e.printStackTrace();
 				}
 			});
-			btnSell.setOnAction(e -> { Main.getSWController().getCardController().sellCard(card, player); turn(); });
+			btnSell.setOnAction(e -> { 
+
+				if(!(player instanceof Multiplayer))
+					EventManager.callEvent(new PlayerActionEvent(player, Action.SELL));
+				
+				Main.getSWController().getCardController().sellCard(card, player); turn(); 
+			});
 
 			vbox.getChildren().add(btnPlace);
 			vbox.getChildren().add(btnWonder);
@@ -1021,6 +1067,10 @@ public class GameBoardViewController extends VBox {
 			btn.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
+
+					if(!(player instanceof Multiplayer))
+						EventManager.callEvent(new PlayerSelectedCardEvent(player, player.getHand().get(cardIndex)));
+					
 					Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
 					getCurrentPlayer().setChooseCard(player.getHand().get(cardIndex));
 					turn();
@@ -1171,6 +1221,9 @@ public class GameBoardViewController extends VBox {
 			}
 			button.setTooltip(noDelay(new Tooltip(card.getDescription())));
 			button.setOnAction(event -> {
+				if(!(player instanceof Multiplayer))
+					EventManager.callEvent(new PlayerHalikarnassusEvent(player, card));
+				
 				game().getTrash().remove(card);
 				player.getBoard().addCard(card);
 				Main.getSWController().getSoundController().play(Sound.BUILD);
@@ -1261,8 +1314,9 @@ public class GameBoardViewController extends VBox {
 			hboxCards.removeEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
 		}
-		btnUndo.setDisable(blocked);
-		btnRedo.setDisable(blocked);
+		boolean connected = Main.getSWController().getMultiplayerController().isConnected();
+		btnUndo.setDisable(blocked || connected);
+		btnRedo.setDisable(blocked || connected);
 	}
 
 	/**

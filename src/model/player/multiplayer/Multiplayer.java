@@ -1,6 +1,7 @@
 package model.player.multiplayer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import application.Main;
 import controller.utils.TradeOption;
@@ -24,6 +25,7 @@ public class Multiplayer extends ArtInt{
 	private static final int timeout = 1000 * 60 * 5;
 	
 	private Card selectedCard = null;
+	private Action action;
 	/**
 	 * create new Multiplayer
 	 * @param name		name of Multiplayer
@@ -53,7 +55,8 @@ public class Multiplayer extends ArtInt{
 	public Card getSelectedCard() {
 		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
 		PlayerSelectedCardPacket packet = (PlayerSelectedCardPacket) client.createWaitFor(PlayerSelectedCardPacket.class).getSync(timeout);
-		return this.getHand().get(packet.getHandIndex());
+		this.selectedCard = this.getHand().get(packet.getHandIndex());
+		return this.selectedCard;
 	}
 
 	/**
@@ -63,6 +66,7 @@ public class Multiplayer extends ArtInt{
 	public Action getAction() {
 		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
 		PlayerActionPacket packet = (PlayerActionPacket) client.createWaitFor(PlayerActionPacket.class).getSync(timeout);
+		this.action = packet.getAction();
 		return packet.getAction();
 	}
 
@@ -73,7 +77,12 @@ public class Multiplayer extends ArtInt{
 	public TradeOption getTradeOption() {
 		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
 		PlayerTradeOptionPacket packet = (PlayerTradeOptionPacket) client.createWaitFor(PlayerTradeOptionPacket.class).getSync(timeout);
-		return Main.getSWController().getPlayerController().getTradeOptions(this, this.selectedCard.getRequired()).get(packet.getTradeOptionIndex());
+		
+		if(this.action == Action.PLACE_SLOT) {
+			return Main.getSWController().getPlayerController().getTradeOptions(this,new ArrayList<>(Arrays.asList(getBoard().getSlotResquirement(getBoard().nextSlot())))).get(packet.getTradeOptionIndex());
+		}else {
+			return Main.getSWController().getPlayerController().getTradeOptions(this, this.selectedCard.getRequired()).get(packet.getTradeOptionIndex());
+		}
 	}
 	
 	/**

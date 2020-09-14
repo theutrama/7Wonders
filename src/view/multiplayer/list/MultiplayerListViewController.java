@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
+import application.Utils;
 import controller.SoundController;
 import controller.sound.Sound;
 import javafx.fxml.FXML;
@@ -61,8 +62,20 @@ public class MultiplayerListViewController extends StackPane {
 			e.printStackTrace();
 		}
 
-		addHost("54.38.23.134:6001");
-		btn_add.setOnAction(event -> addHost());
+		try {
+			addHost("54.38.23.134:6001");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		btn_add.setOnAction(event -> {
+			try {
+				addHost();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		btn_back.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
@@ -72,7 +85,7 @@ public class MultiplayerListViewController extends StackPane {
 		txt_error.setVisible(true);
 	}
 
-	protected void addHost() {
+	protected void addHost() throws IOException {
 		if(textfield_host.getText().isEmpty() || textfield_host.getText().isBlank()) {
 			error("Das Feld ist leer!");
 			return;
@@ -97,7 +110,7 @@ public class MultiplayerListViewController extends StackPane {
 		textfield_host.clear();
 	}
     
-    protected HBox addHost(String adress) {
+    protected HBox addHost(String adress) throws IOException {
 		HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setSpacing(10);
@@ -107,13 +120,13 @@ public class MultiplayerListViewController extends StackPane {
 		label_host.setText(adress);
 
 		Button btn_minus = new Button();
-		ImageView view = new ImageView(getClass().getResource("../../images/minus.png").toExternalForm());
+		ImageView view = new ImageView(Utils.toImage(Main.DEFAULT_PATH+"minus.png"));
 		view.setFitHeight(20.0);
 		view.setFitWidth(20.0);
 		btn_minus.setGraphic(view);
 		
 		Button btn_connect = new Button();
-		ImageView view1 = new ImageView(getClass().getResource("../../images/enter.png").toExternalForm());
+		ImageView view1 = new ImageView(Utils.toImage(Main.DEFAULT_PATH+"enter.png"));
 		view1.setFitHeight(20.0);
 		view1.setFitWidth(20.0);
 		btn_connect.setGraphic(view1);

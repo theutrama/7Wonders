@@ -2,8 +2,10 @@ package controller;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import application.Main;
+import main.api.events.EventHandler;
 import main.api.events.EventListener;
 import main.api.events.EventManager;
 import main.api.events.events.PacketReceiveEvent;
@@ -12,8 +14,13 @@ import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.client.packets.PingPacket;
 import model.board.WonderBoard;
+import model.card.Card;
 import model.player.Player;
 import model.player.multiplayer.Multiplayer;
+import model.player.multiplayer.events.PlayerActionEvent;
+import model.player.multiplayer.events.PlayerHalikarnassusEvent;
+import model.player.multiplayer.events.PlayerSelectedCardEvent;
+import model.player.multiplayer.events.PlayerTradeOptionEvent;
 import model.player.multiplayer.packets.PlayerActionPacket;
 import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
 import model.player.multiplayer.packets.PlayerSelectedCardPacket;
@@ -45,12 +52,47 @@ public class MultiplayerController implements EventListener{
 		board.setPlayer(player);
 		return player;
 	}
+	
+	public <E> int indexOf(ArrayList<E> list, E seek) {
+		if(list== null && list.isEmpty())throw new NullPointerException("list is null or empty!");
+		
+		for(int i = 0; i < list.size(); i++)
+			if(list.get(i).equals(seek))return i;
+		return -1;
+	}
 
+	@EventHandler
+	public void trade(PlayerTradeOptionEvent ev) {
+		PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(ev.getOptionIndex());
+		getClient().write(packet);
+	}
+
+	@EventHandler
+	public void hali(PlayerHalikarnassusEvent ev) {
+		Card selected = ev.getCard();
+		PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
+		getClient().write(packet);
+	}
+	
+	@EventHandler
+	public void select(PlayerSelectedCardEvent ev) {
+		Card selected = ev.getCard();
+		Player player = ev.getPlayer();
+		PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
+		getClient().write(packet);
+	}
+
+	@EventHandler
+	public void action(PlayerActionEvent ev) {
+		PlayerActionPacket packet = new PlayerActionPacket(ev.getAction());
+		getClient().write(packet);
+	}
+	
 	/**
 	 * handling received Package
 	 * @param ev	Event for received package
 	 */
-	@main.api.events.EventHandler
+	@EventHandler
 	public void rec(PacketReceiveEvent ev) {
 		if(ev.getPacket() instanceof PingPacket)return;
 		

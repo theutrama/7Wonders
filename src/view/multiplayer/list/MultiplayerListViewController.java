@@ -61,7 +61,7 @@ public class MultiplayerListViewController extends StackPane {
 			e.printStackTrace();
 		}
 
-		addHost("localhost:6001");
+		addHost("54.38.23.134:6001");
 		btn_add.setOnAction(event -> addHost());
 		btn_back.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);

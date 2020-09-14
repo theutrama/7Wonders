@@ -241,6 +241,10 @@ public class Card implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public boolean equals(Card card) {
+		return getInternalName().equalsIgnoreCase(card.getInternalName());
+	}
 
 	/**
 	 * getter for {@link #vPoints}

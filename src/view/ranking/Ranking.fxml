@@ -13,24 +13,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root styleClass="backroundpane" stylesheets="@styles.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="634.0" prefWidth="929.0" styleClass="backroundpane" stylesheets="@styles.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="576.0" prefWidth="852.0" spacing="35.0" styleClass="dropshadow">
+      <VBox alignment="CENTER" spacing="35.0">
          <children>
-            <Label styleClass="headline" text="Highscore" textFill="#464646">
+            <Label text="Highscore" textFill="#464646">
                <font>
                   <Font name="Bookman Old Style Bold" size="34.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+               <styleClass>
+                  <String fx:value="headline" />
+                  <String fx:value="dropshadow" />
+               </styleClass>
             </Label>
-            <TableView fx:id="table_ranking">
+            <TableView fx:id="table_ranking" maxWidth="900.0" minWidth="600.0">
               <columns>
-                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="60.0" />
-                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="table-view" text="Spielername" />
-                <TableColumn fx:id="col_time" maxWidth="1.7976931348623157E308" prefWidth="117.99998474121094" text="Zeit" />
-                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="125.20001220703125" text="Siegpunkte" />
-                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="114.79998779296875" text="Sieg-Marker" />
-                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="143.60003662109375" text="Niederlage-Marker" />
-                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="118.4000244140625" text="Münzen" />
+                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="57.600008964538574" text="Rang" />
+                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="159.59994506835938" styleClass="table-view" text="Spielername" />
+                <TableColumn fx:id="col_time" maxWidth="1.7976931348623157E308" prefWidth="173.19996643066406" text="Zeit" />
+                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="119.99996948242188" text="Siegpunkte" />
+                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="122.00006103515625" text="Sieg-Marker" />
+                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="167.59991455078125" text="Niederlage-Marker" />
+                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="84.0" text="Münzen" />
               </columns>
             </TableView>
          </children>
@@ -71,7 +78,7 @@
             </Label>
          </graphic>
          <BorderPane.margin>
-            <Insets bottom="20.0" right="20.0" />
+            <Insets bottom="20.0" right="20.0" top="20.0" />
          </BorderPane.margin>
       </Button>
    </bottom>

@@ -16,6 +16,7 @@ import java.util.Stack;
 
 import application.Main;
 import application.Utils;
+import controller.CardController;
 import controller.GameController;
 import controller.PlayerController;
 import controller.sound.Sound;
@@ -204,8 +205,14 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
 			this.settings.setStack(cardStack);
 			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
+			for(Card c : cardStack) {
+				System.out.println("CREATE "+c.getAge()+" "+c.getInternalName());
+			}
 		}else {
 			cardStack = this.settings.getStack();
+			for(Card c : cardStack) {
+				System.out.println("GOT "+c.getAge()+" "+c.getInternalName());
+			}
 		}
 		Game game = gcon.createGame(label_lobbyname.getText(),cardStack, game_players);
 		Main.getSWController().setGame(game);
@@ -223,6 +230,10 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	if(packet0 instanceof LobbyUpdatePacket) {
     		LobbyUpdatePacket packet = (LobbyUpdatePacket) packet0;
     		this.settings = Settings.fromBytes(packet.getArr());
+    		
+    		if(this.settings == null)System.out.println("SETTINGS == NULL");
+    		if(this.settings.owner == null)System.out.println("SETTINGS.OWNER == NULL");
+    		
 			System.out.println("GOT LobbyUpdatePacket "+this.settings.owner);  
     		
     		Settings tthis = this.settings;
@@ -365,7 +376,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		
     	private String owner;
     	private HashMap<String, PlayerSettings> players = new HashMap<String, PlayerSettings>();
-    	private ArrayList<Card> cardStack;
+    	private ArrayList<String> cardStack;
     	
     	public Settings(String owner) {
     		this.owner = owner;
@@ -377,11 +388,18 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	}
     	
     	public void setStack(ArrayList<Card> cardStack) {
-    		this.cardStack = cardStack;
+    		this.cardStack = new ArrayList<String>();
+    		cardStack.forEach(card -> {this.cardStack.add(card.getInternalName());});
     	}
     	
     	public ArrayList<Card> getStack(){
-    		return this.cardStack;
+    		ArrayList<Card> cards = new ArrayList<Card>();
+    		CardController con = Main.getSWController().getCardController();
+    		this.cardStack.forEach(cardname -> {
+    			cards.add(con.getCard(cardname));
+    		});
+    		
+    		return cards;
     	}
     	
     	public PlayerSettings getSettings(String playername) {

@@ -1,5 +1,6 @@
 package view.newgame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Main;
@@ -34,7 +35,7 @@ public class NewCSVGameViewController extends NewGameViewController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addPlayer(String playername, String wondername, boolean KI) {
+	public void addPlayer(String playername, String wondername, boolean KI) throws IOException {
 		HBox box = this.addPlayer(playername);
 		addWonderToPlayer(box, wondername);
 		((ComboBox<String>)box.getChildren().get(1)).getSelectionModel().select( (KI ? 1 : 0) );

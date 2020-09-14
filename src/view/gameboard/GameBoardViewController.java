@@ -1,6 +1,5 @@
 package view.gameboard;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +55,7 @@ import model.player.ai.HardAI;
 import model.player.ai.Move.Action;
 import model.player.multiplayer.Multiplayer;
 import model.player.multiplayer.events.PlayerActionEvent;
+import model.player.multiplayer.events.PlayerHalikarnassusEvent;
 import model.player.multiplayer.events.PlayerSelectedCardEvent;
 import model.player.multiplayer.events.PlayerTradeOptionEvent;
 import view.menu.MainMenuViewController;
@@ -775,7 +775,13 @@ public class GameBoardViewController extends VBox {
 						e.printStackTrace();
 					}
 				});
-				btnOlympia.setOnAction(event -> { Main.getSWController().getCardController().placeCard(card, player, null, true); player.setOlympiaUsed(true); turn(); });
+				btnOlympia.setOnAction(event -> { 
+					if(!(player instanceof Multiplayer)) {
+						EventManager.callEvent(new PlayerActionEvent(player, Action.OLYMPIA));
+						EventManager.callEvent(new PlayerSelectedCardEvent(player, card));
+					}
+					Main.getSWController().getCardController().placeCard(card, player, null, true); player.setOlympiaUsed(true); turn(); 
+				});
 				btnOlympia.setTooltip(noDelay(new Tooltip("Olympia-Faehigkeit:\nBaue diese Karte kostenlos")));
 				vbox.getChildren().add(btnOlympia);
 				btnOlympia.setDisable(hasCard);
@@ -808,7 +814,7 @@ public class GameBoardViewController extends VBox {
 			});
 			BuildCapability placeCapability = Main.getSWController().getPlayerController().canBuild(player, card);
 			btnPlace.setOnAction(event -> {
-				if(!(player instanceof ArtInt)) 
+				if(!(player instanceof Multiplayer)) 
 					EventManager.callEvent(new PlayerActionEvent(player, Action.BUILD));
 				
 				
@@ -825,7 +831,7 @@ public class GameBoardViewController extends VBox {
 						TradeOption option = trades.get(index);
 						final int optionIndex = index;
 						tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
-							if(!(player instanceof ArtInt)) 
+							if(!(player instanceof Multiplayer)) 
 								EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
 							Main.getSWController().getCardController().placeCard(card, player, option, false); turn(); 
 						}));
@@ -884,7 +890,7 @@ public class GameBoardViewController extends VBox {
 			if (!player.getBoard().isFilled(2)) {
 				BuildCapability wonderCapability = Main.getSWController().getPlayerController().hasResources(player, new ArrayList<>(Arrays.asList(player.getBoard().getNextSlotRequirement())));
 				btnWonder.setOnAction(event -> {
-					if(!(player instanceof ArtInt))
+					if(!(player instanceof Multiplayer))
 						EventManager.callEvent(new PlayerActionEvent(player, Action.PLACE_SLOT));
 					
 					switch (wonderCapability) {
@@ -901,7 +907,7 @@ public class GameBoardViewController extends VBox {
 							TradeOption option = trades.get(index);
 							final int optionIndex = index;
 							tradeNodes.getChildren().add(option.getNode(player, event2 -> { 
-								if(!(player instanceof ArtInt))
+								if(!(player instanceof Multiplayer))
 									EventManager.callEvent(new PlayerTradeOptionEvent(player, optionIndex));
 								
 								Main.getSWController().getCardController().setSlotCard(card, player, option); turn(); 
@@ -912,6 +918,9 @@ public class GameBoardViewController extends VBox {
 						if (player instanceof ArtInt) {
 							TradeOption option = ((ArtInt) player).getTradeOption();
 							int index = trades.indexOf(option);
+							
+							
+							
 							if (index == -1) {
 								System.err.println(player.getName() + " has chosen an invalid trade option:");
 								System.err.println("Trades: "+trades.size());
@@ -959,7 +968,7 @@ public class GameBoardViewController extends VBox {
 			});
 			btnSell.setOnAction(e -> { 
 
-				if(!(player instanceof ArtInt))
+				if(!(player instanceof Multiplayer))
 					EventManager.callEvent(new PlayerActionEvent(player, Action.SELL));
 				
 				Main.getSWController().getCardController().sellCard(card, player); turn(); 
@@ -1059,7 +1068,7 @@ public class GameBoardViewController extends VBox {
 				@Override
 				public void handle(ActionEvent event) {
 
-					if(!(player instanceof ArtInt))
+					if(!(player instanceof Multiplayer))
 						EventManager.callEvent(new PlayerSelectedCardEvent(player, player.getHand().get(cardIndex)));
 					
 					Main.getSWController().getSoundController().play(Sound.CHOOSE_CARD);
@@ -1212,6 +1221,9 @@ public class GameBoardViewController extends VBox {
 			}
 			button.setTooltip(noDelay(new Tooltip(card.getDescription())));
 			button.setOnAction(event -> {
+				if(!(player instanceof Multiplayer))
+					EventManager.callEvent(new PlayerHalikarnassusEvent(player, card));
+				
 				game().getTrash().remove(card);
 				player.getBoard().addCard(card);
 				Main.getSWController().getSoundController().play(Sound.BUILD);

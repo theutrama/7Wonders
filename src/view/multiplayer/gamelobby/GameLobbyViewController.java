@@ -102,6 +102,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     private HashMap<String,HBox> players = new HashMap<>();
     
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
+	private static final ObservableList<String> KItypes = FXCollections.observableList(Arrays.asList("KI Einfach", "KI Mittel", "KI Schwer"));
 	protected static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
     
     public GameLobbyViewController(LobbyPlayersPacket packet) {
@@ -130,6 +131,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			btn_done.setVisible(true);
 			btn_add.setVisible(true);
 			textfield_playername.setVisible(true);
+			
+			btn_add.setOnAction(event -> addPlayer());
 		} else {
 			System.out.println("NOT OWNER!");
 			btn_done.setVisible(false);
@@ -246,7 +249,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		    		for(String playername : tthis.getPlayers().keySet()) {
 	    				Settings.PlayerSettings psettings = tthis.getPlayers().get(playername);
 		    			if(!players.containsKey(playername)) {
-		    				addPlayer(playername);
+		    				addPlayer(playername, psettings.type == -1);
 		    			}
 	    				HBox box = players.get(playername);
 	    				
@@ -276,7 +279,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		    		
 		    		for(String playername : lobbyplayers) {
 		    			if(!players.containsKey(playername)) {
-		    				addPlayer(playername);
+		    				addPlayer(playername,true);
 		    				System.out.println("ADD PLAYER "+playername);  
 		    				
 		    				
@@ -284,7 +287,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		    		}
 		    		
 		    		for(String playername : players.keySet()) {
-		    			if(!lobbyplayers.contains(playername)) {
+		    			HBox box = players.get(playername);
+		    			if(!lobbyplayers.contains(playername) && ((ComboBox<String>)box.getChildren().get(1)).getSelectionModel().getSelectedIndex() == 0) {
 		    				remove.add(playername);
 		    				System.out.println("REMOVE PLAYER "+playername);  	
 		    			}
@@ -313,7 +317,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	return Main.getSWController().getMultiplayerController().getClient().getName();
     }
     
-    private HBox createBox(String playername) {
+    private HBox createBox(String playername,boolean human) {
     	HBox hbox = new HBox();
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setSpacing(10);
@@ -322,25 +326,41 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		label_player.getStyleClass().add("playerstyle");
 		label_player.setText(playername);
 
-		ComboBox<String> type = new ComboBox<>(types);
-		type.getSelectionModel().select(0);
-		
-		if(!playername.equalsIgnoreCase(getOwnName())) {
-			type.setVisible(false);
-		}
+		ComboBox<String> type = new ComboBox<>( types );
+		type.getSelectionModel().select( !human ? 1 : 0 );
+		type.setEditable(isOwner() && !human);
 
 		hbox.getChildren().add(label_player);
 		hbox.getChildren().add(type);
 		return hbox;
     }
     
-    protected HBox addPlayer(String playername) {
-		HBox hbox = createBox(playername);
+    protected HBox addPlayer() {
+    	if(textfield_playername.getText().isBlank() || textfield_playername.getText().isEmpty()) {
+    		error("Bitte gib einen Namen an");
+    		return null;
+    	}
+    	
+    	for(String playername : this.players.keySet())
+    		if(playername.equalsIgnoreCase(textfield_playername.getText())) {
+    			error("Der Name ist bereits besetzt!");
+    			return null;
+    		}
+    	
+    	HBox box = addPlayer(textfield_playername.getText(),false);
+    	Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(settings.toBytes()));
+    	return box;
+    }
+    
+    protected HBox addPlayer(String playername,boolean human) {
+		HBox hbox = createBox(playername,human);
 		this.vbox_players.getChildren().add(hbox);
 		
 		this.players.put(playername,hbox);
 		
-		if(this.settings != null)settings.addPlayer(playername);
+		if(this.settings != null) {
+			settings.addPlayer(playername,human);
+		}
 		if(isOwner())this.btn_done.setVisible(this.vbox_players.getChildren().size() > 1);
 		return hbox;
 	}
@@ -380,7 +400,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	
     	public Settings(String owner) {
     		this.owner = owner;
-    		addPlayer(owner);
+    		addPlayer(owner,true);
     	}
     	
     	public boolean hasGameStarted() {
@@ -410,9 +430,10 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		this.players.remove(playername);
     	}
     	
-    	public PlayerSettings addPlayer(String playername) {
+    	public PlayerSettings addPlayer(String playername, boolean human) {
     		if(this.players.containsKey(playername))return null;
     		PlayerSettings settings = new PlayerSettings(playername);
+    		settings.type = human ? 0 : 1;
     		this.players.put(settings.playername, settings);
     		return settings;
     	}

@@ -198,6 +198,7 @@ public class GameBoardViewController extends VBox {
 	 */
 	public void exit() {
 		timer.cancel();
+		timer = null;
 	}
 
 	/**

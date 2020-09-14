@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.Main;
+import controller.GameController;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
 import model.GameState;
@@ -18,6 +19,7 @@ import model.player.Player;
 import model.player.ai.Move.Action;
 
 /** abstract class of easy, medium and hard AI */
+@SuppressWarnings("PMD")
 public abstract class AdvancedAI extends ArtInt {
 	/** UID of serial version */
 	private static final long serialVersionUID = 1L;
@@ -121,11 +123,6 @@ public abstract class AdvancedAI extends ArtInt {
 		MoveTree tree = new MoveTree(Main.getSWController().getGame().getCurrentGameState());
 		leaves.add(tree);
 
-		// final int numNodes = 20000;
-		// final int numMoves = (int) (Math.log(numNodes) / Math.log(3 * getHand().size()));
-
-		// long starttime = System.currentTimeMillis();
-
 		Flag flag = new Flag(), finished = new Flag();
 
 		Timer timer = new Timer(true);
@@ -202,7 +199,7 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 
-				// leaf.clearState();
+				leaf.clearState();
 
 				if (flag.value) {
 					for (MoveTree child : leaves)
@@ -230,7 +227,7 @@ public abstract class AdvancedAI extends ArtInt {
 				newLeaf.getState().setCurrentPlayer((newLeaf.getState().getCurrentPlayer() + 1) % newLeaf.getState().getPlayers().size());
 
 				if (newLeaf.getState().getCurrentPlayer() == newLeaf.getState().getFirstPlayer()) {
-					if (newLeaf.getState().getRound() < 6)
+					if (newLeaf.getState().getRound() < GameController.NUM_ROUNDS)
 						Main.getSWController().getGameController().nextRound(Main.getSWController().getGame(), newLeaf.getState());
 					else // stop look-ahead at the end of age
 						breakAfterwards = true;

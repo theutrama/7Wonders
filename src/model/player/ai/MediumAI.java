@@ -23,47 +23,67 @@ public class MediumAI extends AdvancedAI {
 		super(name, board);
 	}
 
+	/**
+	 * evaluate age 1
+	 * 
+	 * @param state  game state
+	 * @param player player
+	 * @return value
+	 */
+	private int evaluateAge1(GameState state, Player player) {
+		int value = 0;
+		for (int i = 0; i < 3; i++)
+			if (player.getBoard().isFilled(i) || Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state) != BuildCapability.NONE)
+				value += 1;
+		return value;
+	}
+	
+	/**
+	 * evaluate age 2
+	 * 
+	 * @param state  game state
+	 * @param player player
+	 * @return value
+	 */
+	private int evaluateAge2(GameState state, Player player) {
+		int value = 0;
+		for (int i = 0; i < 3; i++)
+			if (player.getBoard().isFilled(i) || Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state) != BuildCapability.NONE)
+				value += 2;
+		value += Main.getSWController().getPlayerController().getMilitaryPoints(player) + getCivilPoints(player) / 2;
+		return value;
+	}
+	
+	/**
+	 * evaluate age 2
+	 * 
+	 * @param state  game state
+	 * @param player player
+	 * @return value
+	 */
+	private int evaluateAge3(GameState state, Player player) {
+		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
+		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
+		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
+		player.addVictoryPoints(player.getConflictPoints());
+		player.addVictoryPoints(-player.getLosePoints());
+		player.addVictoryPoints(player.getCoins() / 3);
+		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(player));
+		return player.getVictoryPoints();
+	}
+	
 	@Override
 	protected int evaluate(GameState state, String playername) {
-
 		Player player = Main.getSWController().getPlayerController().getPlayer(playername, state);
-
-		int value = 0;
-
 		switch (state.getAge()) {
 		case 1:
-			for (int i = 0; i < 3; i++) {
-				if (player.getBoard().isFilled(i) || Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state) != BuildCapability.NONE)
-					value += 1;
-			}
-			break;
+			return evaluateAge1(state, player);
 		case 2:
-			for (int i = 0; i < 3; i++) {
-				if (player.getBoard().isFilled(i) || Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state) != BuildCapability.NONE)
-					value += 2;
-			}
-			value += Main.getSWController().getPlayerController().getMilitaryPoints(player);
-			value += getCivilPoints(player) / 2;
-			break;
+			return evaluateAge2(state, player);
 		case 3:
-			// Victory points //////////////////////////////////////////
-
-			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
-			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
-			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
-			// conflicts
-			player.addVictoryPoints(player.getConflictPoints());
-			player.addVictoryPoints(-player.getLosePoints());
-			// coins
-			player.addVictoryPoints(player.getCoins() / 3);
-			// science
-			player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(player));
-
-			value += player.getVictoryPoints();
-			break;
+			return evaluateAge3(state, player);
 		}
-
-		return value;
+		return 0;
 	}
 
 	@Override

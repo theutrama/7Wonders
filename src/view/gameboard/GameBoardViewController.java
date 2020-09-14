@@ -1314,8 +1314,9 @@ public class GameBoardViewController extends VBox {
 			hboxCards.removeEventFilter(MouseEvent.ANY, inputBlocker);
 			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
 		}
-		btnUndo.setDisable(blocked);
-		btnRedo.setDisable(blocked);
+		boolean connected = Main.getSWController().getMultiplayerController().isConnected();
+		btnUndo.setDisable(blocked || connected);
+		btnRedo.setDisable(blocked || connected);
 	}
 
 	/**

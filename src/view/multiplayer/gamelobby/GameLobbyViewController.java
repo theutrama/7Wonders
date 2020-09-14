@@ -341,7 +341,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		this.players.put(playername,hbox);
 		
 		if(this.settings != null)settings.addPlayer(playername);
-		this.btn_done.setVisible(this.vbox_players.getChildren().size() > 1);
+		if(isOwner())this.btn_done.setVisible(this.vbox_players.getChildren().size() > 1);
 		return hbox;
 	}
     

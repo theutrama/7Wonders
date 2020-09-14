@@ -121,11 +121,6 @@ public abstract class AdvancedAI extends ArtInt {
 		MoveTree tree = new MoveTree(Main.getSWController().getGame().getCurrentGameState());
 		leaves.add(tree);
 
-		// final int numNodes = 20000;
-		// final int numMoves = (int) (Math.log(numNodes) / Math.log(3 * getHand().size()));
-
-		// long starttime = System.currentTimeMillis();
-
 		Flag flag = new Flag(), finished = new Flag();
 
 		Timer timer = new Timer(true);
@@ -202,7 +197,7 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 
-				// leaf.clearState();
+				leaf.clearState();
 
 				if (flag.value) {
 					for (MoveTree child : leaves)

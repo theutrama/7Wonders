@@ -18,6 +18,7 @@ import model.player.multiplayer.packets.PlayerActionPacket;
 import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
 import model.player.multiplayer.packets.PlayerSelectedCardPacket;
 import model.player.multiplayer.packets.PlayerTradeOptionPacket;
+import view.gameboard.GameBoardViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
 @SuppressWarnings("all")
@@ -41,6 +42,7 @@ public class Multiplayer extends ArtInt{
 	public void stop() {
 		Main.getSWController().setGame(null);
 		LobbyViewController view = null;
+		Main.getSWController().getMultiplayerController().close();
 		Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
 		view.error("Spiel wurde abgebrochen da ein Spieler nicht reagiert hat!");
 	}

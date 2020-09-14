@@ -218,7 +218,7 @@ public class CardController {
 		cards.add(new Card(1, "Tongrube", "claypit", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.ORE)), addRArray(new Resource(1, ResourceType.COINS)),
 				null, null));
 		cards.add(new Card(1, "Ziegelei", "claypool", CardType.BROWN, addRArray(new Resource(1, ResourceType.BRICK)), null, null, null));
-		cards.add(new Card(2, "Gericht", "courthouse", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.STONE)), new String[] { "scriptorium" },
+		cards.add(new Card(2, "Gericht", "courthouse", CardType.BLUE, null, addRArray(new Resource(2, ResourceType.BRICK), new Resource(1, ResourceType.PAPYRUS)), new String[] { "scriptorium" },
 				addEArray(new Effect(EffectType.WHEN_PLAYED, (player, state, twoPlayers) -> { player.addVictoryPoints(4); })), 4));
 		cards.add(new Card(3, "Gilde der Kuenstler", "craftsmensguild", CardType.PURPLE, null, addRArray(new Resource(2, ResourceType.STONE), new Resource(2, ResourceType.ORE)), null,
 				addEArray(new Effect(EffectType.AT_MATCH_END, (player, state, twoPlayers) -> {

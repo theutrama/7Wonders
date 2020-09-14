@@ -199,8 +199,6 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 
-				leaf.clearState();
-
 				if (flag.value) {
 					for (MoveTree child : leaves)
 						child.getChildren().clear();
@@ -269,19 +267,28 @@ public abstract class AdvancedAI extends ArtInt {
 			player.setChooseCard(null);
 			if (move.getCard().getEffects() != null)
 				for (Effect effect : move.getCard().getEffects())
-					if (effect.getType() == EffectType.WHEN_PLAYED)	effect.run(player, newState, newState.isTwoPlayers());
-			if (move.getTradeOption() != null)	Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
+					if (effect.getType() == EffectType.WHEN_PLAYED)
+						effect.run(player, newState, newState.isTwoPlayers());
+			if (move.getTradeOption() != null)
+				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
 			break;
 		case PLACE_SLOT:
 			player.getHand().remove(move.getCard());
 			switch (player.getBoard().nextSlot()) {
-			case 0:	player.getBoard().slot1();	break;
-			case 1:	player.getBoard().slot2();	break;
-			case 2:	player.getBoard().slot3();	break;
+			case 0:
+				player.getBoard().slot1();
+				break;
+			case 1:
+				player.getBoard().slot2();
+				break;
+			case 2:
+				player.getBoard().slot3();
+				break;
 			}
 			player.getBoard().fill(player.getBoard().nextSlot());
 			player.setChooseCard(null);
-			if (move.getTradeOption() != null)	Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
+			if (move.getTradeOption() != null)
+				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
 			break;
 		case SELL:
 			player.getHand().remove(move.getCard());

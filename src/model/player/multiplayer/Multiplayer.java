@@ -42,6 +42,8 @@ public class Multiplayer extends ArtInt{
 	public void stop() {
 		Main.getSWController().setGame(null);
 		LobbyViewController view = null;
+		if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
+			((GameBoardViewController)Main.primaryStage.getScene().getRoot()).exit();
 		Main.getSWController().getMultiplayerController().close();
 		Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
 		view.error("Spiel wurde abgebrochen da ein Spieler nicht reagiert hat!");

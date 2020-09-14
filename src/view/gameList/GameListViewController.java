@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -62,14 +63,16 @@ public class GameListViewController extends BorderPane {
 		String[] games = Main.getSWController().getIOController().listGameFiles();
 
 		for (String game : games) {
-			Button button = new Button(game);
+			Label label = new Label(game);
+			label.getStyleClass().addAll("gamebutton","dropshadow");
+			label.setStyle("-fx-text-fill: white");
+			Button button = new Button();
+			button.setGraphic(label);
 			button.setOnAction(event -> { Main.getSWController().setGame(Main.getSWController().getIOController().load(game)); Main.primaryStage.getScene().setRoot(new GameBoardViewController()); });
-			button.setText(game);
 			button.setMinSize(534, 56);
 			button.setPrefSize(534, 56);
 			button.setMaxSize(534, 56);
-			button.getStyleClass().addAll("menubutton", "dropshadow", "fontstyle");
-			button.setStyle("-fx-text-fill: #F5F5F5");
+			button.getStyleClass().add("menubutton");
 			button.setAlignment(Pos.CENTER);
 			HBox hbox = new HBox(5);
 			hbox.setPadding(new Insets(0, 0, 0, 33));

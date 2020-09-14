@@ -475,11 +475,11 @@ public class GameBoardViewController extends VBox {
 
 			BorderPane playerstats = new BorderPane();
 			labelplayer = new Label();
-			labelplayer.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelplayer.getStyleClass().addAll("lightwoodstyle", "dropshadow");
 
 			HBox hboxcoins = new HBox();
 			labelcoins = new Label();
-			labelcoins.getStyleClass().addAll("fontstyle", "dropshadow");
+			labelcoins.getStyleClass().addAll("lightwoodstyle", "dropshadow");
 			ImageView imgcoin = new ImageView();
 			try {
 				imgcoin.setImage(Utils.toImage(Main.TOKENS_PATH + "coin.png"));

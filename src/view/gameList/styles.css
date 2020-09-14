@@ -13,6 +13,14 @@
 	-fx-font-family: 'Bookman Old Style';
 	-fx-font-size:24;
 }
+.headline {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:38;
+}
+.gamebutton {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:28;
+}
 
 .menubutton {
 	-fx-background-image: url("../images/wood.png");

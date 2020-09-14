@@ -62,12 +62,16 @@ public class HardAI extends AdvancedAI {
 					value += sum;
 				}
 			}
+			
+//			if (value >= 10) {
+//				value -= player.getBoard().nextSlot() == -1 ? 15 : player.getBoard().nextSlot() * 5;
+//			}
+			
+			value += player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 
 			for (int i = 0; i < 3; i++)
 				if (capas[i] != BuildCapability.NONE)
 					value += (100 - 10 * i);
-
-			value -= player.getBoard().nextSlot() == -1 ? 60 : player.getBoard().nextSlot() * 20;
 
 			// Research /////////////////////////////////////////////////////////////
 
@@ -101,16 +105,12 @@ public class HardAI extends AdvancedAI {
 
 			// Military /////////////////////////////////////////////////////////////
 
-			value -= player.getBoard().getMilitary().size() * 20;
-
+			value -= player.getBoard().getMilitary().size() * 10;
+			
 			// Coins ////////////////////////////////////////////////////////////////
-
-			// Neighbour ////////////////////////////////////////////////////////////
-
-			for (Card card : player.getHand()) {
-				if (Main.getSWController().getPlayerController().canBuild(player, card, state) != BuildCapability.NONE)
-					value += 20;
-			}
+			
+			if (player.getCoins() > 2)
+				value -= (player.getCoins() - 2) * 4;
 
 			break;
 
@@ -124,15 +124,23 @@ public class HardAI extends AdvancedAI {
 				capas2[i] = Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state);
 			}
 
-			for (BuildCapability capacity : capas2)
-				if (capacity != BuildCapability.NONE)
-					value += 4;
-
-			value -= player.getBoard().nextSlot() == -1 ? 3 : player.getBoard().nextSlot();
+			if (player.getBoard().isFilled(0)) {
+				value += 3;
+				if (player.getBoard().isFilled(1)) {
+					value += 5;
+					if (player.getBoard().isFilled(2))
+						value += 7;
+					else if (capas2[2] != BuildCapability.NONE)
+						value += 7;
+				} else if (capas2[1] != BuildCapability.NONE)
+					value += 5;
+			} else if (capas2[0] != BuildCapability.NONE)
+				value += 3;
 
 			// Civil ////////////////////////////////////////////////////
 
 			value += getCivilPoints(player);
+			value -= getCivilPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player)) / 2;
 
 			// Military /////////////////////////////////////////////////
 
@@ -142,19 +150,20 @@ public class HardAI extends AdvancedAI {
 			int maxDiff = Math.max(leftPoints - ownPoints, rightPoints - ownPoints);
 
 			if (maxDiff < 0)
-				value += 2;
+				value += 4;
 			else if (maxDiff == 1)
-				value -= 1;
+				value -= 4;
 			else if (maxDiff >= 2)
 				value -= 2;
 
 			// Research /////////////////////////////////////////////////
 
+			value -= Main.getSWController().getPlayerController().getSciencePoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 			value -= player.getBoard().getResearch().size() * 3;
 
 			// Coins ////////////////////////////////////////////////////
 
-			value += player.getCoins() / 4;
+			value += player.getCoins() / 3;
 
 			break;
 		case 3: // Age 3 ////////////////////////////////////////////////
@@ -183,6 +192,22 @@ public class HardAI extends AdvancedAI {
 			player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(player));
 
 			value += player.getVictoryPoints();
+			
+			// Neighbour //////////////////////////////////////////////
+			Player neighbour = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
+			
+			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getTrade(), state.isTwoPlayers());
+			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getGuilds(), state.isTwoPlayers());
+			Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getCivil(), state.isTwoPlayers());
+			// conflicts
+			player.addVictoryPoints(neighbour.getConflictPoints());
+			player.addVictoryPoints(-neighbour.getLosePoints());
+			// coins
+			player.addVictoryPoints(neighbour.getCoins() / 3);
+			// science
+			player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(neighbour));
+
+			value -= neighbour.getVictoryPoints();
 
 			break;
 		}

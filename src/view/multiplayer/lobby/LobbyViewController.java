@@ -79,7 +79,7 @@ public class LobbyViewController extends StackPane implements PacketListener{
 		SoundController.addMuteFunction(btn_mute, img_music);
 	}
     
-    protected void error(String txt) {
+    public void error(String txt) {
     	txt_error.setText(txt);
 		txt_error.setVisible(true);
 	}

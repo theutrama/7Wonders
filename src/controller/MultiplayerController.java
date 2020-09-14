@@ -13,6 +13,9 @@ import main.api.packet.Packet;
 import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.client.packets.PingPacket;
+import main.lobby.packets.server.LobbyClosePacket;
+import main.lobby.packets.server.LobbyListPacket;
+import main.lobby.packets.server.LobbyPlayersPacket;
 import model.board.WonderBoard;
 import model.card.Card;
 import model.player.Player;
@@ -25,18 +28,28 @@ import model.player.multiplayer.packets.PlayerActionPacket;
 import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
 import model.player.multiplayer.packets.PlayerSelectedCardPacket;
 import model.player.multiplayer.packets.PlayerTradeOptionPacket;
+import view.multiplayer.lobby.LobbyViewController;
 
 @SuppressWarnings("all")
 /** Controller for Multiplayer */
 public class MultiplayerController implements EventListener{
 	/** client of player */
 	private PlayerClient client;
+	private boolean ingame = false;
 	
 	/** create new Multiplayer Controller */
 	public MultiplayerController() {
 		Packet.loadPackets();
 		Packet.loadPackets("model.player.multiplayer.packets");
 		EventManager.register(this);
+	}
+	
+	public boolean isInGame() {
+		return this.ingame;
+	}
+	
+	public void setInGame(boolean ingame) {
+		this.ingame = ingame;
 	}
 	
 	/**
@@ -109,6 +122,16 @@ public class MultiplayerController implements EventListener{
 			System.out.println("RECEIVED PAKCET FOR PACKETLISTENER "+ev.getPacket().getPacketName());
 			PacketListener view = (PacketListener)Main.primaryStage.getScene().getRoot();
 			view.handle(ev.getPacket());
+		}else if(isInGame() && ev.getPacket() instanceof LobbyClosePacket) {
+			LobbyViewController view = null;
+			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
+			view.error("Der Owner hat die Lobby verlassen...");
+			Main.getSWController().setGame(null);
+		}else if(isInGame() && ev.getPacket() instanceof LobbyPlayersPacket) {
+			LobbyViewController view = null;
+			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
+			view.error("Jemand hat das Spiel verlassen...");
+			Main.getSWController().setGame(null);
 		}
 	}
 	
@@ -150,13 +173,14 @@ public class MultiplayerController implements EventListener{
 	 */
 	public void connect(String name, String host, int port) {
 		try {
+			setInGame(false);
 			this.client = new PlayerClient(name, host, port);
 			this.client.addToQueue(PlayerActionPacket.class);
 			this.client.addToQueue(PlayerSelectedCardPacket.class);
 			this.client.addToQueue(PlayerHalikarnassusPacket.class);
 			this.client.addToQueue(PlayerTradeOptionPacket.class);
 			Main.primaryStage.setOnCloseRequest( s -> {
-				this.client.close();
+				Main.getSWController().getMultiplayerController().close();
 				Main.getSWController().getIOController().saveRanking();
 			});
 		} catch (UnknownHostException e) {
@@ -166,6 +190,12 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	public void close(){
+		if(this.client != null) {
+			this.client.close();
+			this.client = null;
+		}
+	}	
 	/**
 	 * checks if client is connected
 	 * @return this.client.isConnected() 	true if client is connected

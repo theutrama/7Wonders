@@ -59,7 +59,8 @@ public class IOController {
 	 * @param game
 	 */
 	public void save(Game game) {
-		save(game, File.separator + GAME_FOLDER + File.separator + game.getName());
+		if(game!=null)
+			save(game, File.separator + GAME_FOLDER + File.separator + game.getName());
 	}
 
 	private void save(Object obj, String path) {

@@ -116,7 +116,11 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		}
 		label_lobbyname.setText(packet.getName());
 		txt_owner.setText("Owner: "+packet.getOwner());
-		
+
+		btn_add.setVisible(false);
+		textfield_playername.setVisible(false);
+		vbox_wonders.setVisible(false);
+		label_drag.setVisible(false);
 		
 		String ownname = Main.getSWController().getMultiplayerController().getClient().getName();
 		System.out.println("IS OWNER "+(packet.getOwner().equalsIgnoreCase(ownname))+" "+packet.getOwner()+" "+ownname);
@@ -129,14 +133,13 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			btn_done.setOnAction(event -> done());
 
 			btn_done.setVisible(true);
-			btn_add.setVisible(true);
-			textfield_playername.setVisible(true);
+//			btn_add.setVisible(true);
+//			textfield_playername.setVisible(true);
 			
 			btn_add.setOnAction(event -> addPlayer());
 		} else {
 			System.out.println("NOT OWNER!");
 			btn_done.setVisible(false);
-			btn_add.setVisible(false);
 			textfield_playername.setVisible(false);
 		}
 		
@@ -177,7 +180,6 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			Collections.shuffle(stack);
 		}
 		
-		
 		for (String playername : this.players.keySet()) {
 			HBox player = this.players.get(playername);
 			Label nameLabel = (Label) player.getChildren().get(0);
@@ -194,6 +196,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 				Difficulty diff = Difficulty.fromString(type.split(" ")[1]);
 				game_players.add(pcon.createAI(nameLabel.getText(), wondername, diff));
 			}else {
+				
 				if(!getOwnName().equalsIgnoreCase(nameLabel.getText())) {
 					game_players.add(Main.getSWController().getMultiplayerController().createPlayer(nameLabel.getText(), wondername));
 				}	else {
@@ -219,6 +222,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		}
 		Game game = gcon.createGame(label_lobbyname.getText(),cardStack, game_players);
 		Main.getSWController().setGame(game);
+		Main.getSWController().getMultiplayerController().setInGame(true);
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
     }
 
@@ -328,7 +332,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 
 		ComboBox<String> type = new ComboBox<>( types );
 		type.getSelectionModel().select( !human ? 1 : 0 );
-		type.setEditable(isOwner() && !human);
+		type.setVisible(false);
 
 		hbox.getChildren().add(label_player);
 		hbox.getChildren().add(type);

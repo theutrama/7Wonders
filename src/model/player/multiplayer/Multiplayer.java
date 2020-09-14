@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import application.Main;
 import controller.utils.TradeOption;
+import main.api.events.EventHandler;
+import main.api.events.events.PacketReceiveEvent;
 import main.client.PlayerClient;
 import model.GameState;
 import model.board.WonderBoard;
@@ -16,6 +18,7 @@ import model.player.multiplayer.packets.PlayerActionPacket;
 import model.player.multiplayer.packets.PlayerHalikarnassusPacket;
 import model.player.multiplayer.packets.PlayerSelectedCardPacket;
 import model.player.multiplayer.packets.PlayerTradeOptionPacket;
+import view.multiplayer.lobby.LobbyViewController;
 
 @SuppressWarnings("all")
 
@@ -34,7 +37,14 @@ public class Multiplayer extends ArtInt{
 	public Multiplayer(String name, WonderBoard board) {
 		super(name, board);
 	}
-
+	
+	public void stop() {
+		Main.getSWController().setGame(null);
+		LobbyViewController view = null;
+		Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
+		view.error("Spiel wurde abgebrochen da ein Spieler nicht reagiert hat!");
+	}
+	
 	/**
 	 * getter for HalikarnassusCard
 	 * @param player	player
@@ -43,9 +53,14 @@ public class Multiplayer extends ArtInt{
 	 */
 	@Override
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
-		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-		PlayerHalikarnassusPacket packet = (PlayerHalikarnassusPacket) client.createWaitFor(PlayerHalikarnassusPacket.class).getSync(timeout);
-		return Main.getSWController().getGame().getCurrentGameState().getTrash().get(packet.getHalikarnassusIndex());
+		try {
+			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
+			PlayerHalikarnassusPacket packet = (PlayerHalikarnassusPacket) client.createWaitFor(PlayerHalikarnassusPacket.class).getSync(timeout);
+			return Main.getSWController().getGame().getCurrentGameState().getTrash().get(packet.getHalikarnassusIndex());
+		}catch(RuntimeException e) {
+			stop();
+		}
+		return null;
 	}
 
 	/**
@@ -53,10 +68,15 @@ public class Multiplayer extends ArtInt{
 	 */
 	@Override
 	public Card getSelectedCard() {
-		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-		PlayerSelectedCardPacket packet = (PlayerSelectedCardPacket) client.createWaitFor(PlayerSelectedCardPacket.class).getSync(timeout);
-		this.selectedCard = this.getHand().get(packet.getHandIndex());
-		return this.selectedCard;
+		try {
+			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
+			PlayerSelectedCardPacket packet = (PlayerSelectedCardPacket) client.createWaitFor(PlayerSelectedCardPacket.class).getSync(timeout);
+			this.selectedCard = this.getHand().get(packet.getHandIndex());
+			return this.selectedCard;
+		}catch(RuntimeException e) {
+			stop();
+		}
+		return null;
 	}
 
 	/**
@@ -64,10 +84,15 @@ public class Multiplayer extends ArtInt{
 	 */
 	@Override
 	public Action getAction() {
-		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-		PlayerActionPacket packet = (PlayerActionPacket) client.createWaitFor(PlayerActionPacket.class).getSync(timeout);
-		this.action = packet.getAction();
-		return packet.getAction();
+		try {
+			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
+			PlayerActionPacket packet = (PlayerActionPacket) client.createWaitFor(PlayerActionPacket.class).getSync(timeout);
+			this.action = packet.getAction();
+			return packet.getAction();
+		}catch(RuntimeException e) {
+			stop();
+		}
+		return null;
 	}
 
 	/**
@@ -75,14 +100,19 @@ public class Multiplayer extends ArtInt{
 	 */
 	@Override
 	public TradeOption getTradeOption() {
-		PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-		PlayerTradeOptionPacket packet = (PlayerTradeOptionPacket) client.createWaitFor(PlayerTradeOptionPacket.class).getSync(timeout);
-		
-		if(this.action == Action.PLACE_SLOT) {
-			return Main.getSWController().getPlayerController().getTradeOptions(this,new ArrayList<>(Arrays.asList(getBoard().getSlotResquirement(getBoard().nextSlot())))).get(packet.getTradeOptionIndex());
-		}else {
-			return Main.getSWController().getPlayerController().getTradeOptions(this, this.selectedCard.getRequired()).get(packet.getTradeOptionIndex());
+		try {
+			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
+			PlayerTradeOptionPacket packet = (PlayerTradeOptionPacket) client.createWaitFor(PlayerTradeOptionPacket.class).getSync(timeout);
+			
+			if(this.action == Action.PLACE_SLOT) {
+				return Main.getSWController().getPlayerController().getTradeOptions(this,new ArrayList<>(Arrays.asList(getBoard().getSlotResquirement(getBoard().nextSlot())))).get(packet.getTradeOptionIndex());
+			}else {
+				return Main.getSWController().getPlayerController().getTradeOptions(this, this.selectedCard.getRequired()).get(packet.getTradeOptionIndex());
+			}
+		}catch(RuntimeException e) {
+			stop();
 		}
+		return null;
 	}
 	
 	/**

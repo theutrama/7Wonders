@@ -59,7 +59,6 @@ public class ResultViewController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		btn_ok.setOnAction(e -> { Main.primaryStage.getScene().setRoot(new MainMenuViewController()); });
 
 		col_rank.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getRank()));
@@ -90,7 +89,7 @@ public class ResultViewController extends BorderPane {
 		}
 		
 		table_result.setItems(FXCollections.observableList(stats));
-		
+		Main.getSWController().getMultiplayerController().close();
 		col_rank.setSortType(SortType.ASCENDING);
 	}
 

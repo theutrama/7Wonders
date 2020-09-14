@@ -48,7 +48,7 @@ public class MainMenuViewController extends BorderPane {
 		}
 		btn_multiplayer.setOnAction(event -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MultiplayerListViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);
-
+		Main.getSWController().getMultiplayerController().close();
 		btn_newgame.setOnAction(event -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 			Main.primaryStage.getScene().setRoot(new NewGameViewController());
 		});

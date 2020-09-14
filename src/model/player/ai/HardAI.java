@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import application.Main;
 import controller.utils.BuildCapability;
-import controller.utils.TradeOption;
 import model.GameState;
 import model.board.WonderBoard;
 import model.card.Card;
-import model.card.Resource;
 import model.card.ResourceType;
 import model.player.Player;
 
 /** Hard Artificial Intelligence */
 public class HardAI extends AdvancedAI {
 	private static final long serialVersionUID = 1L;
+	
+	private static final String TRADINGPOST = "tradingpost", ALEXANDRIA = "Alexandria", EPHESOS = "Ephesos", HALIKARNASSUS = "Halikarnassus", MARKETPLACE = "marketplace";
 
 	/**
 	 * create a hard AI
@@ -81,22 +81,22 @@ public class HardAI extends AdvancedAI {
 			
 			if (state.isTwoPlayers()) {
 				for (Card card: player.getBoard().getTrade()) {
-					if (card.getInternalName().contains("tradingpost")) {
+					if (card.getInternalName().contains(TRADINGPOST)) {
 						value += 10;
 						break;
 					}
 				}
 			} else {
 				for (Card card: player.getBoard().getTrade()) {
-					if (card.getInternalName().contains("tradingpost")) {
+					if (card.getInternalName().contains(TRADINGPOST)) {
 						value += 10;
 					}
 				}
 			}
 			
-			if (player.getBoard().getBoardName().equals("Alexandria") || player.getBoard().getBoardName().equals("Ephesos") || player.getBoard().getBoardName().equals("Halikarnassus")) {
+			if (player.getBoard().getBoardName().equals(ALEXANDRIA) || player.getBoard().getBoardName().equals(EPHESOS) || player.getBoard().getBoardName().equals(HALIKARNASSUS)) {
 				for (Card card: player.getBoard().getTrade()) {
-					if (card.getInternalName().contains("marketplace")) {
+					if (card.getInternalName().contains(MARKETPLACE)) {
 						value += 5;
 						break;
 					}
@@ -212,21 +212,6 @@ public class HardAI extends AdvancedAI {
 			break;
 		}
 		return value;
-	}
-
-	/**
-	 * higher is worse
-	 * 
-	 * @param resources list of resources
-	 * @param player    this
-	 * @param state     game state
-	 * @return cost for the required trade
-	 */
-	private int getTradeValue(ArrayList<Resource> resources, Player player, GameState state) {
-		ArrayList<TradeOption> trades = Main.getSWController().getPlayerController().getTradeOptions(player, resources, state);
-		if (trades.isEmpty())
-			return 0;
-		return trades.get(0).getLeftCost() + trades.get(0).getRightCost();
 	}
 
 	/**

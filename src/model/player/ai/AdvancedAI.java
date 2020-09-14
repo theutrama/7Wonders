@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import application.Main;
+import controller.GameController;
 import controller.utils.BuildCapability;
 import controller.utils.TradeOption;
 import model.GameState;
@@ -225,7 +226,7 @@ public abstract class AdvancedAI extends ArtInt {
 				newLeaf.getState().setCurrentPlayer((newLeaf.getState().getCurrentPlayer() + 1) % newLeaf.getState().getPlayers().size());
 
 				if (newLeaf.getState().getCurrentPlayer() == newLeaf.getState().getFirstPlayer()) {
-					if (newLeaf.getState().getRound() < 6)
+					if (newLeaf.getState().getRound() < GameController.NUM_ROUNDS)
 						Main.getSWController().getGameController().nextRound(Main.getSWController().getGame(), newLeaf.getState());
 					else // stop look-ahead at the end of age
 						breakAfterwards = true;

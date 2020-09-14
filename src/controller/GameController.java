@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +32,10 @@ import view.result.ResultViewController;
  */
 public class GameController {
 	/** constants for PMD */
-	private static final int NUM_ROUNDS = 6, NUM_AGES = 3, FIRST_AGE = 1, SECOND_AGE = 2;
+	public static final int NUM_ROUNDS = 6;
+	private static final int NUM_AGES = 3;
+	private static final int FIRST_AGE = 1;
+	private static final int SECOND_AGE = 2;
 	/** main controller */
 	private SevenWondersController swController;
 	/** view controller */
@@ -167,30 +172,21 @@ public class GameController {
 		state.setRound(1);
 		Stack<Card> ageCards = new Stack<Card>();
 		for (Card card : state.getCardStack())
-			if (card.getAge() == state.getAge()) {
+			if (card.getAge() == state.getAge())
 				ageCards.push(card);
-			}
-
 		for (Player player : state.getPlayers()) {
-
 			if (state.getAge() > FIRST_AGE) {
 				state.getTrash().add(player.getHand().get(0));
 				player.getHand().clear();
 			}
-
-			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1)) {
+			if (player.getBoard().getBoardName().equals("Olympia") && player.getBoard().isFilled(1))
 				player.setOlympiaUsed(false);
-			}
-
-			System.out.println("ageCards: " + ageCards.size() + " " + player.getName());
 			for (int i = 0; i < 7; i++) {
 				Card card = ageCards.pop();
-
 				player.getHand().add(card); // assign card to player hand
 				state.getCardStack().remove(card); // delete card from card stack
 			}
 		}
-
 		int size = ageCards.size();
 		// Add the rest of the cards from this age to the Trash
 		for (int i = 0; i < size; i++) {
@@ -198,11 +194,9 @@ public class GameController {
 			state.getTrash().add(card);
 			state.getCardStack().remove(card);
 		}
-
 		int startPlayer = (state.getFirstPlayer() + 1) % state.getPlayers().size();
 		state.setFirstPlayer(startPlayer);
 		state.setCurrentPlayer(startPlayer);
-
 		game.deleteRedoStates();
 	}
 
@@ -219,28 +213,30 @@ public class GameController {
 			return false;
 
 		SevenWondersController controller = SevenWondersController.getInstance();
-		DataInputStream in = null;
+		//DataInputStream input = null;
+		BufferedReader input = null;
 		try {
-			in = new DataInputStream(new FileInputStream(file));
+			// input = new DataInputStream(new FileInputStream(file));
+			input = new BufferedReader(new FileReader(file));
 
 			String line = null;
-			line = in.readLine(); // age,card
+			line = input.readLine(); // age,card
 			NewCSVGameViewController view = new NewCSVGameViewController();
-			String wonder1 = in.readLine().split(",")[1];
+			String wonder1 = input.readLine().split(",")[1];
 			view.addPlayer("Spieler", Utils.toWonder(wonder1), true);
 
 			ArrayList<Card> cards = new ArrayList<Card>();
 			String[] split;
-			int ai = 1;
-			while ((line = in.readLine()) != null) {
+			int aiNum = 1;
+			while ((line = input.readLine()) != null) {
 				if (line.contains(",")) {
 					split = line.split(",");
 					int age = Integer.valueOf(split[0]);
 
 					if (age == 0) {
 						String wonder = Utils.toCard(split[1], age);
-						view.addPlayer("AI-Spieler" + ai, Utils.toWonder(wonder), true);
-						ai++;
+						view.addPlayer("AI-Spieler" + aiNum, Utils.toWonder(wonder), true);
+						aiNum++;
 					} else {
 						String cardname = Utils.toCard(split[1], age);
 						Card card = controller.getCardController().getCard(cardname);
@@ -268,9 +264,9 @@ public class GameController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (in != null)
+			if (input != null)
 				try {
-					in.close();
+					input.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

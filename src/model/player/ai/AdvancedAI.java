@@ -108,7 +108,7 @@ public abstract class AdvancedAI extends ArtInt {
 
 		this.next = maxMove;
 
-		System.out.println("[" + getClass().getName() + "] action: " + next.getAction() + "  card: " + next.getCard());
+		System.out.println("[" + getClass().getSimpleName() + "] action: " + next.getAction() + "  card: " + next.getCard());
 
 	}
 
@@ -183,7 +183,7 @@ public abstract class AdvancedAI extends ArtInt {
 				if (!finished.value)
 					flag.value = true;
 			}
-		}, 9850);
+		}, 9000);
 
 		while (true) {
 			ArrayList<MoveTree> newLeaves = new ArrayList<>();

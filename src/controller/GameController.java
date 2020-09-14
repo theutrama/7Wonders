@@ -314,9 +314,9 @@ public class GameController {
 	private void endGame(Game game, GameState state) {
 
 		for (Player player : state.getPlayers()) {
-			runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
-			runEffects(player, player.getBoard().getGuilds(), state.isTwoPlayers());
-			runEffects(player, player.getBoard().getCivil(), state.isTwoPlayers());
+			runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
+			runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
+			runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
 			// conflicts
 			player.addVictoryPoints(player.getConflictPoints());
 			player.addVictoryPoints(-player.getLosePoints());
@@ -349,10 +349,11 @@ public class GameController {
 	/**
 	 * calls {@link Effect#run(Player)} for all effects for each given card
 	 * 
+	 * @param state game state
 	 * @param player player
 	 * @param cards  list of cards from the player's game board
 	 */
-	public void runEffects(Player player, ArrayList<Card> cards, boolean twoPlayers) {
+	public void runEffects(GameState state, Player player, ArrayList<Card> cards, boolean twoPlayers) {
 		for (Card card : cards) {
 			if (card.getEffects() == null)
 				continue;

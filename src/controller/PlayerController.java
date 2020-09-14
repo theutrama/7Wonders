@@ -116,7 +116,7 @@ public class PlayerController {
 	/**
 	 * find neighbour
 	 * 
-	 * @param state game state
+	 * @param state  game state
 	 * @param left   = True -> Left Neighbour or False -> Right Neighbour
 	 * @param player player
 	 * @return neighbour

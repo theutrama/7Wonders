@@ -91,15 +91,20 @@ public class HardAI extends AdvancedAI {
 			for (Card card : player.getBoard().getResources()) {
 				if (card.getProducing().size() == 1) {
 					ResourceType type = card.getProducing().get(0).getType();
-					if (type != player.getBoard().getSlotResquirement(0).getType() && type != player.getBoard().getSlotResquirement(1).getType()
-							&& type != player.getBoard().getSlotResquirement(2).getType())
-						value -= 1;
-				}
+					if (type == player.getBoard().getSlotResquirement(0).getType() || type == player.getBoard().getSlotResquirement(1).getType()
+							|| type == player.getBoard().getSlotResquirement(2).getType())
+						value += 3;
+				} else
+					value += 3;
 			}
 			
-			for (BuildCapability capacity: capas)
-				if (capacity != BuildCapability.NONE)
-					value += 10;
+//			for (BuildCapability capacity: capas)
+//				if (capacity != BuildCapability.NONE)
+//					value += 10;
+			
+			for (int i = 0; i < 3; i++)
+				if (capas[i] != BuildCapability.NONE)
+					value += (10 - i);
 			
 			value -= player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 
@@ -109,7 +114,7 @@ public class HardAI extends AdvancedAI {
 
 			// Civil ////////////////////////////////////////////////////////////////
 
-			value += getCivilPoints(player) / 2;
+			// value += getCivilPoints(player) / 2;
 
 			// Military /////////////////////////////////////////////////////////////
 
@@ -259,9 +264,9 @@ public class HardAI extends AdvancedAI {
 
 			// Victory points //////////////////////////////////////////
 
-			Main.getSWController().getGameController().runEffects(player, player.getBoard().getTrade(), state.isTwoPlayers());
-			Main.getSWController().getGameController().runEffects(player, player.getBoard().getGuilds(), state.isTwoPlayers());
-			Main.getSWController().getGameController().runEffects(player, player.getBoard().getCivil(), state.isTwoPlayers());
+			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
+			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
+			Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
 			// conflicts
 			player.addVictoryPoints(player.getConflictPoints());
 			player.addVictoryPoints(-player.getLosePoints());

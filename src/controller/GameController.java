@@ -339,7 +339,9 @@ public class GameController {
 					Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
 			}
 		}
-		((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
+		if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
+			((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
+		
 		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getIOController().deleteFile(game.getName());
 		Main.primaryStage.setOnCloseRequest(event -> Main.getSWController().getIOController().saveRanking());

@@ -185,6 +185,7 @@ public class MultiplayerController implements EventListener{
 			Main.primaryStage.setOnCloseRequest( s -> {
 				Main.getSWController().getMultiplayerController().close();
 				Main.getSWController().getIOController().saveRanking();
+				 System.exit(0);
 			});
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

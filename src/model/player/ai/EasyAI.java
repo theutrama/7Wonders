@@ -424,8 +424,8 @@ public class EasyAI extends ArtInt{
 				rating += 2.5;
 				debug("9.1) RATING add 2.5");
 			}else if(coins < Utils.getValue(10)) {
-				rating += 1.5;
-				debug("9.2) RATING add 1.5");
+				rating += 1;
+				debug("9.2) RATING add 1");
 			}
 			break;
 		}

@@ -31,17 +31,31 @@ public class AITest {
 	public void testAdvancedAI() {
 		WonderBoard board = state.getPlayers().get(0).getBoard();
 		
+		state.setRound(6);
+		testAll(board);
+		
+		for (int i = 0; i < 3; i++)
+			state.getTrash().add(state.getCardStack().remove(0));
+		
+		state.setRound(1);
 		testAll(board);
 		state.setRound(6);
 		testAll(board);
+		state.setAge(2);
+		testAll(board);
+		state.setAge(3);
+		testAll(board);
 	}
-	
+
 	/**
 	 * test all AIs
+	 * 
 	 * @param board
 	 */
 	private void testAll(WonderBoard board) {
 		HardAI hard = new HardAI("hard ai", board);
+		hard.setMausoleum(true);
+		hard.setOlympiaUsed(false);
 		hard.setHand(state.getPlayers().get(0).getHand());
 		state.getPlayers().remove(0);
 		board.setPlayer(hard);
@@ -51,7 +65,7 @@ public class AITest {
 		hard.getHalikarnassusCard(hard, state.getTrash(), state);
 		hard.getSelectedCard();
 		hard.getTradeOption();
-		
+
 		MediumAI medium = new MediumAI("medium", board);
 		medium.setHand(state.getPlayers().get(0).getHand());
 		state.getPlayers().remove(0);
@@ -62,7 +76,7 @@ public class AITest {
 		medium.getHalikarnassusCard(medium, state.getTrash(), state);
 		medium.getSelectedCard();
 		medium.getTradeOption();
-		
+
 		EasyAI easy = new EasyAI("medium", board);
 		easy.setHand(state.getPlayers().get(0).getHand());
 		state.getPlayers().remove(0);

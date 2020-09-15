@@ -30,7 +30,7 @@ public class Main extends Application {
 
 		try {
 			MainMenuViewController mainMenuViewController = new MainMenuViewController();
-			Scene scene = new Scene(mainMenuViewController, 1000, 800);
+			Scene scene = new Scene(mainMenuViewController, 1200, 800);
 			primaryStage.setScene(scene);
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();

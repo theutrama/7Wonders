@@ -86,6 +86,8 @@ public abstract class AdvancedAI extends ArtInt {
 		}
 		if (maxIndex == -1)
 			return null;
+		
+		System.out.println("[" + getClass().getSimpleName() + "] halikarnassus card: " + trash.get(maxIndex));
 		return trash.get(maxIndex);
 	}
 	

@@ -130,7 +130,7 @@
                         </Button>
                         <Button fx:id="btnHint" mnemonicParsing="false" style="-fx-border-width: 3px; -fx-border-color: #11111188;" StackPane.alignment="CENTER_RIGHT">
                            <graphic>
-                              <Label text="Tipp">
+                              <Label fx:id="labelHint" text="Tipp">
                                  <styleClass>
                                     <String fx:value="fontstyle" />
                                     <String fx:value="dropshadow" />

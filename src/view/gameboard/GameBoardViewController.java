@@ -101,6 +101,9 @@ public class GameBoardViewController extends VBox {
 	@FXML
 	private Button btnHint;
 
+	@FXML
+	private Label labelHint;
+
 	private ArrayList<StackPane> boardPanes;
 	private boolean action;
 
@@ -136,6 +139,7 @@ public class GameBoardViewController extends VBox {
 			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 			Main.getSWController().getGameController().setGbvController(null);
 		});
+		btnBack.setTooltip(noDelay(new Tooltip("Speichern und zum Hauptmenü")));
 
 		btnUndo.setOnAction(event -> {
 			if (Main.getSWController().getGameController().undo(Main.getSWController().getGame())) {
@@ -1098,9 +1102,8 @@ public class GameBoardViewController extends VBox {
 			}
 		}
 
-		btnHint.setVisible(!(player instanceof ArtInt));
-
 		if (player instanceof ArtInt) {
+			btnHint.setVisible(false);
 			new Thread(() -> {
 				((ArtInt) player).calculateNextMove();
 				Card selected = ((ArtInt) player).getSelectedCard();
@@ -1111,53 +1114,66 @@ public class GameBoardViewController extends VBox {
 			}).start();
 		} else {
 			btnHint.setOnAction(event -> {
-				btnHint.setVisible(false);
-				Main.getSWController().getGame().disableHighscore();
-				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
-				HardAI artint = new HardAI(player.getName(), player.getBoard());
-				artint.calculateNextMove();
-				int index = indexOf(player.getHand(), artint.getSelectedCard());
-				if (index == -1)
-					return;
-				Button btn = (Button) ((VBox) hboxCards.getChildren().get(index)).getChildren().get(1);
-				ImageView img = (ImageView) btn.getGraphic();
-				ImageView icon = null;
-				try {
-					switch (artint.getAction()) {
-					case BUILD:
-						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "place.png"));
-						icon.setFitWidth(90);
-						icon.setFitHeight(60);
-						break;
-					case OLYMPIA:
-						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "olympia.png"));
-						icon.setFitWidth(52.5);
-						icon.setFitHeight(60);
-						break;
-					case PLACE_SLOT:
-						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (player.getBoard().nextSlot() + 1) + ".png"));
-						icon.setFitWidth(77);
-						icon.setFitHeight(60);
-						break;
-					case SELL:
-						icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin3.png"));
-						icon.setFitWidth(65);
-						icon.setFitHeight(61.5);
-						break;
-					default:
-						break;
-					}
-				} catch (IOException exception) {
-					exception.printStackTrace();
-				}
-				BorderPane bpane = new BorderPane(icon);
-				bpane.setPadding(new Insets(10, 10, 10, 10));
-				bpane.setStyle("-fx-background-color: #D0D0D090");
-				StackPane stackpane = new StackPane(img, bpane);
-				stackpane.setAlignment(Pos.CENTER);
-				stackpane.setStyle("-fx-border-color: white; -fx-border-width: 4px; -fx-border-radius: 3px;");
-				btn.setGraphic(stackpane);
+				labelHint.setText("Tipp wird berechnet...");
+				btnHint.setOnAction(null);
+				new Thread(() -> {
+					Main.getSWController().getGame().disableHighscore();
+					Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
+					HardAI artint = new HardAI(player.getName(), player.getBoard());
+					artint.calculateNextMove();
+					Platform.runLater(() -> {
+						btnHint.setVisible(false);
+						labelHint.setText("Tipp");
+						int index = indexOf(player.getHand(), artint.getSelectedCard());
+						if (index == -1)
+							return;
+						Button btn = (Button) ((VBox) hboxCards.getChildren().get(index)).getChildren().get(1);
+						ImageView img = (ImageView) btn.getGraphic();
+						ImageView icon = null;
+						try {
+							switch (artint.getAction()) {
+							case BUILD:
+								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "place.png"));
+								icon.setFitWidth(90);
+								icon.setFitHeight(60);
+								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte gebaut werden")));
+								break;
+							case OLYMPIA:
+								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "olympia.png"));
+								icon.setFitWidth(52.5);
+								icon.setFitHeight(60);
+								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte mit der\nOlympia-Fähigkeit gebaut werden")));
+								break;
+							case PLACE_SLOT:
+								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (player.getBoard().nextSlot() + 1) + ".png"));
+								icon.setFitWidth(77);
+								icon.setFitHeight(60);
+								Tooltip.install(icon, noDelay(new Tooltip("Mit dieser Karte sollte das Wunder ausgebaut werden")));
+								break;
+							case SELL:
+								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin3.png"));
+								icon.setFitWidth(65);
+								icon.setFitHeight(61.5);
+								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte verkauft werden")));
+								break;
+							default:
+								break;
+							}
+						} catch (IOException exception) {
+							exception.printStackTrace();
+						}
+						icon.setPickOnBounds(true);
+						BorderPane bpane = new BorderPane(icon);
+						bpane.setPadding(new Insets(10, 10, 10, 10));
+						bpane.setStyle("-fx-background-color: #D0D0D090");
+						StackPane stackpane = new StackPane(img, bpane);
+						stackpane.setAlignment(Pos.CENTER);
+						stackpane.setStyle("-fx-border-color: white; -fx-border-width: 4px; -fx-border-radius: 3px;");
+						btn.setGraphic(stackpane);
+					});
+				}).start();
 			});
+			btnHint.setVisible(true);
 		}
 	}
 
@@ -1266,10 +1282,13 @@ public class GameBoardViewController extends VBox {
 		} else {
 			btnHint.setVisible(true);
 			btnHint.setOnAction(event -> {
-				btnHint.setVisible(false);
+				labelHint.setText("Tipp wird berechnet...");
+				btnHint.setOnAction(null);
 				Main.getSWController().getGame().disableHighscore();
 				Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
 				Card card = new HardAI(player.getName(), player.getBoard()).getHalikarnassusCard(player, game().getTrash(), game());
+				btnHint.setVisible(false);
+				labelHint.setText("Tipp");
 				int index = indexOf(game().getTrash(), card);
 				if (index == -1) {
 					System.err.println("mausoleum card invalid: " + card.getName());

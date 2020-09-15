@@ -97,9 +97,9 @@ public class MultiplayerController implements EventListener{
 	 * @param ev	TradeOptionEvent for Player
 	 */
 	@EventHandler
-	public void trade(PlayerTradeOptionEvent ev) {
+	public void trade(PlayerTradeOptionEvent event) {
 		if(isConnected()) {
-			PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(ev.getOptionIndex());
+			PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(event.getOptionIndex());
 			getClient().write(packet);
 		}
 	}
@@ -109,9 +109,9 @@ public class MultiplayerController implements EventListener{
 	 * @param ev HalikarnassusEvent for Player
 	 */
 	@EventHandler
-	public void hali(PlayerHalikarnassusEvent ev) {
+	public void hali(PlayerHalikarnassusEvent event) {
 		if(isConnected()) {
-			Card selected = ev.getCard();
+			Card selected = event.getCard();
 			PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
 			getClient().write(packet);
 		}
@@ -122,10 +122,10 @@ public class MultiplayerController implements EventListener{
 	 * @param ev SelectedCardEvent for Player
 	 */
 	@EventHandler
-	public void select(PlayerSelectedCardEvent ev) {
+	public void select(PlayerSelectedCardEvent event) {
 		if(isConnected()) {
-			Card selected = ev.getCard();
-			Player player = ev.getPlayer();
+			Card selected = event.getCard();
+			Player player = event.getPlayer();
 			PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
 			getClient().write(packet);
 		}
@@ -136,9 +136,9 @@ public class MultiplayerController implements EventListener{
 	 * @param ev ActionEvent for Player
 	 */
 	@EventHandler
-	public void action(PlayerActionEvent ev) {
+	public void action(PlayerActionEvent event) {
 		if(isConnected()) {
-			PlayerActionPacket packet = new PlayerActionPacket(ev.getAction());
+			PlayerActionPacket packet = new PlayerActionPacket(event.getAction());
 			getClient().write(packet);
 		}
 	}
@@ -148,20 +148,20 @@ public class MultiplayerController implements EventListener{
 	 * @param ev	Event for received package
 	 */
 	@EventHandler
-	public void rec(PacketReceiveEvent ev) {
+	public void rec(PacketReceiveEvent event) {
 		if(!isConnected())return;
-		if(ev.getPacket() instanceof PingPacket)return;
+		if(event.getPacket() instanceof PingPacket)return;
 		
 		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {
-			System.out.println("RECEIVED PAKCET FOR PACKETLISTENER "+ev.getPacket().getPacketName());
+			System.out.println("RECEIVED PAKCET FOR PACKETLISTENER "+event.getPacket().getPacketName());
 			PacketListener view = (PacketListener)Main.primaryStage.getScene().getRoot();
-			view.handle(ev.getPacket());
-		}else if(isInGame() && ev.getPacket() instanceof LobbyClosePacket) {
+			view.handle(event.getPacket());
+		}else if(isInGame() && event.getPacket() instanceof LobbyClosePacket) {
 			LobbyViewController view = null;
 			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
 			view.error("Der Owner hat die Lobby verlassen...");
 			Main.getSWController().setGame(null);
-		}else if(isInGame() && ev.getPacket() instanceof LobbyPlayersPacket) {
+		}else if(isInGame() && event.getPacket() instanceof LobbyPlayersPacket) {
 			LobbyViewController view = null;
 			if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
 				((GameBoardViewController)Main.primaryStage.getScene().getRoot()).exit();

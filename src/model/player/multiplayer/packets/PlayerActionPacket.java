@@ -30,8 +30,8 @@ public class PlayerActionPacket extends Packet{
 	 * @param DataInputStream 		the DataInputStream
 	 */
 	@Override
-	public void parseFromInput(DataInputStream in) throws IOException {
-		this.action = Action.values()[in.readInt()];
+	public void parseFromInput(DataInputStream input) throws IOException {
+		this.action = Action.values()[input.readInt()];
 	}
 
 	/**

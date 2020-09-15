@@ -20,13 +20,68 @@
 .dropshadow {
 	-fx-effect: dropshadow( one-pass-box , black , 4 , 0.0 , 1 , 0 )
 }
-.table-view {
-	-fx-background-color:transparent ;
-}
-.table-view .column-header {
-	-fx-background-color: transparent;
-}
 .fontstyle {
 	-fx-font-family: 'Bookman Old Style';
 	-fx-font-size:24;
+}
+.headline {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:32;
+}
+
+.table-view {
+    -fx-base: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-color: #46464633;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color: 
+        transparent
+        transparent
+        #464646
+        transparent;
+    -fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 12pt;
+    -fx-font-family: 'Bookman Old Style';
+    -fx-text-fill: #464646;
+    -fx-alignment: center;
+    -fx-opacity: 1;
+    -fx-background-color: transparent;
+}
+.table-row-cell:filled:selected {
+  -fx-background: -fx-control-inner-background ;
+  -fx-background-color: -fx-table-cell-border-color, -fx-background ;
+  -fx-background-insets: 0, 0 0 1 0 ;
+  -fx-table-cell-border-color: derive(-fx-color, 5%);
+}
+.table-cell,
+.table-row-cell {
+    -fx-font-size: 11pt;
+    -fx-font-family: 'Bookman Old Style';
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-opacity: 1;
+    -fx-background-color: transparent;
+    -fx-effect: dropshadow( one-pass-box , #424242BB , 4 , 0.0 , 1 , 0 )
+}
+.table-row-cell:odd:filled:selected {
+  -fx-background: -fx-control-inner-background-alt ;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: transparent;
 }

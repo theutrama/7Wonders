@@ -15,21 +15,25 @@
 
 <fx:root styleClass="backroundpane" stylesheets="@styles.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="576.0" prefWidth="852.0" spacing="35.0" styleClass="dropshadow">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600" minWidth="800" prefHeight="576.0" prefWidth="852.0" spacing="35.0">
          <children>
             <Label text="Übersicht">
                <font>
                   <Font name="Bookman Old Style Bold" size="34.0" />
                </font>
+               <styleClass>
+                  <String fx:value="headline" />
+                  <String fx:value="dropshadow" />
+               </styleClass>
             </Label>
             <TableView fx:id="table_result">
               <columns>
-                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="60.0" />
-                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="180.0" text="Spielername" />
-                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Siegpunkte" />
-                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Sieg-Marker" />
-                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Niederlage-Marker" />
-                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="120.0" text="Münzen" />
+                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="60.0" text="Rang" />
+                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="187.19996643066406" text="Spielername" />
+                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="117.60003662109375" text="Siegpunkte" />
+                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="170.800048828125" text="Sieg-Marker" />
+                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="176.40008544921875" text="Niederlage-Marker" />
+                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="115.199951171875" text="Münzen" />
               </columns>
             </TableView>
          </children>

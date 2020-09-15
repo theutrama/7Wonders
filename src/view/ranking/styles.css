@@ -23,7 +23,7 @@
 .table-view {
     -fx-base: transparent;
     -fx-control-inner-background: transparent;
-    -fx-background-color: #46464622;
+    -fx-background-color: #46464633;
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
     -fx-padding: 5;
@@ -76,9 +76,6 @@
 .table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: transparent;
 }
-
-
-
 .fontstyle {
 	-fx-font-family: 'Bookman Old Style';
 	-fx-font-size:24;

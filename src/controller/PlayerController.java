@@ -35,7 +35,8 @@ public class PlayerController {
 	/**
 	 * create player controller
 	 * 
-	 * @param swController
+	 * @param swController swcontroller
+	 * @param wbc          wonder controller
 	 */
 	public PlayerController(SevenWondersController swController, WonderBoardController wbc) {
 		this.swController = swController;
@@ -118,7 +119,7 @@ public class PlayerController {
 	 * find neighbour
 	 * 
 	 * @param state  game state
-	 * @param left   = True -> Left Neighbour or False -> Right Neighbour
+	 * @param left   true for left or false for right neighbour
 	 * @param player player
 	 * @return neighbour
 	 */
@@ -134,6 +135,7 @@ public class PlayerController {
 	/**
 	 * find left neighbour
 	 * 
+	 * @param state  game state
 	 * @param player player
 	 * @return left neighbour
 	 */
@@ -144,6 +146,7 @@ public class PlayerController {
 	/**
 	 * find right neighbour
 	 * 
+	 * @param state  game state
 	 * @param player player
 	 * @return right neighbour
 	 */
@@ -389,7 +392,7 @@ public class PlayerController {
 		for (ResourceBundle bundle : combinations) // get list of missing resource quantities per combination
 			missing.add(bundle.getMissing(resources));
 		ArrayList<TradeOption> result = new ArrayList<>();
-		
+
 		if (state.isTwoPlayers()) {
 			Player neighbour = getNeighbour(state, false, player);
 			ArrayList<ResourceBundle> trades = new ArrayList<>();

@@ -5,7 +5,7 @@ import model.ranking.Ranking;
 
 /** SevenWonders Controller */
 public class SevenWondersController {
-	
+
 	/** Game Controller */
 	private GameController gameController;
 	/** Player Controller */
@@ -26,15 +26,18 @@ public class SevenWondersController {
 	private MultiplayerController multiplayerController;
 	/** instance of SevenWonders Controller */
 	private static SevenWondersController instance;
+
 	/**
 	 * getter for {@link #instance}
+	 * 
 	 * @return instance
 	 */
 	public static SevenWondersController getInstance() {
-		if(instance == null) instance= new SevenWondersController();
+		if (instance == null)
+			instance = new SevenWondersController();
 		return instance;
 	}
-	
+
 	/**
 	 * create new SevenWonders Controller
 	 */
@@ -42,79 +45,90 @@ public class SevenWondersController {
 		this.wonderBoardController = new WonderBoardController();
 		this.multiplayerController = new MultiplayerController();
 		this.gameController = new GameController(this);
-		this.playerController = new PlayerController(this,this.wonderBoardController);
+		this.playerController = new PlayerController(this, this.wonderBoardController);
 		this.cardController = new CardController(this);
 		this.ioController = new IOController(this);
 		this.soundController = new SoundController();
-		
+
 		this.ioController.loadRanking();
 	}
+
 	/**
 	 * @return GameController
 	 */
 	public GameController getGameController() {
 		return gameController;
 	}
+
 	/**
 	 * @return Multiplayer Controller
 	 */
 	public MultiplayerController getMultiplayerController() {
 		return multiplayerController;
 	}
+
 	/**
 	 * @return WonderBoard Controller
 	 */
 	public WonderBoardController getWonderBoardController() {
 		return wonderBoardController;
 	}
+
 	/**
 	 * @return CardController
 	 */
 	public CardController getCardController() {
 		return cardController;
 	}
+
 	/**
 	 * @return IOController
 	 */
 	public IOController getIOController() {
 		return ioController;
 	}
+
 	/**
 	 * @return PlayerController
 	 */
 	public PlayerController getPlayerController() {
 		return playerController;
 	}
+
 	/**
 	 * @return SoundController
 	 */
 	public SoundController getSoundController() {
 		return soundController;
 	}
+
 	/**
 	 * @return current Game
 	 */
 	public Game getGame() {
 		return game;
 	}
+
 	/**
 	 * Sets current Game
 	 * 
-	 * @param game
+	 * @param game game
 	 */
 	public void setGame(Game game) {
 		this.game = game;
 	}
+
 	/**
 	 * @return ranking
 	 */
 	public Ranking getRanking() {
 		return ranking;
 	}
+
 	/**
 	 * Sets current Ranking
 	 * 
-	 * @param ranking
+	 * @param ranking ranking object
 	 */
 	public void setRanking(Ranking ranking) {
 		this.ranking = ranking;

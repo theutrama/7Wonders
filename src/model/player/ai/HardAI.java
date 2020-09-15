@@ -182,7 +182,7 @@ public class HardAI extends AdvancedAI {
 		player.addVictoryPoints(-neighbour.getLosePoints());
 		player.addVictoryPoints(neighbour.getCoins() / 3);
 		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(neighbour));
-		value -= neighbour.getVictoryPoints();
+		value -= neighbour.getVictoryPoints() / 2;
 		return value;
 	}
 

@@ -1,8 +1,5 @@
 package controller;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import application.Main;
 import application.Utils;
@@ -142,9 +139,9 @@ public class SoundController {
 	 */
 	public static void updateMuteIcon(ImageView imgv) {
 		if (Main.getSWController().getSoundController().isMuted())
-			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH+"musicoff.png")));
+			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH + "musicoff.png")));
 		else
-			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH+"music.png")));
+			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH + "music.png")));
 	}
 
 	private class SoundPlayer {
@@ -157,7 +154,6 @@ public class SoundController {
 			this.sound = sound;
 			this.filenames = sound.getSoundFilenames();
 			this.index = Utils.randInt(0, this.filenames.length - 1);
-			
 
 			String mediaURL = this.getClass().getClassLoader().getResource(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toExternalForm();
 			this.player = new MediaPlayer(new Media(mediaURL));
@@ -177,11 +173,11 @@ public class SoundController {
 			if (filenames.length > 1)
 				player.setOnEndOfMedia(() -> {
 					this.index++;
-					if(this.filenames.length <= this.index) 
+					if (this.filenames.length <= this.index)
 						this.index = 0;
-					
+
 					this.player.stop();
-					this.player = new MediaPlayer(new Media(new File(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toURI().toString()));
+					this.player = new MediaPlayer(new Media(this.getClass().getClassLoader().getResource(Main.SOUNDS_PATH + this.filenames[this.index] + ".mp3").toExternalForm()));
 					setVolume(volume);
 					this.player.play();
 					setLoop();

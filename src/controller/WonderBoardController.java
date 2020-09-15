@@ -25,6 +25,7 @@ public class WonderBoardController {
 	 * create new WonderBoard
 	 * 
 	 * @param name the WonderBoard's name
+	 * @return new wonder board
 	 */
 	public WonderBoard createWonderBoard(String name) {
 		return createWonderBoard(getClassByName(name));
@@ -34,6 +35,7 @@ public class WonderBoardController {
 	 * create new WonderBoard
 	 * 
 	 * @param clazz the specific WonderBoard
+	 * @return new wonder board
 	 */
 	public WonderBoard createWonderBoard(Class<? extends WonderBoard> clazz) {
 		if (this.boards.isEmpty())

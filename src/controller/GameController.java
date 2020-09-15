@@ -26,7 +26,7 @@ import view.newgame.NewCSVGameViewController;
 import view.result.ResultViewController;
 
 /** game controller for game controlling */
-@SuppressWarnings("PMD")
+//@SuppressWarnings("PMD")
 public class GameController {
 	/** constants for PMD */
 	public static final int NUM_ROUNDS = 6;

@@ -29,7 +29,7 @@ import model.card.ResourceType;
 import model.player.Player;
 
 /** The Card-Controller controls the ingame cards. */
-@SuppressWarnings("PMD")
+//@SuppressWarnings("PMD")
 public class CardController {
 	private ArrayList<Card> loadedCards = new ArrayList<Card>();
 	/** HashMap for frequency of cards */

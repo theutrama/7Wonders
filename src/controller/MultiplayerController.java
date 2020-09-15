@@ -215,7 +215,7 @@ public class MultiplayerController implements EventListener{
 			this.client.addToQueue(PlayerSelectedCardPacket.class);
 			this.client.addToQueue(PlayerHalikarnassusPacket.class);
 			this.client.addToQueue(PlayerTradeOptionPacket.class);
-			Main.primaryStage.setOnCloseRequest( s -> {
+			Main.primaryStage.setOnCloseRequest( stage -> {
 				Main.getSWController().getMultiplayerController().close();
 				Main.getSWController().getIOController().saveRanking();
 				 System.exit(0);

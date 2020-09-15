@@ -29,14 +29,14 @@
                   <String fx:value="dropshadow" />
                </styleClass>
             </Label>
-            <TableView fx:id="table_ranking" maxWidth="900.0" minWidth="600.0">
+            <TableView fx:id="table_ranking" maxWidth="940.0" prefWidth="940.0" minWidth="600.0">
               <columns>
-                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="57.600008964538574" text="Rang" />
-                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="159.59994506835938" styleClass="table-view" text="Spielername" />
-                <TableColumn fx:id="col_time" maxWidth="1.7976931348623157E308" prefWidth="173.19996643066406" text="Zeit" />
-                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="119.99996948242188" text="Siegpunkte" />
-                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="122.00006103515625" text="Sieg-Marker" />
-                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="167.59991455078125" text="Niederlage-Marker" />
+                  <TableColumn fx:id="col_rank" maxWidth="1.7976931348623157E308" prefWidth="60.0" text="Rang" />
+                <TableColumn fx:id="col_name" maxWidth="1.7976931348623157E308" prefWidth="160.0" styleClass="table-view" text="Spielername" />
+                <TableColumn fx:id="col_time" maxWidth="1.7976931348623157E308" prefWidth="170.0" text="Zeit" />
+                  <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Siegpunkte" />
+                  <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Sieg-Marker" />
+                  <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="167.0" text="Niederlage-Marker" />
                   <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="84.0" text="Münzen" />
               </columns>
             </TableView>

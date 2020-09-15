@@ -28,7 +28,7 @@ public class Ranking implements Serializable {
 	/**
 	 * adds a new stat to the {@link #playerStats} while maintaining the order
 	 * 
-	 * @param stats
+	 * @param stats stats object
 	 */
 	public void addStats(PlayerStats stats) {
 		int count = 0;

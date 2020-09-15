@@ -70,6 +70,7 @@ public class SoundController {
 	 * plays sound with/without loop
 	 * 
 	 * @param sound name of sound
+	 * @param loop true if loop, false otherwise
 	 */
 	public void play(Sound sound, boolean loop) {
 		if (Main.TEST)

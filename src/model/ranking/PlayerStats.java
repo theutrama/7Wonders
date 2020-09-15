@@ -22,11 +22,11 @@ public class PlayerStats implements Serializable {
 	/**
 	 * create new stats object, the {@link #date} is set to {@link LocalDateTime#now()}
 	 * 
-	 * @param name            player name
-	 * @param victory         victory points
-	 * @param lose            lose points
-	 * @param conflict_points conflict winning points
-	 * @param coins           coins
+	 * @param name           player name
+	 * @param victory        victory points
+	 * @param lose           lose points
+	 * @param conflictPoints conflict winning points
+	 * @param coins          coins
 	 */
 	public PlayerStats(String name, int victory, int lose, int conflictPoints, int coins) {
 		this.name = name;

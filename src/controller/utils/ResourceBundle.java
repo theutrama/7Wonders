@@ -68,6 +68,7 @@ public class ResourceBundle implements Serializable {
 	 * 
 	 * @param player          player
 	 * @param toLeftNeighbour true if these resources are bought from the player's left neighbour
+	 * @param twoPlayers      true if two player game
 	 * @return cost of these resources
 	 */
 	public int getCostForPlayer(Player player, boolean toLeftNeighbour, boolean twoPlayers) {

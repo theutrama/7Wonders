@@ -94,7 +94,7 @@ public class MultiplayerController implements EventListener{
 
 	/**
 	 * writes the TradeOption for client
-	 * @param ev	TradeOptionEvent for Player
+	 * @param event 	TradeOptionEvent for Player
 	 */
 	@EventHandler
 	public void trade(PlayerTradeOptionEvent event) {
@@ -106,7 +106,7 @@ public class MultiplayerController implements EventListener{
 
 	/**
 	 * writes the HalikarnassusEvent for client
-	 * @param ev HalikarnassusEvent for Player
+	 * @param event		 HalikarnassusEvent for Player
 	 */
 	@EventHandler
 	public void hali(PlayerHalikarnassusEvent event) {
@@ -119,7 +119,7 @@ public class MultiplayerController implements EventListener{
 	
 	/**
 	 * writes the SelectedCardEvent for client
-	 * @param ev SelectedCardEvent for Player
+	 * @param event		 SelectedCardEvent for Player
 	 */
 	@EventHandler
 	public void select(PlayerSelectedCardEvent event) {
@@ -133,7 +133,7 @@ public class MultiplayerController implements EventListener{
 
 	/**
 	 * writes the PlayerActionEvent for client
-	 * @param ev ActionEvent for Player
+	 * @param event		 ActionEvent for Player
 	 */
 	@EventHandler
 	public void action(PlayerActionEvent event) {
@@ -145,7 +145,7 @@ public class MultiplayerController implements EventListener{
 	
 	/**
 	 * handling received Package
-	 * @param ev	Event for received package
+	 * @param event		Event for received package
 	 */
 	@EventHandler
 	public void rec(PacketReceiveEvent event) {

@@ -30,8 +30,8 @@ public class PlayerHalikarnassusPacket extends Packet{
 	 * @param DataInputStream 		the DataInputStream
 	 */
 	@Override
-	public void parseFromInput(DataInputStream in) throws IOException {
-		this.index = in.readInt();
+	public void parseFromInput(DataInputStream input) throws IOException {
+		this.index = input.readInt();
 	}
 
 	/**

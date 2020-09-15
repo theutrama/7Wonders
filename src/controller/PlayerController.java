@@ -327,7 +327,7 @@ public class PlayerController {
 			}
 		}
 
-		return (card.getRequired() == null || card.getRequired().isEmpty()) ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired());
+		return (card.getRequired() == null || card.getRequired().isEmpty()) ? BuildCapability.OWN_RESOURCE : hasResources(player, card.getRequired(), state);
 	}
 
 	/**

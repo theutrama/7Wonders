@@ -59,30 +59,31 @@ public class GameController {
 	public Game createGame(String name, ArrayList<Player> players) {
 		return createGame(name, null, players);
 	}
-	
-	
+
 	/**
 	 * creates a new game with the specified list of players
 	 * 
-	 * @param name    the game's name
+	 * @param name      the game's name
 	 * @param cardStack the list of the cardStack
-	 * @param players the list of players
+	 * @param players   the list of players
 	 * @return a new game instance
 	 */
 	public Game createGame(String name, ArrayList<Card> cardStack, ArrayList<Player> players) {
 		Game game = new Game(name);
 		this.swController.setGame(game);
-		createGameFirstRound(players,cardStack, game);
+		createGameFirstRound(players, cardStack, game);
 		return game;
 	}
 
 	/**
 	 * creates a new {@link GameState} instance that represents the initial state of a new game
 	 * 
-	 * @param players player list
+	 * @param players   player list
+	 * @param cardStack card stack
+	 * @param game      game
 	 */
 	public void createGameFirstRound(ArrayList<Player> players, ArrayList<Card> cardStack, Game game) {
-		GameState state = new GameState(0, 1, players, (cardStack==null ? swController.getCardController().generateCardStack(players.size()) : cardStack));
+		GameState state = new GameState(0, 1, players, (cardStack == null ? swController.getCardController().generateCardStack(players.size()) : cardStack));
 		game.getStates().add(state);
 		nextAge(game, state);
 		game.getCurrentGameState().setFirstPlayer(0);
@@ -92,9 +93,8 @@ public class GameController {
 	/**
 	 * changes the values of the given game state to signal a new round or finishes the game
 	 * 
-	 * @param game       game instance
-	 * @param state      the game state
-	 * @param turnThread the turn thread from {@link GameBoardViewController}, must be cancelled if endGame is executed
+	 * @param game  game instance
+	 * @param state the game state
 	 * @return true if endGame was called
 	 */
 	public boolean createNextRound(Game game, GameState state) {
@@ -202,9 +202,9 @@ public class GameController {
 	/**
 	 * To Load a Game for Two Player!
 	 * 
-	 * @param filepath Filepath of the csv file
+	 * @param file file of the csv file
 	 * @return boolean weather all is fine...
-	 * @throws CardOutOfAgeException If the Card age from the table doesn't suit with age of the loaded card
+	 * @throws NullPointerException If the Card age from the table doesn't suit with age of the loaded card
 	 */
 	public boolean loadCSV(File file) throws NullPointerException {
 		// Wrong File Type
@@ -212,7 +212,7 @@ public class GameController {
 			return false;
 
 		SevenWondersController controller = SevenWondersController.getInstance();
-		//DataInputStream input = null;
+		// DataInputStream input = null;
 		BufferedReader input = null;
 		try {
 			// input = new DataInputStream(new FileInputStream(file));
@@ -319,7 +319,7 @@ public class GameController {
 			player.addVictoryPoints(player.getCoins() / 3);
 			// science
 			player.addVictoryPoints(swController.getPlayerController().getSciencePoints(player));
-			
+
 			System.out.println(player.getName() + " points: ---------");
 			int sum = 0;
 			for (Card card : player.getBoard().getCivil())
@@ -334,23 +334,24 @@ public class GameController {
 					Main.getSWController().getRanking().addStats(new PlayerStats(player.getName(), player.getVictoryPoints(), player.getLosePoints(), player.getConflictPoints(), player.getCoins()));
 			}
 		}
-		if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
+		if (Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
 			((GameBoardViewController) Main.primaryStage.getScene().getRoot()).exit();
-		
+
 		Main.getSWController().getSoundController().stopAll();
 		Main.getSWController().getIOController().deleteFile(game.getName());
-		
-		//Main.primaryStage.setOnCloseRequest(event -> Main.getSWController().getIOController().saveRanking());
-		
+
+		// Main.primaryStage.setOnCloseRequest(event -> Main.getSWController().getIOController().saveRanking());
+
 		Platform.runLater(() -> Main.primaryStage.getScene().setRoot(new ResultViewController(state.getPlayers())));
 	}
 
 	/**
-	 * calls {@link Effect#run(Player)} for all effects for each given card
+	 * calls {@link Effect#run(Player, GameState, boolean)} for all effects for each given card
 	 * 
-	 * @param state game state
+	 * @param state  game state
 	 * @param player player
 	 * @param cards  list of cards from the player's game board
+	 * @param twoPlayers two player round
 	 */
 	public void runEffects(GameState state, Player player, ArrayList<Card> cards, boolean twoPlayers) {
 		for (Card card : cards) {

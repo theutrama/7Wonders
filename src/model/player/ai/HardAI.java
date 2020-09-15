@@ -135,7 +135,7 @@ public class HardAI extends AdvancedAI {
 		int leftPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
 		int rightPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		int ownPoints = Main.getSWController().getPlayerController().getMilitaryPoints(player), maxDiff = Math.max(leftPoints - ownPoints, rightPoints - ownPoints);
-		if (maxDiff < 0)
+		if (maxDiff < 0 && maxDiff >= -2)
 			value += 4;
 		else if (maxDiff == ONE)
 			value -= 4;

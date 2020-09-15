@@ -45,7 +45,6 @@ public abstract class AdvancedAI extends ArtInt {
 		Move maxMove = null;
 
 		if (tree.getChildren().get(0).getChildren().isEmpty()) {
-			System.err.println("[Advanced AI] case 1");
 			for (MoveTree child : tree.getChildren()) {
 				int value = evaluate(child.getState(), this.getName());
 				if (value > maxValue) {

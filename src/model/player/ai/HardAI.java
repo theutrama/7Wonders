@@ -160,6 +160,7 @@ public class HardAI extends AdvancedAI {
 	 * @return value
 	 */
 	private int evaluateAge3(GameState state, Player player) {
+
 		int leftPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
 		int rightPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		int value = 0, ownPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(player), maxDiff2 = Math.max(leftPoints2 - ownPoints2, rightPoints2 - ownPoints2);
@@ -186,6 +187,19 @@ public class HardAI extends AdvancedAI {
 		player.addVictoryPoints(neighbour.getCoins() / 3);
 		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(neighbour));
 		value -= neighbour.getVictoryPoints() / 2;
+		
+		switch (player.getBoard().nextSlot()) {
+		case 1:
+			value += 3;
+			break;
+		case 2:
+			value += 8;
+			break;
+		case -1:
+			value += 15;
+			break;
+		}
+		
 		return value;
 	}
 

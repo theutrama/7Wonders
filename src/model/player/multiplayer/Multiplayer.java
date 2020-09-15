@@ -27,7 +27,7 @@ import view.multiplayer.lobby.LobbyViewController;
 
 /** class for Multiplayer */
 public class Multiplayer extends ArtInt{
-	private static final int timeout = 1000 * 60 * 5;
+	private static final int TIMEOUT = 1000 * 60 * 5;
 	
 	private Card selectedCard = null;
 	private Action action;
@@ -61,7 +61,7 @@ public class Multiplayer extends ArtInt{
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
 		try {
 			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-			PlayerHalikarnassusPacket packet = (PlayerHalikarnassusPacket) client.createWaitFor(PlayerHalikarnassusPacket.class).getSync(timeout);
+			PlayerHalikarnassusPacket packet = (PlayerHalikarnassusPacket) client.createWaitFor(PlayerHalikarnassusPacket.class).getSync(TIMEOUT);
 			return Main.getSWController().getGame().getCurrentGameState().getTrash().get(packet.getHalikarnassusIndex());
 		}catch(RuntimeException e) {
 			stop();
@@ -76,7 +76,7 @@ public class Multiplayer extends ArtInt{
 	public Card getSelectedCard() {
 		try {
 			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-			PlayerSelectedCardPacket packet = (PlayerSelectedCardPacket) client.createWaitFor(PlayerSelectedCardPacket.class).getSync(timeout);
+			PlayerSelectedCardPacket packet = (PlayerSelectedCardPacket) client.createWaitFor(PlayerSelectedCardPacket.class).getSync(TIMEOUT);
 			this.selectedCard = this.getHand().get(packet.getHandIndex());
 			return this.selectedCard;
 		}catch(RuntimeException e) {
@@ -92,7 +92,7 @@ public class Multiplayer extends ArtInt{
 	public Action getAction() {
 		try {
 			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-			PlayerActionPacket packet = (PlayerActionPacket) client.createWaitFor(PlayerActionPacket.class).getSync(timeout);
+			PlayerActionPacket packet = (PlayerActionPacket) client.createWaitFor(PlayerActionPacket.class).getSync(TIMEOUT);
 			this.action = packet.getAction();
 			return packet.getAction();
 		}catch(RuntimeException e) {
@@ -108,7 +108,7 @@ public class Multiplayer extends ArtInt{
 	public TradeOption getTradeOption() {
 		try {
 			PlayerClient client = Main.getSWController().getMultiplayerController().getClient();
-			PlayerTradeOptionPacket packet = (PlayerTradeOptionPacket) client.createWaitFor(PlayerTradeOptionPacket.class).getSync(timeout);
+			PlayerTradeOptionPacket packet = (PlayerTradeOptionPacket) client.createWaitFor(PlayerTradeOptionPacket.class).getSync(TIMEOUT);
 			
 			if(this.action == Action.PLACE_SLOT) {
 				return Main.getSWController().getPlayerController().getTradeOptions(this,new ArrayList<>(Arrays.asList(getBoard().getSlotResquirement(getBoard().nextSlot())))).get(packet.getTradeOptionIndex());

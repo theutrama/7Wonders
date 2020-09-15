@@ -71,7 +71,6 @@ public class HardAI extends AdvancedAI {
 			capas[i] = Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state);
 
 		int value = getAge1ResourceScore(player);
-
 		value += player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 		for (int i = 0; i < 3; i++)
 			if (capas[i] != BuildCapability.NONE)
@@ -92,7 +91,6 @@ public class HardAI extends AdvancedAI {
 			for (Card card : player.getBoard().getTrade())
 				if (card.getInternalName().contains(TRADINGPOST))
 					value += 10;
-
 		if (player.getBoard().getBoardName().equals(ALEXANDRIA) || player.getBoard().getBoardName().equals(EPHESOS) || player.getBoard().getBoardName().equals(HALIKARNASSUS))
 			for (Card card : player.getBoard().getTrade())
 				if (card.getInternalName().contains(MARKETPLACE)) {
@@ -191,7 +189,7 @@ public class HardAI extends AdvancedAI {
 		player.addVictoryPoints(neighbour.getCoins() / 3);
 		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(neighbour));
 		value -= neighbour.getVictoryPoints() / 2;
-		
+
 		switch (player.getBoard().nextSlot()) {
 		case 1:
 			value += 3;
@@ -203,7 +201,7 @@ public class HardAI extends AdvancedAI {
 			value += 15;
 			break;
 		}
-		
+
 		return value;
 	}
 

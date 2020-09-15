@@ -61,9 +61,9 @@ public class TradingSystemTest {
 		assertEquals(BuildCapability.TRADE, controller.getPlayerController().hasResources(player2, createList(new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.GLASS))));
 		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(1, ResourceType.ORE), new Resource(1, ResourceType.CLOTH))));
 		player2.addCoins(-2);
-		player2.getBoard().addCard(new Card(1, "trade card", "westtradingpost", CardType.YELLOW, null, null, null, null));
-		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.ORE))));
 		player2.getBoard().addCard(new Card(1, "trade card", "easttradingpost", CardType.YELLOW, null, null, null, null));
+		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.ORE))));
+		player2.getBoard().addCard(new Card(1, "trade card", "westtradingpost", CardType.YELLOW, null, null, null, null));
 		assertEquals(BuildCapability.TRADE, controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.ORE))));
 		player2.getBoard().getTrade().remove(0);
 		player2.getBoard().getTrade().remove(0);

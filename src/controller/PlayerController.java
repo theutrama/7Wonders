@@ -477,24 +477,6 @@ public class PlayerController {
 	}
 
 	/**
-	 * executes a trade by adding/removing coins
-	 * 
-	 * @param player player that trades
-	 * @param trade  the trade
-	 * @param state  game state
-	 */
-	public void doTrade(Player player, TradeOption trade, GameState state) {
-		if (trade.getLeftCost() > 0) {
-			getNeighbour(state, true, player).addCoins(trade.getLeftCost());
-			player.addCoins(-trade.getLeftCost());
-		}
-		if (trade.getRightCost() > 0) {
-			getNeighbour(state, false, player).addCoins(trade.getLeftCost());
-			player.addCoins(-trade.getRightCost());
-		}
-	}
-
-	/**
 	 * removes all bundles that are greater or equal to any other bundle
 	 * 
 	 * @param list list of bundles

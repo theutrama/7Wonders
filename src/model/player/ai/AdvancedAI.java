@@ -268,7 +268,7 @@ public abstract class AdvancedAI extends ArtInt {
 					if (effect.getType() == EffectType.WHEN_PLAYED)
 						effect.run(player, newState, newState.isTwoPlayers());
 			if (move.getTradeOption() != null)
-				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
+				Main.getSWController().getPlayerController().doTrade(newState, player, move.getTradeOption());
 			break;
 		case PLACE_SLOT:
 			player.getHand().remove(move.getCard());
@@ -286,7 +286,7 @@ public abstract class AdvancedAI extends ArtInt {
 			player.getBoard().fill(player.getBoard().nextSlot());
 			player.setChooseCard(null);
 			if (move.getTradeOption() != null)
-				Main.getSWController().getPlayerController().doTrade(player, move.getTradeOption(), newState);
+				Main.getSWController().getPlayerController().doTrade(newState, player, move.getTradeOption());
 			break;
 		case SELL:
 			player.getHand().remove(move.getCard());

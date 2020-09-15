@@ -42,7 +42,7 @@ public class ResourceBundle implements Serializable {
 	}
 
 	/**
-	 * hidden constructor to allow adding two bundles
+	 * constructor to allow adding two bundles
 	 * 
 	 * @param wood    sets {@link #wood}
 	 * @param stone   sets {@link #stone}
@@ -52,7 +52,7 @@ public class ResourceBundle implements Serializable {
 	 * @param brick   sets {@link #brick}
 	 * @param papyrus sets {@link #papyrus}
 	 */
-	private ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus, int coins) {
+	public ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus, int coins) {
 		this.wood = wood;
 		this.stone = stone;
 		this.ore = ore;

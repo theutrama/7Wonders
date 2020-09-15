@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import application.Main;
 import controller.utils.BuildCapability;
+import controller.utils.ResourceBundle;
+import controller.utils.TradeOption;
 import model.card.Card;
 import model.card.CardType;
 import model.card.Resource;
@@ -18,7 +20,7 @@ import model.player.Player;
 
 /** testing trading system */
 public class TradingSystemTest {
-	
+
 	/**
 	 * creating players and trading with neighbors
 	 */
@@ -29,8 +31,7 @@ public class TradingSystemTest {
 		Player player1 = controller.getPlayerController().createPlayer("player 1", "Alexandria"), player2 = controller.getPlayerController().createPlayer("player 2", "Olympia"),
 				player3 = controller.getPlayerController().createPlayer("player 3", "Rhodos");
 		controller.setGame(controller.getGameController().createGame("game 1", createList(player1, player2, player3)));
-		
-		
+
 		player1 = controller.getPlayerController().getPlayer("player 1");
 		player2 = controller.getPlayerController().getPlayer("player 2");
 		player3 = controller.getPlayerController().getPlayer("player 3");
@@ -83,26 +84,50 @@ public class TradingSystemTest {
 		player1.getBoard().addCard(card5);
 		assertEquals(BuildCapability.TRADE, controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.ORE), new Resource(1, ResourceType.WOOD))));
 		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(50, ResourceType.COINS))));
+		controller.getGame().getCurrentGameState().getPlayers().remove(2);
+		controller.getPlayerController().getTradeOptions(player2, createList(new Resource(1, ResourceType.ORE)));
 	}
 
 	/**
-	 *  creating players and trading with neighbors 
+	 * creating players and trading with neighbors
 	 */
 	@Test
 	public void testTrading2() {
 		SevenWondersController controller = SevenWondersFactory.create();
 		Player player1 = controller.getPlayerController().getPlayer("erster"), player2 = controller.getPlayerController().getPlayer("zweiter");
-		
+
 		assertEquals(BuildCapability.OWN_RESOURCE, controller.getPlayerController().hasResources(player1, createList(new Resource(2, ResourceType.BRICK))));
 		assertEquals(BuildCapability.OWN_RESOURCE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(1, ResourceType.WOOD), new Resource(1, ResourceType.BRICK), new Resource(1, ResourceType.STONE))));
 		player2.addCoins(20);
 		assertEquals(BuildCapability.TRADE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.WOOD), new Resource(4, ResourceType.BRICK), new Resource(2, ResourceType.STONE))));
-		assertEquals(BuildCapability.TRADE,
-				controller.getPlayerController().hasResources(player2, createList(new Resource(5, ResourceType.BRICK), new Resource(3, ResourceType.STONE))));
-		assertEquals(BuildCapability.NONE,
-				controller.getPlayerController().hasResources(player2, createList(new Resource(6, ResourceType.BRICK), new Resource(4, ResourceType.STONE))));
+		assertEquals(BuildCapability.TRADE, controller.getPlayerController().hasResources(player2, createList(new Resource(5, ResourceType.BRICK), new Resource(3, ResourceType.STONE))));
+		assertEquals(BuildCapability.NONE, controller.getPlayerController().hasResources(player2, createList(new Resource(6, ResourceType.BRICK), new Resource(4, ResourceType.STONE))));
+
+		TradeOption to1 = new TradeOption(new ResourceBundle(new Resource(1, ResourceType.ORE)), new ResourceBundle(new Resource(1, ResourceType.WOOD)), 2, 1), to2 = new TradeOption(null, null, 0, 0),
+				to3 = new TradeOption(null, new ResourceBundle(), 0, 0);
+		to1.equals(to2);
+		to2.equals(to3);
+		to3.equals(to1);
+		to1.getLeftCost();
+		to1.getRightCost();
+		to2.getLeftTrade();
+		to2.getRightTrade();
+		to3.toString();
+
+		ResourceBundle rb1 = new ResourceBundle(1, 1, 1, 1, 1, 1, 1, 1), rb2 = new ResourceBundle(2, 1, 1, 1, 1, 1, 1, 1), rb3 = new ResourceBundle(1, 2, 1, 1, 1, 1, 1, 1),
+				rb4 = new ResourceBundle(1, 1, 2, 1, 1, 1, 1, 1), rb5 = new ResourceBundle(1, 1, 1, 2, 1, 1, 1, 1), rb6 = new ResourceBundle(1, 1, 1, 1, 2, 1, 1, 1),
+				rb7 = new ResourceBundle(1, 1, 1, 1, 1, 2, 1, 1), rb8 = new ResourceBundle(1, 1, 1, 1, 1, 1, 2, 1);
+		rb1.createResourceImages();
+		rb1.toString();
+		rb1.greaterOrEqualThan(rb2);
+		rb1.greaterOrEqualThan(rb3);
+		rb1.greaterOrEqualThan(rb4);
+		rb1.greaterOrEqualThan(rb5);
+		rb1.greaterOrEqualThan(rb6);
+		rb1.greaterOrEqualThan(rb7);
+		rb1.greaterOrEqualThan(rb8);
 	}
 
 	/**

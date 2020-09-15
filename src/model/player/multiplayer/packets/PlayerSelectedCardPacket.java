@@ -32,8 +32,8 @@ public class PlayerSelectedCardPacket extends Packet{
 	 * @param DataInputStream 		the DataInputStream
 	 */
 	@Override
-	public void parseFromInput(DataInputStream in) throws IOException {
-		this.handIndex = in.readInt();
+	public void parseFromInput(DataInputStream input) throws IOException {
+		this.handIndex = input.readInt();
 	}
 
 	/**

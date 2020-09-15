@@ -1,6 +1,5 @@
 package application;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -131,7 +130,7 @@ public class Utils {
 	 * @throws IOException
 	 */
 	public static Image toImage(String path) throws IOException {
-		InputStream fileIn = Main.cldr.getResourceAsStream(path);
+		InputStream fileIn = Main.class.getClassLoader().getResourceAsStream(path);
 		Image img = new Image(fileIn);
 		fileIn.close();
 		return img;

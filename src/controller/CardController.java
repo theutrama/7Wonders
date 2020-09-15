@@ -1,7 +1,6 @@
 package controller;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import application.Main;
-import application.Utils;
 import controller.sound.Sound;
 import controller.utils.TradeOption;
 import javafx.embed.swing.SwingFXUtils;
@@ -891,7 +889,7 @@ public class CardController {
 		final int ONE = 1;
 		try {
 
-			full = ImageIO.read(Main.cldr.getResourceAsStream(card.getImage()));
+			full = ImageIO.read(Main.class.getClassLoader().getResourceAsStream(card.getImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

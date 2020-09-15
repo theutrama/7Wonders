@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -12,24 +11,19 @@ import javax.imageio.ImageIO;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
 import application.Main;
 import javafx.scene.shape.Rectangle;
 import model.Game;
 import model.GameState;
 import model.card.Card;
 import model.player.Player;
-import model.ranking.Ranking;
 
 /** tests Card Controller */
 public class CardControllerTest {
 
 	private SevenWondersController swc;
-	private GameController gC;
 	private PlayerController pC;
 	private CardController cC;
-	private WonderBoardController wbc;
 
 	/**
 	 * Setup test methods
@@ -38,10 +32,8 @@ public class CardControllerTest {
 	public void setUp() {
 
 		swc = SevenWondersFactory.create();
-		gC = swc.getGameController();
 		cC = swc.getCardController();
 		pC = swc.getPlayerController();
-		wbc = swc.getWonderBoardController();
 		Main.TEST = true;
 	}
 
@@ -272,9 +264,8 @@ public class CardControllerTest {
 		Card card16 = cC.getCard(cards, "westtradingpost");
 		// purple
 		/*
-		 * Card card17 = cC.getCard(cards, "workersguild"); Card card18 =
-		 * cC.getCard(cards, "scientistsguild"); Card card19 = cC.getCard(cards,
-		 * "shipownersguild"); Card card20 = cC.getCard(cards, "strategistsguild");
+		 * Card card17 = cC.getCard(cards, "workersguild"); Card card18 = cC.getCard(cards, "scientistsguild"); Card card19 = cC.getCard(cards, "shipownersguild"); Card card20 =
+		 * cC.getCard(cards, "strategistsguild");
 		 */
 		// different height
 		Card card21 = cC.getCard(cards, "bazar");
@@ -283,7 +274,6 @@ public class CardControllerTest {
 		Card card24 = cC.getCard(cards, "forum");
 		Card card25 = cC.getCard(cards, "vineyard");
 
-		
 		assertEquals(56, cC.getPreviewImage(card21).getHeight(), 0);
 		assertEquals(32, cC.getPreviewImage(card22).getHeight(), 0);
 		assertEquals(54, cC.getPreviewImage(card23).getHeight(), 0);
@@ -307,15 +297,13 @@ public class CardControllerTest {
 		cardsToCheck.add(card15);
 		cardsToCheck.add(card16);
 		/*
-		 * cardsToCheck.add(card17); cardsToCheck.add(card18); cardsToCheck.add(card19);
-		 * cardsToCheck.add(card20);
+		 * cardsToCheck.add(card17); cardsToCheck.add(card18); cardsToCheck.add(card19); cardsToCheck.add(card20);
 		 */
 
 		for (Card card : cardsToCheck) {
 			try {
 				BufferedImage full = ImageIO.read(new File(card.getImage()));
-				assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight(),
-						cC.getPreviewImage(card).getHeight(), 0);
+				assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight(), cC.getPreviewImage(card).getHeight(), 0);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

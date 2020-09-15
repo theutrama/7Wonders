@@ -140,9 +140,9 @@ public class SoundController {
 	 */
 	public static void updateMuteIcon(ImageView imgv) {
 		if (Main.getSWController().getSoundController().isMuted())
-			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH + "musicoff.png")));
+			imgv.setImage(new Image(Main.class.getClassLoader().getResourceAsStream(Main.DEFAULT_PATH + "musicoff.png")));
 		else
-			imgv.setImage(new Image(Main.cldr.getResourceAsStream(Main.DEFAULT_PATH + "music.png")));
+			imgv.setImage(new Image(Main.class.getClassLoader().getResourceAsStream(Main.DEFAULT_PATH + "music.png")));
 	}
 
 	private class SoundPlayer {

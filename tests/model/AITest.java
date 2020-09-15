@@ -16,6 +16,7 @@ import model.player.ai.EasyAI;
 import model.player.ai.HardAI;
 import model.player.ai.MediumAI;
 
+/** tests the Artificial Intelligence */
 public class AITest {
 
 	private GameState state;

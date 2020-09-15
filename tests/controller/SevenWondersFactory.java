@@ -14,7 +14,10 @@ import model.ranking.Ranking;
 
 /** creates SevenWonders tests */
 public class SevenWondersFactory {
-	/** creates new SevenWonders Controller in Factory */
+	/**
+	 * creates new SevenWonders Controller in Factory
+	 * @return	sevenWondersController	the SevenWonders Controller
+	 */
 	public static SevenWondersController create() {
 
 		SevenWondersController sevenWondersController = new SevenWondersController();

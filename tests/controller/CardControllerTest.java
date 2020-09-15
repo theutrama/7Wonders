@@ -337,6 +337,7 @@ public class CardControllerTest {
 		assertTrue(pC.getPlayer("erster").getBoard().isFilled(2));
 	}
 	
+	/** tests Effect when played */
 	@Test
 	public void effectWhenPlayedTest() {
 		Player currentPlayer = pC.getPlayer("erster");

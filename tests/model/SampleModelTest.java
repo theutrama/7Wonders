@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the model class {@link model.SampleModel}.
+ * Tests the model class.
  */
 public class SampleModelTest {
 

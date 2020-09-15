@@ -1209,6 +1209,8 @@ public class GameBoardViewController extends VBox {
 		HBox hboxChooseCard = new HBox(10);
 
 		for (Card card : game().getTrash()) {
+			if (Main.getSWController().getCardController().hasCard(player, card.getInternalName()))
+				continue;
 			Button button = new Button();
 			try {
 				ImageView img = new ImageView(Utils.toImage(card.getImage()));

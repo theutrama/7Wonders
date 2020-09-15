@@ -66,6 +66,30 @@ public abstract class AdvancedAI extends ArtInt {
 	}
 
 	/**
+	 * select Halikarnassus card
+	 */
+	@Override
+	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
+		if (trash.isEmpty())
+			return null;
+		int maxValue = Integer.MIN_VALUE, maxIndex = -1;
+		for (int i = 0; i < trash.size(); i++) {
+			if (Main.getSWController().getCardController().hasCard(player, trash.get(i).getInternalName()))
+				continue;
+			GameState newState = state.deepClone();
+			Main.getSWController().getPlayerController().getPlayer(player.getName(), newState).getBoard().addCard(trash.get(i));
+			int value = evaluate(newState, player.getName());
+			if (value > maxValue) {
+				maxValue = value;
+				maxIndex = i;
+			}
+		}
+		if (maxIndex == -1)
+			return null;
+		return trash.get(maxIndex);
+	}
+	
+	/**
 	 * minimax algorithm
 	 * 
 	 * @param tree root
@@ -189,7 +213,7 @@ public abstract class AdvancedAI extends ArtInt {
 					newLeaves.add(selltree);
 					leaf.addChild(selltree);
 
-					if (!this.isOlympiaUsed()) {
+					if (!this.isOlympiaUsed() && !Main.getSWController().getCardController().hasCard(currentPlayer, handcard.getInternalName())) {
 						Move olympiamove = new Move(handcard, Action.OLYMPIA);
 						MoveTree olympiatree = new MoveTree(olympiamove, doMove(olympiamove, currentPlayer, state));
 						newLeaves.add(olympiatree);
@@ -210,6 +234,8 @@ public abstract class AdvancedAI extends ArtInt {
 				for (Player player : newLeaf.getState().getPlayers()) {
 					if (player.isMausoleum()) {
 						Card card = getHalikarnassusCard(player, newLeaf.getState().getTrash(), newLeaf.getState());
+						if (card == null)
+							break;
 						newLeaf.getState().getTrash().remove(card);
 						player.getBoard().addCard(card);
 						if (card.getEffects() != null)

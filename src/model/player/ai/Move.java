@@ -107,10 +107,10 @@ public class Move implements Serializable {
 		ObjectInputStream objIn = null;
 		try {
 			int length = input.readInt();
-			byte[] ar = new byte[length];
-			input.read(ar, 0, length);
+			byte[] array = new byte[length];
+			input.read(array, 0, length);
 
-			byteIn = new ByteArrayInputStream(ar);
+			byteIn = new ByteArrayInputStream(array);
 			objIn = new ObjectInputStream(byteIn);
 			Move copy = (Move) objIn.readObject();
 

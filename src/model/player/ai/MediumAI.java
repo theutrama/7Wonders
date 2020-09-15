@@ -1,12 +1,9 @@
 package model.player.ai;
 
-import java.util.ArrayList;
-
 import application.Main;
 import controller.utils.BuildCapability;
 import model.GameState;
 import model.board.WonderBoard;
-import model.card.Card;
 import model.player.Player;
 
 /** Medium Artificial Intelligence */
@@ -37,7 +34,7 @@ public class MediumAI extends AdvancedAI {
 				value += 1;
 		return value;
 	}
-	
+
 	/**
 	 * evaluate age 2
 	 * 
@@ -53,7 +50,7 @@ public class MediumAI extends AdvancedAI {
 		value += Main.getSWController().getPlayerController().getMilitaryPoints(player) + getCivilPoints(player) / 2;
 		return value;
 	}
-	
+
 	/**
 	 * evaluate age 2
 	 * 
@@ -71,7 +68,7 @@ public class MediumAI extends AdvancedAI {
 		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(player));
 		return player.getVictoryPoints();
 	}
-	
+
 	@Override
 	protected int evaluate(GameState state, String playername) {
 		Player player = Main.getSWController().getPlayerController().getPlayer(playername, state);
@@ -85,22 +82,4 @@ public class MediumAI extends AdvancedAI {
 		}
 		return 0;
 	}
-
-	@Override
-	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
-		if (trash.isEmpty())
-			return null;
-		int maxValue = Integer.MIN_VALUE, maxIndex = 0;
-		for (int i = 0; i < trash.size(); i++) {
-			GameState newState = state.deepClone();
-			Main.getSWController().getPlayerController().getPlayer(player.getName(), newState).getBoard().addCard(trash.get(i));
-			int value = evaluate(newState, player.getName());
-			if (value > maxValue) {
-				maxValue = value;
-				maxIndex = i;
-			}
-		}
-		return trash.get(maxIndex);
-	}
-
 }

@@ -9,6 +9,9 @@ import org.junit.Test;
 import controller.SevenWondersController;
 import controller.SevenWondersFactory;
 import model.board.WonderBoard;
+import model.card.Card;
+import model.card.CardType;
+import model.card.ResourceType;
 import model.player.ai.EasyAI;
 import model.player.ai.HardAI;
 import model.player.ai.MediumAI;
@@ -35,7 +38,7 @@ public class AITest {
 		testAll(board);
 		
 		for (int i = 0; i < 3; i++)
-			state.getTrash().add(state.getCardStack().remove(0));
+			state.getTrash().add(new Card(ResourceType.GEAR, 1, "sample card", "sample card", CardType.GREEN, null, null, null, null));
 		
 		state.setRound(1);
 		testAll(board);

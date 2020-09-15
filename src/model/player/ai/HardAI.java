@@ -1,7 +1,5 @@
 package model.player.ai;
 
-import java.util.ArrayList;
-
 import application.Main;
 import controller.utils.BuildCapability;
 import model.GameState;
@@ -136,19 +134,14 @@ public class HardAI extends AdvancedAI {
 		int leftPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
 		int rightPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		int ownPoints = Main.getSWController().getPlayerController().getMilitaryPoints(player), maxDiff = Math.max(leftPoints - ownPoints, rightPoints - ownPoints);
-		if (maxDiff < 0 && maxDiff >= -2)
-			value += 4;
-		else if (maxDiff == ONE)
-			value -= 4;
-		else if (maxDiff >= TWO)
-			value -= 2;
+		if (maxDiff < 0 && maxDiff >= -2)	value += 4;
+		else if (maxDiff == ONE)			value -= 4;
+		else if (maxDiff >= TWO)			value -= 2;
 		// Research /////////////////////////////////////////////////
 		Player neighbour = Main.getSWController().getPlayerController().getNeighbour(state, false, player);
 		value -= Main.getSWController().getPlayerController().getSciencePoints(neighbour);
-		if (neighbour.getBoard().getResearch().size() <= 2)
-			value -= player.getBoard().getResearch().size() * 2;
-		else
-			value -= neighbour.getBoard().getResearch().size() * 2;
+		if (neighbour.getBoard().getResearch().size() <= TWO)	value -= player.getBoard().getResearch().size() * 2;
+		else												value -= neighbour.getBoard().getResearch().size() * 2;
 		// Coins ////////////////////////////////////////////////////
 		value += player.getCoins() / 3;
 		return value;
@@ -162,14 +155,11 @@ public class HardAI extends AdvancedAI {
 	 * @return value
 	 */
 	private int evaluateAge3(GameState state, Player player) {
-
 		int leftPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
 		int rightPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		int value = 0, ownPoints2 = Main.getSWController().getPlayerController().getMilitaryPoints(player), maxDiff2 = Math.max(leftPoints2 - ownPoints2, rightPoints2 - ownPoints2);
-		if (maxDiff2 < 0 && maxDiff2 >= -3)
-			value += 5;
-		else
-			value -= 7;
+		if (maxDiff2 < 0 && maxDiff2 >= -3)	value += 5;
+		else								value -= 7;
 		// Victory points //////////////////////////////////////////
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
@@ -189,18 +179,8 @@ public class HardAI extends AdvancedAI {
 		player.addVictoryPoints(neighbour.getCoins() / 3);
 		player.addVictoryPoints(Main.getSWController().getPlayerController().getSciencePoints(neighbour));
 		value -= neighbour.getVictoryPoints() / 2;
-
-		switch (player.getBoard().nextSlot()) {
-		case 1:
-			value += 3;
-			break;
-		case 2:
-			value += 8;
-			break;
-		case -1:
-			value += 15;
-			break;
-		}
+		
+		value += player.getBoard().nextSlot() == 1 ? 3 : (player.getBoard().nextSlot() == 2 ? 8 : (player.getBoard().nextSlot() == -1 ? 15 : 0)); 
 
 		return value;
 	}
@@ -220,26 +200,6 @@ public class HardAI extends AdvancedAI {
 			return evaluateAge3(state, player);
 		}
 		return 0;
-	}
-
-	/**
-	 * select Halikarnassus card
-	 */
-	@Override
-	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
-		if (trash.isEmpty())
-			return null;
-		int maxValue = Integer.MIN_VALUE, maxIndex = 0;
-		for (int i = 0; i < trash.size(); i++) {
-			GameState newState = state.deepClone();
-			Main.getSWController().getPlayerController().getPlayer(player.getName(), newState).getBoard().addCard(trash.get(i));
-			int value = evaluate(newState, player.getName());
-			if (value > maxValue) {
-				maxValue = value;
-				maxIndex = i;
-			}
-		}
-		return trash.get(maxIndex);
 	}
 
 }

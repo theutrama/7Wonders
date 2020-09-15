@@ -331,7 +331,7 @@ public class CardControllerTest {
 		int currentCoins = currentPlayer.getCoins();
 		int currentVictoryPoints = currentPlayer.getVictoryPoints();
 		for (Card card: swc.getCardController().generateCardStack(swc.getGame().getCurrentGameState().getPlayers())) {
-			currentPlayer.getBoard().addCard(card);
+			cC.placeCard(card, currentPlayer, null, true);
 		}
 		for(int i = 0; i<17; i++) {
 			swc.getGameController().createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());

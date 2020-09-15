@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import model.Game;
 import model.GameState;
 import model.card.Card;
+import model.card.CardType;
 import model.player.Player;
 
 /** tests Card Controller */
@@ -322,6 +323,36 @@ public class CardControllerTest {
 		assertTrue(pC.getPlayer("erster").getBoard().isFilled(0));
 		assertTrue(pC.getPlayer("erster").getBoard().isFilled(1));
 		assertTrue(pC.getPlayer("erster").getBoard().isFilled(2));
+	}
+	
+	@Test
+	public void effectWhenPlayedTest() {
+		Player currentPlayer = pC.getPlayer("erster");
+		int currentCoins = currentPlayer.getCoins();
+		int currentVictoryPoints = currentPlayer.getVictoryPoints();
+		for (Card card: swc.getCardController().generateCardStack(swc.getGame().getCurrentGameState().getPlayers())) {
+			currentPlayer.getBoard().addCard(card);
+		}
+		for(int i = 0; i<17; i++) {
+			swc.getGameController().createNextRound(swc.getGame(), swc.getGame().getCurrentGameState());
+		}
+		assertEquals(swc.getGame().getCurrentGameState().getAge(),3);
+//		Player left = pC.getLeftNeighbour(swc.getGame().getCurrentGameState(), currentPlayer);
+//		Player right = pC.getRightNeighbour(swc.getGame().getCurrentGameState(), currentPlayer);
+//		int greyCards = 0;
+//		for(Card card: left.getBoard().getResources()) {
+//			if (card.getType() == CardType.GRAY) {
+//				greyCards++;
+//			}
+//		}
+//		for(Card card: right.getBoard().getResources()) {
+//			if (card.getType() == CardType.GRAY) {
+//				greyCards++;
+//			}
+//		}
+//		assertEquals(currentCoins + greyCards * 2,  )
+		
+		
 	}
 
 }

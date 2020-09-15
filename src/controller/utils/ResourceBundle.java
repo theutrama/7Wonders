@@ -51,6 +51,7 @@ public class ResourceBundle implements Serializable {
 	 * @param glass   sets {@link #glass}
 	 * @param brick   sets {@link #brick}
 	 * @param papyrus sets {@link #papyrus}
+	 * @param coins	   sets {@link #coins}
 	 */
 	public ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus, int coins) {
 		this.wood = wood;

@@ -1102,9 +1102,7 @@ public class GameBoardViewController extends VBox {
 
 		if (player instanceof ArtInt) {
 			new Thread(() -> {
-				long t1 = System.currentTimeMillis();
 				((ArtInt) player).calculateNextMove();
-				System.out.println("time: " + (System.currentTimeMillis() - t1));
 				Card selected = ((ArtInt) player).getSelectedCard();
 				int index = indexOf(player.getHand(), selected);
 

@@ -80,11 +80,14 @@ public class HardAI extends AdvancedAI {
 		value -= player.getBoard().getResearch().size() * 30;
 		// Trade ////////////////////////////////////////////////////////////////
 		if (state.isTwoPlayers()) {
+			int sum = 0;
 			for (Card card : player.getBoard().getTrade())
-				if (card.getInternalName().contains(TRADINGPOST)) {
-					value += 10;
-					break;
-				}
+				if (card.getInternalName().contains(TRADINGPOST))
+					sum += 1;
+			if (sum == ONE)
+				value += 10;
+			else if (sum == TWO)
+				value -= 30;
 		} else
 			for (Card card : player.getBoard().getTrade())
 				if (card.getInternalName().contains(TRADINGPOST))

@@ -99,7 +99,6 @@ public class PlayerController {
 	 */
 	public ArtInt createAI(String playername, String wonderboard, Difficulty difficulty) {
 		WonderBoard board = wbc.createWonderBoard(wonderboard);
-		System.out.println(difficulty);
 		ArtInt artInt = difficulty == Difficulty.EASY ? new EasyAI(playername, board) : (difficulty == Difficulty.MEDIUM ? new MediumAI(playername, board) : new HardAI(playername, board));
 		board.setPlayer(artInt);
 		return artInt;

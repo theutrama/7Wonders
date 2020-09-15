@@ -252,8 +252,6 @@ public class CardControllerTest {
 
 		ArrayList<Card> cardsToCheck = new ArrayList<Card>();
 
-		System.out.println(cards.size());
-
 		Card card1 = cC.getCard(cards, "lumberyard");
 		Card card2 = cC.getCard(cards, "sawmill");
 		Card card3 = cC.getCard(cards, "treefarm");
@@ -319,7 +317,6 @@ public class CardControllerTest {
 				assertEquals(cC.getSubimage(full, new Rectangle(64, 12, 54, 50)).getHeight(),
 						cC.getPreviewImage(card).getHeight(), 0);
 			} catch (Exception e) {
-				System.out.println("hi");
 				e.printStackTrace();
 			}
 		}

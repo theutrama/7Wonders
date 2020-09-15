@@ -246,10 +246,8 @@ public class GameController {
 
 						cards.add(card);
 					}
-				} else {
-					System.out.println("This thing shouldn't never happen?! LINE:" + line);
+				} else
 					return false;
-				}
 			}
 
 			// Reverse Array to get the right order by taking from the TOP
@@ -319,12 +317,6 @@ public class GameController {
 			player.addVictoryPoints(player.getCoins() / 3);
 			// science
 			player.addVictoryPoints(swController.getPlayerController().getSciencePoints(player));
-
-			System.out.println(player.getName() + " points: ---------");
-			int sum = 0;
-			for (Card card : player.getBoard().getCivil())
-				sum += card.getvPoints();
-			System.out.println("coins: " + player.getCoins() + "  civil: " + sum + "  conflict: " + (player.getConflictPoints() - player.getLosePoints()));
 		}
 
 		// update highscore list

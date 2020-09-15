@@ -99,13 +99,10 @@ public class TradingSystemTest {
 		player2.addCoins(20);
 		assertEquals(BuildCapability.TRADE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(2, ResourceType.WOOD), new Resource(4, ResourceType.BRICK), new Resource(2, ResourceType.STONE))));
-		System.out.println(controller.getPlayerController().getTradeOptions(player2, createList(new Resource(2, ResourceType.WOOD), new Resource(4, ResourceType.BRICK), new Resource(1, ResourceType.STONE))));
-		System.out.println(controller.getPlayerController().getTradeOptions(player2, createList(new Resource(5, ResourceType.BRICK), new Resource(3, ResourceType.STONE))).toString());
 		assertEquals(BuildCapability.TRADE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(5, ResourceType.BRICK), new Resource(3, ResourceType.STONE))));
 		assertEquals(BuildCapability.NONE,
 				controller.getPlayerController().hasResources(player2, createList(new Resource(6, ResourceType.BRICK), new Resource(4, ResourceType.STONE))));
-		System.out.println(controller.getPlayerController().hasResources(player1, createList(new Resource(3, ResourceType.COINS))));
 	}
 
 	/**

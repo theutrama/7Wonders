@@ -25,41 +25,42 @@ import view.gameboard.GameBoardViewController;
 public class NewCSVGameViewController extends NewGameViewController {
 
 	private ArrayList<Card> cardStack;
-	
+
 	public void setCardStack(ArrayList<Card> cardStack) {
-		this.cardStack=cardStack;
+		this.cardStack = cardStack;
 	}
-	
+
 	public void addPlayer() {
 		error("Du kannst keine neuen Spieler hinzufügen!");
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void addPlayer(String playername, String wondername, boolean KI) throws IOException {
 		HBox box = this.addPlayer(playername);
 		addWonderToPlayer(box, wondername);
-		((ComboBox<String>)box.getChildren().get(1)).getSelectionModel().select( (KI ? 1 : 0) );
+		((ComboBox<String>) box.getChildren().get(1)).getSelectionModel().select((KI ? 1 : 0));
 	}
-	
+
 	private void addWonderToPlayer(HBox player, String wondername) {
 		Label wonder = null;
-		for(Node node : this.vbox_wonders.getChildren()) {
-			if(node instanceof Label) {
-				wonder = (Label)node;
-				
-				if(wonder.getText().equalsIgnoreCase(wondername)) 
+		for (Node node : this.vbox_wonders.getChildren()) {
+			if (node instanceof Label) {
+				wonder = (Label) node;
+
+				if (wonder.getText().equalsIgnoreCase(wondername))
 					break;
-				else 
-					wonder=null;
+				else
+					wonder = null;
 			}
 		}
-		
-		if(wonder != null) {
+
+		if (wonder != null) {
 			vbox_wonders.getChildren().remove(wonder);
 			this.addWonderToPlayer(player, wonder);
-		}else System.out.println("Das Wunder "+wondername+" konnte nicht gefunden werden!");
+		} else
+			System.err.println("Das Wunder " + wondername + " konnte nicht gefunden werden!");
 	}
-	
+
 	protected void done() {
 		SevenWondersController con = Main.getSWController();
 		GameController game_con = con.getGameController();
@@ -95,9 +96,9 @@ public class NewCSVGameViewController extends NewGameViewController {
 				game_players.add(pcon.createPlayer(nameLabel.getText(), wonderLabel.getText()));
 			}
 		}
-		
+
 		String name = textfield_gamename.getText();
-		Game game = new Game( name!=null && name.isBlank() ? "KI-Turnier" : name );
+		Game game = new Game(name != null && name.isBlank() ? "KI-Turnier" : name);
 		con.setGame(game);
 
 		GameState state;
@@ -105,7 +106,7 @@ public class NewCSVGameViewController extends NewGameViewController {
 		game.getStates().add(state);
 		game.getCurrentGameState().setFirstPlayer(0);
 		game.getCurrentGameState().setCurrentPlayer(0);
-		
+
 		Main.primaryStage.getScene().setRoot(new GameBoardViewController());
 	}
 }

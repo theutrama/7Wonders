@@ -165,7 +165,6 @@ public abstract class AdvancedAI extends ArtInt {
 						ArrayList<Resource> slotRequirements = new ArrayList<>(Arrays.asList(currentPlayer.getBoard().getNextSlotRequirement()));
 						capability = Main.getSWController().getPlayerController().hasResources(currentPlayer, slotRequirements, state);
 						switch (capability) {
-						case FREE:
 						case OWN_RESOURCE:
 							Move move = new Move(handcard, Action.PLACE_SLOT);
 							MoveTree newTree = new MoveTree(move, doMove(move, currentPlayer, state));

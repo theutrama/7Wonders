@@ -538,7 +538,7 @@ public class CardController {
 					des.append("1 Siegpunkt fuer jede braune\r\n" + "Karte in den beiden Nachbarstaedten.");
 					break;
 				default:
-					System.out.println("Not assigned:" + card.getInternalName());
+					break;
 				}
 				break;
 			case YELLOW:
@@ -593,7 +593,7 @@ public class CardController {
 							+ "Nachbarn Rohstoffe kauft.");
 					break;
 				default:
-					System.out.println("Not assigned:" + card.getInternalName());
+					break;
 				}
 				break;
 			default:

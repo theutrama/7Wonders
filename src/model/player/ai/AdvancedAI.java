@@ -324,8 +324,8 @@ public abstract class AdvancedAI extends ArtInt {
 	/**
 	 * creates Arraylist from vararg
 	 * 
-	 * @param bundles
-	 * @return
+	 * @param bundles list of resources
+	 * @return vararg as arraylist
 	 */
 	protected static ArrayList<Resource> asList(Resource... bundles) {
 		return new ArrayList<>(Arrays.asList(bundles));

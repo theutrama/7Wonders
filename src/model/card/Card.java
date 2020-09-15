@@ -236,7 +236,7 @@ public class Card implements Serializable {
 	/**
 	 * setter for {@link #description}
 	 * 
-	 * @param description
+	 * @param description description
 	 */
 	public void setDescription(String description) {
 		this.description = description;

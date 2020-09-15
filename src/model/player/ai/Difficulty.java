@@ -8,7 +8,7 @@ public enum Difficulty {
 	/**
 	 * inverse function to {@link #toString()}
 	 * 
-	 * @param s description of level
+	 * @param string description of level
 	 * @return the associated difficulty constant
 	 */
 	public static Difficulty fromString(String string) {
@@ -25,6 +25,7 @@ public enum Difficulty {
 
 	/**
 	 * returns a String representing the skill level
+	 * @return string representation
 	 */
 	public String toString() {
 		switch (this) {

@@ -12,7 +12,6 @@ import java.io.Serializable;
 import controller.utils.TradeOption;
 import model.card.Card;
 
-
 /** calculates next move for AI */
 public class Move implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -23,7 +22,12 @@ public class Move implements Serializable {
 	/** calculated trade option for AI */
 	private TradeOption tradeOption;
 
-	/** create new move */
+	/**
+	 * create new move
+	 * 
+	 * @param chosen chosen card
+	 * @param action action
+	 */
 	public Move(Card chosen, Action action) {
 		this.chosen = chosen;
 		this.action = action;
@@ -32,6 +36,7 @@ public class Move implements Serializable {
 	/**
 	 * deep clone move object
 	 * 
+	 * @param out output stream
 	 */
 	public void writeToOutput(DataOutputStream out) {
 		try {
@@ -50,7 +55,11 @@ public class Move implements Serializable {
 		}
 	}
 
-	/** setter for {@link #tradeOption} */
+	/**
+	 * setter for {@link #tradeOption}
+	 * 
+	 * @param tradeOption trade
+	 */
 	public void setTradeOption(TradeOption tradeOption) {
 		this.tradeOption = tradeOption;
 	}

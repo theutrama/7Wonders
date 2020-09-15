@@ -2,7 +2,6 @@ package model.card;
 
 import java.io.Serializable;
 
-import controller.PlayerController;
 import model.Game;
 import model.GameState;
 import model.player.Player;
@@ -34,11 +33,12 @@ public class Effect implements Serializable {
 	public EffectType getType() {
 		return this.effectType;
 	}
-	
+
 	/**
 	 * runs effect on player and game
-	 * @param player	the player
-	 * @param game		the game
+	 * 
+	 * @param player the player
+	 * @param game   the game
 	 */
 	public void run(Player player, Game game) {
 		run(player, game.getCurrentGameState(), game.getCurrentGameState().isTwoPlayers());
@@ -47,9 +47,9 @@ public class Effect implements Serializable {
 	/**
 	 * calls {@link EffectCall#run(Player) run} on the {@link #call effect call}
 	 * 
-	 * @param controller the game controller
-	 * @param twoPlayers true if it is a two players game
 	 * @param player     the player the effect should be applied to
+	 * @param state      game state
+	 * @param twoPlayers true if it is a two players game
 	 */
 	public void run(Player player, GameState state, boolean twoPlayers) {
 		this.call.run(player, state, twoPlayers);

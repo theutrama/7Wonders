@@ -29,6 +29,7 @@ public class HardAI extends AdvancedAI {
 
 	/**
 	 * get resource value for age 1
+	 * 
 	 * @param player player
 	 * @return value
 	 */
@@ -56,7 +57,7 @@ public class HardAI extends AdvancedAI {
 		}
 		return value;
 	}
-	
+
 	/**
 	 * evaluate age 1
 	 * 
@@ -70,7 +71,7 @@ public class HardAI extends AdvancedAI {
 			capas[i] = Main.getSWController().getPlayerController().hasResources(player, asList(player.getBoard().getSlotResquirement(i)), state);
 
 		int value = getAge1ResourceScore(player);
-		
+
 		value += player.getBoard().nextSlot() == -1 ? 6 : player.getBoard().nextSlot() * 2;
 		for (int i = 0; i < 3; i++)
 			if (capas[i] != BuildCapability.NONE)
@@ -105,7 +106,8 @@ public class HardAI extends AdvancedAI {
 
 	/**
 	 * evaluate age 2
-	 * @param state game state
+	 * 
+	 * @param state  game state
 	 * @param player player
 	 * @return value
 	 */
@@ -133,9 +135,12 @@ public class HardAI extends AdvancedAI {
 		int leftPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, true, player));
 		int rightPoints = Main.getSWController().getPlayerController().getMilitaryPoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		int ownPoints = Main.getSWController().getPlayerController().getMilitaryPoints(player), maxDiff = Math.max(leftPoints - ownPoints, rightPoints - ownPoints);
-		if (maxDiff < 0)			value += 4;
-		else if (maxDiff == ONE)	value -= 4;
-		else if (maxDiff >= TWO)	value -= 2;
+		if (maxDiff < 0)
+			value += 4;
+		else if (maxDiff == ONE)
+			value -= 4;
+		else if (maxDiff >= TWO)
+			value -= 2;
 		// Research /////////////////////////////////////////////////
 		value -= Main.getSWController().getPlayerController().getSciencePoints(Main.getSWController().getPlayerController().getNeighbour(state, false, player));
 		value -= player.getBoard().getResearch().size() * 3;
@@ -146,7 +151,8 @@ public class HardAI extends AdvancedAI {
 
 	/**
 	 * evaluate age 3
-	 * @param state game state
+	 * 
+	 * @param state  game state
 	 * @param player player
 	 * @return value
 	 */

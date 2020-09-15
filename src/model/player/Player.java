@@ -43,9 +43,9 @@ public class Player implements Serializable {
 	}
 
 	/**
-	 * setter for {@link #choosenCard}
+	 * setter for {@link #chosenCard}
 	 * 
-	 * @param chosen card
+	 * @param card chosen card
 	 */
 	public void setChooseCard(Card card) {
 		this.chosenCard = card;
@@ -201,7 +201,7 @@ public class Player implements Serializable {
 	public void setOlympiaUsed(boolean olympiaUsed) {
 		this.olympiaUsed = olympiaUsed;
 	}
-	
+
 	/** toString method */
 	public String toString() {
 		return getName();

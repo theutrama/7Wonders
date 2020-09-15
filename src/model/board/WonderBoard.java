@@ -43,7 +43,7 @@ public abstract class WonderBoard implements Serializable {
 	 * getter for one index of {@link #ageOfSlotCards}
 	 * 
 	 * @param slot slot index
-	 * @return
+	 * @return age of card in slot
 	 */
 	public int getAgeOfSlotCards(int slot) {
 		return ageOfSlotCards[slot];

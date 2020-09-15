@@ -47,7 +47,10 @@ public class MultiplayerController implements EventListener{
 		EventManager.register(this);
 	}
 	
-	/** true if client is in game */
+	/** 
+	 * checks if Multiplayer is ingame
+	 * @return	ingame	true if client is in game 
+	 */
 	public boolean isInGame() {
 		return this.ingame;
 	}

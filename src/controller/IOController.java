@@ -56,7 +56,7 @@ public class IOController {
 	/**
 	 * Saves a game at any state as a file with the same name. If such a file already exists, it is overwritten.
 	 * 
-	 * @param game
+	 * @param game		the game
 	 */
 	public void save(Game game) {
 		if(game!=null)

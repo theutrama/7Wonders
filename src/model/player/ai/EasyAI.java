@@ -123,7 +123,7 @@ public class EasyAI extends ArtInt{
 
 	/**
 	 * checks for best trade option
-	 * @param card give card
+	 * @param required 		required ArrayList with resources
 	 * @return best trade option
 	 */
 	public TradeOption getBestTradeOption(ArrayList<Resource> required) {

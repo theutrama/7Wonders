@@ -45,7 +45,7 @@ public class Effect implements Serializable {
 	}
 
 	/**
-	 * calls {@link EffectCall#run(Player) run} on the {@link #call effect call}
+	 * calls effect on player
 	 * 
 	 * @param player     the player the effect should be applied to
 	 * @param state      game state

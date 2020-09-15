@@ -23,82 +23,83 @@ import model.player.ai.Move.Action;
 
 /**
  * easyAI class
- * @author jonas,felix
- * easyAI class
+ * 
+ * @author jonas,felix easyAI class
  */
-public class EasyAI extends ArtInt{
+public class EasyAI extends ArtInt {
 	private static final long serialVersionUID = -7836481968924654117L;
 	private boolean debug = false;
-	
+
 	/**
 	 * constructor easyAI
-	 * @param name name
+	 * 
+	 * @param name  name
 	 * @param board board
 	 */
 	public EasyAI(String name, WonderBoard board) {
 		super(name, board);
 	}
-	
+
 	/**
 	 * debug message
+	 * 
 	 * @param msg debug message
 	 */
 	public void debug(String msg) {
-		if(debug)
-		System.out.println(getName() + ": " + msg);
+		if (debug)
+			System.out.println(getName() + ": " + msg);
 	}
-	
+
 	/**
 	 * halikarnassus case
+	 * 
 	 * @return halikarnassus card
 	 */
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
-		if(getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard)getBoard()).isFilled(1)) {
-			if(trash.isEmpty())return null;
-			
+		if (getBoard() instanceof HalikarnassusBoard && ((HalikarnassusBoard) getBoard()).isFilled(1)) {
+			if (trash.isEmpty())
+				return null;
+
 			Card best = trash.get(0);
 			double rating = doMove(new Move(best, Action.BUILD));
 			double value;
-			for(int i = 1; i < trash.size(); i++) {
-				value = doMove( new Move(trash.get(i),Action.BUILD) );
-				
-				if(value > rating) {
+			for (int i = 1; i < trash.size(); i++) {
+				value = doMove(new Move(trash.get(i), Action.BUILD));
+
+				if (value > rating) {
 					rating = value;
 					best = trash.get(i);
 				}
 			}
-			
+
 			return (rating == Double.NEGATIVE_INFINITY ? null : best);
 		}
 		return null;
 	}
-	
+
 	/**
-	 * calculates next move
-	 * Priority age1: 	get resources (max 1 from every resource, max 2 cards in total) prio wonderboard
-	 * 					adasfasf
-	 * 			age2: 	take card with highest amount of victory points
-	 * 			age3: 	take card with highest amount of victory points based on cards on board
+	 * calculates next move Priority age1: get resources (max 1 from every resource, max 2 cards in total) prio wonderboard adasfasf age2: take card with highest amount of victory
+	 * points age3: take card with highest amount of victory points based on cards on board
 	 */
 	public void calculateNextMove() {
 		ArrayList<Move> generate = generateMoves();
-		
-		for(Card c : getHand())debug("HANDCARD ->    "+c+"   "+c.getName());
-		
-		
+
+		for (Card c : getHand())
+			debug("HANDCARD ->    " + c + "   " + c.getName());
+
 		Move best = generate.get(0);
 		double rating = doMove(best);
 		double value;
-		for(int i = 1; i < generate.size(); i++) {
+		for (int i = 1; i < generate.size(); i++) {
 			try {
 				value = doMove(generate.get(i));
 			} catch (Exception e) {
 				value = Double.NEGATIVE_INFINITY;
-				System.out.println("Exception: "+generate.get(i).getCard().getName() + " "+generate.get(i).getAction().name());
+				System.out.println("Exception: " + generate.get(i).getCard().getName() + " " + generate.get(i).getAction().name());
 				e.printStackTrace();
 			}
-			
-			if(value > rating) {
+
+			if (value > rating) {
 				rating = value;
 				best = generate.get(i);
 			}
@@ -106,15 +107,16 @@ public class EasyAI extends ArtInt{
 
 		debug = true;
 		doMove(best);
-		debug("BEST["+rating+"]: "+best.getCard().getName()+" "+best.getAction().name()+" "+best.getTradeOption());
+		debug("BEST[" + rating + "]: " + best.getCard().getName() + " " + best.getAction().name() + " " + best.getTradeOption());
 		debug = false;
-		
+
 		this.next = best;
 	}
-	
+
 	/**
 	 * gets the best trading option for a card
-	 * @param card		the card for trading
+	 * 
+	 * @param card the card for trading
 	 * @return the best trade option for a card
 	 */
 	public TradeOption getBestTradeOption(Card card) {
@@ -123,7 +125,8 @@ public class EasyAI extends ArtInt{
 
 	/**
 	 * checks for best trade option
-	 * @param required 		required ArrayList with resources
+	 * 
+	 * @param required required ArrayList with resources
 	 * @return best trade option
 	 */
 	public TradeOption getBestTradeOption(ArrayList<Resource> required) {
@@ -133,14 +136,14 @@ public class EasyAI extends ArtInt{
 			return null;
 		} else {
 			TradeOption best = trade.get(0);
-			for(int i = 1; i < trade.size(); i++) {
-				if( (best.getLeftCost()+best.getRightCost()) < (trade.get(i).getLeftCost()+trade.get(i).getRightCost()) )
+			for (int i = 1; i < trade.size(); i++) {
+				if ((best.getLeftCost() + best.getRightCost()) < (trade.get(i).getLeftCost() + trade.get(i).getRightCost()))
 					best = trade.get(i);
 			}
 			return best;
 		}
 	}
-	
+
 	/**
 	 * plays give Move for AI
 	 * 
@@ -161,152 +164,152 @@ public class EasyAI extends ArtInt{
 		case BUILD:
 			capa = pcon.canBuild(this, card);
 			boolean hasCard = Main.getSWController().getCardController().hasCard(this, card.getInternalName());
-			if(hasCard)return Double.NEGATIVE_INFINITY;
-			
+			if (hasCard)
+				return Double.NEGATIVE_INFINITY;
+
 			switch (capa) {
 			case FREE:
 				rating += 6;
 			case TRADE:
-				if(capa == BuildCapability.TRADE) {
-					if(card.getRequired() == null) {
-						debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
+				if (capa == BuildCapability.TRADE) {
+					if (card.getRequired() == null) {
+						debug("CAPA:" + capa.name() + " card.getRequired() == NULL ");
 						break;
 					}
 					TradeOption best = getBestTradeOption(card);
-					
-					if(best==null) {
-						debug("CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
+
+					if (best == null) {
+						debug("CAPA:" + capa.name() + " TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
 						return Double.NEGATIVE_INFINITY;
 					} else {
 						move.setTradeOption(best);
-						int price = best.getLeftCost()+best.getRightCost();
-						
-						double percentage = price/coins;
-						
-						if(percentage < Utils.getValue(0.3)) {
+						int price = best.getLeftCost() + best.getRightCost();
+
+						double percentage = price / coins;
+
+						if (percentage < Utils.getValue(0.3)) {
 							rating += 1.5;
 							debug("1.1) RATING add +1.5");
-						}else if(percentage < Utils.getValue(0.6)) {
+						} else if (percentage < Utils.getValue(0.6)) {
 							rating += 0.5;
 							debug("1.2) RATING add +0.5");
-						}else {
+						} else {
 							rating -= 0.5;
 							debug("1.3) RATING add -0.5");
 						}
 					}
 				}
 			case NONE:
-					if(!(getBoard() instanceof OlympiaBoard) || !((OlympiaBoard)getBoard()).isFilled(1) || isOlympiaUsed())
-						return Double.NEGATIVE_INFINITY;
+				if (!(getBoard() instanceof OlympiaBoard) || !((OlympiaBoard) getBoard()).isFilled(1) || isOlympiaUsed())
+					return Double.NEGATIVE_INFINITY;
 			case OWN_RESOURCE:
 				switch (card.getType()) {
 				// CIVIL
 				case BLUE:
 					rating += card.getvPoints();
-					debug("2.1) RATING add "+card.getvPoints());
+					debug("2.1) RATING add " + card.getvPoints());
 					break;
 				// RESOURCE
 				case BROWN:
 				case GRAY:
-					ArrayList<ResourceType> list = new ArrayList<ResourceType>(Arrays.asList(ResourceType.CLOTH, 
-							ResourceType.GLASS, 
-							ResourceType.PAPYRUS, 
-							ResourceType.WOOD, 
-							ResourceType.BRICK, 
-							ResourceType.STONE, 
-							ResourceType.ORE));
+					ArrayList<ResourceType> list = new ArrayList<ResourceType>(
+							Arrays.asList(ResourceType.CLOTH, ResourceType.GLASS, ResourceType.PAPYRUS, ResourceType.WOOD, ResourceType.BRICK, ResourceType.STONE, ResourceType.ORE));
 					list.remove(getBoard().getResource().getType());
-					
+
 					Player left = pcon.getNeighbour(state, true, this);
-					for(Card rscard : left.getBoard().getResources()) {
-						for(Resource produce : rscard.getProducing()) {
-							if(list.contains(produce.getType()))list.remove(produce.getType());
+					for (Card rscard : left.getBoard().getResources()) {
+						for (Resource produce : rscard.getProducing()) {
+							if (list.contains(produce.getType()))
+								list.remove(produce.getType());
 						}
 					}
-					
-					if(!twoPlayer) {
+
+					if (!twoPlayer) {
 						Player right = pcon.getNeighbour(state, true, this);
-						for(Card rscard : right.getBoard().getResources()) {
-							for(Resource produce : rscard.getProducing()) {
-								if(list.contains(produce.getType()))list.remove(produce.getType());
+						for (Card rscard : right.getBoard().getResources()) {
+							for (Resource produce : rscard.getProducing()) {
+								if (list.contains(produce.getType()))
+									list.remove(produce.getType());
 							}
 						}
 					}
-					
+
 					ArrayList<Card> ownproducing = new ArrayList<Card>();
-					getBoard().getResources().forEach( value -> { ownproducing.add(value); } );
-					getBoard().getTrade().forEach( value -> { ownproducing.add(value); } );
-					
-					for(Card rscard : ownproducing) {
+					getBoard().getResources().forEach(value -> { ownproducing.add(value); });
+					getBoard().getTrade().forEach(value -> { ownproducing.add(value); });
+
+					for (Card rscard : ownproducing) {
 						ArrayList<Resource> producing = rscard.getProducing();
-						if(producing == null) continue;
-						for(Resource produce : rscard.getProducing()) {
-							if(list.contains(produce.getType()))list.remove(produce.getType());
+						if (producing == null)
+							continue;
+						for (Resource produce : rscard.getProducing()) {
+							if (list.contains(produce.getType()))
+								list.remove(produce.getType());
 						}
 					}
-					
+
 					WonderBoard board = getBoard();
-					for(int slot = 0; slot < 3; slot++) {
-						if(!board.isFilled(slot)) {
+					for (int slot = 0; slot < 3; slot++) {
+						if (!board.isFilled(slot)) {
 							Resource resource = board.getSlotResquirement(slot);
-							
+
 							boolean add = false;
-							for(Resource rs : card.getProducing()) {
-								if(rs.getType() == resource.getType()) {
-									add=true;
+							for (Resource rs : card.getProducing()) {
+								if (rs.getType() == resource.getType()) {
+									add = true;
 									break;
 								}
 							}
-							
-							if(add && list.contains(resource.getType())) {
+
+							if (add && list.contains(resource.getType())) {
 								rating += 2.6;
 								debug("3.1) RATING add 2.6");
 							}
 						}
 					}
-					
-					if(list.size() > Utils.getValue(2))
+
+					if (list.size() > Utils.getValue(2))
 						rating += (list.size() > 5 ? 3 : 1.5);
-					debug("3.2) RATING add "+(list.size() > 5 ? 3 : 1.5));
+					debug("3.2) RATING add " + (list.size() > 5 ? 3 : 1.5));
 					break;
 				// SCIENCE
 				case GREEN:
 					HashMap<String, Integer> science = new HashMap<String, Integer>();
-					for(Card scard : getBoard().getResearch()) {
-						if(!science.containsKey(scard.getInternalName()))
+					for (Card scard : getBoard().getResearch()) {
+						if (!science.containsKey(scard.getInternalName()))
 							science.put(scard.getInternalName(), 1);
 						else {
 							int amount = science.get(scard.getInternalName());
 							science.remove(scard.getInternalName());
-							science.put(scard.getInternalName(), amount+1);
+							science.put(scard.getInternalName(), amount + 1);
 						}
-							
+
 					}
-					
-					if(science.containsKey(card.getInternalName())) {
+
+					if (science.containsKey(card.getInternalName())) {
 						int amount = science.get(card.getInternalName());
-						
-						if(amount >= Utils.getValue(2)) {
+
+						if (amount >= Utils.getValue(2)) {
 							rating += 4;
 							debug("4.1) RATING add 4");
-						}else{
+						} else {
 							rating += 1;
 							debug("4.2) RATING add 4");
 						}
 					} else {
 						rating += 1.5;
 					}
-					//Age = 1 && 3 Clockwise
-					ArrayList<Card> nextHand = (age==1 || age == 3 ? pcon.getNeighbour(state, false, this).getHand() : pcon.getNeighbour(state, true, this).getHand());
-					
-					for(Card scard : nextHand) {
-						if(scard.getInternalName().equalsIgnoreCase(card.getInternalName())) {
+					// Age = 1 && 3 Clockwise
+					ArrayList<Card> nextHand = (age == 1 || age == 3 ? pcon.getNeighbour(state, false, this).getHand() : pcon.getNeighbour(state, true, this).getHand());
+
+					for (Card scard : nextHand) {
+						if (scard.getInternalName().equalsIgnoreCase(card.getInternalName())) {
 							rating += 2.5;
 							debug("4.3) RATING add 2.5");
 							break;
 						}
 					}
-					
+
 					break;
 				// MILITARY
 				case RED:
@@ -314,33 +317,33 @@ public class EasyAI extends ArtInt{
 					Player leftN = pcon.getLeftNeighbour(state, this);
 					int lmili = pcon.getMilitaryPoints(leftN);
 					int militarynew = military + card.getProducing().get(0).getQuantity();
-					
-					if(!twoPlayer) {
+
+					if (!twoPlayer) {
 						Player rightN = pcon.getRightNeighbour(state, this);
 						int rmili = pcon.getMilitaryPoints(rightN);
-						
-						if(rmili < militarynew && (militarynew-rmili) < Utils.getValue(3)) {
+
+						if (rmili < militarynew && (militarynew - rmili) < Utils.getValue(3)) {
 							rating += 3;
 							debug("5.1) RATING add 3");
-						}else {
+						} else {
 							rating += 0.5;
 							debug("5.2) RATING add 0.5");
 						}
 					}
-					
+
 					/**
 					 * falls militar zu sehr abgehängt nicht weiter mit halten!
 					 */
-					
-					if(lmili < militarynew && (militarynew-lmili) < Utils.getValue(3)) {
+
+					if (lmili < militarynew && (militarynew - lmili) < Utils.getValue(3)) {
 						rating += 3;
 						debug("5.3) RATING add 3");
-					}else {
+					} else {
 						rating += 0.5;
 						debug("5.4) RATING add 0.5");
 					}
 					break;
-					// GUILD
+				// GUILD
 				case PURPLE:
 					// TRADING
 				case YELLOW:
@@ -352,16 +355,16 @@ public class EasyAI extends ArtInt{
 							case AT_MATCH_END:
 							case WHEN_PLAYED:
 								Player player = copy.getPlayer();
-								debug("RIGHT PLAYER "+player.getName()+" == "+getName());
+								debug("RIGHT PLAYER " + player.getName() + " == " + getName());
 
 								// Do Effect!
 								effect.run(player, copy, copy.isTwoPlayers());
 
 								// Check changes
 								rating += player.getVictoryPoints() - getVictoryPoints();
-								rating += (player.getCoins() - getCoins())/3;
-								debug("6.1) RATING add "+(player.getVictoryPoints() - getVictoryPoints()));
-								debug("6.2) RATING add "+((player.getCoins() - getCoins())/3));
+								rating += (player.getCoins() - getCoins()) / 3;
+								debug("6.1) RATING add " + (player.getVictoryPoints() - getVictoryPoints()));
+								debug("6.2) RATING add " + ((player.getCoins() - getCoins()) / 3));
 								break;
 							}
 						}
@@ -390,29 +393,29 @@ public class EasyAI extends ArtInt{
 					debug("8.1) RATING add 3");
 					break;
 				case TRADE:
-					if(capa == BuildCapability.TRADE) {
-						if(card.getRequired() == null) {
-							debug("CAPA:"+capa.name()+" card.getRequired() == NULL ");
+					if (capa == BuildCapability.TRADE) {
+						if (card.getRequired() == null) {
+							debug("CAPA:" + capa.name() + " card.getRequired() == NULL ");
 							break;
 						}
 						TradeOption best = getBestTradeOption(new ArrayList<Resource>(Arrays.asList(requirement)));
-						
-						if(best==null) {
-							debug("1CAPA:"+capa.name()+" TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
+
+						if (best == null) {
+							debug("1CAPA:" + capa.name() + " TradeOptions-Size: EMPTY SOLLTE NICHT PASSIEREN!!!!!!!!");
 							return Double.NEGATIVE_INFINITY;
 						} else {
 							move.setTradeOption(best);
-							int price = best.getLeftCost()+best.getRightCost();
-							
-							double percentage = price/coins;
-							
-							if(percentage < Utils.getValue(0.2)) {
+							int price = best.getLeftCost() + best.getRightCost();
+
+							double percentage = price / coins;
+
+							if (percentage < Utils.getValue(0.2)) {
 								debug("9.1) RATING add +2");
 								rating += 2;
-							}else if(percentage < Utils.getValue(0.4)) {
+							} else if (percentage < Utils.getValue(0.4)) {
 								rating += 0.5;
 								debug("8.2) RATING add +0.5");
-							}else {
+							} else {
 								rating -= 0.5;
 								debug("8.9) RATING add -0.5");
 							}
@@ -425,10 +428,10 @@ public class EasyAI extends ArtInt{
 			}
 			break;
 		case SELL:
-			if(coins < Utils.getValue(4)) {
+			if (coins < Utils.getValue(4)) {
 				rating += 2.5;
 				debug("9.1) RATING add 2.5");
-			}else if(coins < Utils.getValue(10)) {
+			} else if (coins < Utils.getValue(10)) {
 				rating += 1;
 				debug("9.2) RATING add 1");
 			}
@@ -437,18 +440,19 @@ public class EasyAI extends ArtInt{
 
 		return rating;
 	}
-	
+
 	/**
 	 * generates list with all possible Moves for the AI for one round
-	 * @return list 	contains all possible Moves for the AI for one round
+	 * 
+	 * @return list contains all possible Moves for the AI for one round
 	 */
 	public ArrayList<Move> generateMoves() {
 		ArrayList<Move> list = new ArrayList<Move>();
-		
-		for(int i = 0; i < this.getHand().size(); i++) {
-			for(Action action : Move.Action.values()) {
-				if(action == Action.OLYMPIA) 
-					if(!(getBoard() instanceof OlympiaBoard) || !getBoard().isFilled(1))
+
+		for (int i = 0; i < this.getHand().size(); i++) {
+			for (Action action : Move.Action.values()) {
+				if (action == Action.OLYMPIA)
+					if (!(getBoard() instanceof OlympiaBoard) || !getBoard().isFilled(1))
 						continue;
 				list.add(new Move(this.getHand().get(i), action));
 			}

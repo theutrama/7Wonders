@@ -56,13 +56,18 @@ public class IOController {
 	/**
 	 * Saves a game at any state as a file with the same name. If such a file already exists, it is overwritten.
 	 * 
-	 * @param game		the game
+	 * @param game the game
 	 */
 	public void save(Game game) {
-		if(game!=null)
+		if (game != null)
 			save(game, File.separator + GAME_FOLDER + File.separator + game.getName());
 	}
 
+	/**
+	 * save object
+	 * @param obj object
+	 * @param path file path
+	 */
 	private void save(Object obj, String path) {
 		try {
 			File file1 = new File(getExecutionPath());

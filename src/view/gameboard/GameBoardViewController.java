@@ -126,7 +126,7 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
-		Main.primaryStage.setOnCloseRequest(event -> { Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
+		Main.primaryStage.setOnCloseRequest(event -> { exit(); Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
 
 		scrollpane.setMinSize(1000, 500);
 		hboxCards.setAlignment(Pos.CENTER);

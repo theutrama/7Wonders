@@ -44,3 +44,12 @@
 	-fx-text-fill: white;
 	-fx-font-size:14;
 }
+.headline {
+	-fx-text-fill: white;
+	-fx-font-size:28;
+}
+.button {
+    -fx-background-color:transparent ;
+    -fx-background-radius:0;
+    -fx-border-color:transparent;
+}

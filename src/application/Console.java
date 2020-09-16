@@ -32,7 +32,7 @@ public class Console {
 				stage = new Stage();
 				stage.getIcons().add(new Image(Main.class.getClassLoader().getResourceAsStream(Main.DEFAULT_PATH + "7wonders_small.png")));
 				stage.setAlwaysOnTop(true);
-				Scene scene = new Scene(console, 400, 300);
+				Scene scene = new Scene(console, 600, 300);
 				scene.setFill(Color.TRANSPARENT);
 				stage.setScene(scene);
 				stage.setTitle("Console");
@@ -46,7 +46,7 @@ public class Console {
 
 		        console.setOnMouseDragged((MouseEvent d) -> {
 		            //Ensures the stage is not dragged past the taskbar
-		            if (d.getScreenY()<(SCREEN_BOUNDS.getMaxY()-20))
+		            if (d.getScreenY()<(SCREEN_BOUNDS.getMaxY()-30))
 		                stage.setY(d.getScreenY() - posY);
 		            stage.setX(d.getScreenX() - posX);
 		        });
@@ -56,6 +56,7 @@ public class Console {
 		            if (stage.getY()<0.0) stage.setY(0.0);
 		        });
 				stage.show();
+				stage.setOnCloseRequest(event -> { stage = null; console = null; });
 			}
 			console.addConsoleText(text);
 		});
@@ -64,9 +65,11 @@ public class Console {
 	/** closes the console */
 	public static void exit() {
 		if (stage != null) {
-			stage.close();
-			stage = null;
-			console = null;
+			Platform.runLater(() -> {
+				stage.close();
+				stage = null;
+				console = null;
+			});
 		}
 	}
 }

@@ -35,6 +35,7 @@ public class Main extends Application {
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
+			primaryStage.setMaximized(true);
 			primaryStage.setOnCloseRequest(event -> { swController.getIOController().saveRanking(); System.exit(0); });
 		} catch (Exception e) {
 			e.printStackTrace();

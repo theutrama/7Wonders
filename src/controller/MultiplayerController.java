@@ -182,7 +182,7 @@ public class MultiplayerController implements EventListener{
 		
 		if(event.getPacket() instanceof PingPacket)return;
 		
-		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {
+		if(!isInGame() && Main.primaryStage.getScene().getRoot() instanceof PacketListener) {
 			System.out.println("RECEIVED PAKCET FOR PACKETLISTENER "+event.getPacket().getPacketName());
 			PacketListener view = (PacketListener)Main.primaryStage.getScene().getRoot();
 			view.handle(event.getPacket());

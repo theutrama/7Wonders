@@ -169,6 +169,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			return;
 		}
     	
+    	Main.getSWController().getMultiplayerController().setInGame(true);
     	String wondername = "";
 		PlayerController pcon = Main.getSWController().getPlayerController();
 		GameController gcon = Main.getSWController().getGameController();

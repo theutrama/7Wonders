@@ -33,7 +33,7 @@
                   <TableColumn fx:id="col_victoryPoints" maxWidth="1.7976931348623157E308" prefWidth="120.0" text="Siegpunkte" />
                   <TableColumn fx:id="col_conflictPoints" maxWidth="1.7976931348623157E308" prefWidth="170.0" text="Sieg-Marker" />
                   <TableColumn fx:id="col_losePoints" maxWidth="1.7976931348623157E308" prefWidth="175.0" text="Niederlage-Marker" />
-                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="115.0" text="Münzen" />
+                  <TableColumn fx:id="col_coins" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="101.5999755859375" text="Münzen" />
               </columns>
             </TableView>
          </children>

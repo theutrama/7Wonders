@@ -1109,7 +1109,8 @@ public class GameBoardViewController extends VBox {
 			new Thread(() -> {
 				((ArtInt) player).calculateNextMove();
 				Card selected = ((ArtInt) player).getSelectedCard();
-				Console.log("[" + player.getClass().getSimpleName() + "] action: " + ((ArtInt) player).getAction() + "  card: " + ((ArtInt) player).getSelectedCard() + "  trade: " + ((ArtInt) player).getTradeOption());
+				if(!(player instanceof Multiplayer))
+					Console.log("[" + player.getClass().getSimpleName() + "] action: " + ((ArtInt) player).getAction() + "  card: " + ((ArtInt) player).getSelectedCard() + "  trade: " + ((ArtInt) player).getTradeOption());
 				int index = indexOf(player.getHand(), selected);
 
 				VBox vbox = (VBox) hboxCards.getChildren().get(index);

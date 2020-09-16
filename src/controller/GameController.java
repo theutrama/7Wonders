@@ -307,7 +307,6 @@ public class GameController {
 		for (Player player : state.getPlayers()) {
 			runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
 			runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
-			runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
 			// conflicts
 			player.addVictoryPoints(player.getConflictPoints());
 			player.addVictoryPoints(-player.getLosePoints());

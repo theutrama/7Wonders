@@ -61,7 +61,6 @@ public class MediumAI extends AdvancedAI {
 	private int evaluateAge3(GameState state, Player player) {
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
-		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
 		player.addVictoryPoints(player.getConflictPoints());
 		player.addVictoryPoints(-player.getLosePoints());
 		player.addVictoryPoints(player.getCoins() / 3);

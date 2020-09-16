@@ -70,17 +70,18 @@ public class SoundController {
 	 * plays sound with/without loop
 	 * 
 	 * @param sound name of sound
-	 * @param loop true if loop, false otherwise
+	 * @param loop  true if loop, false otherwise
 	 */
 	public void play(Sound sound, boolean loop) {
 		if (Main.TEST)
 			return;
 		if (!isMuted() || (this.mute && loop)) {
+			ArrayList<String> files = new ArrayList<>();
 			for (SoundPlayer player : players)
 				for (String soundname : player.filenames)
-					for (String soundname2 : sound.getSoundFilenames())
-						if (soundname.equals(soundname2))
-							return;
+					files.add(soundname);
+			if (files.contains(sound.getSoundFilenames()[0]))
+				return;
 			SoundPlayer player = new SoundPlayer(sound, (loop ? volume : 1.0));
 			if (loop)
 				player.setLoop();
@@ -166,8 +167,7 @@ public class SoundController {
 		}
 
 		public void setAutoRemove() {
-			SoundPlayer tthis = this;
-			player.setOnEndOfMedia(() -> players.remove(tthis));
+			player.setOnEndOfMedia(() -> players.remove(SoundPlayer.this));
 		}
 
 		public boolean setLoop() {

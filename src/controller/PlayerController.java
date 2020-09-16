@@ -185,13 +185,7 @@ public class PlayerController {
 			victoryPoints += amount[i] * amount[i];
 		}
 
-		while (amount[0] >= 1 && amount[1] >= 1 && amount[2] >= 1) {
-			victoryPoints += 7;
-			amount[0]--;
-			amount[1]--;
-			amount[2]--;
-		}
-
+		victoryPoints += 7 * Math.min(amount[0], Math.min(amount[1], amount[2]));
 		return victoryPoints;
 	}
 
@@ -203,11 +197,19 @@ public class PlayerController {
 	 */
 	public int getSciencePoints(Player player) {
 		int[] amount = new int[] { 0, 0, 0 };
-		for (int i = 0; i < BabylonBoard.types.length; i++) {
-			for (Card card : player.getBoard().getResearch()) {
-				if (card.getScienceType() == BabylonBoard.types[i]) {
-					amount[i]++;
-				}
+		for (Card card : player.getBoard().getResearch()) {
+			switch (card.getScienceType()) {
+			case TABLET:
+				amount[0]++;
+				break;
+			case COMPASS:
+				amount[1]++;
+				break;
+			case GEAR:
+				amount[2]++;
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -233,6 +235,7 @@ public class PlayerController {
 			return Utils.max(new int[] { type1, type2, type3 });
 
 		}
+
 		return getSciencePoints(amount);
 	}
 

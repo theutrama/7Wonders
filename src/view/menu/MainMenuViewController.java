@@ -3,7 +3,6 @@ package view.menu;
 import java.io.IOException;
 
 import application.Main;
-import controller.SevenWondersController;
 import controller.SoundController;
 import controller.sound.Sound;
 import javafx.fxml.FXML;
@@ -18,23 +17,23 @@ import view.ranking.RankingViewController;
 
 public class MainMenuViewController extends BorderPane {
 
-    @FXML
-    private ImageView img_music;
+	@FXML
+	private ImageView img_music;
 
-    @FXML
-    private Button btn_newgame;
+	@FXML
+	private Button btn_newgame;
 
-    @FXML
-    private Button btn_loadgame;
+	@FXML
+	private Button btn_loadgame;
 
-    @FXML
-    private Button btn_ranking;
-    
-    @FXML
-    private Button btn_mute;
-    
-    @FXML
-    private Button btn_multiplayer;
+	@FXML
+	private Button btn_ranking;
+
+	@FXML
+	private Button btn_mute;
+
+	@FXML
+	private Button btn_multiplayer;
 
 	public MainMenuViewController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu/MainMenu.fxml"));
@@ -43,19 +42,17 @@ public class MainMenuViewController extends BorderPane {
 		try {
 			loader.load();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 		btn_multiplayer.setOnAction(event -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new MultiplayerListViewController()); });
 		SoundController.addMuteFunction(btn_mute, img_music);
 		Main.getSWController().getMultiplayerController().close();
-		btn_newgame.setOnAction(event -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK);
-			Main.primaryStage.getScene().setRoot(new NewGameViewController());
-		});
-		
-		btn_ranking.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new RankingViewController());});
-		
-		btn_loadgame.setOnAction(e -> {Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new GameListViewController());});
+		btn_newgame.setOnAction(event -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new NewGameViewController()); });
+
+		btn_ranking.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new RankingViewController()); });
+
+		btn_loadgame.setOnAction(e -> { Main.getSWController().getSoundController().play(Sound.BUTTON_CLICK); Main.primaryStage.getScene().setRoot(new GameListViewController()); });
 		Main.getSWController().getSoundController().play(Sound.BACKGROUND_MENU, true);
 	}
 }

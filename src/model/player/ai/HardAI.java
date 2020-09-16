@@ -163,7 +163,6 @@ public class HardAI extends AdvancedAI {
 		// Victory points //////////////////////////////////////////
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getTrade(), state.isTwoPlayers());
 		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getGuilds(), state.isTwoPlayers());
-		Main.getSWController().getGameController().runEffects(state, player, player.getBoard().getCivil(), state.isTwoPlayers());
 		player.addVictoryPoints(player.getConflictPoints());
 		player.addVictoryPoints(-player.getLosePoints());
 		player.addVictoryPoints(player.getCoins() / 3);
@@ -173,7 +172,6 @@ public class HardAI extends AdvancedAI {
 		Player neighbour = Main.getSWController().getPlayerController().getNeighbour(state, true, player);
 		Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getTrade(), state.isTwoPlayers());
 		Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getGuilds(), state.isTwoPlayers());
-		Main.getSWController().getGameController().runEffects(state, neighbour, neighbour.getBoard().getCivil(), state.isTwoPlayers());
 		player.addVictoryPoints(neighbour.getConflictPoints());
 		player.addVictoryPoints(-neighbour.getLosePoints());
 		player.addVictoryPoints(neighbour.getCoins() / 3);

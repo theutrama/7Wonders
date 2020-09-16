@@ -13,6 +13,7 @@ import main.api.packet.Packet;
 import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.client.packets.PingPacket;
+import main.client.packets.SortPacket;
 import main.lobby.packets.server.LobbyClosePacket;
 import main.lobby.packets.server.LobbyListPacket;
 import main.lobby.packets.server.LobbyPlayersPacket;
@@ -39,6 +40,7 @@ public class MultiplayerController implements EventListener{
 	private PlayerClient client;
 	/** boolean for ingame */
 	private boolean ingame = false;
+	public int orderId = 0;
 	
 	/** create new Multiplayer Controller */
 	public MultiplayerController() {
@@ -60,6 +62,7 @@ public class MultiplayerController implements EventListener{
 	 * @param ingame	the boolean for ingame
 	 */
 	public void setInGame(boolean ingame) {
+		if(ingame)orderId=0;
 		this.ingame = ingame;
 	}
 	
@@ -99,8 +102,10 @@ public class MultiplayerController implements EventListener{
 	@EventHandler
 	public void trade(PlayerTradeOptionEvent event) {
 		if(isConnected()) {
+			orderId++;
+			System.out.println("SEND PlayerTradeOptionPacket "+orderId);
 			PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(event.getOptionIndex());
-			getClient().write(packet);
+			getClient().write(new SortPacket(this.orderId++,packet));
 		}
 	}
 
@@ -112,8 +117,10 @@ public class MultiplayerController implements EventListener{
 	public void hali(PlayerHalikarnassusEvent event) {
 		if(isConnected()) {
 			Card selected = event.getCard();
+			orderId++;
+			System.out.println("SEND PlayerHalikarnassusPacket "+orderId);
 			PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
-			getClient().write(packet);
+			getClient().write(new SortPacket(this.orderId++,packet));
 		}
 	}
 	
@@ -126,8 +133,10 @@ public class MultiplayerController implements EventListener{
 		if(isConnected()) {
 			Card selected = event.getCard();
 			Player player = event.getPlayer();
+			orderId++;
+			System.out.println("SEND PlayerSelectedCardPacket "+orderId);
 			PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
-			getClient().write(packet);
+			getClient().write(new SortPacket(this.orderId++,packet));
 		}
 	}
 
@@ -138,8 +147,10 @@ public class MultiplayerController implements EventListener{
 	@EventHandler
 	public void action(PlayerActionEvent event) {
 		if(isConnected()) {
+			orderId++;
+			System.out.println("SEND PlayerActionPacket "+orderId);
 			PlayerActionPacket packet = new PlayerActionPacket(event.getAction());
-			getClient().write(packet);
+			getClient().write(new SortPacket(this.orderId++,packet));
 		}
 	}
 	

@@ -40,3 +40,7 @@
 .backgroundstyle {
 	-fx-background-color: #474747AA;
 }
+.labelstyle {
+	-fx-text-fill: white;
+	-fx-font-size:14;
+}

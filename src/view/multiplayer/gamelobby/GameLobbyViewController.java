@@ -213,10 +213,12 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		if(isOwner()) {
 			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
 			this.settings.setStack(cardStack);
-			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
+			byte[] arr = this.settings.toBytes();
+			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(arr));
 			for(Card c : cardStack) {
 				System.out.println("CREATE "+c.getAge()+" "+c.getInternalName());
 			}
+			System.out.println("SEND SETTINGS SIZE: "+arr.length);
 		}else {
 			cardStack = this.settings.getStack();
 			for(Card c : cardStack) {
@@ -240,6 +242,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	if(packet0 instanceof LobbyUpdatePacket) {
     		LobbyUpdatePacket packet = (LobbyUpdatePacket) packet0;
     		this.settings = Settings.fromBytes(packet.getArr());
+			System.out.println("RECEIVED SETTINGS SIZE: "+packet.getArr().length);
     		
     		if(this.settings == null)System.out.println("SETTINGS == NULL");
     		if(this.settings.owner == null)System.out.println("SETTINGS.OWNER == NULL");

@@ -32,6 +32,7 @@ public class CardStackPacket extends Packet{
 	 */
 	@Override
 	public void parseFromInput(DataInputStream input) throws IOException {
+		cardStack = new ArrayList<String>();
 		int length = input.readInt();
 		for(int i = 0; i < length; i++)
 			cardStack.add(input.readUTF());

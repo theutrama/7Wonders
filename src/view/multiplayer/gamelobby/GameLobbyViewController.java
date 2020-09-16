@@ -334,11 +334,12 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		Main.primaryStage.getScene().setRoot(new LobbyViewController()); 
     	}else if(packet0 instanceof CardStackPacket) {
     		CardStackPacket packet = (CardStackPacket)packet0;
-    		
+    		System.out.println("GOT CardStackPacket");
     		CardController cardcon = Main.getSWController().getCardController();
     		this.cardStack = new ArrayList<Card>();
     		for(String cardname : packet.getCardStack()) {
     			this.cardStack.add(cardcon.getCard(cardname));
+				System.out.println("GOT1 "+cardname);
     		}
     	}
     	return false;

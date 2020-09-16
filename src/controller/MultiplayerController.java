@@ -9,6 +9,7 @@ import main.api.events.EventHandler;
 import main.api.events.EventListener;
 import main.api.events.EventManager;
 import main.api.events.events.PacketReceiveEvent;
+import main.api.events.events.PacketSendEvent;
 import main.api.packet.Packet;
 import main.client.PlayerClient;
 import main.client.connector.PacketListener;
@@ -154,6 +155,23 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	@EventHandler
+	public void send(PacketSendEvent event) {
+		if(event.getPacket() instanceof PlayerSelectedCardPacket) {
+			PlayerSelectedCardPacket p = event.getPacket(PlayerSelectedCardPacket.class);
+			System.out.println("SEND PlayerSelectedCardPacket HandIndex: "+p.getHandIndex());
+		}else if(event.getPacket() instanceof PlayerHalikarnassusPacket) {
+			PlayerHalikarnassusPacket p = event.getPacket(PlayerHalikarnassusPacket.class);
+			System.out.println("SEND PlayerHalikarnassusPacket getHalikarnassusIndex: "+p.getHalikarnassusIndex());
+		}else if(event.getPacket() instanceof PlayerTradeOptionPacket) {
+			PlayerTradeOptionPacket p = event.getPacket(PlayerTradeOptionPacket.class);
+			System.out.println("SEND PlayerTradeOptionPacket getTradeOptionIndex: "+p.getTradeOptionIndex());
+		}else if(event.getPacket() instanceof PlayerActionPacket) {
+			PlayerActionPacket p = event.getPacket(PlayerActionPacket.class);
+			System.out.println("SEND PlayerActionPacket Action: "+p.getAction().name());
+		}
+	}
+	
 	/**
 	 * handling received Package
 	 * @param event		Event for received package
@@ -161,6 +179,21 @@ public class MultiplayerController implements EventListener{
 	@EventHandler
 	public void rec(PacketReceiveEvent event) {
 		if(!isConnected())return;
+		
+		if(event.getPacket() instanceof PlayerSelectedCardPacket) {
+			PlayerSelectedCardPacket p = event.getPacket(PlayerSelectedCardPacket.class);
+			System.out.println("RECEIVED PlayerSelectedCardPacket HandIndex: "+p.getHandIndex());
+		}else if(event.getPacket() instanceof PlayerHalikarnassusPacket) {
+			PlayerHalikarnassusPacket p = event.getPacket(PlayerHalikarnassusPacket.class);
+			System.out.println("RECEIVED PlayerHalikarnassusPacket getHalikarnassusIndex: "+p.getHalikarnassusIndex());
+		}else if(event.getPacket() instanceof PlayerTradeOptionPacket) {
+			PlayerTradeOptionPacket p = event.getPacket(PlayerTradeOptionPacket.class);
+			System.out.println("RECEIVED PlayerTradeOptionPacket getTradeOptionIndex: "+p.getTradeOptionIndex());
+		}else if(event.getPacket() instanceof PlayerActionPacket) {
+			PlayerActionPacket p = event.getPacket(PlayerActionPacket.class);
+			System.out.println("RECEIVED PlayerActionPacket Action: "+p.getAction().name());
+		}
+		
 		if(event.getPacket() instanceof PingPacket)return;
 		
 		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {

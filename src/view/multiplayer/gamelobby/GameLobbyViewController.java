@@ -56,6 +56,7 @@ import model.Game;
 import model.card.Card;
 import model.player.Player;
 import model.player.ai.Difficulty;
+import model.player.multiplayer.packets.CardStackPacket;
 import view.gameboard.GameBoardViewController;
 import view.multiplayer.list.MultiplayerListViewController;
 import view.multiplayer.lobby.LobbyViewController;
@@ -101,7 +102,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     private ImageView img_music;
     private Settings settings;
     private HashMap<String,HBox> players = new HashMap<>();
-    
+    private ArrayList<Card> cardStack;
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
 	private static final ObservableList<String> KItypes = FXCollections.observableList(Arrays.asList("KI Einfach", "KI Mittel", "KI Schwer"));
 	protected static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
@@ -130,7 +131,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			System.out.println("OWNER!");
 			this.owner=true;
 			this.settings = new Settings(ownname);
-			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(settings.toBytes()));
+			
+			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
 			btn_done.setOnAction(event -> done());
 
 			btn_done.setVisible(true);
@@ -212,16 +214,18 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		ArrayList<Card> cardStack = null;
 		if(isOwner()) {
 			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
-			this.settings.setStack(cardStack);
+			ArrayList<String> cardStackString = new ArrayList<String>();
+			for(Card c : cardStack)cardStackString.add(c.getInternalName());
+			Main.getSWController().getMultiplayerController().getClient().write(new CardStackPacket(cardStackString));
+			this.settings.gameStarted = true;
 			byte[] arr = this.settings.toBytes();
+			
 			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(arr));
 			for(Card c : cardStack) {
 				System.out.println("CREATE "+c.getAge()+" "+c.getInternalName());
 			}
-			System.out.println("SEND SETTINGS SIZE: "+arr.length);
 		}else {
-			cardStack = this.settings.getStack();
-			for(Card c : cardStack) {
+			for(Card c : this.cardStack) {
 				System.out.println("GOT "+c.getAge()+" "+c.getInternalName());
 			}
 		}
@@ -244,7 +248,16 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		this.settings = Settings.fromBytes(packet.getArr());
 			System.out.println("RECEIVED SETTINGS SIZE: "+packet.getArr().length);
     		
-    		if(this.settings == null)System.out.println("SETTINGS == NULL");
+    		if(this.settings == null) {
+    			String m = "";
+    			for(byte a : packet.getArr()) {
+    				m += a;
+    			}
+    			System.out.println(m);
+    			
+    			
+    			System.out.println("SETTINGS == NULL");
+    		}
     		if(this.settings.owner == null)System.out.println("SETTINGS.OWNER == NULL");
     		
 			System.out.println("GOT LobbyUpdatePacket "+this.settings.owner);  
@@ -319,6 +332,15 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		return true;
     	}else if(packet0 instanceof LobbyClosePacket) {
     		Main.primaryStage.getScene().setRoot(new LobbyViewController()); 
+    	}else if(packet0 instanceof CardStackPacket) {
+    		CardStackPacket packet = (CardStackPacket)packet0;
+    		System.out.println("GOT CardStackPacket");
+    		CardController cardcon = Main.getSWController().getCardController();
+    		this.cardStack = new ArrayList<Card>();
+    		for(String cardname : packet.getCardStack()) {
+    			this.cardStack.add(cardcon.getCard(cardname));
+				System.out.println("GOT1 "+cardname);
+    		}
     	}
     	return false;
     }
@@ -405,8 +427,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		}
 		
     	private String owner;
+    	public boolean gameStarted = false;
     	private HashMap<String, PlayerSettings> players = new HashMap<String, PlayerSettings>();
-    	private ArrayList<String> cardStack;
     	
     	public Settings(String owner) {
     		this.owner = owner;
@@ -414,22 +436,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	}
     	
     	public boolean hasGameStarted() {
-    		return this.cardStack != null;
-    	}
-    	
-    	public void setStack(ArrayList<Card> cardStack) {
-    		this.cardStack = new ArrayList<String>();
-    		cardStack.forEach(card -> {this.cardStack.add(card.getInternalName());});
-    	}
-    	
-    	public ArrayList<Card> getStack(){
-    		ArrayList<Card> cards = new ArrayList<Card>();
-    		CardController con = Main.getSWController().getCardController();
-    		this.cardStack.forEach(cardname -> {
-    			cards.add(con.getCard(cardname));
-    		});
-    		
-    		return cards;
+    		return this.gameStarted;
     	}
     	
     	public PlayerSettings getSettings(String playername) {

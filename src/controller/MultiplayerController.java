@@ -153,6 +153,10 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/**
+	 * sends a packet
+	 * @param event		the event to send
+	 */
 	@EventHandler
 	public void send(PacketSendEvent event) {
 		if(event.getPacket() instanceof PlayerSelectedCardPacket) {

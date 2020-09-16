@@ -13,17 +13,23 @@ import view.console.ConsoleViewController;
 
 public class Console {
 
+	private static Stage stage;
 	private static ConsoleViewController console;
 	private static final Rectangle2D SCREEN_BOUNDS= Screen.getPrimary()
             .getVisualBounds();
     private static double posX;
 	private static double posY;
 
+	/**
+	 * display a new line of text in a console window
+	 * 
+	 * @param text text
+	 */
 	public synchronized static void log(String text) {
 		Platform.runLater(() -> {
 			if (console == null) {
 				console = new ConsoleViewController();
-				Stage stage = new Stage();
+				stage = new Stage();
 				stage.getIcons().add(new Image(Main.class.getClassLoader().getResourceAsStream(Main.DEFAULT_PATH + "7wonders_small.png")));
 				stage.setAlwaysOnTop(true);
 				Scene scene = new Scene(console, 400, 300);
@@ -53,5 +59,14 @@ public class Console {
 			}
 			console.addConsoleText(text);
 		});
+	}
+
+	/** closes the console */
+	public static void exit() {
+		if (stage != null) {
+			stage.close();
+			stage = null;
+			console = null;
+		}
 	}
 }

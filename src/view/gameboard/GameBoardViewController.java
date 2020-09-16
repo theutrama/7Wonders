@@ -126,7 +126,7 @@ public class GameBoardViewController extends VBox {
 			e.printStackTrace();
 		}
 
-		Main.primaryStage.setOnCloseRequest(event -> { Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
+		Main.primaryStage.setOnCloseRequest(event -> { exit(); Main.getSWController().getIOController().save(Main.getSWController().getGame()); Main.getSWController().getIOController().saveRanking(); });
 
 		scrollpane.setMinSize(1000, 500);
 		hboxCards.setAlignment(Pos.CENTER);
@@ -204,6 +204,7 @@ public class GameBoardViewController extends VBox {
 	public void exit() {
 		timer.cancel();
 		timer = null;
+		Console.exit();
 	}
 
 	/**
@@ -1108,7 +1109,8 @@ public class GameBoardViewController extends VBox {
 			new Thread(() -> {
 				((ArtInt) player).calculateNextMove();
 				Card selected = ((ArtInt) player).getSelectedCard();
-				Console.log("[" + player.getClass().getSimpleName() + "] action: " + ((ArtInt) player).getAction() + "  card: " + ((ArtInt) player).getSelectedCard() + "  trade: " + ((ArtInt) player).getTradeOption());
+				if(!(player instanceof Multiplayer))
+					Console.log("[" + player.getClass().getSimpleName() + "] action: " + ((ArtInt) player).getAction() + "  card: " + ((ArtInt) player).getSelectedCard() + "  trade: " + ((ArtInt) player).getTradeOption());
 				int index = indexOf(player.getHand(), selected);
 
 				VBox vbox = (VBox) hboxCards.getChildren().get(index);

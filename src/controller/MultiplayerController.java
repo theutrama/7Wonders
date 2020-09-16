@@ -105,7 +105,7 @@ public class MultiplayerController implements EventListener{
 			orderId++;
 			System.out.println("SEND PlayerTradeOptionPacket "+orderId);
 			PlayerTradeOptionPacket packet = new PlayerTradeOptionPacket(event.getOptionIndex());
-			getClient().write(new SortPacket(this.orderId++,packet));
+			getClient().write(packet);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class MultiplayerController implements EventListener{
 			orderId++;
 			System.out.println("SEND PlayerHalikarnassusPacket "+orderId);
 			PlayerHalikarnassusPacket packet = new PlayerHalikarnassusPacket(indexOf(Main.getSWController().getGame().getCurrentGameState().getTrash(), selected));
-			getClient().write(new SortPacket(this.orderId++,packet));
+			getClient().write(packet);
 		}
 	}
 	
@@ -136,7 +136,7 @@ public class MultiplayerController implements EventListener{
 			orderId++;
 			System.out.println("SEND PlayerSelectedCardPacket "+orderId);
 			PlayerSelectedCardPacket packet = new PlayerSelectedCardPacket(indexOf(player.getHand(), selected));
-			getClient().write(new SortPacket(this.orderId++,packet));
+			getClient().write(packet);
 		}
 	}
 
@@ -150,7 +150,7 @@ public class MultiplayerController implements EventListener{
 			orderId++;
 			System.out.println("SEND PlayerActionPacket "+orderId);
 			PlayerActionPacket packet = new PlayerActionPacket(event.getAction());
-			getClient().write(new SortPacket(this.orderId++,packet));
+			getClient().write(packet);
 		}
 	}
 	

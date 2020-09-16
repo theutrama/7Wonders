@@ -1,0 +1,42 @@
+
+.my-scroll-pane {
+    -fx-fit-to-height: true;
+    -fx-fit-to-width: true;
+	-fx-background-color: transparent;
+}
+.scroll-pane > .viewport { 
+   -fx-background-color: transparent;
+}
+
+.root { -fx-background-color: transparent; }
+.scroll-bar .increment-button {
+	visibility: hidden;
+}
+
+.scroll-bar .decrement-button {
+	visibility: hidden;
+}
+
+.scroll-bar:vertical {
+	-fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track-background {
+	visibility: hidden;
+}
+
+.scroll-bar:vertical .track {
+	visibility: hidden;
+}
+
+.hide-thumb .scroll-bar:vertical .thumb {
+	-fx-background-color: transparent;
+}
+.lightwoodstyle {
+	-fx-font-family: 'Bookman Old Style';
+	-fx-font-size:24;
+	-fx-text-fill: #353535;
+}
+.backgroundstyle {
+	-fx-background-color: #474747AA;
+}

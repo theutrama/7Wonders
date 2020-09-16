@@ -182,10 +182,7 @@ public class HardAI extends AdvancedAI {
 
 		return value;
 	}
-
-	/**
-	 * get the value for a specific game state
-	 */
+	
 	@Override
 	protected int evaluate(GameState state, String playername) {
 		Player player = Main.getSWController().getPlayerController().getPlayer(playername, state);

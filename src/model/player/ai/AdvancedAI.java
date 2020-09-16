@@ -34,9 +34,6 @@ public abstract class AdvancedAI extends ArtInt {
 		super(name, board);
 	}
 
-	/**
-	 * overrides ArtInt's method {@link ArtInt#calculateNextMove()}
-	 */
 	@Override
 	public void calculateNextMove() {
 		MoveTree tree = generateTree();
@@ -62,10 +59,7 @@ public abstract class AdvancedAI extends ArtInt {
 
 		this.next = maxMove;
 	}
-
-	/**
-	 * select Halikarnassus card
-	 */
+	
 	@Override
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
 		if (trash.isEmpty())

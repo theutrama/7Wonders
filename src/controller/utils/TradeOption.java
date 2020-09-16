@@ -75,10 +75,7 @@ public class TradeOption implements Serializable {
 	public int getRightCost() {
 		return rightCost;
 	}
-
-	/**
-	 * get description string
-	 */
+	
 	@Override
 	public String toString() {
 		if (rightTrade == null && leftTrade != null)
@@ -189,10 +186,7 @@ public class TradeOption implements Serializable {
 		hbox.setAlignment(Pos.CENTER);
 		return hbox;
 	}
-
-	/**
-	 * checks if the resources
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		try {

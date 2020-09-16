@@ -154,9 +154,6 @@ public class ResourceBundle implements Serializable {
 				&& coins >= bundle.coins;
 	}
 
-	/**
-	 * checks if all quantities are the same
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		try {
@@ -176,10 +173,7 @@ public class ResourceBundle implements Serializable {
 	public int getCoins() {
 		return coins;
 	}
-
-	/**
-	 * String representation of all single resources
-	 */
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

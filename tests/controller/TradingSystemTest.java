@@ -111,7 +111,7 @@ public class TradingSystemTest {
 
 		TradeOption to1 = new TradeOption(new ResourceBundle(new Resource(1, ResourceType.ORE)), new ResourceBundle(new Resource(1, ResourceType.WOOD)), 2, 1), to2 = new TradeOption(null, null, 0, 0),
 				to3 = new TradeOption(null, new ResourceBundle(), 0, 0);
-		
+
 		SwingUtilities.invokeLater(() -> {
 			new JFXPanel(); // initialize javafx
 			Platform.runLater(() -> to1.getNode(player1, event -> {}));
@@ -125,9 +125,10 @@ public class TradingSystemTest {
 		to2.getRightTrade();
 		to3.toString();
 
-		ResourceBundle rb1 = new ResourceBundle(1, 1, 1, 1, 1, 1, 1, 1), rb2 = new ResourceBundle(2, 1, 1, 1, 1, 1, 1, 1), rb3 = new ResourceBundle(1, 2, 1, 1, 1, 1, 1, 1),
-				rb4 = new ResourceBundle(1, 1, 2, 1, 1, 1, 1, 1), rb5 = new ResourceBundle(1, 1, 1, 2, 1, 1, 1, 1), rb6 = new ResourceBundle(1, 1, 1, 1, 2, 1, 1, 1),
-				rb7 = new ResourceBundle(1, 1, 1, 1, 1, 2, 1, 1), rb8 = new ResourceBundle(1, 1, 1, 1, 1, 1, 2, 1);
+		ResourceBundle rb1 = new ResourceBundle(new int[] { 1, 1, 1, 1, 1, 1, 1, 1 }), rb2 = new ResourceBundle(new int[] { 2, 1, 1, 1, 1, 1, 1, 1 }),
+				rb3 = new ResourceBundle(new int[] { 1, 2, 1, 1, 1, 1, 1, 1 }), rb4 = new ResourceBundle(new int[] { 1, 1, 2, 1, 1, 1, 1, 1 }),
+				rb5 = new ResourceBundle(new int[] { 1, 1, 1, 2, 1, 1, 1, 1 }), rb6 = new ResourceBundle(new int[] { 1, 1, 1, 1, 2, 1, 1, 1 }),
+				rb7 = new ResourceBundle(new int[] { 1, 1, 1, 1, 1, 2, 1, 1 }), rb8 = new ResourceBundle(new int[] { 1, 1, 1, 1, 1, 1, 2, 1 });
 		rb1.createResourceImages();
 		rb1.toString();
 		rb1.greaterOrEqualThan(rb2);

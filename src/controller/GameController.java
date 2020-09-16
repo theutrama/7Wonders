@@ -206,22 +206,14 @@ public class GameController {
 	 */
 	public boolean loadCSV(File file) throws NullPointerException {
 		// Wrong File Type
-		if (!file.getName().endsWith(".csv"))
-			return false;
-
+		if (!file.getName().endsWith(".csv"))	return false;
 		SevenWondersController controller = SevenWondersController.getInstance();
-		// DataInputStream input = null;
-		BufferedReader input = null;
-		try {
-			// input = new DataInputStream(new FileInputStream(file));
-			input = new BufferedReader(new FileReader(file));
-
+		try (BufferedReader input = new BufferedReader(new FileReader(file))) {
 			String line = null;
 			line = input.readLine(); // age,card
 			NewCSVGameViewController view = new NewCSVGameViewController();
 			String wonder1 = input.readLine().split(",")[1];
 			view.addPlayer("Spieler", Utils.toWonder(wonder1), true);
-
 			ArrayList<Card> cards = new ArrayList<Card>();
 			String[] split;
 			int aiNum = 1;
@@ -229,7 +221,6 @@ public class GameController {
 				if (line.contains(",")) {
 					split = line.split(",");
 					int age = Integer.valueOf(split[0]);
-
 					if (age == 0) {
 						String wonder = Utils.toCard(split[1], age);
 						view.addPlayer("AI-Spieler" + aiNum, Utils.toWonder(wonder), true);
@@ -237,34 +228,19 @@ public class GameController {
 					} else {
 						String cardname = Utils.toCard(split[1], age);
 						Card card = controller.getCardController().getCard(cardname);
-
-						if (age != card.getAge()) {
-							throw new NullPointerException("Card " + card + " " + card.getAge() + " != " + age);
-						}
-
+						if (age != card.getAge())	throw new NullPointerException("Card " + card + " " + card.getAge() + " != " + age);
 						cards.add(card);
 					}
 				} else
 					return false;
 			}
-
 			// Reverse Array to get the right order by taking from the TOP
 			Collections.reverse(cards);
 			view.setCardStack(cards);
-
 			Main.primaryStage.getScene().setRoot(view);
 			return true;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			if (input != null)
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 		}
 		return false;
 	}
@@ -337,9 +313,9 @@ public class GameController {
 	/**
 	 * calls {@link Effect#run(Player, GameState, boolean)} for all effects for each given card
 	 * 
-	 * @param state  game state
-	 * @param player player
-	 * @param cards  list of cards from the player's game board
+	 * @param state      game state
+	 * @param player     player
+	 * @param cards      list of cards from the player's game board
 	 * @param twoPlayers two player round
 	 */
 	public void runEffects(GameState state, Player player, ArrayList<Card> cards, boolean twoPlayers) {

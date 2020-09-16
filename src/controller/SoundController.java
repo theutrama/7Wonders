@@ -67,6 +67,22 @@ public class SoundController {
 	}
 
 	/**
+	 * check if the given soundname is in the file list of any existing sound
+	 * 
+	 * @param filename sound name
+	 * @return true if the sound is active
+	 */
+	private boolean isPlaying(String filename) {
+		ArrayList<String> files = new ArrayList<>();
+		for (SoundPlayer player : players)
+			for (String soundname : player.filenames)
+				files.add(soundname);
+		if (files.contains(filename))
+			return true;
+		return false;
+	}
+
+	/**
 	 * plays sound with/without loop
 	 * 
 	 * @param sound name of sound
@@ -75,13 +91,7 @@ public class SoundController {
 	public void play(Sound sound, boolean loop) {
 		if (Main.TEST)
 			return;
-		if (!isMuted() || (this.mute && loop)) {
-			ArrayList<String> files = new ArrayList<>();
-			for (SoundPlayer player : players)
-				for (String soundname : player.filenames)
-					files.add(soundname);
-			if (files.contains(sound.getSoundFilenames()[0]))
-				return;
+		if (!isPlaying(sound.getSoundFilenames()[0]) && (!isMuted() || (this.mute && loop))) {
 			SoundPlayer player = new SoundPlayer(sound, (loop ? volume : 1.0));
 			if (loop)
 				player.setLoop();

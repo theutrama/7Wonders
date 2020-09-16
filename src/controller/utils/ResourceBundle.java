@@ -44,24 +44,17 @@ public class ResourceBundle implements Serializable {
 	/**
 	 * constructor to allow adding two bundles
 	 * 
-	 * @param wood    sets {@link #wood}
-	 * @param stone   sets {@link #stone}
-	 * @param ore     sets {@link #ore}
-	 * @param cloth   sets {@link #cloth}
-	 * @param glass   sets {@link #glass}
-	 * @param brick   sets {@link #brick}
-	 * @param papyrus sets {@link #papyrus}
-	 * @param coins	   sets {@link #coins}
+	 * @param array array that contains all eight values
 	 */
-	public ResourceBundle(int wood, int stone, int ore, int cloth, int glass, int brick, int papyrus, int coins) {
-		this.wood = wood;
-		this.stone = stone;
-		this.ore = ore;
-		this.cloth = cloth;
-		this.glass = glass;
-		this.brick = brick;
-		this.papyrus = papyrus;
-		this.coins = coins;
+	public ResourceBundle(int[] array) {
+		this.wood = array[0];
+		this.stone = array[1];
+		this.ore = array[2];
+		this.cloth = array[3];
+		this.glass = array[4];
+		this.brick = array[5];
+		this.papyrus = array[6];
+		this.coins = array[7];
 	}
 
 	/**
@@ -127,8 +120,8 @@ public class ResourceBundle implements Serializable {
 	 * @return a new resource bundle representing the combined resource requirements
 	 */
 	public ResourceBundle add(ResourceBundle bundle) {
-		return new ResourceBundle(wood + bundle.wood, stone + bundle.stone, ore + bundle.ore, cloth + bundle.cloth, glass + bundle.glass, brick + bundle.brick, papyrus + bundle.papyrus,
-				coins + bundle.coins);
+		return new ResourceBundle(new int[] {wood + bundle.wood, stone + bundle.stone, ore + bundle.ore, cloth + bundle.cloth, glass + bundle.glass, brick + bundle.brick, papyrus + bundle.papyrus,
+				coins + bundle.coins});
 	}
 
 	/**
@@ -139,8 +132,8 @@ public class ResourceBundle implements Serializable {
 	 *         bundle, the asociated value of the returned bundle is 0.
 	 */
 	public ResourceBundle getMissing(ResourceBundle bundle) {
-		return new ResourceBundle(Math.max(bundle.wood - wood, 0), Math.max(bundle.stone - stone, 0), Math.max(bundle.ore - ore, 0), Math.max(bundle.cloth - cloth, 0),
-				Math.max(bundle.glass - glass, 0), Math.max(bundle.brick - brick, 0), Math.max(bundle.papyrus - papyrus, 0), Math.max(bundle.coins - coins, 0));
+		return new ResourceBundle(new int[] {Math.max(bundle.wood - wood, 0), Math.max(bundle.stone - stone, 0), Math.max(bundle.ore - ore, 0), Math.max(bundle.cloth - cloth, 0),
+				Math.max(bundle.glass - glass, 0), Math.max(bundle.brick - brick, 0), Math.max(bundle.papyrus - papyrus, 0), Math.max(bundle.coins - coins, 0)});
 	}
 
 	/**

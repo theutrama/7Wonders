@@ -196,22 +196,7 @@ public class PlayerController {
 	 * @return sciene points depending on the current board
 	 */
 	public int getSciencePoints(Player player) {
-		int[] amount = new int[] { 0, 0, 0 };
-		for (Card card : player.getBoard().getResearch()) {
-			switch (card.getScienceType()) {
-			case TABLET:
-				amount[0]++;
-				break;
-			case COMPASS:
-				amount[1]++;
-				break;
-			case GEAR:
-				amount[2]++;
-				break;
-			default:
-				break;
-			}
-		}
+		int[] amount = getScienceAmount(player);
 
 		boolean hasBabylon = (player.getBoard() instanceof BabylonBoard && ((BabylonBoard) player.getBoard()).isFilled(1));
 		boolean hasScientistsGuild = swController.getCardController().hasCard(player, "scientistsguild"); // TODO not internal name
@@ -237,6 +222,32 @@ public class PlayerController {
 		}
 
 		return getSciencePoints(amount);
+	}
+
+	/**
+	 * get count of green cards per symbol
+	 * 
+	 * @param player player
+	 * @return amount array
+	 */
+	private int[] getScienceAmount(Player player) {
+		int[] amount = new int[] { 0, 0, 0 };
+		for (Card card : player.getBoard().getResearch()) {
+			switch (card.getScienceType()) {
+			case TABLET:
+				amount[0]++;
+				break;
+			case COMPASS:
+				amount[1]++;
+				break;
+			case GEAR:
+				amount[2]++;
+				break;
+			default:
+				break;
+			}
+		}
+		return amount;
 	}
 
 	/**

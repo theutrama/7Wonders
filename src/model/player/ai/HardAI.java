@@ -141,7 +141,7 @@ public class HardAI extends AdvancedAI {
 		Player neighbour = Main.getSWController().getPlayerController().getNeighbour(state, false, player);
 		value -= Main.getSWController().getPlayerController().getSciencePoints(neighbour);
 		if (neighbour.getBoard().getResearch().size() <= TWO)	value -= player.getBoard().getResearch().size() * 2;
-		else												value -= neighbour.getBoard().getResearch().size() * 2;
+		else													value -= neighbour.getBoard().getResearch().size() * 2;
 		// Coins ////////////////////////////////////////////////////
 		value += player.getCoins() / 3;
 		return value;

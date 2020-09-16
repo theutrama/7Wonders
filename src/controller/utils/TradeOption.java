@@ -75,7 +75,7 @@ public class TradeOption implements Serializable {
 	public int getRightCost() {
 		return rightCost;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (rightTrade == null && leftTrade != null)
@@ -97,38 +97,10 @@ public class TradeOption implements Serializable {
 		HBox hbox = new HBox();
 		final ImageView arrowright = new ImageView();
 		final ImageView arrowleft = new ImageView();
-		if (leftCost != 0) {
-			try {
-				arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			arrowleft.setFitWidth(45);
-			arrowleft.setFitHeight(25);
-			HBox.setMargin(arrowleft, new Insets(0, 5.0, 0, 0));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
-			label.getStyleClass().addAll("fontstyle", "dropshadow");
-			hbox.getChildren().addAll(arrowleft, leftTrade.createResourceImages(), label, createCoinsNode(leftCost));
-			if (rightCost != 0) {
-				Label label2 = new Label(" und ");
-				label2.getStyleClass().addAll("fontstyle", "dropshadow");
-				hbox.getChildren().add(label2);
-			}
-
-		}
-		if (rightCost != 0) {
-			try {
-				arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			arrowright.setFitWidth(45);
-			arrowright.setFitHeight(25);
-			HBox.setMargin(arrowright, new Insets(0, 0, 0, 3));
-			Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
-			label.getStyleClass().addAll("fontstyle", "dropshadow");
-			hbox.getChildren().addAll(rightTrade.createResourceImages(), label, createCoinsNode(rightCost));
-		}
+		if (leftCost != 0)
+			generateLeftNode(hbox, arrowleft, player);
+		if (rightCost != 0)
+			generateRightNode(hbox, arrowright, player);
 		Label labelbuy = new Label(" kaufen");
 		hbox.getChildren().add(labelbuy);
 		if (rightCost != 0)
@@ -164,6 +136,53 @@ public class TradeOption implements Serializable {
 	}
 
 	/**
+	 * generate left part of node
+	 * 
+	 * @param hbox      hbox
+	 * @param arrowleft left arrow
+	 * @param player    player
+	 */
+	private void generateLeftNode(HBox hbox, ImageView arrowleft, Player player) {
+		try {
+			arrowleft.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgreyleft.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		arrowleft.setFitWidth(45);
+		arrowleft.setFitHeight(25);
+		HBox.setMargin(arrowleft, new Insets(0, 5.0, 0, 0));
+		Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
+		label.getStyleClass().addAll("fontstyle", "dropshadow");
+		hbox.getChildren().addAll(arrowleft, leftTrade.createResourceImages(), label, createCoinsNode(leftCost));
+		if (rightCost != 0) {
+			Label label2 = new Label(" und ");
+			label2.getStyleClass().addAll("fontstyle", "dropshadow");
+			hbox.getChildren().add(label2);
+		}
+	}
+
+	/**
+	 * generate right part of node
+	 * 
+	 * @param hbox       hbox
+	 * @param arrowright right arrow
+	 * @param player     player
+	 */
+	private void generateRightNode(HBox hbox, ImageView arrowright, Player player) {
+		try {
+			arrowright.setImage(Utils.toImage(Main.TOKENS_PATH + "arrowgrey.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		arrowright.setFitWidth(45);
+		arrowright.setFitHeight(25);
+		HBox.setMargin(arrowright, new Insets(0, 0, 0, 3));
+		Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
+		label.getStyleClass().addAll("fontstyle", "dropshadow");
+		hbox.getChildren().addAll(rightTrade.createResourceImages(), label, createCoinsNode(rightCost));
+	}
+
+	/**
 	 * create a node that shows a specific amount of coins
 	 * 
 	 * @param coins number of coins
@@ -186,7 +205,7 @@ public class TradeOption implements Serializable {
 		hbox.setAlignment(Pos.CENTER);
 		return hbox;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		try {

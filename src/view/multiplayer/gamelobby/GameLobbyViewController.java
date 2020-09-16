@@ -130,7 +130,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			System.out.println("OWNER!");
 			this.owner=true;
 			this.settings = new Settings(ownname);
-			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(settings.toBytes()));
+			
+			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
 			btn_done.setOnAction(event -> done());
 
 			btn_done.setVisible(true);
@@ -214,11 +215,21 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
 			this.settings.setStack(cardStack);
 			byte[] arr = this.settings.toBytes();
+			
 			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(arr));
 			for(Card c : cardStack) {
 				System.out.println("CREATE "+c.getAge()+" "+c.getInternalName());
 			}
 			System.out.println("SEND SETTINGS SIZE: "+arr.length);
+			
+			String m = "";
+			for(byte a : arr) {
+				m += a;
+			}
+			System.out.println(m);
+			
+			Settings s = Settings.fromBytes(arr);
+			System.out.println("S "+(s == null));
 		}else {
 			cardStack = this.settings.getStack();
 			for(Card c : cardStack) {
@@ -244,7 +255,16 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		this.settings = Settings.fromBytes(packet.getArr());
 			System.out.println("RECEIVED SETTINGS SIZE: "+packet.getArr().length);
     		
-    		if(this.settings == null)System.out.println("SETTINGS == NULL");
+    		if(this.settings == null) {
+    			String m = "";
+    			for(byte a : packet.getArr()) {
+    				m += a;
+    			}
+    			System.out.println(m);
+    			
+    			
+    			System.out.println("SETTINGS == NULL");
+    		}
     		if(this.settings.owner == null)System.out.println("SETTINGS.OWNER == NULL");
     		
 			System.out.println("GOT LobbyUpdatePacket "+this.settings.owner);  

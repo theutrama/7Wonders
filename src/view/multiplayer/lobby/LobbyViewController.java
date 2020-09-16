@@ -132,13 +132,17 @@ public class LobbyViewController extends StackPane implements PacketListener{
 						view1.setFitWidth(20.0);
 						btn_connect.setGraphic(view1);
 
-
 						hbox.getChildren().add(label);
 						hbox.getChildren().add(btn_connect);
 
 						vbox_lobbys.getChildren().add(hbox);
 						
 						btn_connect.setOnAction(event -> {
+							if(!settings.open) {
+								error("Die Lobby ist bereits ingame");
+								return;
+							}
+							
 							LobbyEnterPacket packet = new LobbyEnterPacket(settings.lobbyname);
 							client.write(packet);
 						});

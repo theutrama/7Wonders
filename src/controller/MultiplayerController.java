@@ -180,20 +180,6 @@ public class MultiplayerController implements EventListener{
 	public void rec(PacketReceiveEvent event) {
 		if(!isConnected())return;
 		
-		if(event.getPacket() instanceof PlayerSelectedCardPacket) {
-			PlayerSelectedCardPacket p = event.getPacket(PlayerSelectedCardPacket.class);
-			System.out.println("RECEIVED PlayerSelectedCardPacket HandIndex: "+p.getHandIndex());
-		}else if(event.getPacket() instanceof PlayerHalikarnassusPacket) {
-			PlayerHalikarnassusPacket p = event.getPacket(PlayerHalikarnassusPacket.class);
-			System.out.println("RECEIVED PlayerHalikarnassusPacket getHalikarnassusIndex: "+p.getHalikarnassusIndex());
-		}else if(event.getPacket() instanceof PlayerTradeOptionPacket) {
-			PlayerTradeOptionPacket p = event.getPacket(PlayerTradeOptionPacket.class);
-			System.out.println("RECEIVED PlayerTradeOptionPacket getTradeOptionIndex: "+p.getTradeOptionIndex());
-		}else if(event.getPacket() instanceof PlayerActionPacket) {
-			PlayerActionPacket p = event.getPacket(PlayerActionPacket.class);
-			System.out.println("RECEIVED PlayerActionPacket Action: "+p.getAction().name());
-		}
-		
 		if(event.getPacket() instanceof PingPacket)return;
 		
 		if(Main.primaryStage.getScene().getRoot() instanceof PacketListener) {

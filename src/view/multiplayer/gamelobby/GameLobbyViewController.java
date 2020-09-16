@@ -19,6 +19,7 @@ import application.Utils;
 import controller.CardController;
 import controller.GameController;
 import controller.PlayerController;
+import controller.SoundController;
 import controller.sound.Sound;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -151,6 +152,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			client.write(new LobbyLeavePacket());
 			Main.primaryStage.getScene().setRoot(new LobbyViewController()); 
 		});
+		SoundController.addMuteFunction(btn_mute, img_music);
     }
     
     public boolean isOwner(){

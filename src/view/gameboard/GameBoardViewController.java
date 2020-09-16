@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import application.Console;
 import application.Main;
 import application.Utils;
 import controller.SoundController;
@@ -1107,10 +1108,11 @@ public class GameBoardViewController extends VBox {
 			new Thread(() -> {
 				((ArtInt) player).calculateNextMove();
 				Card selected = ((ArtInt) player).getSelectedCard();
+				Console.log("[" + player.getClass().getSimpleName() + "] action: " + ((ArtInt) player).getAction() + "  card: " + ((ArtInt) player).getSelectedCard() + "  trade: " + ((ArtInt) player).getTradeOption());
 				int index = indexOf(player.getHand(), selected);
 
 				VBox vbox = (VBox) hboxCards.getChildren().get(index);
-				Platform.runLater(() -> { ((Button) vbox.getChildren().get(1)).fire(); });
+				Platform.runLater(() -> ((Button) vbox.getChildren().get(1)).fire());
 			}).start();
 		} else {
 			btnHint.setOnAction(event -> {
@@ -1273,6 +1275,7 @@ public class GameBoardViewController extends VBox {
 			btnHint.setVisible(false);
 			new Thread(() -> {
 				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
+				Console.log("[" + player.getClass().getSimpleName() + "] halikarnassus card: " + selected);
 				int index = indexOf(game().getTrash(), selected);
 				if (selected == null || index == -1)
 					Platform.runLater(() -> exit.fire());

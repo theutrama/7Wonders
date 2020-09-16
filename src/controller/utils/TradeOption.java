@@ -81,7 +81,12 @@ public class TradeOption implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "[" + String.valueOf(leftTrade) + "] (" + leftCost + " coins) <-> [" + String.valueOf(rightTrade) + "] (" + rightCost + " coins)";
+		if (rightTrade == null && leftTrade != null)
+			return "[" + leftTrade.toString() + "] (" + leftCost + " coins <-";
+		else if (leftTrade == null && rightTrade != null)
+			return "[" + rightTrade.toString() + "] (" + rightCost + " coins ->";
+		else
+			return "[" + leftTrade.toString() + "] (" + leftCost + " coins) <-> [" + rightTrade.toString() + "] (" + rightCost + " coins)";
 	}
 
 	/**

@@ -182,7 +182,22 @@ public class ResourceBundle implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return wood + " " + stone + " " + ore + " " + cloth + " " + glass + " " + brick + " " + papyrus + " " + coins;
+		StringBuilder builder = new StringBuilder();
+		if (wood > 0)
+			builder.append(wood + " Holz");
+		if (stone > 0)
+			builder.append(stone + " Stein");
+		if (ore > 0)
+			builder.append(ore + " Erz");
+		if (brick > 0)
+			builder.append(brick + " Ziegel");
+		if (cloth > 0)
+			builder.append(cloth + " Stoff");
+		if (glass > 0)
+			builder.append(glass + " Glass");
+		if (papyrus > 0)
+			builder.append(papyrus + " Holz");
+		return builder.toString();
 	}
 
 	/**

@@ -211,7 +211,7 @@ public class PlayerController {
 			}
 		}
 
-		boolean hasBabylon = (player.getBoard() instanceof BabylonBoard && ((BabylonBoard) player.getBoard()).isFilled(2));
+		boolean hasBabylon = (player.getBoard() instanceof BabylonBoard && ((BabylonBoard) player.getBoard()).isFilled(1));
 		boolean hasScientistsGuild = swController.getCardController().hasCard(player, "scientistsguild"); // TODO not internal name
 
 		if (hasBabylon && hasScientistsGuild) {

@@ -3,18 +3,22 @@ package controller;
 import org.junit.Test;
 
 import controller.sound.Sound;
-import javafx.embed.swing.JFXPanel;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 /**
  * sound controller test
  */
-public class SoundControllerTest {
+public class SoundControllerTest extends Application {
+
 	/**
 	 * sound controller test method
 	 */
 	@Test
 	public void test() {
-		new JFXPanel();
+//		SwingUtilities.invokeLater(() -> { new JFXPanel(); flag.countDown(); });
+		launch();
 		SoundController controller = new SoundController();
 		controller.isMuted();
 		controller.mute();
@@ -27,5 +31,11 @@ public class SoundControllerTest {
 		controller.play(Sound.COIN, true);
 		controller.stop(Sound.COIN);
 		controller.setVolume(1);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		System.out.println("start");
+		Platform.exit();
 	}
 }

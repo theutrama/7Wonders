@@ -1,21 +1,14 @@
 package view.multiplayer.gamelobby;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
 import application.Main;
-import application.Utils;
 import controller.CardController;
 import controller.GameController;
 import controller.PlayerController;
@@ -26,39 +19,27 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
-import main.api.events.EventHandler;
-import main.api.events.EventListener;
-import main.api.events.EventManager;
-import main.api.events.events.PacketReceiveEvent;
 import main.api.packet.Packet;
 import main.client.PlayerClient;
 import main.client.connector.PacketListener;
 import main.lobby.packets.client.LobbyLeavePacket;
-import main.lobby.packets.client.LobbyUpdatePacket;
 import main.lobby.packets.server.LobbyClosePacket;
 import main.lobby.packets.server.LobbyPlayersPacket;
 import model.Game;
 import model.card.Card;
 import model.player.Player;
 import model.player.ai.Difficulty;
-import model.player.multiplayer.packets.CardStackPacket;
+import model.player.multiplayer.packets.StartGamePacket;
 import view.gameboard.GameBoardViewController;
-import view.multiplayer.list.MultiplayerListViewController;
 import view.multiplayer.lobby.LobbyViewController;
 
 @SuppressWarnings("all")
@@ -100,9 +81,9 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 
     @FXML
     private ImageView img_music;
-    private Settings settings;
     private HashMap<String,HBox> players = new HashMap<>();
     private ArrayList<Card> cardStack;
+    private HashMap<String,String> wonderList;
 	private static final ObservableList<String> types = FXCollections.observableList(Arrays.asList("Benutzer", "KI Einfach", "KI Mittel", "KI Schwer"));
 	private static final ObservableList<String> KItypes = FXCollections.observableList(Arrays.asList("KI Einfach", "KI Mittel", "KI Schwer"));
 	protected static final int NO_WONDER_ASSIGNED = 3, WONDER_ASSIGNED = 4, WONDER_INDEX = 2;
@@ -130,9 +111,6 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		if(packet.getOwner().equalsIgnoreCase(ownname)) {
 			System.out.println("OWNER!");
 			this.owner=true;
-			this.settings = new Settings(ownname);
-			
-			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(this.settings.toBytes()));
 			btn_done.setOnAction(event -> done());
 
 			btn_done.setVisible(true);
@@ -161,8 +139,12 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     	return this.owner;
     }
     
+    public boolean hasGameStarted() {
+    	return this.cardStack != null;
+    }
+    
     public void done(){
-    	if(!isOwner() && !this.settings.hasGameStarted()) {
+    	if(!isOwner() && !hasGameStarted()) {
     		error("Du musst der Owner der Lobby sein um dies tun zukönnen!");
 			return;
     	}
@@ -179,6 +161,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		
 		Stack<String> stack = null;
 		if(isOwner()) {
+			wonderList = new HashMap();
 			List<String> wonders = Arrays.asList(Main.getSWController().getWonderBoardController().getWonderBoardNames());
 			stack = new Stack<String>();
 			stack.addAll(wonders);
@@ -188,12 +171,11 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		for (String playername : this.players.keySet()) {
 			HBox player = this.players.get(playername);
 			Label nameLabel = (Label) player.getChildren().get(0);
-//			Label wonderLabel = (Label) player.getChildren().get(WONDER_INDEX);
 			if(isOwner()) {
 				wondername = stack.pop();
-				this.settings.getSettings(nameLabel.getText()).wondername=wondername;
+				this.wonderList.put(playername, wondername);
 			}else {
-				wondername = this.settings.getSettings(nameLabel.getText()).wondername;
+				wondername = this.wonderList.get(nameLabel.getText());
 			}
 			String type = ((ComboBox<String>) player.getChildren().get(1)).getSelectionModel().getSelectedItem();
 
@@ -216,11 +198,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			cardStack = Main.getSWController().getCardController().generateCardStack(game_players.size());
 			ArrayList<String> cardStackString = new ArrayList<String>();
 			for(Card c : cardStack)cardStackString.add(c.getInternalName());
-			Main.getSWController().getMultiplayerController().getClient().write(new CardStackPacket(cardStackString));
-			this.settings.gameStarted = true;
-			byte[] arr = this.settings.toBytes();
-			
-			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(arr));
+			Main.getSWController().getMultiplayerController().getClient().write(new StartGamePacket(cardStackString,wonderList));
 			for(Card c : cardStack) {
 				System.out.println("CREATE "+c.getAge()+" "+c.getInternalName());
 			}
@@ -243,54 +221,8 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     @Override
 	public boolean handle(Packet packet0) {
     	System.out.println("GAMELOBBY HANDLE "+packet0.getPacketName());
-    	if(packet0 instanceof LobbyUpdatePacket) {
-    		LobbyUpdatePacket packet = (LobbyUpdatePacket) packet0;
-    		this.settings = Settings.fromBytes(packet.getArr());
-			System.out.println("RECEIVED SETTINGS SIZE: "+packet.getArr().length);
-    		
-    		if(this.settings == null) {
-    			String m = "";
-    			for(byte a : packet.getArr()) {
-    				m += a;
-    			}
-    			System.out.println(m);
-    			
-    			
-    			System.out.println("SETTINGS == NULL");
-    		}
-    		if(this.settings.owner == null)System.out.println("SETTINGS.OWNER == NULL");
-    		
-			System.out.println("GOT LobbyUpdatePacket "+this.settings.owner);  
-    		
-    		Settings tthis = this.settings;
-    		
-    		Platform.runLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					
-		    		for(String playername : tthis.getPlayers().keySet()) {
-	    				Settings.PlayerSettings psettings = tthis.getPlayers().get(playername);
-		    			if(!players.containsKey(playername)) {
-		    				addPlayer(playername, psettings.type == -1);
-		    			}
-	    				HBox box = players.get(playername);
-	    				
-	    				ComboBox<String> type = (ComboBox<String>) box.getChildren().get(1);
-	    				type.getSelectionModel().select(psettings.type);
-		    		}
-		    		
-		    		if(settings.hasGameStarted()) {
-		    			done();
-		    			System.out.println("GAME START!!!!");
-		    		}
-		    		
-		    		if(isOwner())btn_done.setVisible(vbox_players.getChildren().size() > 1);
-				}
-			});
-    		
-    		return true;
-    	}else if(packet0 instanceof LobbyPlayersPacket) {
+
+		if(packet0 instanceof LobbyPlayersPacket) {
     		Platform.runLater(new Runnable() {
 				
 				@Override
@@ -321,26 +253,24 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 						HBox box = players.get(player);
 						vbox_players.getChildren().remove(box);
 						players.remove(player);
-						settings.removePlayer(player);
 					});
-		    		
-		    		if(isOwner()) {
-		    			Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(settings.toBytes()));
-		    		}
 				}
 			});
     		return true;
     	}else if(packet0 instanceof LobbyClosePacket) {
     		Main.primaryStage.getScene().setRoot(new LobbyViewController()); 
-    	}else if(packet0 instanceof CardStackPacket) {
-    		CardStackPacket packet = (CardStackPacket)packet0;
-    		System.out.println("GOT CardStackPacket");
+    	}else if(packet0 instanceof StartGamePacket) {
+    		StartGamePacket packet = (StartGamePacket)packet0;
+    		System.out.println("GOT StartGamePacket");
     		CardController cardcon = Main.getSWController().getCardController();
     		this.cardStack = new ArrayList<Card>();
     		for(String cardname : packet.getCardStack()) {
     			this.cardStack.add(cardcon.getCard(cardname));
 				System.out.println("GOT1 "+cardname);
     		}
+    		
+    		this.wonderList = packet.getWonders();
+    		this.done();
     	}
     	return false;
     }
@@ -380,7 +310,6 @@ public class GameLobbyViewController extends StackPane implements PacketListener
     		}
     	
     	HBox box = addPlayer(textfield_playername.getText(),false);
-    	Main.getSWController().getMultiplayerController().getClient().write(new LobbyUpdatePacket(settings.toBytes()));
     	return box;
     }
     
@@ -389,94 +318,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 		this.vbox_players.getChildren().add(hbox);
 		
 		this.players.put(playername,hbox);
-		
-		if(this.settings != null) {
-			settings.addPlayer(playername,human);
-		}
 		if(isOwner())this.btn_done.setVisible(this.vbox_players.getChildren().size() > 1);
 		return hbox;
 	}
-    
-    public static class Settings implements Serializable{
-		private static final long serialVersionUID = 4530125647693261827L;
-
-		public static Settings fromBytes(byte[] arr) {
-    		try {
-    			ByteArrayInputStream byteIn = new ByteArrayInputStream(arr);
-    			ObjectInputStream objIn = new ObjectInputStream(byteIn);
-    			Settings copy = (Settings) objIn.readObject();
-    			byteIn.close();
-    			objIn.close();
-    			return copy;
-    		} catch (IOException | ClassNotFoundException e) {
-    			e.printStackTrace();
-    			return null;
-    		}
-    	}
-		
-		private class PlayerSettings implements Serializable{
-			private static final long serialVersionUID = 8749489882298040084L;
-			
-			protected PlayerSettings(String playername){
-				this.playername=playername;
-			}
-			
-			public String playername = "";
-			public int type = 0;
-			public String wondername = "";
-		}
-		
-    	private String owner;
-    	public boolean gameStarted = false;
-    	private HashMap<String, PlayerSettings> players = new HashMap<String, PlayerSettings>();
-    	
-    	public Settings(String owner) {
-    		this.owner = owner;
-    		addPlayer(owner,true);
-    	}
-    	
-    	public boolean hasGameStarted() {
-    		return this.gameStarted;
-    	}
-    	
-    	public PlayerSettings getSettings(String playername) {
-    		return players.get(playername);
-    	}
-    	
-    	public void removePlayer(String playername) {
-    		this.players.remove(playername);
-    	}
-    	
-    	public PlayerSettings addPlayer(String playername, boolean human) {
-    		if(this.players.containsKey(playername))return null;
-    		PlayerSettings settings = new PlayerSettings(playername);
-    		settings.type = human ? 0 : 1;
-    		this.players.put(settings.playername, settings);
-    		return settings;
-    	}
-    	
-    	public HashMap<String, PlayerSettings> getPlayers(){
-    		return this.players;
-    	}    
-    	
-    	public String getOwner() {
-    		return owner;
-    	}
-    	
-    	public byte[] toBytes() {
-    		try {
-    			ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-    			ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
-    			objOut.writeObject(this);
-    			objOut.flush();
-    			objOut.close();
-    			byteOut.close();
-
-    			return byteOut.toByteArray();
-    		} catch (IOException e) {
-    			e.printStackTrace();
-    			return null;
-    		}
-    	}
-    }
 }

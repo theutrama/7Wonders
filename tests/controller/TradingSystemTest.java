@@ -6,8 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.SwingUtilities;
-
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -15,8 +13,6 @@ import application.Main;
 import controller.utils.BuildCapability;
 import controller.utils.ResourceBundle;
 import controller.utils.TradeOption;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import model.card.Card;
 import model.card.CardType;
 import model.card.Resource;

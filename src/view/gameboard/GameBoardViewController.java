@@ -1146,25 +1146,25 @@ public class GameBoardViewController extends VBox {
 								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "place.png"));
 								icon.setFitWidth(90);
 								icon.setFitHeight(60);
-								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte gebaut werden")));
+								Tooltip.install(btn, noDelay(new Tooltip("Diese Karte sollte gebaut werden")));
 								break;
 							case OLYMPIA:
 								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "olympia.png"));
 								icon.setFitWidth(52.5);
 								icon.setFitHeight(60);
-								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte mit der\nOlympia-Fähigkeit gebaut werden")));
+								Tooltip.install(btn, noDelay(new Tooltip("Diese Karte sollte mit der\nOlympia-Fähigkeit gebaut werden")));
 								break;
 							case PLACE_SLOT:
 								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "pyramid-stage" + (player.getBoard().nextSlot() + 1) + ".png"));
 								icon.setFitWidth(77);
 								icon.setFitHeight(60);
-								Tooltip.install(icon, noDelay(new Tooltip("Mit dieser Karte sollte das Wunder ausgebaut werden")));
+								Tooltip.install(btn, noDelay(new Tooltip("Mit dieser Karte sollte das Wunder ausgebaut werden")));
 								break;
 							case SELL:
 								icon = new ImageView(Utils.toImage(Main.TOKENS_PATH + "coin3.png"));
 								icon.setFitWidth(65);
 								icon.setFitHeight(61.5);
-								Tooltip.install(icon, noDelay(new Tooltip("Diese Karte sollte verkauft werden")));
+								Tooltip.install(btn, noDelay(new Tooltip("Diese Karte sollte verkauft werden")));
 								break;
 							default:
 								break;
@@ -1342,11 +1342,18 @@ public class GameBoardViewController extends VBox {
 	 */
 	public void setMouseBlocked(boolean blocked) {
 		if (blocked) {
-			hboxCards.addEventFilter(MouseEvent.ANY, inputBlocker);
-			scrollpane.addEventFilter(MouseEvent.ANY, inputBlocker);
+			hboxCards.addEventFilter(MouseEvent.MOUSE_CLICKED, inputBlocker);
+			hboxCards.addEventFilter(MouseEvent.MOUSE_DRAGGED, inputBlocker);
+			hboxCards.addEventFilter(MouseEvent.MOUSE_PRESSED, inputBlocker);
+			hboxCards.addEventFilter(MouseEvent.MOUSE_RELEASED, inputBlocker);
+			if (action)
+				hboxCards.addEventFilter(MouseEvent.ANY, inputBlocker);
 		} else {
 			hboxCards.removeEventFilter(MouseEvent.ANY, inputBlocker);
-			scrollpane.removeEventFilter(MouseEvent.ANY, inputBlocker);
+			hboxCards.removeEventFilter(MouseEvent.MOUSE_CLICKED, inputBlocker);
+			hboxCards.removeEventFilter(MouseEvent.MOUSE_DRAGGED, inputBlocker);
+			hboxCards.removeEventFilter(MouseEvent.MOUSE_PRESSED, inputBlocker);
+			hboxCards.removeEventFilter(MouseEvent.MOUSE_RELEASED, inputBlocker);
 		}
 		boolean connected = Main.getSWController().getMultiplayerController().isConnected();
 		btnUndo.setDisable(blocked || connected);

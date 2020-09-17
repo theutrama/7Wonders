@@ -19,7 +19,6 @@ import model.player.Player;
 import model.player.ai.Move.Action;
 
 /** abstract class of easy, medium and hard AI */
-@SuppressWarnings("PMD")
 public abstract class AdvancedAI extends ArtInt {
 	/** UID of serial version */
 	private static final long serialVersionUID = 1L;
@@ -59,7 +58,7 @@ public abstract class AdvancedAI extends ArtInt {
 
 		this.next = maxMove;
 	}
-	
+
 	@Override
 	public Card getHalikarnassusCard(Player player, ArrayList<Card> trash, GameState state) {
 		if (trash.isEmpty())
@@ -78,10 +77,10 @@ public abstract class AdvancedAI extends ArtInt {
 		}
 		if (maxIndex == -1)
 			return null;
-		
+
 		return trash.get(maxIndex);
 	}
-	
+
 	/**
 	 * minimax algorithm
 	 * 
@@ -145,8 +144,10 @@ public abstract class AdvancedAI extends ArtInt {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				if (!finished.value)
-					flag.value = true;
+				synchronized (flag) {
+					if (!finished.value)
+						flag.value = true;
+				}
 			}
 		}, 9000);
 
@@ -214,10 +215,12 @@ public abstract class AdvancedAI extends ArtInt {
 					}
 				}
 
-				if (flag.value) {
-					for (MoveTree child : leaves)
-						child.getChildren().clear();
-					return tree;
+				synchronized (flag) {
+					if (flag.value) {
+						for (MoveTree child : leaves)
+							child.getChildren().clear();
+						return tree;
+					}
 				}
 			}
 

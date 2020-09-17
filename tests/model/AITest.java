@@ -66,10 +66,10 @@ public class AITest {
 		state.getPlayers().add(0, hard);
 		hard.calculateNextMove();
 		hard.getAction();
-		hard.getBoard().setAgeOfSlotCards(0, 0);
+		hard.getBoard().fill(0);;
 		hard.calculateNextMove();
 		hard.getAction();
-		hard.getBoard().setAgeOfSlotCards(1, 1);
+		hard.getBoard().fill(1);
 		hard.calculateNextMove();
 		hard.getAction();
 		hard.getHalikarnassusCard(hard, state.getTrash(), state);

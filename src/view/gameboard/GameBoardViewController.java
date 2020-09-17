@@ -999,15 +999,19 @@ public class GameBoardViewController extends VBox {
 			hboxCards.getChildren().add(outter);
 
 			if (player instanceof ArtInt) {
-				Action action = ((ArtInt) player).getAction();
-				if (action == Action.OLYMPIA && btnOlympia != null)
-					btnOlympia.fire();
-				else if (action == Action.BUILD && !btnPlace.isDisabled())
-					btnPlace.fire();
-				else if (action == Action.PLACE_SLOT && !btnWonder.isDisabled())
-					btnWonder.fire();
-				else
-					btnSell.fire();
+				new Thread(() -> {
+					Action action = ((ArtInt) player).getAction();
+					Platform.runLater(() -> {
+						if (action == Action.OLYMPIA && btnOlympia != null)
+							btnOlympia.fire();
+						else if (action == Action.BUILD && !btnPlace.isDisabled())
+							btnPlace.fire();
+						else if (action == Action.PLACE_SLOT && !btnWonder.isDisabled())
+							btnWonder.fire();
+						else
+							btnSell.fire();
+					});
+				}).start();
 			}
 
 		} catch (IOException e) {
@@ -1279,7 +1283,8 @@ public class GameBoardViewController extends VBox {
 			btnHint.setVisible(false);
 			new Thread(() -> {
 				Card selected = ((ArtInt) player).getHalikarnassusCard(player, game().getTrash(), game());
-				Console.log("[" + player.getClass().getSimpleName() + "] halikarnassus card: " + selected);
+				if (!(player instanceof Multiplayer))
+					Console.log("[" + player.getClass().getSimpleName() + "] halikarnassus card: " + selected);
 				int index = indexOf(game().getTrash(), selected);
 				if (selected == null || index == -1)
 					Platform.runLater(() -> exit.fire());

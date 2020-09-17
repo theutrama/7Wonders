@@ -201,7 +201,7 @@ public class SevenWondersFactory {
 		hand2.add(card15);
 		
 		player1.setHand(hand);
-		player2.setHand(hand2);
+		player2.setHand(hand);
 		player3.setHand(hand);
 		player4.setHand(hand);
 		player5.setHand(hand);
@@ -220,10 +220,7 @@ public class SevenWondersFactory {
 		player2.getBoard().addCard(card21);
 		player2.getBoard().addCard(card3);
 		player2.getBoard().addCard(card1);
-		player2.getBoard().addCard(card14);
-		player2.getBoard().addCard(card16);
-		player2.getBoard().addCard(card19);
-
+		
 		player3.getBoard().addCard(card10);
 		player3.getBoard().addCard(card3);
 		player3.getBoard().addCard(card6);

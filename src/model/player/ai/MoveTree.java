@@ -45,13 +45,6 @@ public class MoveTree {
 	}
 
 	/**
-	 * sets {@link #state} to null
-	 */
-	public void clearState() {
-		state = null;
-	}
-
-	/**
 	 * getter for {@link #state}
 	 * 
 	 * @return game state
@@ -67,25 +60,6 @@ public class MoveTree {
 	 */
 	public Move getMove() {
 		return move;
-	}
-
-	/**
-	 * get list of all leaves of this (sub-)tree
-	 * 
-	 * @return list of leaves
-	 */
-	public ArrayList<MoveTree> getLeaves() {
-		if (children.isEmpty()) {
-			ArrayList<MoveTree> result = new ArrayList<>();
-			result.add(this);
-			return result;
-		} else {
-			ArrayList<MoveTree> result = children.get(0).getLeaves();
-			for (int i = 1; i < children.size(); i++)
-				result.addAll(children.get(i).getLeaves());
-			return result;
-		}
-
 	}
 
 	/**

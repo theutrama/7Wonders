@@ -138,7 +138,7 @@ public abstract class AdvancedAI extends ArtInt {
 		MoveTree tree = new MoveTree(Main.getSWController().getGame().getCurrentGameState());
 		leaves.add(tree);
 
-		Flag flag = new Flag(), finished = new Flag();
+		final Flag flag = new Flag(), finished = new Flag();
 
 		Timer timer = new Timer(true);
 		timer.schedule(new TimerTask() {
@@ -206,8 +206,8 @@ public abstract class AdvancedAI extends ArtInt {
 					MoveTree selltree = new MoveTree(sellmove, doMove(sellmove, currentPlayer, state));
 					newLeaves.add(selltree);
 					leaf.addChild(selltree);
-
-					if (!this.isOlympiaUsed() && !Main.getSWController().getCardController().hasCard(currentPlayer, handcard.getInternalName())) {
+ 
+					if (!currentPlayer.isOlympiaUsed() && !Main.getSWController().getCardController().hasCard(currentPlayer, handcard.getInternalName())) {
 						Move olympiamove = new Move(handcard, Action.OLYMPIA);
 						MoveTree olympiatree = new MoveTree(olympiamove, doMove(olympiamove, currentPlayer, state));
 						newLeaves.add(olympiatree);

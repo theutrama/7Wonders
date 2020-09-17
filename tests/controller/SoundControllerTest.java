@@ -7,9 +7,16 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import controller.sound.Sound;
 
+/**
+ * sound controller test
+ * @author bartm
+ *
+ */
 public class SoundControllerTest extends ApplicationTest {
 	
-	/** test the sound controller */
+	/**
+	 * sound controller test
+	 */
 	@Test
 	public void test() {
 		SoundController controller = new SoundController();

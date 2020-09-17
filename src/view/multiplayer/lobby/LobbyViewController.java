@@ -29,7 +29,6 @@ import main.client.connector.PacketListener;
 import main.lobby.packets.client.LobbyCreatePacket;
 import main.lobby.packets.client.LobbyEnterPacket;
 import main.lobby.packets.client.LobbyLeavePacket;
-import main.lobby.packets.client.LobbyUpdatePacket;
 import main.lobby.packets.server.LobbyErrorPacket;
 import main.lobby.packets.server.LobbyListPacket;
 import main.lobby.packets.server.LobbyListPacket.LobbySettings;

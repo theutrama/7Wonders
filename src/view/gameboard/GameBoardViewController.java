@@ -138,7 +138,6 @@ public class GameBoardViewController extends VBox {
 			Main.getSWController().getSoundController().stopAll();
 			Main.getSWController().setGame(null);
 			Main.primaryStage.getScene().setRoot(new MainMenuViewController());
-			Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 			Main.getSWController().getGameController().setGbvController(null);
 		});
 		btnBack.setTooltip(noDelay(new Tooltip("Speichern und zum Hauptmenü")));
@@ -203,6 +202,7 @@ public class GameBoardViewController extends VBox {
 	 * cancel the timer
 	 */
 	public void exit() {
+		Main.primaryStage.setOnCloseRequest(event2 -> Main.getSWController().getIOController().saveRanking());
 		timer.cancel();
 		timer = null;
 		Console.exit();

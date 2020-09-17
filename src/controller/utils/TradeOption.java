@@ -151,7 +151,7 @@ public class TradeOption implements Serializable {
 		arrowleft.setFitWidth(45);
 		arrowleft.setFitHeight(25);
 		HBox.setMargin(arrowleft, new Insets(0, 5.0, 0, 0));
-		Label label = new Label(" von " + Main.getSWController().getPlayerController().getRightNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
+		Label label = new Label(" von " + Main.getSWController().getPlayerController().getLeftNeighbour(Main.getSWController().getGame().getCurrentGameState(), player).getName() + " fuer ");
 		label.getStyleClass().addAll("fontstyle", "dropshadow");
 		hbox.getChildren().addAll(arrowleft, leftTrade.createResourceImages(), label, createCoinsNode(leftCost));
 		if (rightCost != 0) {

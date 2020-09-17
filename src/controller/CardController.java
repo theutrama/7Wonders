@@ -1023,7 +1023,7 @@ public class CardController {
 	private Image getCivilImage2(String cardname, BufferedImage full) {
 		switch (cardname) {
 		case "pawnshop":
-			return getSubimage(full, new Rectangle(71, 12, 60, 50));
+			return getSubimage(full, new Rectangle(60, 11, 60, 50));
 		case "senate":
 			return getSubimage(full, new Rectangle(73, 11, 60, 50));
 		case "statue":

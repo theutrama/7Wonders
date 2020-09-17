@@ -82,12 +82,14 @@ public class AITest {
 		medium.getTradeOption();
 
 		EasyAI easy = new EasyAI("medium", board);
-		easy.setHand(state.getPlayers().get(0).getHand());
-		state.getPlayers().remove(0);
+		easy.setHand(state.getPlayers().get(1).getHand());
+		state.getPlayers().remove(1);
 		board.setPlayer(easy);
-		state.getPlayers().add(0, easy);
-		easy.calculateNextMove();
-		easy.getAction();
+		state.getPlayers().add(1, easy);
+		for(int i = 0; i < 5; i++) {
+			easy.calculateNextMove();
+			easy.getAction();
+		}
 		easy.getHalikarnassusCard(easy, state.getTrash(), state);
 		easy.getSelectedCard();
 		easy.getTradeOption();

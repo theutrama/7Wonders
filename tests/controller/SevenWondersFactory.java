@@ -141,6 +141,16 @@ public class SevenWondersFactory {
 		Card card9 = cardController.getCard(cards, "scriptorium"); // tablet
 		
 		
+		//Cards for AI
+		Card card30 = cardController.getCard(cards, "marketplace");
+		Card card31 = cardController.getCard(cards, "shipownersguild");
+//		Card card32 = cardController.getCard(cards, "marketplace");
+//		Card card33 = cardController.getCard(cards, "marketplace");
+//		Card card34 = cardController.getCard(cards, "marketplace");
+//		Card card35 = cardController.getCard(cards, "marketplace");
+//		Card card36 = cardController.getCard(cards, "marketplace");
+		
+		
 		/*
 		cards.remove(card1);
 		cards.remove(card2);
@@ -181,8 +191,17 @@ public class SevenWondersFactory {
 		hand.add(card6);
 		hand.add(card7);
 		
+		ArrayList<Card> hand2= new ArrayList <Card>();
+		hand2.add(card30);
+		hand2.add(card31);
+		hand2.add(card1);
+		hand2.add(card13);
+		hand2.add(card14);
+		hand2.add(card3);
+		hand2.add(card15);
+		
 		player1.setHand(hand);
-		player2.setHand(hand);
+		player2.setHand(hand2);
 		player3.setHand(hand);
 		player4.setHand(hand);
 		player5.setHand(hand);

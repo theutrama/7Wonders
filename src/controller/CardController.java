@@ -888,80 +888,316 @@ public class CardController {
 		BufferedImage full = null;
 		final int ONE = 1;
 		try {
-
 			full = ImageIO.read(Main.class.getClassLoader().getResourceAsStream(card.getImage()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		switch (card.getType()) {
 		case BROWN:
-			if (card.getProducing().size() == ONE) {
-				if (card.getProducing().get(0).getQuantity() == ONE)
-					return getSubimage(full, new Rectangle(64, 12, 54, 50));
-				else
-					return getSubimage(full, new Rectangle(42, 9, 110, 50));
-			} else
-				return getSubimage(full, new Rectangle(37, 8, 120, 50));
+			return getResourceImage(card.getInternalName(), full);
 		case GRAY:
-			return getSubimage(full, new Rectangle(64, 12, 54, 50));
+			return getManufactureImage(card.getInternalName(), full);
 		case BLUE:
-			return getSubimage(full, new Rectangle(68, 12, 59, 50));
+			return getCivilImage(card.getInternalName(), full);
 		case GREEN:
-			return getSubimage(full, new Rectangle(74, 11, 48, 50));
+			return getResearchImage(card.getInternalName(), full);
 		case RED:
-			switch (card.getProducing().get(0).getQuantity()) {
-			case 1:
-				return getSubimage(full, new Rectangle(68, 8, 59, 50));
-			case 2:
-				return getSubimage(full, new Rectangle(54, 11, 100, 50));
-			case 3:
-				return getSubimage(full, new Rectangle(47, 9, 123, 50));
-			}
+			return getMilitaryImage(card.getInternalName(), full);
 		case YELLOW:
-			switch (card.getInternalName()) {
-			case "arena":
-				return getSubimage(full, new Rectangle(66, 10, 72, 50));
-			case "bazar":
-				return getSubimage(full, new Rectangle(32, 10, 119, 56));
-			case "caravansery":
-				return getSubimage(full, new Rectangle(45, 18, 126, 32));
-			case "chamberofcommerce":
-				return getSubimage(full, new Rectangle(65, 10, 60, 50));
-			case "easttradingpost":
-				return getSubimage(full, new Rectangle(40, 8, 126, 54));
-			case "forum":
-				return getSubimage(full, new Rectangle(44, 14, 128, 43));
-			case "haven":
-				return getSubimage(full, new Rectangle(71, 10, 60, 50));
-			case "lighthouse":
-				return getSubimage(full, new Rectangle(71, 10, 60, 50));
-			case "marketplace":
-				return getSubimage(full, new Rectangle(35, 11, 125, 50));
-			case "tavern":
-				return getSubimage(full, new Rectangle(63, 8, 55, 50));
-			case "vineyard":
-				return getSubimage(full, new Rectangle(32, 10, 119, 56));
-			case "westtradingpost":
-				return getSubimage(full, new Rectangle(33, 10, 127, 50));
-			}
+			return getTradeImage(card.getInternalName(), full);
 		case PURPLE:
-			switch (card.getInternalName()) {
-			case "craftsmensguild":
-			case "magistratesguild":
-			case "philosophersguild":
-			case "spiesguild":
-			case "tradersguild":
-			case "workersguild":
-				return getSubimage(full, new Rectangle(36, 9, 130, 50));
-			case "buildersguild":
-				return getSubimage(full, new Rectangle(37, 16, 125, 52));
-			case "scientistsguild":
-				return getSubimage(full, new Rectangle(34, 9, 134, 50));
-			case "shipownersguild":
-				return getSubimage(full, new Rectangle(47, 10, 104, 50));
-			case "strategistsguild":
-				return getSubimage(full, new Rectangle(36, 12, 130, 50));
-			}
+			return getGuildImage(card.getInternalName(), full);
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getResourceImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "brickyard":
+			return getSubimage(full, new Rectangle(42, 10, 106, 50));
+		case "claypit":
+			return getSubimage(full, new Rectangle(39, 8, 116, 50));
+		case "claypool":
+			return getSubimage(full, new Rectangle(64, 12, 54, 50));
+		case "excavation":
+			return getSubimage(full, new Rectangle(40, 8, 116, 50));
+		case "forestcave":
+			return getSubimage(full, new Rectangle(41, 8, 116, 50));
+		case "foundry":
+			return getSubimage(full, new Rectangle(44, 9, 106, 50));
+		case "lumberyard":
+			return getSubimage(full, new Rectangle(63, 12, 54, 50));
+		}
+		return getResourceImage2(cardname, full);
+	}
+
+	/**
+	 * get image 2
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getResourceImage2(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "mine":
+			return getSubimage(full, new Rectangle(40, 9, 116, 50));
+		case "orevein":
+			return getSubimage(full, new Rectangle(62, 11, 54, 50));
+		case "quarry":
+			return getSubimage(full, new Rectangle(42, 7, 106, 50));
+		case "sawmill":
+			return getSubimage(full, new Rectangle(41, 14, 106, 50));
+		case "stonepit":
+			return getSubimage(full, new Rectangle(63, 9, 54, 50));
+		case "timberyard":
+			return getSubimage(full, new Rectangle(40, 9, 116, 50));
+		case "treefarm":
+			return getSubimage(full, new Rectangle(40, 10, 116, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getManufactureImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "glassworks1":
+		case "glassworks2":
+			return getSubimage(full, new Rectangle(64, 10, 54, 50));
+		case "loom1":
+		case "loom2":
+			return getSubimage(full, new Rectangle(64, 10, 54, 50));
+		case "press1":
+		case "press2":
+			return getSubimage(full, new Rectangle(64, 8, 54, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get preview of blue card
+	 * 
+	 * @param cardname card name
+	 * @param full     full card
+	 * @return preview
+	 */
+	private Image getCivilImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "altar":
+			return getSubimage(full, new Rectangle(59, 12, 60, 50));
+		case "aqueduct":
+			return getSubimage(full, new Rectangle(73, 12, 60, 50));
+		case "baths":
+			return getSubimage(full, new Rectangle(65, 10, 60, 50));
+		case "courthouse":
+			return getSubimage(full, new Rectangle(74, 11, 60, 50));
+		case "gardens":
+			return getSubimage(full, new Rectangle(73, 12, 60, 50));
+		case "palace":
+			return getSubimage(full, new Rectangle(67, 12, 60, 50));
+		case "pantheon":
+			return getSubimage(full, new Rectangle(71, 12, 60, 50));
+		case "pawnshop":
+			return getSubimage(full, new Rectangle(71, 12, 60, 50));
+		case "senate":
+			return getSubimage(full, new Rectangle(73, 11, 60, 50));
+		case "statue":
+			return getSubimage(full, new Rectangle(73, 11, 60, 50));
+		case "temple":
+			return getSubimage(full, new Rectangle(73, 12, 60, 50));
+		case "theater":
+			return getSubimage(full, new Rectangle(60, 12, 60, 50));
+		case "townhall":
+			return getSubimage(full, new Rectangle(69, 12, 60, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getResearchImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "academy":
+			return getSubimage(full, new Rectangle(78, 10, 51, 50));
+		case "apothecary":
+			return getSubimage(full, new Rectangle(72, 8, 51, 50));
+		case "dispensary":
+			return getSubimage(full, new Rectangle(77, 9, 51, 50));
+		case "laboratory":
+			return getSubimage(full, new Rectangle(78, 9, 51, 50));
+		case "library":
+			return getSubimage(full, new Rectangle(77, 10, 51, 50));
+		case "lodge":
+			return getSubimage(full, new Rectangle(76, 12, 51, 50));
+		}
+		return getResearchImage2(cardname, full);
+	}
+
+	/**
+	 * get image 2
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getResearchImage2(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "observatory":
+			return getSubimage(full, new Rectangle(78, 10, 51, 50));
+		case "school":
+			return getSubimage(full, new Rectangle(72, 11, 51, 50));
+		case "scriptorium":
+			return getSubimage(full, new Rectangle(72, 9, 51, 50));
+		case "study":
+			return getSubimage(full, new Rectangle(78, 11, 51, 50));
+		case "university":
+			return getSubimage(full, new Rectangle(78, 12, 51, 50));
+		case "workshop":
+			return getSubimage(full, new Rectangle(72, 9, 51, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getMilitaryImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "archeryrange":
+			return getSubimage(full, new Rectangle(53, 10, 100, 50));
+		case "arsenal":
+			return getSubimage(full, new Rectangle(45, 8, 124, 50));
+		case "barracks":
+			return getSubimage(full, new Rectangle(72, 9, 51, 50));
+		case "circus":
+			return getSubimage(full, new Rectangle(45, 8, 124, 50));
+		case "fortifications":
+			return getSubimage(full, new Rectangle(46, 9, 124, 50));
+		case "guardtower":
+			return getSubimage(full, new Rectangle(72, 10, 51, 50));
+		}
+		return getMilitaryImage2(cardname, full);
+	}
+
+	/**
+	 * get image 2
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getMilitaryImage2(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "siegeworkshop":
+			return getSubimage(full, new Rectangle(45, 10, 124, 50));
+		case "stables":
+			return getSubimage(full, new Rectangle(54, 11, 100, 50));
+		case "stockade":
+			return getSubimage(full, new Rectangle(72, 12, 51, 50));
+		case "traininggroud":
+			return getSubimage(full, new Rectangle(48, 10, 100, 50));
+		case "walls":
+			return getSubimage(full, new Rectangle(48, 8, 100, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getTradeImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "arena":
+			return getSubimage(full, new Rectangle(66, 10, 72, 50));
+		case "bazar":
+			return getSubimage(full, new Rectangle(32, 10, 119, 56));
+		case "caravansery":
+			return getSubimage(full, new Rectangle(45, 18, 126, 32));
+		case "chamberofcommerce":
+			return getSubimage(full, new Rectangle(65, 10, 60, 50));
+		case "easttradingpost":
+			return getSubimage(full, new Rectangle(40, 8, 126, 54));
+		case "forum":
+			return getSubimage(full, new Rectangle(44, 14, 128, 43));
+		}
+		return getTradeImage2(cardname, full);
+	}
+
+	/**
+	 * get image 2
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getTradeImage2(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "haven":
+			return getSubimage(full, new Rectangle(71, 10, 60, 50));
+		case "lighthouse":
+			return getSubimage(full, new Rectangle(71, 10, 60, 50));
+		case "marketplace":
+			return getSubimage(full, new Rectangle(35, 11, 125, 50));
+		case "tavern":
+			return getSubimage(full, new Rectangle(63, 8, 55, 50));
+		case "vineyard":
+			return getSubimage(full, new Rectangle(32, 10, 119, 56));
+		case "westtradingpost":
+			return getSubimage(full, new Rectangle(33, 10, 127, 50));
+		}
+		return null;
+	}
+
+	/**
+	 * get image
+	 * 
+	 * @param cardname card name
+	 * @param full     full image
+	 * @return preview image
+	 */
+	private Image getGuildImage(String cardname, BufferedImage full) {
+		switch (cardname) {
+		case "craftsmensguild":
+		case "magistratesguild":
+		case "philosophersguild":
+		case "spiesguild":
+		case "tradersguild":
+		case "workersguild":
+			return getSubimage(full, new Rectangle(36, 9, 130, 50));
+		case "buildersguild":
+			return getSubimage(full, new Rectangle(37, 16, 125, 52));
+		case "scientistsguild":
+			return getSubimage(full, new Rectangle(34, 9, 134, 50));
+		case "shipownersguild":
+			return getSubimage(full, new Rectangle(47, 10, 104, 50));
+		case "strategistsguild":
+			return getSubimage(full, new Rectangle(36, 12, 130, 50));
 		}
 		return null;
 	}

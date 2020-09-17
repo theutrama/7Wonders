@@ -206,6 +206,7 @@ public class GameLobbyViewController extends StackPane implements PacketListener
 			for(Card c : this.cardStack) {
 				System.out.println("GOT "+c.getAge()+" "+c.getInternalName());
 			}
+			cardStack = this.cardStack;
 		}
 		Game game = gcon.createGame(label_lobbyname.getText(),cardStack, game_players);
 		Main.getSWController().setGame(game);

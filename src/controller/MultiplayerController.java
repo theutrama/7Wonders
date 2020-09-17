@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import application.Main;
+import javafx.application.Platform;
 import main.api.events.EventHandler;
 import main.api.events.EventListener;
 import main.api.events.EventManager;
@@ -189,14 +190,28 @@ public class MultiplayerController implements EventListener{
 			PacketListener view = (PacketListener)Main.primaryStage.getScene().getRoot();
 			view.handle(event.getPacket());
 		}else if(isInGame() && event.getPacket() instanceof LobbyClosePacket) {
-			LobbyViewController view = null;
-			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
-			view.error("Der Owner hat die Lobby verlassen...");
+			Platform.runLater( new Runnable() {
+				
+				@Override
+				public void run() {
+					LobbyViewController view = null;
+					Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
+					view.error("Der Owner hat die Lobby verlassen...");
+				}
+			});
+			
 			Main.getSWController().setGame(null);
 		}else if(isInGame() && event.getPacket() instanceof LobbyPlayersPacket) {
 			LobbyViewController view = null;
-			if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
-				((GameBoardViewController)Main.primaryStage.getScene().getRoot()).exit();
+			
+			Platform.runLater( new Runnable() {
+				
+				@Override
+				public void run() {
+					if(Main.primaryStage.getScene().getRoot() instanceof GameBoardViewController)
+						((GameBoardViewController)Main.primaryStage.getScene().getRoot()).exit();
+					}
+			});
 			Main.primaryStage.getScene().setRoot(view=new LobbyViewController());
 			view.error("Jemand hat das Spiel verlassen...");
 			Main.getSWController().setGame(null);

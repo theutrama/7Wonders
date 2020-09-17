@@ -886,7 +886,6 @@ public class CardController {
 	 */
 	public Image getPreviewImage(Card card) {
 		BufferedImage full = null;
-		final int ONE = 1;
 		try {
 			full = ImageIO.read(Main.class.getClassLoader().getResourceAsStream(card.getImage()));
 		} catch (IOException e) {
@@ -992,7 +991,7 @@ public class CardController {
 	 * 
 	 * @param cardname card name
 	 * @param full     full card
-	 * @return preview
+	 * @return preview image
 	 */
 	private Image getCivilImage(String cardname, BufferedImage full) {
 		switch (cardname) {
@@ -1010,6 +1009,19 @@ public class CardController {
 			return getSubimage(full, new Rectangle(67, 12, 60, 50));
 		case "pantheon":
 			return getSubimage(full, new Rectangle(71, 12, 60, 50));
+		}
+		return getCivilImage2(cardname, full);
+	}
+
+	/**
+	 * get preview of blue card 2
+	 * 
+	 * @param cardname card name
+	 * @param full     full card
+	 * @return preview image
+	 */
+	private Image getCivilImage2(String cardname, BufferedImage full) {
+		switch (cardname) {
 		case "pawnshop":
 			return getSubimage(full, new Rectangle(71, 12, 60, 50));
 		case "senate":

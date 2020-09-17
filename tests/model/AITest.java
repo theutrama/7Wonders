@@ -28,6 +28,27 @@ public class AITest {
 		state = controller.getGame().getCurrentGameState();
 		while (state.getPlayers().size() > 2)
 			state.getPlayers().remove(2);
+		
+		
+		Card cardWood = controller.getCardController().getCard("sawmill");
+		Card cardStone = controller.getCardController().getCard("quarry");
+		Card cardBrick = controller.getCardController().getCard("brickyard");
+		Card cardOre = controller.getCardController().getCard("foundry");
+		
+		Card cardBarracks = controller.getCardController().getCard("barracks");
+		Card cardStockade = controller.getCardController().getCard("stockade");
+		
+		ArrayList<Card> hand = new ArrayList<Card>();
+		hand.add(cardBarracks);
+		hand.add(cardStockade);
+		
+		state.getPlayers().get(0).getBoard().addCard(cardWood);
+		state.getPlayers().get(0).getBoard().addCard(cardStone);
+		state.getPlayers().get(0).getBoard().addCard(cardBrick);
+		state.getPlayers().get(0).getBoard().addCard(cardOre);
+		
+		
+		state.getPlayers().get(0).setHand(hand);
 	}
 
 	/** do AI test */
@@ -40,6 +61,8 @@ public class AITest {
 		
 		for (int i = 0; i < 3; i++)
 			state.getTrash().add(new Card(ResourceType.GEAR, 1, "sample card", "sample card", CardType.GREEN, null, null, null, null));
+		
+		
 		
 		state.setRound(1);
 		testAll(board);
@@ -66,7 +89,7 @@ public class AITest {
 		state.getPlayers().add(0, hard);
 		hard.calculateNextMove();
 		hard.getAction();
-		hard.getBoard().fill(0);;
+		hard.getBoard().fill(0);
 		hard.calculateNextMove();
 		hard.getAction();
 		hard.getBoard().fill(1);
@@ -94,9 +117,15 @@ public class AITest {
 		state.getPlayers().add(1, easy);
 		easy.calculateNextMove();
 		easy.getAction();
+		easy.getBoard().fill(0);
+		easy.calculateNextMove();
+		easy.getAction();
 		easy.getHalikarnassusCard(easy, state.getTrash(), state);
 		easy.getSelectedCard();
 		easy.getTradeOption();
+		
+		
+		
 	}
 
 	/**

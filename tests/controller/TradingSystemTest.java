@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
 
 import application.Main;
 import controller.utils.BuildCapability;
@@ -20,7 +19,7 @@ import model.card.ResourceType;
 import model.player.Player;
 
 /** testing trading system */
-public class TradingSystemTest extends ApplicationTest {
+public class TradingSystemTest { // extends ApplicationTest {
 
 	/**
 	 * creating players and trading with neighbors
@@ -109,7 +108,7 @@ public class TradingSystemTest extends ApplicationTest {
 		TradeOption to1 = new TradeOption(new ResourceBundle(new Resource(1, ResourceType.ORE)), new ResourceBundle(new Resource(1, ResourceType.WOOD)), 2, 1), to2 = new TradeOption(null, null, 0, 0),
 				to3 = new TradeOption(null, new ResourceBundle(), 0, 0);
 
-		to1.getNode(player1, null);
+		// to1.getNode(player1, null);
 		to1.equals(to2);
 		to2.equals(to3);
 		to3.equals(to1);

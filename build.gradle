@@ -55,7 +55,7 @@ dependencies {
     compile "org.openjfx:javafx-swing:11:mac"
     compile "org.openjfx:javafx-media:11:mac"
     
-    compile "org.testfx:testfx-junit:4.0.16-alpha"
+    // compile "org.testfx:testfx-junit:4.0.16-alpha"
 }
 
 

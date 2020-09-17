@@ -86,10 +86,8 @@ public class AITest {
 		state.getPlayers().remove(1);
 		board.setPlayer(easy);
 		state.getPlayers().add(1, easy);
-		for(int i = 0; i < 5; i++) {
-			easy.calculateNextMove();
-			easy.getAction();
-		}
+		easy.calculateNextMove();
+		easy.getAction();
 		easy.getHalikarnassusCard(easy, state.getTrash(), state);
 		easy.getSelectedCard();
 		easy.getTradeOption();

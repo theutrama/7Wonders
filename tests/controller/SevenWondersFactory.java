@@ -220,6 +220,9 @@ public class SevenWondersFactory {
 		player2.getBoard().addCard(card21);
 		player2.getBoard().addCard(card3);
 		player2.getBoard().addCard(card1);
+		player2.getBoard().addCard(card14);
+		player2.getBoard().addCard(card16);
+		player2.getBoard().addCard(card19);
 
 		player3.getBoard().addCard(card10);
 		player3.getBoard().addCard(card3);

@@ -72,7 +72,7 @@ public class SoundController {
 	 * @param filename sound name
 	 * @return true if the sound is active
 	 */
-	private boolean isPlaying(String filename) {
+	public boolean isPlaying(String filename) {
 		ArrayList<String> files = new ArrayList<>();
 		for (SoundPlayer player : players)
 			for (String soundname : player.filenames)

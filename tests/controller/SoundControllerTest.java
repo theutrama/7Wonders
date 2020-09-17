@@ -1,5 +1,7 @@
 package controller;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -14,9 +16,11 @@ public class SoundControllerTest extends ApplicationTest {
 		controller.isMuted();
 		controller.mute();
 		controller.play(Sound.COIN);
+		assertTrue(!controller.isPlaying("coin"));
 		controller.play(Sound.COIN, true);
 		controller.mute();
 		controller.play(Sound.COIN);
+		assertTrue(controller.isPlaying("coin"));
 		controller.stop(Sound.COIN);
 		controller.play(Sound.COIN, true);
 		controller.play(Sound.BACKGROUND_MENU);

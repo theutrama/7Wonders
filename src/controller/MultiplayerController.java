@@ -153,20 +153,24 @@ public class MultiplayerController implements EventListener{
 		}
 	}
 	
+	/**
+	 * sends a packet
+	 * @param event		the event to send
+	 */
 	@EventHandler
 	public void send(PacketSendEvent event) {
 		if(event.getPacket() instanceof PlayerSelectedCardPacket) {
-			PlayerSelectedCardPacket p = event.getPacket(PlayerSelectedCardPacket.class);
-			System.out.println("SEND PlayerSelectedCardPacket HandIndex: "+p.getHandIndex());
+			PlayerSelectedCardPacket player = event.getPacket(PlayerSelectedCardPacket.class);
+			System.out.println("SEND PlayerSelectedCardPacket HandIndex: "+player.getHandIndex());
 		}else if(event.getPacket() instanceof PlayerHalikarnassusPacket) {
-			PlayerHalikarnassusPacket p = event.getPacket(PlayerHalikarnassusPacket.class);
-			System.out.println("SEND PlayerHalikarnassusPacket getHalikarnassusIndex: "+p.getHalikarnassusIndex());
+			PlayerHalikarnassusPacket player = event.getPacket(PlayerHalikarnassusPacket.class);
+			System.out.println("SEND PlayerHalikarnassusPacket getHalikarnassusIndex: "+player.getHalikarnassusIndex());
 		}else if(event.getPacket() instanceof PlayerTradeOptionPacket) {
-			PlayerTradeOptionPacket p = event.getPacket(PlayerTradeOptionPacket.class);
-			System.out.println("SEND PlayerTradeOptionPacket getTradeOptionIndex: "+p.getTradeOptionIndex());
+			PlayerTradeOptionPacket player = event.getPacket(PlayerTradeOptionPacket.class);
+			System.out.println("SEND PlayerTradeOptionPacket getTradeOptionIndex: "+player.getTradeOptionIndex());
 		}else if(event.getPacket() instanceof PlayerActionPacket) {
-			PlayerActionPacket p = event.getPacket(PlayerActionPacket.class);
-			System.out.println("SEND PlayerActionPacket Action: "+p.getAction().name());
+			PlayerActionPacket player = event.getPacket(PlayerActionPacket.class);
+			System.out.println("SEND PlayerActionPacket Action: "+player.getAction().name());
 		}
 	}
 	

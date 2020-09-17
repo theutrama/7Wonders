@@ -66,6 +66,12 @@ public class AITest {
 		state.getPlayers().add(0, hard);
 		hard.calculateNextMove();
 		hard.getAction();
+		hard.getBoard().fill(0);;
+		hard.calculateNextMove();
+		hard.getAction();
+		hard.getBoard().fill(1);
+		hard.calculateNextMove();
+		hard.getAction();
 		hard.getHalikarnassusCard(hard, state.getTrash(), state);
 		hard.getSelectedCard();
 		hard.getTradeOption();
@@ -82,10 +88,10 @@ public class AITest {
 		medium.getTradeOption();
 
 		EasyAI easy = new EasyAI("medium", board);
-		easy.setHand(state.getPlayers().get(0).getHand());
-		state.getPlayers().remove(0);
+		easy.setHand(state.getPlayers().get(1).getHand());
+		state.getPlayers().remove(1);
 		board.setPlayer(easy);
-		state.getPlayers().add(0, easy);
+		state.getPlayers().add(1, easy);
 		easy.calculateNextMove();
 		easy.getAction();
 		easy.getHalikarnassusCard(easy, state.getTrash(), state);
